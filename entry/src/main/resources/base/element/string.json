@@ -1,0 +1,8 @@
+{
+  "string": [
+    { "name": "tab_news", "value": "新闻" },
+    { "name": "tab_video", "value": "视频" },
+    { "name": "tab_follow", "value": "关注" },
+    { "name": "tab_mine", "value": "我的" }
+  ]
+}
