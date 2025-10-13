@@ -1,1 +1,0 @@
-export { NewsPage } from './src/main/ets/pages/NewsPage';

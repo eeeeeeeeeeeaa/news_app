@@ -1,1 +1,0 @@
-export { VideoPage } from './src/main/ets/pages/VideoPage';
