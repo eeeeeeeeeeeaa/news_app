@@ -1,0 +1,10 @@
+{
+  "license": "",
+  "devDependencies": {},
+  "author": "",
+  "name": "commons",
+  "description": "Common components and utilities for the application",
+  "main": "index.ets",
+  "version": "1.0.0",
+  "dependencies": {}
+}

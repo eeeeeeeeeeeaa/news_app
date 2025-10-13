@@ -1,0 +1,653 @@
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ3—if (!("finalizeConstruction" in ViewPU.prototype)) {
+    Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
+}
+/*
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import promptAction from "@ohos.promptAction";
+import { UserManager } from '../model/UserManager';
+export function RegisterPageBuilder(parent = null) {
+    {
+        (parent ? parent : this).observeComponentCreation2((elmtId, isInitialRender) => {
+            if (isInitialRender) {
+                let componentCall = new RegisterPage(parent ? parent : this, {}, undefined, elmtId, () => { }, { page: "features/login/src/main/ets/pages/RegisterPage.ets", line: 22, col: 3 });
+                ViewPU.create(componentCall);
+                let paramsLambda = () => {
+                    return {};
+                };
+                componentCall.paramsGenerator_ = paramsLambda;
+            }
+            else {
+                (parent ? parent : this).updateStateVarsOfChildByElmtId(elmtId, {});
+            }
+        }, { name: "RegisterPage" });
+    }
+}
+function __TextInput__inputStyle() {
+    TextInput.placeholderColor('#99182431');
+    TextInput.height('45vp');
+    TextInput.fontSize('18fp');
+    TextInput.backgroundColor('#F1F3F5');
+    TextInput.width('328vp');
+    TextInput.margin({ top: 12 });
+}
+function __Line__lineStyle() {
+    Line.width('328vp');
+    Line.height('1vp');
+    Line.backgroundColor('#33182431');
+}
+function __Text__blueTextStyle() {
+    Text.fontColor('#007DFF');
+    Text.fontSize('14fp');
+    Text.fontWeight(FontWeight.Medium);
+}
+export class RegisterPage extends ViewPU {
+    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
+        super(parent, __localStorage, elmtId, extraInfo);
+        if (typeof paramsLambda === "function") {
+            this.paramsGenerator_ = paramsLambda;
+        }
+        this.__account = new ObservedPropertySimplePU('', this, "account");
+        this.__password = new ObservedPropertySimplePU('', this, "password");
+        this.__confirmPassword = new ObservedPropertySimplePU('', this, "confirmPassword");
+        this.__isShowProgress = new ObservedPropertySimplePU(false, this, "isShowProgress");
+        this.timeOutId = -1;
+        this.userManager = UserManager.getInstance();
+        this.onBack = () => { };
+        this.setInitiallyProvidedValue(params);
+        this.finalizeConstruction();
+    }
+    setInitiallyProvidedValue(params) {
+        if (params.account !== undefined) {
+            this.account = params.account;
+        }
+        if (params.password !== undefined) {
+            this.password = params.password;
+        }
+        if (params.confirmPassword !== undefined) {
+            this.confirmPassword = params.confirmPassword;
+        }
+        if (params.isShowProgress !== undefined) {
+            this.isShowProgress = params.isShowProgress;
+        }
+        if (params.timeOutId !== undefined) {
+            this.timeOutId = params.timeOutId;
+        }
+        if (params.userManager !== undefined) {
+            this.userManager = params.userManager;
+        }
+        if (params.onBack !== undefined) {
+            this.onBack = params.onBack;
+        }
+    }
+    updateStateVars(params) {
+    }
+    purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__account.purgeDependencyOnElmtId(rmElmtId);
+        this.__password.purgeDependencyOnElmtId(rmElmtId);
+        this.__confirmPassword.purgeDependencyOnElmtId(rmElmtId);
+        this.__isShowProgress.purgeDependencyOnElmtId(rmElmtId);
+    }
+    aboutToBeDeleted() {
+        this.__account.aboutToBeDeleted();
+        this.__password.aboutToBeDeleted();
+        this.__confirmPassword.aboutToBeDeleted();
+        this.__isShowProgress.aboutToBeDeleted();
+        SubscriberManager.Get().delete(this.id__());
+        this.aboutToBeDeletedInternal();
+    }
+    get account() {
+        return this.__account.get();
+    }
+    set account(newValue) {
+        this.__account.set(newValue);
+    }
+    get password() {
+        return this.__password.get();
+    }
+    set password(newValue) {
+        this.__password.set(newValue);
+    }
+    get confirmPassword() {
+        return this.__confirmPassword.get();
+    }
+    set confirmPassword(newValue) {
+        this.__confirmPassword.set(newValue);
+    }
+    get isShowProgress() {
+        return this.__isShowProgress.get();
+    }
+    set isShowProgress(newValue) {
+        this.__isShowProgress.set(newValue);
+    }
+    async register() {
+        if (this.account === '' || this.password === '' || this.confirmPassword === '') {
+            promptAction.showToast({
+                message: { "id": 16777278, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
+            });
+            return;
+        }
+        this.isShowProgress = true;
+        try {
+            const success = await this.userManager.registerUser(this.account, this.password, this.confirmPassword);
+            if (success) {
+                if (this.timeOutId === -1) {
+                    this.timeOutId = setTimeout(() => {
+                        this.isShowProgress = false;
+                        this.timeOutId = -1;
+                        // æ³¨å†ŒæˆåŠŸåè¿”å›ç™»å½•é¡µé¢
+                        this.onBack();
+                    }, 1500);
+                }
+            }
+            else {
+                this.isShowProgress = false;
+            }
+        }
+        catch (err) {
+            this.isShowProgress = false;
+            console.error('Register failed:', err);
+        }
+    }
+    aboutToDisappear() {
+        clearTimeout(this.timeOutId);
+        this.timeOutId = -1;
+    }
+    initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.height('100%');
+            Column.width('100%');
+            Column.padding({
+                left: '12vp',
+                right: '12vp',
+                bottom: '24vp'
+            });
+            Column.backgroundColor('#F1F3F5');
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // è¿”å›æŒ‰é’®
+            Row.create();
+            // è¿”å›æŒ‰é’®
+            Row.width('100%');
+            // è¿”å›æŒ‰é’®
+            Row.padding({ top: '20vp', left: '12vp', right: '12vp' });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Button.createWithChild();
+            Button.backgroundColor(Color.Transparent);
+            Button.onClick(() => {
+                this.onBack();
+            });
+        }, Button);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Image.create({ "id": 16777257, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+            Image.width('24vp');
+            Image.height('24vp');
+        }, Image);
+        Button.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Blank.create();
+        }, Blank);
+        Blank.pop();
+        // è¿”å›æŒ‰é’®
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Image.create({ "id": 16777296, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+            Image.width('78vp');
+            Image.height('78vp');
+            Image.margin({
+                top: '150vp',
+                bottom: '8vp'
+            });
+        }, Image);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create({ "id": 16777290, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+            Text.fontSize('24fp');
+            Text.fontWeight(FontWeight.Medium);
+            Text.fontColor('#182431');
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create({ "id": 16777289, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+            Text.fontSize('16fp');
+            Text.fontColor('#99182431');
+            Text.margin({
+                bottom: '30vp',
+                top: '8vp'
+            });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            TextInput.create({ placeholder: { "id": 16777239, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" } });
+            TextInput.maxLength(11);
+            TextInput.type(InputType.Number);
+            __TextInput__inputStyle();
+            TextInput.onChange((value) => {
+                this.account = value;
+            });
+        }, TextInput);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Line.create();
+            __Line__lineStyle();
+        }, Line);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            TextInput.create({ placeholder: { "id": 16777285, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" } });
+            TextInput.maxLength(8);
+            TextInput.type(InputType.Password);
+            __TextInput__inputStyle();
+            TextInput.onChange((value) => {
+                this.password = value;
+            });
+        }, TextInput);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Line.create();
+            __Line__lineStyle();
+        }, Line);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            TextInput.create({ placeholder: { "id": 16777276, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" } });
+            TextInput.maxLength(8);
+            TextInput.type(InputType.Password);
+            __TextInput__inputStyle();
+            TextInput.onChange((value) => {
+                this.confirmPassword = value;
+            });
+        }, TextInput);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Line.create();
+            __Line__lineStyle();
+        }, Line);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Button.createWithLabel({ "id": 16777287, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, { type: ButtonType.Capsule });
+            Button.width('328vp');
+            Button.height('40vp');
+            Button.fontSize('16fp');
+            Button.fontWeight(FontWeight.Medium);
+            Button.backgroundColor('#007DFF');
+            Button.margin({
+                top: '48vp',
+                bottom: '12vp'
+            });
+            Button.onClick(() => {
+                this.register();
+            });
+        }, Button);
+        Button.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create({ "id": 16777275, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+            Text.fontColor('#007DFF');
+            Text.fontSize('16fp');
+            Text.fontWeight(FontWeight.Medium);
+            Text.onClick(() => {
+                this.onBack();
+            });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.isShowProgress) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        LoadingProgress.create();
+                        LoadingProgress.color('#182431');
+                        LoadingProgress.width('30vp');
+                        LoadingProgress.height('30vp');
+                        LoadingProgress.margin({ top: '20vp' });
+                    }, LoadingProgress);
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Blank.create();
+        }, Blank);
+        Blank.pop();
+        Column.pop();
+    }
+    rerender() {
+        this.updateDirtyElements();
+    }
+}
+//# sourceMappingURL=RegisterPage.js.mapÂ’ÙW hvigor_ignore_G:_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.promptAction.d.tsÙoG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\features\login\src\main\ets\model\UserManager.etsÙpG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\features\login\src\main\ets\pages\RegisterPage.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥loginÃÂÙLG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\features\loginÙ=G:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete¥login¥1.0.0ÔrC’§pkgNameªpkgVersion¥login¥1.0.0’ÔrD’²hostDependencyName®hostModuleNameÙ!./src/main/ets/pages/RegisterPage¥loginD®./RegisterPage¥loginÙLG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\features\loginÃÃÚ¯/*
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { promptAction } from '@kit.ArkUI';
+import { router } from '@kit.ArkUI';
+import { UserManager } from '../model/UserManager';
+
+@Builder
+export function RegisterPageBuilder() {
+  RegisterPage()
+}
+
+@Extend(TextInput)
+function inputStyle() {
+  .placeholderColor('#99182431')
+  .height('45vp')
+  .fontSize('18fp')
+  .backgroundColor('#F1F3F5')
+  .width('328vp')
+  .margin({ top: 12 })
+}
+
+@Extend(Line)
+function lineStyle() {
+  .width('328vp')
+  .height('1vp')
+  .backgroundColor('#33182431')
+}
+
+@Extend(Text)
+function blueTextStyle() {
+  .fontColor('#007DFF')
+  .fontSize('14fp')
+  .fontWeight(FontWeight.Medium)
+}
+
+/**
+ * Register page
+ */
+
+@Component
+export struct RegisterPage {
+  @State account: string = '';
+  @State password: string = '';
+  @State confirmPassword: string = '';
+  @State isShowProgress: boolean = false;
+  private timeOutId: number = -1;
+  private userManager: UserManager = UserManager.getInstance();
+  onBack: () => void = () => {};
+
+  async register(): Promise<void> {
+    if (this.account === '' || this.password === '' || this.confirmPassword === '') {
+      promptAction.showToast({
+        message: $r('app.string.input_empty_tips')
+      });
+      return;
+    }
+
+    this.isShowProgress = true;
+    
+    try {
+      const success = await this.userManager.registerUser(this.account, this.password, this.confirmPassword);
+      if (success) {
+        if (this.timeOutId === -1) {
+          this.timeOutId = setTimeout(() => {
+            this.isShowProgress = false;
+            this.timeOutId = -1;
+            // æ³¨å†ŒæˆåŠŸåè¿”å›ç™»å½•é¡µé¢
+            this.onBack();
+          }, 1500);
+        }
+      } else {
+        this.isShowProgress = false;
+      }
+    } catch (err) {
+      this.isShowProgress = false;
+      console.error('Register failed:', err);
+    }
+  }
+
+  aboutToDisappear() {
+    clearTimeout(this.timeOutId);
+    this.timeOutId = -1;
+  }
+
+  build() {
+    Column() {
+      // è¿”å›æŒ‰é’®
+      Row() {
+        Button() {
+          Image($r('app.media.ic_back'))
+            .width('24vp')
+            .height('24vp')
+        }
+        .backgroundColor(Color.Transparent)
+        .onClick(() => {
+          this.onBack();
+        })
+        
+        Blank()
+      }
+      .width('100%')
+      .padding({ top: '20vp', left: '12vp', right: '12vp' })
+      Image($r('app.media.logo'))
+        .width('78vp')
+        .height('78vp')
+        .margin({
+          top: '150vp',
+          bottom: '8vp'
+        })
+      Text($r('app.string.register_page'))
+        .fontSize('24fp')
+        .fontWeight(FontWeight.Medium)
+        .fontColor('#182431')
+      Text($r('app.string.register_more'))
+        .fontSize('16fp')
+        .fontColor('#99182431')
+        .margin({
+          bottom: '30vp',
+          top: '8vp'
+        })
+
+      TextInput({ placeholder: $r('app.string.account') })
+        .maxLength(11)
+        .type(InputType.Number)
+        .inputStyle()
+        .onChange((value: string) => {
+          this.account = value;
+        })
+      Line()
+        .lineStyle()
+
+      TextInput({ placeholder: $r('app.string.password') })
+        .maxLength(8)
+        .type(InputType.Password)
+        .inputStyle()
+        .onChange((value: string) => {
+          this.password = value;
+        })
+      Line()
+        .lineStyle()
+
+      TextInput({ placeholder: $r('app.string.confirm_password') })
+        .maxLength(8)
+        .type(InputType.Password)
+        .inputStyle()
+        .onChange((value: string) => {
+          this.confirmPassword = value;
+        })
+      Line()
+        .lineStyle()
+
+      Button($r('app.string.register'), { type: ButtonType.Capsule })
+        .width('328vp')
+        .height('40vp')
+        .fontSize('16fp')
+        .fontWeight(FontWeight.Medium)
+        .backgroundColor('#007DFF')
+        .margin({
+          top: '48vp',
+          bottom: '12vp'
+        })
+        .onClick(() => {
+          this.register();
+        })
+
+      Text($r('app.string.back_to_login'))
+        .fontColor('#007DFF')
+        .fontSize('16fp')
+        .fontWeight(FontWeight.Medium)
+        .onClick(() => {
+          this.onBack();
+        })
+
+      if (this.isShowProgress) {
+        LoadingProgress()
+          .color('#182431')
+          .width('30vp')
+          .height('30vp')
+          .margin({ top: '20vp' })
+      }
+
+      Blank()
+    }
+    .height('100%')
+    .width('100%')
+    .padding({
+      left: '12vp',
+      right: '12vp',
+      bottom: '24vp'
+    })
+    .backgroundColor('#F1F3F5')
+  }
+}
+ÀÔrE’²@ohos.promptAction´../model/UserManagerÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙW hvigor_ignore_G:_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.promptAction.d.tsÔrG‘¯hostModulesInfo”D²@ohos.promptAction¥loginD²@ohos.promptAction¥loginD²@ohos.promptAction¥loginD²@ohos.promptAction¤mineÃªoh-resolveÂFAÂÙoG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\features\login\src\main\ets\model\UserManager.etsAÃªoh-resolveÂ“ÔrH–§version¤fileªsourceRoot§sources¥names¨mappings¯RegisterPage.js ‘°RegisterPage.etsÜA‘”    ‘” –”   ” 	” ” ”- )”. *˜”   ” ”	 	” ” ” ”2 2”3 3””   ” ” ”# #’”( ”4 ‘” ‘”   ”” ” ” ”* ”” ” 	” 
+” ”” ” ” ” ”” ” ” ”' ”” ” ” 	” ˜” ” 	” 
+” ” ” ” ”  ‘”  ‘”  " ””	 $” $” $	” $””	 %” %	” %
+” %””	 &” &” &”$ &‘” '‘”  ) ””	 +” +” +” +””	 ,” ,” ,” ,–”	 -” -” -” -” -”% -‘” .””  5 ” 5” 5” 5‘” 4 ’”6 6”8 6’”7 7”9 7’”> 8#”Ì@ 8%’”= 9#”ÌB 9(“” :” :” : •” ;%”& ;0”' ;1”2 ;<”4 ;>•” <” <” <” <” <‘” .’” 6	” 6’” 6	” 6’” 7	” 7’” 7	” 7’” 8	” 8’” 8	” 8’” 9	” 9’” 9	” 9”” >”	 >”
+ >” >Ü ” ?” ?” ?” ?” ?” ?” ?”# ?”' ?#”( ?$”0 ?,”5 ?1”7 ?3”; ?7”? ?;”Ì@ ?<”ÌO ?ÌK”ÌT ?ÌP”ÌV ?ÌR”ÌX ?ÌT•” Ì@” Ì@” Ì@”" Ì@”# Ì@“” ÌA” ÌA”Ì† ÌA2“” ÌB” ÌB” ÌB	’” ÌC” ÌC‘”	 ÌD—” ÌF” ÌF” ÌF	” ÌF” ÌF”" ÌF”# ÌF’” ÌH” ÌHÜ ” ÌI” ÌI” ÌI” ÌI”" ÌI”& ÌI ”' ÌI!”2 ÌI,”3 ÌI-”? ÌI9”Ì@ ÌI:”ÌD ÌI>”ÌE ÌI?”ÌL ÌIÌF”ÌN ÌIÌH”ÌR ÌIÌL”ÌS ÌIÌM”Ì[ ÌIÌU”Ì] ÌIÌW”Ìa ÌIÌ[”Ìb ÌIÌ\”Ìq ÌIÌk”Ìr ÌIÌl”Ìs ÌIÌm”” ÌJ” ÌJ
+” ÌJ” ÌJ™” ÌK” ÌK” ÌK” ÌK”" ÌK”' ÌK”( ÌK ”) ÌK!”+ ÌK#™” ÌL
+” ÌL” ÌL”" ÌL”% ÌL”/ ÌL%”0 ÌL&”3 ÌL)”5 ÌL+—” ÌM” ÌM” ÌM”+ ÌM”. ÌM"”3 ÌM'”4 ÌM(˜” ÌN” ÌN” ÌN”& ÌN”) ÌN”* ÌN”+ ÌN”, ÌN ’” ÌO”& ÌO–” ÌP” ÌP” ÌP”# ÌP”% ÌP”& ÌP–” ÌQ
+” ÌQ” ÌQ” ÌQ” ÌQ” ÌQ‘” ÌR	‘” ÌS‘” ÌS—” ÌT” ÌT” ÌT”# ÌT”& ÌT”+ ÌT#”, ÌT$‘” ÌU‘”	 ÌV”” ÌV” ÌV” ÌV” ÌV—” ÌW” ÌW
+” ÌW” ÌW”" ÌW”' ÌW!”( ÌW"š” ÌX” ÌX” ÌX” ÌX” ÌX”, ÌX&”. ÌX(”1 ÌX+”2 ÌX,”3 ÌX-‘”	 ÌY’” ÌZ” ÌZ’” Ì\” Ì\˜” Ì]” Ì]” Ì]” Ì]” Ì]”# Ì]”$ Ì] ”% Ì]!˜” Ì^” Ì^” Ì^	” Ì^” Ì^” Ì^” Ì^” Ì^’” Ì_” Ì_‘” Ìa’” Ìb” Ìb
+–” Ìb” Ìb
+” ÌÄ” ÌÄ” ÌÄ”  ÌÄ–” Ìb” Ìb
+” ÌÅ” ÌÅ
+” ÌÅ” ÌÅ•” Ìb” Ìb
+” ÌÆ” ÌÆ” ÌÆ”” ÌÇ” ÌÇ
+” ÌÇ” ÌÇ”” ÌÈ” ÌÈ” ÌÈ” ÌÈ”” ÌÉ” ÌÉ” ÌÉ” ÌÉ‘” ÌÊ–” Ìb” Ìb
+” ÌË”" ÌË”# ÌË”, ÌË’” Ìc” Ìc’” Ìd” Ìd	’” Ìc” Ìc–” Ìd” Ìd	” Ìq” Ìq” Ìq” Ìq’” Ìc” ÌcÜ ” Ìd” Ìd	” Ìr” Ìr” Ìr” Ìr” Ìr” Ìr”% Ìr”' Ìr”+ Ìr"”- Ìr$”3 Ìr*”5 Ìr,”: Ìr1”< Ìr3”ÌB Ìr9”ÌD Ìr;’” Ìe” Ìe˜” Ìe” Ìe” Ìj	”" Ìj”# Ìj”( Ìj”) Ìj”4 Ìj*—” Ìe” Ìe” Ìk	” Ìk” Ìk” Ìk”  Ìk–” Ìl
+” Ìl” Ìl” Ìl” Ìl” Ìl’” Ìm” Ìm	’” Ìf
+” Ìf–” Ìf
+” Ìf” Ìg” Ìg” Ìg” Ìg–” Ìf
+” Ìf” Ìh” Ìh” Ìh” Ìh’” Ìe” Ìe’” Ìo” Ìo’” Ìo” Ìo’” Ìc” Ìc’” Ìd” Ìd	’” Ìs” Ìs–” Ìs” Ìs” Ìt	” Ìt” Ìt” Ìt–” Ìs” Ìs” Ìu	” Ìu” Ìu” Ìu•” Ìs” Ìs” Ìv	” Ìv” Ìv”” Ìw
+” Ìw” Ìw” Ìw”” Ìx
+” Ìx” Ìx” Ìx‘” Ìy	’” Ìz” Ìz
+–” Ìz” Ìz
+” Ì{	” Ì{” Ì{”  Ì{˜” Ìz” Ìz
+” Ì|	” Ì|” Ì|”& Ì|”' Ì|”- Ì|%–” Ìz” Ìz
+” Ì}	” Ì}” Ì}”$ Ì}’” Ìz” Ìz
+’” Ì~” Ì~
+–” Ì~” Ì~
+” Ì	” Ì” Ì”  Ì–” Ì~” Ì~
+” Ì€	” Ì€” Ì€”& Ì€•” Ì~” Ì~
+” Ì	” Ì” Ì”” Ì‚
+” Ì‚” Ì‚” Ì‚”” Ìƒ
+” Ìƒ” Ìƒ” Ìƒ‘” Ì„	’” Ì~” Ì~
+—” Ì†” Ì†” Ì†” Ì†”* Ì†”Ì™ Ì†7”Ì› Ì†9–” Ì†” Ì†” Ì‡	” Ì‡”  Ì‡”" Ì‡˜” Ì†” Ì†” Ìˆ	” Ìˆ” Ìˆ”$ Ìˆ”% Ìˆ”+ Ìˆ™” Ì†” Ì†” ÌŠ	” ÌŠ” ÌŠ”  ÌŠ”% ÌŠ ”' ÌŠ"”) ÌŠ$—” Ì‹
+” Ì‹” Ì‹” Ì‹” Ì‹”$ Ì‹”% Ì‹’” ÌŒ” ÌŒ	’” Ì” Ì
+—” Ì” Ì” Ì” Ì”* Ì”Ì™ Ì8”Ì› Ì:–” Ì” Ì” Ì‘	” Ì‘”  Ì‘”! Ì‘˜” Ì” Ì” Ì’	” Ì’” Ì’”$ Ì’”% Ì’”- Ì’ ™” Ì” Ì” Ì”	” Ì”” Ì””  Ì””% Ì” ”' Ì”"”) Ì”$—” Ì•
+” Ì•” Ì•” Ì•”  Ì•”% Ì•”& Ì• ’” Ì–” Ì–	’” Ì—” Ì—
+—” Ìš” Ìš” Ìš” Ìš”* Ìš”Ì™ ÌšÌ@”Ì› ÌšÌB–” Ìš” Ìš” Ì›	” Ì›”  Ì›”! Ì›˜” Ìš” Ìš” Ìœ	” Ìœ” Ìœ”$ Ìœ”% Ìœ”- Ìœ ™” Ìš” Ìš” Ì	” Ì” Ì”  Ì”% Ì ”' Ì"”) Ì$—” ÌŸ
+” ÌŸ” ÌŸ”$ ÌŸ”' ÌŸ!”, ÌŸ&”- ÌŸ'’” Ì ” Ì 	’” Ì¡” Ì¡
+š” Ì¤” Ì¤”Ì’ Ì¤(”Ì” Ì¤*”Ì˜ Ì¤.”Ìš Ì¤0”Ì¤ Ì¤:”Ì¥ Ì¤;”Ì¬ Ì¤ÌB”Ì® Ì¤ÌD–” Ì¤” Ì¤” Ì¥	” Ì¥” Ì¥”  Ì¥–” Ì¤” Ì¤” Ì¦	” Ì¦” Ì¦”  Ì¦–” Ì¤” Ì¤” Ì§	” Ì§” Ì§”" Ì§˜” Ì¤” Ì¤” Ì¨	” Ì¨” Ì¨”( Ì¨”) Ì¨”/ Ì¨%–” Ì¤” Ì¤” Ì©	”" Ì©”# Ì©”, Ì©"•” Ì¤” Ì¤” Ìª	” Ìª” Ìª”” Ì«
+” Ì«” Ì«” Ì«”” Ì¬
+” Ì¬” Ì¬” Ì¬‘” Ì­	—” Ì¤” Ì¤” Ì®	” Ì®” Ì®” Ì®”  Ì®–” Ì¯
+” Ì¯” Ì¯” Ì¯” Ì¯”  Ì¯’” Ì°” Ì°	’” Ì¤” Ì¤’” Ì²” Ì²
+–” Ì²” Ì²
+” Ì³	” Ì³” Ì³”$ Ì³–” Ì²” Ì²
+” Ì´	” Ì´” Ì´”  Ì´˜” Ì²” Ì²
+” Ìµ	” Ìµ” Ìµ”& Ìµ”' Ìµ”- Ìµ%—” Ì²” Ì²
+” Ì¶	” Ì¶” Ì¶” Ì¶” Ì¶–” Ì·
+” Ì·” Ì·” Ì·” Ì·” Ì·’” Ì¸” Ì¸	’” Ì²” Ì²
+–” Ìº” Ìº
+” Ìº” Ìº”# Ìº”% Ìº’” Ì»”' Ì»–” Ì»”' Ì»”( Ì¼”- Ì¼”. Ì¼”7 Ì¼–” Ì»”' Ì»”( Ì½”- Ì½”. Ì½”4 Ì½–” Ì»”' Ì»”( Ì¾”. Ì¾”/ Ì¾”5 Ì¾š” Ì»”' Ì»”( Ì¿”. Ì¿”/ Ì¿”1 Ì¿”4 Ì¿”6 Ì¿”< Ì¿”> Ì¿!‘” ÌÀ‘” ÌÀ’” ÌÂ” ÌÂ’” ÌÂ” ÌÂ’” Ìb” Ìb
+‘” ÌÌÔrI–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜF‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌĞ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  Ìİ ‘”  ÌŞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìğ ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìı ‘”  Ìş ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ÔrJ’§missing¦pluginÃ¦genAbcÂÔ  ÔrK”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache’ÔrL–¤type¥start£end«declarationªspecifiers¦source¶ExportNamedDeclarationÍSÍXÔrM™¤type¥start£end¢idªexpression©generator¥async¦params¤body³FunctionDeclarationÍZÍXÔrN”¤type¥start£end¤nameªIdentifierÍcÍv³RegisterPageBuilderÂÂÂ‘ÔrO•¤type¥start£end¤left¥right±AssignmentPatternÍwÍ„NªIdentifierÍwÍ}¦parentÔrP•¤type¥start£end¥value£raw§LiteralÍ€Í„À¤nullÔrQ”¤type¥start£end¤body®BlockStatementÍ†ÍX‘Q®BlockStatementÍÍU‘ÔrR”¤type¥start£endªexpression³ExpressionStatementÍ˜ÍNÔrS–¤type¥start£end¦callee©arguments¨optional®CallExpressionÍ˜ÍMÔrT—¤type¥start£end¦object¨property¨computed¨optional°MemberExpressionÍ˜ÍÊÔrU–¤type¥start£end¤testªconsequent©alternateµConditionalExpressionÍ™Í¯NªIdentifierÍ™ÍŸ¦parentNªIdentifierÍ¢Í¨¦parentÔrV“¤type¥start£end®ThisExpressionÍ«Í¯NªIdentifierÍ±ÍÊ¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍËÍ2ÀÂÂÂ’NªIdentifierÍÌÍÒ¦elmtIdNªIdentifierÍÔÍã¯isInitialRenderQ®BlockStatementÍèÍ2‘U«IfStatementÍ÷Í'NªIdentifierÍûÍ
+¯isInitialRenderQ®BlockStatementÍÍ®”ÔrW•¤type¥start£end¬declarations¤kind³VariableDeclarationÍÍĞ‘ÔrX•¤type¥start£end¢id¤init²VariableDeclaratorÍ#ÍÏNªIdentifierÍ#Í0­componentCallÔrY•¤type¥start£end¦callee©arguments­NewExpressionÍ3ÍÏNªIdentifierÍ7ÍC¬RegisterPage–UµConditionalExpressionÍDÍZNªIdentifierÍDÍJ¦parentNªIdentifierÍMÍS¦parentV®ThisExpressionÍVÍZÔrZ”¤type¥start£endªproperties°ObjectExpressionÍ\Í^NªIdentifierÍ`Íi©undefinedNªIdentifierÍkÍq¦elmtIdM·ArrowFunctionExpressionÍsÍ|ÀÂÂÂQ®BlockStatementÍyÍ|Z°ObjectExpressionÍ~ÍÎ“Ôr[™¤type¥start£end¦method©shorthand¨computed£key¥value¤kind¨PropertyÍ€ÍºÂÂÂNªIdentifierÍ€Í„¤pageP§LiteralÍ†ÍºÙ2features/login/src/main/ets/pages/RegisterPage.etsÙ4"features/login/src/main/ets/pages/RegisterPage.ets"¤init[¨PropertyÍ¼ÍÄÂÂÂNªIdentifierÍ¼ÍÀ¤lineP§LiteralÍÂÍÄ¢22¤init[¨PropertyÍÆÍÌÂÂÂNªIdentifierÍÆÍÉ£colP§LiteralÍËÍÌ¡3¤init£letR³ExpressionStatementÍâÍÿS®CallExpressionÍâÍşT°MemberExpressionÍâÍïNªIdentifierÍâÍè¦ViewPUNªIdentifierÍéÍï¦createÂÂ‘NªIdentifierÍğÍı­componentCallÂW³VariableDeclarationÍÍ_‘X²VariableDeclaratorÍÍ^NªIdentifierÍÍ!¬paramsLambdaM·ArrowFunctionExpressionÍ$Í^ÀÂÂÂQ®BlockStatementÍ*Í^‘Ôr\”¤type¥start£end¨argument¯ReturnStatementÍAÍKZ°ObjectExpressionÍHÍJ£letR³ExpressionStatementÍqÍŸÔr]–¤type¥start£end¨operator¤left¥right´AssignmentExpressionÍqÍ¡=T°MemberExpressionÍqÍNªIdentifierÍqÍ~­componentCallNªIdentifierÍÍ°paramsGenerator_ÂÂNªIdentifierÍ’Í¬paramsLambdaQ®BlockStatementÍÁÍ'‘R³ExpressionStatementÍÔÍS®CallExpressionÍÔÍT°MemberExpressionÍÔÍUµConditionalExpressionÍÕÍëNªIdentifierÍÕÍÛ¦parentNªIdentifierÍŞÍä¦parentV®ThisExpressionÍçÍëNªIdentifierÍíÍ¾updateStateVarsOfChildByElmtIdÂÂ’NªIdentifierÍÍ¦elmtIdZ°ObjectExpressionÍÍÂZ°ObjectExpressionÍ4ÍL‘[¨PropertyÍ6ÍJÂÂÂNªIdentifierÍ6Í:¤nameP§LiteralÍ<ÍJ¬RegisterPage®"RegisterPage"¤initÂÀL¶ExportNamedDeclarationÍiÍ37Ôr^–¤type¥start£end¢idªsuperClass¤body°ClassDeclarationÍpÍ37NªIdentifierÍvÍ‚¬RegisterPageNªIdentifierÍ‹Í‘¦ViewPUQ©ClassBodyÍ’Í37Ü Ôr_˜¤type¥start£end¦static¨computed£key¤kind¥value°MethodDefinitionÍ™ÍĞÂÂNªIdentifierÍ™Í¤«constructor«constructorM²FunctionExpressionÍ¤ÍĞÀÂÂÂ–NªIdentifierÍ¥Í«¦parentNªIdentifierÍ­Í³¦paramsNªIdentifierÍµÍÃ®__localStorageO±AssignmentPatternÍÅÍĞNªIdentifierÍÅÍË¦elmtIdÔr`–¤type¥start£end¨operator¦prefix¨argument¯UnaryExpressionÍÎÍĞ¡-ÃP§LiteralÍÏÍĞ¡1O±AssignmentPatternÍÒÍêNªIdentifierÍÒÍŞ¬paramsLambdaNªIdentifierÍáÍê©undefinedNªIdentifierÍìÍõ©extraInfoQ®BlockStatementÍ÷ÍĞ›R³ExpressionStatementÍ	Í	3S®CallExpressionÍ	Í	2V¥SuperÍ	Í	”NªIdentifierÍ	Í	¦parentNªIdentifierÍ	Í	®__localStorageNªIdentifierÍ	 Í	&¦elmtIdNªIdentifierÍ	(Í	1©extraInfoÂU«IfStatementÍ	=Í	¤Ôra–¤type¥start£end¤left¨operator¥right°BinaryExpressionÍ	AÍ	c`¯UnaryExpressionÍ	AÍ	T¦typeofÃNªIdentifierÍ	HÍ	T¬paramsLambda£===P§LiteralÍ	YÍ	c¨functionª"function"Q®BlockStatementÍ	eÍ	¤‘R³ExpressionStatementÍ	tÍ	™]´AssignmentExpressionÍ	tÍ	˜¡=T°MemberExpressionÍ	tÍ	‰V®ThisExpressionÍ	tÍ	xNªIdentifierÍ	yÍ	‰°paramsGenerator_ÂÂNªIdentifierÍ	ŒÍ	˜¬paramsLambdaÀR³ExpressionStatementÍ	®Í	ñ]´AssignmentExpressionÍ	®Í	ğ¡=T°MemberExpressionÍ	®Í	¼V®ThisExpressionÍ	®Í	²NªIdentifierÍ	³Í	¼©__accountÂÂY­NewExpressionÍ	¿Í	ğNªIdentifierÍ	ÃÍ	Û¸ObservedPropertySimplePU“P§LiteralÍ	ÜÍ	Ş ¢''V®ThisExpressionÍ	àÍ	äP§LiteralÍ	æÍ	ï§account©"account"R³ExpressionStatementÍ	ûÍ
+@]´AssignmentExpressionÍ	ûÍ
+?¡=T°MemberExpressionÍ	ûÍ
+
+V®ThisExpressionÍ	ûÍ	ÿNªIdentifierÍ
+ Í
+
+ª__passwordÂÂY­NewExpressionÍ
+Í
+?NªIdentifierÍ
+Í
+)¸ObservedPropertySimplePU“P§LiteralÍ
+*Í
+, ¢''V®ThisExpressionÍ
+.Í
+2P§LiteralÍ
+4Í
+>¨passwordª"password"R³ExpressionStatementÍ
+JÍ
+]´AssignmentExpressionÍ
+JÍ
+œ¡=T°MemberExpressionÍ
+JÍ
+`V®ThisExpressionÍ
+JÍ
+NNªIdentifierÍ
+OÍ
+`±__confirmPasswordÂÂY­NewExpressionÍ
+cÍ
+œNªIdentifierÍ
+gÍ
+¸ObservedPropertySimplePU“P§LiteralÍ
+€Í
+‚ ¢''V®ThisExpressionÍ
+„Í
+ˆP§LiteralÍ
+ŠÍ
+›¯confirmPassword±"confirmPassword"R³ExpressionStatementÍ
+§Í
+û]´AssignmentExpressionÍ
+§Í
+ú¡=T°MemberExpressionÍ
+§Í
+¼V®ThisExpressionÍ
+§Í
+«NªIdentifierÍ
+¬Í
+¼°__isShowProgressÂÂY­NewExpressionÍ
+¿Í
+úNªIdentifierÍ
+ÃÍ
+Û¸ObservedPropertySimplePU“P§LiteralÍ
+ÜÍ
+áÂ¥falseV®ThisExpressionÍ
+ãÍ
+çP§LiteralÍ
+éÍ
+ù®isShowProgress°"isShowProgress"R³ExpressionStatementÍÍ]´AssignmentExpressionÍÍ¡=T°MemberExpressionÍÍV®ThisExpressionÍÍ	NªIdentifierÍ
+Í©timeOutIdÂÂ`¯UnaryExpressionÍÍ¡-ÃP§LiteralÍÍ¡1R³ExpressionStatementÍ#ÍP]´AssignmentExpressionÍ#ÍO¡=T°MemberExpressionÍ#Í3V®ThisExpressionÍ#Í'NªIdentifierÍ(Í3«userManagerÂÂS®CallExpressionÍ6ÍOT°MemberExpressionÍ6ÍMNªIdentifierÍ6ÍA«UserManagerNªIdentifierÍBÍM«getInstanceÂÂÂR³ExpressionStatementÍZÍr]´AssignmentExpressionÍZÍq¡=T°MemberExpressionÍZÍeV®ThisExpressionÍZÍ^NªIdentifierÍ_Íe¦onBackÂÂM·ArrowFunctionExpressionÍhÍqÀÂÂÂQ®BlockStatementÍnÍqR³ExpressionStatementÍ|Í£S®CallExpressionÍ|Í¢T°MemberExpressionÍ|ÍšV®ThisExpressionÍ|Í€NªIdentifierÍÍš¹setInitiallyProvidedValueÂÂ‘NªIdentifierÍ›Í¡¦paramsÂR³ExpressionStatementÍ­ÍÉS®CallExpressionÍ­ÍÈT°MemberExpressionÍ­ÍÆV®ThisExpressionÍ­Í±NªIdentifierÍ²ÍÆ´finalizeConstructionÂÂÂ_°MethodDefinitionÍÖÍûÂÂNªIdentifierÍÖÍï¹setInitiallyProvidedValue¦methodM²FunctionExpressionÍïÍûÀÂÂÂ‘NªIdentifierÍğÍö¦paramsQ®BlockStatementÍøÍû—U«IfStatementÍÍ]a°BinaryExpressionÍÍ#T°MemberExpressionÍÍNªIdentifierÍÍ¦paramsNªIdentifierÍÍ§accountÂÂ£!==NªIdentifierÍÍ#©undefinedQ®BlockStatementÍ%Í]‘R³ExpressionStatementÍ4ÍR]´AssignmentExpressionÍ4ÍQ¡=T°MemberExpressionÍ4Í@V®ThisExpressionÍ4Í8NªIdentifierÍ9Í@§accountÂÂT°MemberExpressionÍCÍQNªIdentifierÍCÍI¦paramsNªIdentifierÍJÍQ§accountÂÂÀU«IfStatementÍgÍÄa°BinaryExpressionÍkÍˆT°MemberExpressionÍkÍzNªIdentifierÍkÍq¦paramsNªIdentifierÍrÍz¨passwordÂÂ£!==NªIdentifierÍÍˆ©undefinedQ®BlockStatementÍŠÍÄ‘R³ExpressionStatementÍ™Í¹]´AssignmentExpressionÍ™Í¸¡=T°MemberExpressionÍ™Í¦V®ThisExpressionÍ™ÍNªIdentifierÍÍ¦¨passwordÂÂT°MemberExpressionÍ©Í¸NªIdentifierÍ©Í¯¦paramsNªIdentifierÍ°Í¸¨passwordÂÂÀU«IfStatementÍÎÍ@a°BinaryExpressionÍÒÍöT°MemberExpressionÍÒÍèNªIdentifierÍÒÍØ¦paramsNªIdentifierÍÙÍè¯confirmPasswordÂÂ£!==NªIdentifierÍíÍö©undefinedQ®BlockStatementÍøÍ@‘R³ExpressionStatementÍÍ5]´AssignmentExpressionÍÍ4¡=T°MemberExpressionÍÍV®ThisExpressionÍÍNªIdentifierÍÍ¯confirmPasswordÂÂT°MemberExpressionÍÍ4NªIdentifierÍÍ$¦paramsNªIdentifierÍ%Í4¯confirmPasswordÂÂÀU«IfStatementÍJÍ¹a°BinaryExpressionÍNÍqT°MemberExpressionÍNÍcNªIdentifierÍNÍT¦paramsNªIdentifierÍUÍc®isShowProgressÂÂ£!==NªIdentifierÍhÍq©undefinedQ®BlockStatementÍsÍ¹‘R³ExpressionStatementÍ‚Í®]´AssignmentExpressionÍ‚Í­¡=T°MemberExpressionÍ‚Í•V®ThisExpressionÍ‚Í†NªIdentifierÍ‡Í•®isShowProgressÂÂT°MemberExpressionÍ˜Í­NªIdentifierÍ˜Í¦paramsNªIdentifierÍŸÍ­®isShowProgressÂÂÀU«IfStatementÍÃÍ#a°BinaryExpressionÍÇÍåT°MemberExpressionÍÇÍ×NªIdentifierÍÇÍÍ¦paramsNªIdentifierÍÎÍ×©timeOutIdÂÂ£!==NªIdentifierÍÜÍå©undefinedQ®BlockStatementÍçÍ#‘R³ExpressionStatementÍöÍ]´AssignmentExpressionÍöÍ¡=T°MemberExpressionÍöÍV®ThisExpressionÍöÍúNªIdentifierÍûÍ©timeOutIdÂÂT°MemberExpressionÍÍNªIdentifierÍÍ¦paramsNªIdentifierÍÍ©timeOutIdÂÂÀU«IfStatementÍ-Í“a°BinaryExpressionÍ1ÍQT°MemberExpressionÍ1ÍCNªIdentifierÍ1Í7¦paramsNªIdentifierÍ8ÍC«userManagerÂÂ£!==NªIdentifierÍHÍQ©undefinedQ®BlockStatementÍSÍ“‘R³ExpressionStatementÍbÍˆ]´AssignmentExpressionÍbÍ‡¡=T°MemberExpressionÍbÍrV®ThisExpressionÍbÍfNªIdentifierÍgÍr«userManagerÂÂT°MemberExpressionÍuÍ‡NªIdentifierÍuÍ{¦paramsNªIdentifierÍ|Í‡«userManagerÂÂÀU«IfStatementÍÍôa°BinaryExpressionÍ¡Í¼T°MemberExpressionÍ¡Í®NªIdentifierÍ¡Í§¦paramsNªIdentifierÍ¨Í®¦onBackÂÂ£!==NªIdentifierÍ³Í¼©undefinedQ®BlockStatementÍ¾Íô‘R³ExpressionStatementÍÍÍé]´AssignmentExpressionÍÍÍè¡=T°MemberExpressionÍÍÍØV®ThisExpressionÍÍÍÑNªIdentifierÍÒÍØ¦onBackÂÂT°MemberExpressionÍÛÍèNªIdentifierÍÛÍá¦paramsNªIdentifierÍâÍè¦onBackÂÂÀ_°MethodDefinitionÍÍ!ÂÂNªIdentifierÍÍ¯updateStateVars¦methodM²FunctionExpressionÍÍ!ÀÂÂÂ‘NªIdentifierÍÍ¦paramsQ®BlockStatementÍÍ!_°MethodDefinitionÍ'ÍWÂÂNªIdentifierÍ'ÍHÙ!purgeVariableDependenciesOnElmtId¦methodM²FunctionExpressionÍHÍWÀÂÂÂ‘NªIdentifierÍIÍQ¨rmElmtIdQ®BlockStatementÍSÍW”R³ExpressionStatementÍ^ÍS®CallExpressionÍ^ÍT°MemberExpressionÍ^Í„T°MemberExpressionÍ^ÍlV®ThisExpressionÍ^ÍbNªIdentifierÍcÍl©__accountÂÂNªIdentifierÍmÍ„·purgeDependencyOnElmtIdÂÂ‘NªIdentifierÍ…Í¨rmElmtIdÂR³ExpressionStatementÍ™ÍËS®CallExpressionÍ™ÍÊT°MemberExpressionÍ™ÍÀT°MemberExpressionÍ™Í¨V®ThisExpressionÍ™ÍNªIdentifierÍÍ¨ª__passwordÂÂNªIdentifierÍ©ÍÀ·purgeDependencyOnElmtIdÂÂ‘NªIdentifierÍÁÍÉ¨rmElmtIdÂR³ExpressionStatementÍÕÍS®CallExpressionÍÕÍT°MemberExpressionÍÕÍT°MemberExpressionÍÕÍëV®ThisExpressionÍÕÍÙNªIdentifierÍÚÍë±__confirmPasswordÂÂNªIdentifierÍìÍ·purgeDependencyOnElmtIdÂÂ‘NªIdentifierÍÍ¨rmElmtIdÂR³ExpressionStatementÍÍPS®CallExpressionÍÍOT°MemberExpressionÍÍET°MemberExpressionÍÍ-V®ThisExpressionÍÍNªIdentifierÍÍ-°__isShowProgressÂÂNªIdentifierÍ.ÍE·purgeDependencyOnElmtIdÂÂ‘NªIdentifierÍFÍN¨rmElmtIdÂ_°MethodDefinitionÍ]Í˜ÂÂNªIdentifierÍ]Ím°aboutToBeDeleted¦methodM²FunctionExpressionÍmÍ˜ÀÂÂÂQ®BlockStatementÍpÍ˜–R³ExpressionStatementÍ{ÍS®CallExpressionÍ{ÍœT°MemberExpressionÍ{ÍšT°MemberExpressionÍ{Í‰V®ThisExpressionÍ{ÍNªIdentifierÍ€Í‰©__accountÂÂNªIdentifierÍŠÍš°aboutToBeDeletedÂÂÂR³ExpressionStatementÍ§ÍÊS®CallExpressionÍ§ÍÉT°MemberExpressionÍ§ÍÇT°MemberExpressionÍ§Í¶V®ThisExpressionÍ§Í«NªIdentifierÍ¬Í¶ª__passwordÂÂNªIdentifierÍ·ÍÇ°aboutToBeDeletedÂÂÂR³ExpressionStatementÍÔÍşS®CallExpressionÍÔÍıT°MemberExpressionÍÔÍûT°MemberExpressionÍÔÍêV®ThisExpressionÍÔÍØNªIdentifierÍÙÍê±__confirmPasswordÂÂNªIdentifierÍëÍû°aboutToBeDeletedÂÂÂR³ExpressionStatementÍÍ1S®CallExpressionÍÍ0T°MemberExpressionÍÍ.T°MemberExpressionÍÍV®ThisExpressionÍÍNªIdentifierÍÍ°__isShowProgressÂÂNªIdentifierÍÍ.°aboutToBeDeletedÂÂÂR³ExpressionStatementÍ;ÍgS®CallExpressionÍ;ÍfT°MemberExpressionÍ;ÍYS®CallExpressionÍ;ÍRT°MemberExpressionÍ;ÍPNªIdentifierÍ;ÍL±SubscriberManagerNªIdentifierÍMÍP£GetÂÂÂNªIdentifierÍSÍY¦deleteÂÂ‘S®CallExpressionÍZÍeT°MemberExpressionÍZÍcV®ThisExpressionÍZÍ^NªIdentifierÍ_Íc¤id__ÂÂÂÂR³ExpressionStatementÍqÍ‘S®CallExpressionÍqÍT°MemberExpressionÍqÍV®ThisExpressionÍqÍuNªIdentifierÍvÍ¸aboutToBeDeletedInternalÂÂÂ_°MethodDefinitionÍÍÚÂÂNªIdentifierÍ¢Í©§account£getM²FunctionExpressionÍ©ÍÚÀÂÂÂQ®BlockStatementÍ¬ÍÚ‘\¯ReturnStatementÍ·ÍÓS®CallExpressionÍ¾ÍÒT°MemberExpressionÍ¾ÍĞT°MemberExpressionÍ¾ÍÌV®ThisExpressionÍ¾ÍÂNªIdentifierÍÃÍÌ©__accountÂÂNªIdentifierÍÍÍĞ£getÂÂÂ_°MethodDefinitionÍàÍ%ÂÂNªIdentifierÍäÍë§account£setM²FunctionExpressionÍëÍ%ÀÂÂÂ‘NªIdentifierÍìÍô¨newValueQ®BlockStatementÍöÍ%‘R³ExpressionStatementÍÍS®CallExpressionÍÍT°MemberExpressionÍÍT°MemberExpressionÍÍV®ThisExpressionÍÍNªIdentifierÍÍ©__accountÂÂNªIdentifierÍÍ£setÂÂ‘NªIdentifierÍÍ¨newValueÂ_°MethodDefinitionÍ+ÍiÂÂNªIdentifierÍ/Í7¨password£getM²FunctionExpressionÍ7ÍiÀÂÂÂQ®BlockStatementÍ:Íi‘\¯ReturnStatementÍEÍbS®CallExpressionÍLÍaT°MemberExpressionÍLÍ_T°MemberExpressionÍLÍ[V®ThisExpressionÍLÍPNªIdentifierÍQÍ[ª__passwordÂÂNªIdentifierÍ\Í_£getÂÂÂ_°MethodDefinitionÍoÍ¶ÂÂNªIdentifierÍsÍ{¨password£setM²FunctionExpressionÍ{Í¶ÀÂÂÂ‘NªIdentifierÍ|Í„¨newValueQ®BlockStatementÍ†Í¶‘R³ExpressionStatementÍ‘Í¯S®CallExpressionÍ‘Í®T°MemberExpressionÍ‘Í¤T°MemberExpressionÍ‘Í V®ThisExpressionÍ‘Í•NªIdentifierÍ–Í ª__passwordÂÂNªIdentifierÍ¡Í¤£setÂÂ‘NªIdentifierÍ¥Í­¨newValueÂ_°MethodDefinitionÍ¼ÍÂÂNªIdentifierÍÀÍÏ¯confirmPassword£getM²FunctionExpressionÍÏÍÀÂÂÂQ®BlockStatementÍÒÍ‘\¯ReturnStatementÍİÍS®CallExpressionÍäÍ T°MemberExpressionÍäÍşT°MemberExpressionÍäÍúV®ThisExpressionÍäÍèNªIdentifierÍéÍú±__confirmPasswordÂÂNªIdentifierÍûÍş£getÂÂÂ_°MethodDefinitionÍÍcÂÂNªIdentifierÍÍ!¯confirmPassword£setM²FunctionExpressionÍ!ÍcÀÂÂÂ‘NªIdentifierÍ"Í*¨newValueQ®BlockStatementÍ,Íc‘R³ExpressionStatementÍ7Í\S®CallExpressionÍ7Í[T°MemberExpressionÍ7ÍQT°MemberExpressionÍ7ÍMV®ThisExpressionÍ7Í;NªIdentifierÍ<ÍM±__confirmPasswordÂÂNªIdentifierÍNÍQ£setÂÂ‘NªIdentifierÍRÍZ¨newValueÂ_°MethodDefinitionÍiÍ³ÂÂNªIdentifierÍmÍ{®isShowProgress£getM²FunctionExpressionÍ{Í³ÀÂÂÂQ®BlockStatementÍ~Í³‘\¯ReturnStatementÍ‰Í¬S®CallExpressionÍÍ«T°MemberExpressionÍÍ©T°MemberExpressionÍÍ¥V®ThisExpressionÍÍ”NªIdentifierÍ•Í¥°__isShowProgressÂÂNªIdentifierÍ¦Í©£getÂÂÂ_°MethodDefinitionÍ¹ÍÂÂNªIdentifierÍ½ÍË®isShowProgress£setM²FunctionExpressionÍËÍÀÂÂÂ‘NªIdentifierÍÌÍÔ¨newValueQ®BlockStatementÍÖÍ‘R³ExpressionStatementÍáÍS®CallExpressionÍáÍT°MemberExpressionÍáÍúT°MemberExpressionÍáÍöV®ThisExpressionÍáÍåNªIdentifierÍæÍö°__isShowProgressÂÂNªIdentifierÍ÷Íú£setÂÂ‘NªIdentifierÍûÍ¨newValueÂ_°MethodDefinitionÍÍcÂÂNªIdentifierÍÍ ¨register¦methodM²FunctionExpressionÍ ÍcÀÂÂÃQ®BlockStatementÍ#Íc“U«IfStatementÍ.Í^a±LogicalExpressionÍ2Í|a±LogicalExpressionÍ2Í]a°BinaryExpressionÍ2ÍET°MemberExpressionÍ2Í>V®ThisExpressionÍ2Í6NªIdentifierÍ7Í>§accountÂÂ£===P§LiteralÍCÍE ¢''¢||a°BinaryExpressionÍIÍ]T°MemberExpressionÍIÍVV®ThisExpressionÍIÍMNªIdentifierÍNÍV¨passwordÂÂ£===P§LiteralÍ[Í] ¢''¢||a°BinaryExpressionÍaÍ|T°MemberExpressionÍaÍuV®ThisExpressionÍaÍeNªIdentifierÍfÍu¯confirmPasswordÂÂ£===P§LiteralÍzÍ| ¢''Q®BlockStatementÍ~Í^’R³ExpressionStatementÍÍ>S®CallExpressionÍÍ=T°MemberExpressionÍÍ£NªIdentifierÍÍ™¬promptActionNªIdentifierÍšÍ£©showToastÂÂ‘Z°ObjectExpressionÍ¤Í<‘[¨PropertyÍ·Í-ÂÂÂNªIdentifierÍ·Í¾§messageZ°ObjectExpressionÍÀÍ-•[¨PropertyÍÂÍĞÂÂÂP§LiteralÍÂÍÆ¢id¤"id"P§LiteralÍÈÍĞÎ  >¨16777278¤init[¨PropertyÍÒÍßÂÂÂP§LiteralÍÒÍØ¤type¦"type"P§LiteralÍÚÍßÍ'¥10003¤init[¨PropertyÍáÍëÂÂÂNªIdentifierÍáÍç¦paramsÔrb”¤type¥start£end¨elements¯ArrayExpressionÍéÍë¤init[¨PropertyÍíÍÂÂÂP§LiteralÍíÍùªbundleName¬"bundleName"P§LiteralÍûÍµcom.huawei.quickstart·"com.huawei.quickstart"¤init[¨PropertyÍÍ+ÂÂÂP§LiteralÍÍ ªmoduleName¬"moduleName"P§LiteralÍ"Í+§default©"default"¤init¤initÂ\¯ReturnStatementÍLÍSÀÀR³ExpressionStatementÍhÍƒ]´AssignmentExpressionÍhÍ‚¡=T°MemberExpressionÍhÍ{V®ThisExpressionÍhÍlNªIdentifierÍmÍ{®isShowProgressÂÂP§LiteralÍ~Í‚Ã¤trueÔrc–¤type¥start£end¥block§handler©finalizer¬TryStatementÍÍ\Q®BlockStatementÍ‘ÍÛ’W³VariableDeclarationÍ Í‘X²VariableDeclaratorÍ¦ÍNªIdentifierÍ¦Í­§success\¯AwaitExpressionÍ°ÍS®CallExpressionÍ¶ÍT°MemberExpressionÍ¶ÍÓT°MemberExpressionÍ¶ÍÆV®ThisExpressionÍ¶ÍºNªIdentifierÍ»ÍÆ«userManagerÂÂNªIdentifierÍÇÍÓ¬registerUserÂÂ“T°MemberExpressionÍÔÍàV®ThisExpressionÍÔÍØNªIdentifierÍÙÍà§accountÂÂT°MemberExpressionÍâÍïV®ThisExpressionÍâÍæNªIdentifierÍçÍï¨passwordÂÂT°MemberExpressionÍñÍV®ThisExpressionÍñÍõNªIdentifierÍöÍ¯confirmPasswordÂÂÂ¥constU«IfStatementÍÍĞNªIdentifierÍÍ §successQ®BlockStatementÍ"Í‘U«IfStatementÍ5Ípa°BinaryExpressionÍ9ÍNT°MemberExpressionÍ9ÍGV®ThisExpressionÍ9Í=NªIdentifierÍ>ÍG©timeOutIdÂÂ£===`¯UnaryExpressionÍLÍN¡-ÃP§LiteralÍMÍN¡1Q®BlockStatementÍPÍp‘R³ExpressionStatementÍgÍ]]´AssignmentExpressionÍgÍ\¡=T°MemberExpressionÍgÍuV®ThisExpressionÍgÍkNªIdentifierÍlÍu©timeOutIdÂÂS®CallExpressionÍxÍ\NªIdentifierÍxÍ‚ªsetTimeout’M·ArrowFunctionExpressionÍƒÍUÀÂÂÂQ®BlockStatementÍ‰ÍU“R³ExpressionStatementÍ¤ÍÀ]´AssignmentExpressionÍ¤Í¿¡=T°MemberExpressionÍ¤Í·V®ThisExpressionÍ¤Í¨NªIdentifierÍ©Í·®isShowProgressÂÂP§LiteralÍºÍ¿Â¥falseR³ExpressionStatementÍÚÍî]´AssignmentExpressionÍÚÍí¡=T°MemberExpressionÍÚÍèV®ThisExpressionÍÚÍŞNªIdentifierÍßÍè©timeOutIdÂÂ`¯UnaryExpressionÍëÍí¡-ÃP§LiteralÍìÍí¡1R³ExpressionStatementÍ0Í>S®CallExpressionÍ0Í=T°MemberExpressionÍ0Í;V®ThisExpressionÍ0Í4NªIdentifierÍ5Í;¦onBackÂÂÂP§LiteralÍWÍ[ÍÜ¤1500ÂÀQ®BlockStatementÍ’ÍĞ‘R³ExpressionStatementÍ¥ÍÁ]´AssignmentExpressionÍ¥ÍÀ¡=T°MemberExpressionÍ¥Í¸V®ThisExpressionÍ¥Í©NªIdentifierÍªÍ¸®isShowProgressÂÂP§LiteralÍ»ÍÀÂ¥falseÔrd•¤type¥start£end¥param¤body«CatchClauseÍåÍ\NªIdentifierÍìÍï£errQ®BlockStatementÍñÍ\’R³ExpressionStatementÍ Í]´AssignmentExpressionÍ Í¡=T°MemberExpressionÍ ÍV®ThisExpressionÍ ÍNªIdentifierÍÍ®isShowProgressÂÂP§LiteralÍÍÂ¥falseR³ExpressionStatementÍ*ÍQS®CallExpressionÍ*ÍPT°MemberExpressionÍ*Í7NªIdentifierÍ*Í1§consoleNªIdentifierÍ2Í7¥errorÂÂ’P§LiteralÍ8ÍJ°Register failed:²'Register failed:'NªIdentifierÍLÍO£errÂÀ_°MethodDefinitionÍiÍÉÂÂNªIdentifierÍiÍy°aboutToDisappear¦methodM²FunctionExpressionÍyÍÉÀÂÂÂQ®BlockStatementÍ|ÍÉ’R³ExpressionStatementÍ‡Í¤S®CallExpressionÍ‡Í£NªIdentifierÍ‡Í“¬clearTimeout‘T°MemberExpressionÍ”Í¢V®ThisExpressionÍ”Í˜NªIdentifierÍ™Í¢©timeOutIdÂÂÂR³ExpressionStatementÍ®ÍÂ]´AssignmentExpressionÍ®ÍÁ¡=T°MemberExpressionÍ®Í¼V®ThisExpressionÍ®Í²NªIdentifierÍ³Í¼©timeOutIdÂÂ`¯UnaryExpressionÍ¿ÍÁ¡-ÃP§LiteralÍÀÍÁ¡1_°MethodDefinitionÍÏÍ2öÂÂNªIdentifierÍÏÍÜ­initialRender¦methodM²FunctionExpressionÍÜÍ2öÀÂÂÂQ®BlockStatementÍßÍ2öÜ R³ExpressionStatementÍêÍ_S®CallExpressionÍêÍ^T°MemberExpressionÍêÍV®ThisExpressionÍêÍîNªIdentifierÍïÍ¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ	ÍUÀÂÂÂ’NªIdentifierÍ
+Í¦elmtIdNªIdentifierÍÍ!¯isInitialRenderQ®BlockStatementÍ&ÍU•R³ExpressionStatementÍ5ÍES®CallExpressionÍ5ÍDT°MemberExpressionÍ5ÍBNªIdentifierÍ5Í;¦ColumnNªIdentifierÍ<ÍB¦createÂÂÂR³ExpressionStatementÍSÍiS®CallExpressionÍSÍhT°MemberExpressionÍSÍ`NªIdentifierÍSÍY¦ColumnNªIdentifierÍZÍ`¦heightÂÂ‘P§LiteralÍaÍg¤100%¦'100%'ÂR³ExpressionStatementÍwÍŒS®CallExpressionÍwÍ‹T°MemberExpressionÍwÍƒNªIdentifierÍwÍ}¦ColumnNªIdentifierÍ~Íƒ¥widthÂÂ‘P§LiteralÍ„ÍŠ¤100%¦'100%'ÂR³ExpressionStatementÍšÍS®CallExpressionÍšÍT°MemberExpressionÍšÍ¨NªIdentifierÍšÍ ¦ColumnNªIdentifierÍ¡Í¨§paddingÂÂ‘Z°ObjectExpressionÍ©Í“[¨PropertyÍ¼ÍÈÂÂÂNªIdentifierÍ¼ÍÀ¤leftP§LiteralÍÂÍÈ¤12vp¦'12vp'¤init[¨PropertyÍÛÍèÂÂÂNªIdentifierÍÛÍà¥rightP§LiteralÍâÍè¤12vp¦'12vp'¤init[¨PropertyÍûÍ	ÂÂÂNªIdentifierÍûÍ¦bottomP§LiteralÍÍ	¤24vp¦'24vp'¤initÂR³ExpressionStatementÍ(ÍJS®CallExpressionÍ(ÍIT°MemberExpressionÍ(Í>NªIdentifierÍ(Í.¦ColumnNªIdentifierÍ/Í>¯backgroundColorÂÂ‘P§LiteralÍ?ÍH§#F1F3F5©'#F1F3F5'ÂNªIdentifierÍWÍ]¦ColumnÂR³ExpressionStatementÍiÍzS®CallExpressionÍiÍyT°MemberExpressionÍiÍ‡V®ThisExpressionÍiÍmNªIdentifierÍnÍ‡¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍˆÍsÀÂÂÂ’NªIdentifierÍ‰Í¦elmtIdNªIdentifierÍ‘Í ¯isInitialRenderQ®BlockStatementÍ¥Ís“R³ExpressionStatementÍÉÍÖS®CallExpressionÍÉÍÕT°MemberExpressionÍÉÍÓNªIdentifierÍÉÍÌ£RowNªIdentifierÍÍÍÓ¦createÂÂÂR³ExpressionStatementÍùÍS®CallExpressionÍùÍ
+T°MemberExpressionÍùÍNªIdentifierÍùÍü£RowNªIdentifierÍıÍ¥widthÂÂ‘P§LiteralÍÍ	¤100%¦'100%'ÂR³ExpressionStatementÍ.ÍhS®CallExpressionÍ.ÍgT°MemberExpressionÍ.Í9NªIdentifierÍ.Í1£RowNªIdentifierÍ2Í9§paddingÂÂ‘Z°ObjectExpressionÍ:Íf“[¨PropertyÍ<ÍGÂÂÂNªIdentifierÍ<Í?£topP§LiteralÍAÍG¤20vp¦'20vp'¤init[¨PropertyÍIÍUÂÂÂNªIdentifierÍIÍM¤leftP§LiteralÍOÍU¤12vp¦'12vp'¤init[¨PropertyÍWÍdÂÂÂNªIdentifierÍWÍ\¥rightP§LiteralÍ^Íd¤12vp¦'12vp'¤initÂNªIdentifierÍuÍx£RowÂR³ExpressionStatementÍ„ÍŠS®CallExpressionÍ„Í‰T°MemberExpressionÍ„Í¢V®ThisExpressionÍ„ÍˆNªIdentifierÍ‰Í¢¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ£Í€ÀÂÂÂ’NªIdentifierÍ¤Íª¦elmtIdNªIdentifierÍ¬Í»¯isInitialRenderQ®BlockStatementÍÀÍ€“R³ExpressionStatementÍÏÍèS®CallExpressionÍÏÍçT°MemberExpressionÍÏÍåNªIdentifierÍÏÍÕ¦ButtonNªIdentifierÍÖÍå¯createWithChildÂÂÂR³ExpressionStatementÍöÍ S®CallExpressionÍöÍT°MemberExpressionÍöÍNªIdentifierÍöÍü¦ButtonNªIdentifierÍıÍ¯backgroundColorÂÂ‘T°MemberExpressionÍÍNªIdentifierÍÍ¥ColorNªIdentifierÍÍ«TransparentÂÂÂR³ExpressionStatementÍ.ÍuS®CallExpressionÍ.ÍtT°MemberExpressionÍ.Í<NªIdentifierÍ.Í4¦ButtonNªIdentifierÍ5Í<§onClickÂÂ‘M·ArrowFunctionExpressionÍ=ÍsÀÂÂÂQ®BlockStatementÍCÍs‘R³ExpressionStatementÍVÍdS®CallExpressionÍVÍcT°MemberExpressionÍVÍaV®ThisExpressionÍVÍZNªIdentifierÍ[Ía¦onBackÂÂÂÂNªIdentifierÍ‚Íˆ¦ButtonÂR³ExpressionStatementÍ”Í´S®CallExpressionÍ”Í³T°MemberExpressionÍ”Í²V®ThisExpressionÍ”Í˜NªIdentifierÍ™Í²¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ³Í«ÀÂÂÂ’NªIdentifierÍ´Íº¦elmtIdNªIdentifierÍ¼ÍË¯isInitialRenderQ®BlockStatementÍĞÍ«“R³ExpressionStatementÍßÍ[S®CallExpressionÍßÍZT°MemberExpressionÍßÍëNªIdentifierÍßÍä¥ImageNªIdentifierÍåÍë¦createÂÂ‘Z°ObjectExpressionÍìÍY•[¨PropertyÍîÍüÂÂÂP§LiteralÍîÍò¢id¤"id"P§LiteralÍôÍüÎ  )¨16777257¤init[¨PropertyÍşÍÂÂÂP§LiteralÍşÍ¤type¦"type"P§LiteralÍÍÍN ¥20000¤init[¨PropertyÍÍÂÂÂNªIdentifierÍÍ¦paramsb¯ArrayExpressionÍÍ¤init[¨PropertyÍÍ>ÂÂÂP§LiteralÍÍ%ªbundleName¬"bundleName"P§LiteralÍ'Í>µcom.huawei.quickstart·"com.huawei.quickstart"¤init[¨PropertyÍ@ÍWÂÂÂP§LiteralÍ@ÍLªmoduleName¬"moduleName"P§LiteralÍNÍW§default©"default"¤initÂR³ExpressionStatementÍiÍ}S®CallExpressionÍiÍ|T°MemberExpressionÍiÍtNªIdentifierÍiÍn¥ImageNªIdentifierÍoÍt¥widthÂÂ‘P§LiteralÍuÍ{¤24vp¦'24vp'ÂR³ExpressionStatementÍ‹Í S®CallExpressionÍ‹ÍŸT°MemberExpressionÍ‹Í—NªIdentifierÍ‹Í¥ImageNªIdentifierÍ‘Í—¦heightÂÂ‘P§LiteralÍ˜Í¤24vp¦'24vp'ÂNªIdentifierÍ­Í²¥ImageÂR³ExpressionStatementÍ¾ÍËS®CallExpressionÍ¾ÍÊT°MemberExpressionÍ¾ÍÈNªIdentifierÍ¾ÍÄ¦ButtonNªIdentifierÍÅÍÈ£popÂÂÂR³ExpressionStatementÍÕÍCS®CallExpressionÍÕÍBT°MemberExpressionÍÕÍóV®ThisExpressionÍÕÍÙNªIdentifierÍÚÍó¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍôÍ:ÀÂÂÂ’NªIdentifierÍõÍû¦elmtIdNªIdentifierÍıÍ¯isInitialRenderQ®BlockStatementÍÍ:‘R³ExpressionStatementÍ Í/S®CallExpressionÍ Í.T°MemberExpressionÍ Í,NªIdentifierÍ Í%¥BlankNªIdentifierÍ&Í,¦createÂÂÂNªIdentifierÍ<ÍA¥BlankÂR³ExpressionStatementÍMÍYS®CallExpressionÍMÍXT°MemberExpressionÍMÍVNªIdentifierÍMÍR¥BlankNªIdentifierÍSÍV£popÂÂÂR³ExpressionStatementÍtÍ~S®CallExpressionÍtÍ}T°MemberExpressionÍtÍ{NªIdentifierÍtÍw£RowNªIdentifierÍxÍ{£popÂÂÂR³ExpressionStatementÍˆÍ S®CallExpressionÍˆÍ T°MemberExpressionÍˆÍ¦V®ThisExpressionÍˆÍŒNªIdentifierÍÍ¦¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ§Í 
+ÀÂÂÂ’NªIdentifierÍ¨Í®¦elmtIdNªIdentifierÍ°Í¿¯isInitialRenderQ®BlockStatementÍÄÍ 
+”R³ExpressionStatementÍÓÍOS®CallExpressionÍÓÍNT°MemberExpressionÍÓÍßNªIdentifierÍÓÍØ¥ImageNªIdentifierÍÙÍß¦createÂÂ‘Z°ObjectExpressionÍàÍM•[¨PropertyÍâÍğÂÂÂP§LiteralÍâÍæ¢id¤"id"P§LiteralÍèÍğÎ  P¨16777296¤init[¨PropertyÍòÍÿÂÂÂP§LiteralÍòÍø¤type¦"type"P§LiteralÍúÍÿÍN ¥20000¤init[¨PropertyÍÍÂÂÂNªIdentifierÍÍ¦paramsb¯ArrayExpressionÍ	Í¤init[¨PropertyÍÍ2ÂÂÂP§LiteralÍÍªbundleName¬"bundleName"P§LiteralÍÍ2µcom.huawei.quickstart·"com.huawei.quickstart"¤init[¨PropertyÍ4ÍKÂÂÂP§LiteralÍ4Í@ªmoduleName¬"moduleName"P§LiteralÍBÍK§default©"default"¤initÂR³ExpressionStatementÍ]ÍqS®CallExpressionÍ]ÍpT°MemberExpressionÍ]ÍhNªIdentifierÍ]Íb¥ImageNªIdentifierÍcÍh¥widthÂÂ‘P§LiteralÍiÍo¤78vp¦'78vp'ÂR³ExpressionStatementÍÍ”S®CallExpressionÍÍ“T°MemberExpressionÍÍ‹NªIdentifierÍÍ„¥ImageNªIdentifierÍ…Í‹¦heightÂÂ‘P§LiteralÍŒÍ’¤78vp¦'78vp'ÂR³ExpressionStatementÍ¢ÍÿS®CallExpressionÍ¢ÍşT°MemberExpressionÍ¢Í®NªIdentifierÍ¢Í§¥ImageNªIdentifierÍ¨Í®¦marginÂÂ‘Z°ObjectExpressionÍ¯Íı’[¨PropertyÍÂÍÎÂÂÂNªIdentifierÍÂÍÅ£topP§LiteralÍÇÍÎ¥150vp§'150vp'¤init[¨PropertyÍáÍîÂÂÂNªIdentifierÍáÍç¦bottomP§LiteralÍéÍî£8vp¥'8vp'¤initÂNªIdentifierÍ Í ¥ImageÂR³ExpressionStatementÍ Í!sS®CallExpressionÍ Í!rT°MemberExpressionÍ Í ;V®ThisExpressionÍ Í !NªIdentifierÍ "Í ;¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ <Í!kÀÂÂÂ’NªIdentifierÍ =Í C¦elmtIdNªIdentifierÍ EÍ T¯isInitialRenderQ®BlockStatementÍ YÍ!k”R³ExpressionStatementÍ hÍ ãS®CallExpressionÍ hÍ âT°MemberExpressionÍ hÍ sNªIdentifierÍ hÍ l¤TextNªIdentifierÍ mÍ s¦createÂÂ‘Z°ObjectExpressionÍ tÍ á•[¨PropertyÍ vÍ „ÂÂÂP§LiteralÍ vÍ z¢id¤"id"P§LiteralÍ |Í „Î  J¨16777290¤init[¨PropertyÍ †Í “ÂÂÂP§LiteralÍ †Í Œ¤type¦"type"P§LiteralÍ Í “Í'¥10003¤init[¨PropertyÍ •Í ŸÂÂÂNªIdentifierÍ •Í ›¦paramsb¯ArrayExpressionÍ Í Ÿ¤init[¨PropertyÍ ¡Í ÆÂÂÂP§LiteralÍ ¡Í ­ªbundleName¬"bundleName"P§LiteralÍ ¯Í Æµcom.huawei.quickstart·"com.huawei.quickstart"¤init[¨PropertyÍ ÈÍ ßÂÂÂP§LiteralÍ ÈÍ ÔªmoduleName¬"moduleName"P§LiteralÍ ÖÍ ß§default©"default"¤initÂR³ExpressionStatementÍ ñÍ!S®CallExpressionÍ ñÍ!T°MemberExpressionÍ ñÍ şNªIdentifierÍ ñÍ õ¤TextNªIdentifierÍ öÍ ş¨fontSizeÂÂ‘P§LiteralÍ ÿÍ!¤24fp¦'24fp'ÂR³ExpressionStatementÍ!Í!8S®CallExpressionÍ!Í!7T°MemberExpressionÍ!Í!$NªIdentifierÍ!Í!¤TextNªIdentifierÍ!Í!$ªfontWeightÂÂ‘T°MemberExpressionÍ!%Í!6NªIdentifierÍ!%Í!/ªFontWeightNªIdentifierÍ!0Í!6¦MediumÂÂÂR³ExpressionStatementÍ!FÍ!`S®CallExpressionÍ!FÍ!_T°MemberExpressionÍ!FÍ!TNªIdentifierÍ!FÍ!J¤TextNªIdentifierÍ!KÍ!T©fontColorÂÂ‘P§LiteralÍ!UÍ!^§#182431©'#182431'ÂNªIdentifierÍ!mÍ!q¤TextÂR³ExpressionStatementÍ!}Í!ˆS®CallExpressionÍ!}Í!‡T°MemberExpressionÍ!}Í!…NªIdentifierÍ!}Í!¤TextNªIdentifierÍ!‚Í!…£popÂÂÂR³ExpressionStatementÍ!’Í#"S®CallExpressionÍ!’Í#!T°MemberExpressionÍ!’Í!°V®ThisExpressionÍ!’Í!–NªIdentifierÍ!—Í!°¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ!±Í#ÀÂÂÂ’NªIdentifierÍ!²Í!¸¦elmtIdNªIdentifierÍ!ºÍ!É¯isInitialRenderQ®BlockStatementÍ!ÎÍ#”R³ExpressionStatementÍ!İÍ"XS®CallExpressionÍ!İÍ"WT°MemberExpressionÍ!İÍ!èNªIdentifierÍ!İÍ!á¤TextNªIdentifierÍ!âÍ!è¦createÂÂ‘Z°ObjectExpressionÍ!éÍ"V•[¨PropertyÍ!ëÍ!ùÂÂÂP§LiteralÍ!ëÍ!ï¢id¤"id"P§LiteralÍ!ñÍ!ùÎ  I¨16777289¤init[¨PropertyÍ!ûÍ"ÂÂÂP§LiteralÍ!ûÍ"¤type¦"type"P§LiteralÍ"Í"Í'¥10003¤init[¨PropertyÍ"
+Í"ÂÂÂNªIdentifierÍ"
+Í"¦paramsb¯ArrayExpressionÍ"Í"¤init[¨PropertyÍ"Í";ÂÂÂP§LiteralÍ"Í""ªbundleName¬"bundleName"P§LiteralÍ"$Í";µcom.huawei.quickstart·"com.huawei.quickstart"¤init[¨PropertyÍ"=Í"TÂÂÂP§LiteralÍ"=Í"IªmoduleName¬"moduleName"P§LiteralÍ"KÍ"T§default©"default"¤initÂR³ExpressionStatementÍ"fÍ"|S®CallExpressionÍ"fÍ"{T°MemberExpressionÍ"fÍ"sNªIdentifierÍ"fÍ"j¤TextNªIdentifierÍ"kÍ"s¨fontSizeÂÂ‘P§LiteralÍ"tÍ"z¤16fp¦'16fp'ÂR³ExpressionStatementÍ"ŠÍ"¦S®CallExpressionÍ"ŠÍ"¥T°MemberExpressionÍ"ŠÍ"˜NªIdentifierÍ"ŠÍ"¤TextNªIdentifierÍ"Í"˜©fontColorÂÂ‘P§LiteralÍ"™Í"¤©#99182431«'#99182431'ÂR³ExpressionStatementÍ"´Í#S®CallExpressionÍ"´Í#T°MemberExpressionÍ"´Í"¿NªIdentifierÍ"´Í"¸¤TextNªIdentifierÍ"¹Í"¿¦marginÂÂ‘Z°ObjectExpressionÍ"ÀÍ#’[¨PropertyÍ"ÓÍ"áÂÂÂNªIdentifierÍ"ÓÍ"Ù¦bottomP§LiteralÍ"ÛÍ"á¤30vp¦'30vp'¤init[¨PropertyÍ"ôÍ"şÂÂÂNªIdentifierÍ"ôÍ"÷£topP§LiteralÍ"ùÍ"ş£8vp¥'8vp'¤initÂNªIdentifierÍ#Í# ¤TextÂR³ExpressionStatementÍ#,Í#7S®CallExpressionÍ#,Í#6T°MemberExpressionÍ#,Í#4NªIdentifierÍ#,Í#0¤TextNªIdentifierÍ#1Í#4£popÂÂÂR³ExpressionStatementÍ#AÍ%S®CallExpressionÍ#AÍ%T°MemberExpressionÍ#AÍ#_V®ThisExpressionÍ#AÍ#ENªIdentifierÍ#FÍ#_¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ#`Í%
+ÀÂÂÂ’NªIdentifierÍ#aÍ#g¦elmtIdNªIdentifierÍ#iÍ#x¯isInitialRenderQ®BlockStatementÍ#}Í%
+•R³ExpressionStatementÍ#ŒÍ$S®CallExpressionÍ#ŒÍ$T°MemberExpressionÍ#ŒÍ#œNªIdentifierÍ#ŒÍ#•©TextInputNªIdentifierÍ#–Í#œ¦createÂÂ‘Z°ObjectExpressionÍ#Í$‘[¨PropertyÍ#ŸÍ$ÂÂÂNªIdentifierÍ#ŸÍ#ª«placeholderZ°ObjectExpressionÍ#¬Í$•[¨PropertyÍ#®Í#¼ÂÂÂP§LiteralÍ#®Í#²¢id¤"id"P§LiteralÍ#´Í#¼Î  ¨16777239¤init[¨PropertyÍ#¾Í#ËÂÂÂP§LiteralÍ#¾Í#Ä¤type¦"type"P§LiteralÍ#ÆÍ#ËÍ'¥10003¤init[¨PropertyÍ#ÍÍ#×ÂÂÂNªIdentifierÍ#ÍÍ#Ó¦paramsb¯ArrayExpressionÍ#ÕÍ#×¤init[¨PropertyÍ#ÙÍ#şÂÂÂP§LiteralÍ#ÙÍ#åªbundleName¬"bundleName"P§LiteralÍ#çÍ#şµcom.huawei.quickstart·"com.huawei.quickstart"¤init[¨PropertyÍ$ Í$ÂÂÂP§LiteralÍ$ Í$ªmoduleName¬"moduleName"P§LiteralÍ$Í$§default©"default"¤init¤initÂR³ExpressionStatementÍ$+Í$CS®CallExpressionÍ$+Í$BT°MemberExpressionÍ$+Í$>NªIdentifierÍ$+Í$4©TextInputNªIdentifierÍ$5Í$>©maxLengthÂÂ‘P§LiteralÍ$?Í$A¢11ÂR³ExpressionStatementÍ$QÍ$rS®CallExpressionÍ$QÍ$qT°MemberExpressionÍ$QÍ$_NªIdentifierÍ$QÍ$Z©TextInputNªIdentifierÍ$[Í$_¤typeÂÂ‘T°MemberExpressionÍ$`Í$pNªIdentifierÍ$`Í$i©InputTypeNªIdentifierÍ$jÍ$p¦NumberÂÂÂR³ExpressionStatementÍ$€Í$šS®CallExpressionÍ$€Í$™NªIdentifierÍ$€Í$—·__TextInput__inputStyleÂR³ExpressionStatementÍ$¨Í$ÿS®CallExpressionÍ$¨Í$şT°MemberExpressionÍ$¨Í$ºNªIdentifierÍ$¨Í$±©TextInputNªIdentifierÍ$²Í$º¨onChangeÂÂ‘M·ArrowFunctionExpressionÍ$»Í$ıÀÂÂÂ‘NªIdentifierÍ$¼Í$Á¥valueQ®BlockStatementÍ$ÆÍ$ı‘R³ExpressionStatementÍ$ÙÍ$î]´AssignmentExpressionÍ$ÙÍ$í¡=T°MemberExpressionÍ$ÙÍ$åV®ThisExpressionÍ$ÙÍ$İNªIdentifierÍ$ŞÍ$å§accountÂÂNªIdentifierÍ$èÍ$í¥valueÂNªIdentifierÍ%Í%©TextInputÂR³ExpressionStatementÍ%!Í%¯S®CallExpressionÍ%!Í%®T°MemberExpressionÍ%!Í%?V®ThisExpressionÍ%!Í%%NªIdentifierÍ%&Í%?¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ%@Í%§ÀÂÂÂ’NªIdentifierÍ%AÍ%G¦elmtIdNªIdentifierÍ%IÍ%X¯isInitialRenderQ®BlockStatementÍ%]Í%§’R³ExpressionStatementÍ%lÍ%zS®CallExpressionÍ%lÍ%yT°MemberExpressionÍ%lÍ%wNªIdentifierÍ%lÍ%p¤LineNªIdentifierÍ%qÍ%w¦createÂÂÂR³ExpressionStatementÍ%ˆÍ%œS®CallExpressionÍ%ˆÍ%›NªIdentifierÍ%ˆÍ%™±__Line__lineStyleÂNªIdentifierÍ%©Í%­¤LineÂR³ExpressionStatementÍ%¹Í'‘S®CallExpressionÍ%¹Í'T°MemberExpressionÍ%¹Í%×V®ThisExpressionÍ%¹Í%½NªIdentifierÍ%¾Í%×¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ%ØÍ'„ÀÂÂÂ’NªIdentifierÍ%ÙÍ%ß¦elmtIdNªIdentifierÍ%áÍ%ğ¯isInitialRenderQ®BlockStatementÍ%õÍ'„•R³ExpressionStatementÍ&Í&•S®CallExpressionÍ&Í&”T°MemberExpressionÍ&Í&NªIdentifierÍ&Í&©TextInputNªIdentifierÍ&Í&¦createÂÂ‘Z°ObjectExpressionÍ&Í&“‘[¨PropertyÍ&Í&‘ÂÂÂNªIdentifierÍ&Í&"«placeholderZ°ObjectExpressionÍ&$Í&‘•[¨PropertyÍ&&Í&4ÂÂÂP§LiteralÍ&&Í&*¢id¤"id"P§LiteralÍ&,Í&4Î  E¨16777285¤init[¨PropertyÍ&6Í&CÂÂÂP§LiteralÍ&6Í&<¤type¦"type"P§LiteralÍ&>Í&CÍ'¥10003¤init[¨PropertyÍ&EÍ&OÂÂÂNªIdentifierÍ&EÍ&K¦paramsb¯ArrayExpressionÍ&MÍ&O¤init[¨PropertyÍ&QÍ&vÂÂÂP§LiteralÍ&QÍ&]ªbundleName¬"bundleName"P§LiteralÍ&_Í&vµcom.huawei.quickstart·"com.huawei.quickstart"¤init[¨PropertyÍ&xÍ&ÂÂÂP§LiteralÍ&xÍ&„ªmoduleName¬"moduleName"P§LiteralÍ&†Í&§default©"default"¤init¤initÂR³ExpressionStatementÍ&£Í&ºS®CallExpressionÍ&£Í&¹T°MemberExpressionÍ&£Í&¶NªIdentifierÍ&£Í&¬©TextInputNªIdentifierÍ&­Í&¶©maxLengthÂÂ‘P§LiteralÍ&·Í&¸¡8ÂR³ExpressionStatementÍ&ÈÍ&ëS®CallExpressionÍ&ÈÍ&êT°MemberExpressionÍ&ÈÍ&ÖNªIdentifierÍ&ÈÍ&Ñ©TextInputNªIdentifierÍ&ÒÍ&Ö¤typeÂÂ‘T°MemberExpressionÍ&×Í&éNªIdentifierÍ&×Í&à©InputTypeNªIdentifierÍ&áÍ&é¨PasswordÂÂÂR³ExpressionStatementÍ&ùÍ'S®CallExpressionÍ&ùÍ'NªIdentifierÍ&ùÍ'·__TextInput__inputStyleÂR³ExpressionStatementÍ'!Í'yS®CallExpressionÍ'!Í'xT°MemberExpressionÍ'!Í'3NªIdentifierÍ'!Í'*©TextInputNªIdentifierÍ'+Í'3¨onChangeÂÂ‘M·ArrowFunctionExpressionÍ'4Í'wÀÂÂÂ‘NªIdentifierÍ'5Í':¥valueQ®BlockStatementÍ'?Í'w‘R³ExpressionStatementÍ'RÍ'h]´AssignmentExpressionÍ'RÍ'g¡=T°MemberExpressionÍ'RÍ'_V®ThisExpressionÍ'RÍ'VNªIdentifierÍ'WÍ'_¨passwordÂÂNªIdentifierÍ'bÍ'g¥valueÂNªIdentifierÍ'†Í'©TextInputÂR³ExpressionStatementÍ'›Í()S®CallExpressionÍ'›Í((T°MemberExpressionÍ'›Í'¹V®ThisExpressionÍ'›Í'ŸNªIdentifierÍ' Í'¹¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ'ºÍ(!ÀÂÂÂ’NªIdentifierÍ'»Í'Á¦elmtIdNªIdentifierÍ'ÃÍ'Ò¯isInitialRenderQ®BlockStatementÍ'×Í(!’R³ExpressionStatementÍ'æÍ'ôS®CallExpressionÍ'æÍ'óT°MemberExpressionÍ'æÍ'ñNªIdentifierÍ'æÍ'ê¤LineNªIdentifierÍ'ëÍ'ñ¦createÂÂÂR³ExpressionStatementÍ(Í(S®CallExpressionÍ(Í(NªIdentifierÍ(Í(±__Line__lineStyleÂNªIdentifierÍ(#Í('¤LineÂR³ExpressionStatementÍ(3Í*S®CallExpressionÍ(3Í*T°MemberExpressionÍ(3Í(QV®ThisExpressionÍ(3Í(7NªIdentifierÍ(8Í(Q¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ(RÍ*ÀÂÂÂ’NªIdentifierÍ(SÍ(Y¦elmtIdNªIdentifierÍ([Í(j¯isInitialRenderQ®BlockStatementÍ(oÍ*•R³ExpressionStatementÍ(~Í)S®CallExpressionÍ(~Í)T°MemberExpressionÍ(~Í(NªIdentifierÍ(~Í(‡©TextInputNªIdentifierÍ(ˆÍ(¦createÂÂ‘Z°ObjectExpressionÍ(Í)‘[¨PropertyÍ(‘Í)ÂÂÂNªIdentifierÍ(‘Í(œ«placeholderZ°ObjectExpressionÍ(Í)•[¨PropertyÍ( Í(®ÂÂÂP§LiteralÍ( Í(¤¢id¤"id"P§LiteralÍ(¦Í(®Î  <¨16777276¤init[¨PropertyÍ(°Í(½ÂÂÂP§LiteralÍ(°Í(¶¤type¦"type"P§LiteralÍ(¸Í(½Í'¥10003¤init[¨PropertyÍ(¿Í(ÉÂÂÂNªIdentifierÍ(¿Í(Å¦paramsb¯ArrayExpressionÍ(ÇÍ(É¤init[¨PropertyÍ(ËÍ(ğÂÂÂP§LiteralÍ(ËÍ(×ªbundleName¬"bundleName"P§LiteralÍ(ÙÍ(ğµcom.huawei.quickstart·"com.huawei.quickstart"¤init[¨PropertyÍ(òÍ)	ÂÂÂP§LiteralÍ(òÍ(şªmoduleName¬"moduleName"P§LiteralÍ) Í)	§default©"default"¤init¤initÂR³ExpressionStatementÍ)Í)4S®CallExpressionÍ)Í)3T°MemberExpressionÍ)Í)0NªIdentifierÍ)Í)&©TextInputNªIdentifierÍ)'Í)0©maxLengthÂÂ‘P§LiteralÍ)1Í)2¡8ÂR³ExpressionStatementÍ)BÍ)eS®CallExpressionÍ)BÍ)dT°MemberExpressionÍ)BÍ)PNªIdentifierÍ)BÍ)K©TextInputNªIdentifierÍ)LÍ)P¤typeÂÂ‘T°MemberExpressionÍ)QÍ)cNªIdentifierÍ)QÍ)Z©InputTypeNªIdentifierÍ)[Í)c¨PasswordÂÂÂR³ExpressionStatementÍ)sÍ)S®CallExpressionÍ)sÍ)ŒNªIdentifierÍ)sÍ)Š·__TextInput__inputStyleÂR³ExpressionStatementÍ)›Í)úS®CallExpressionÍ)›Í)ùT°MemberExpressionÍ)›Í)­NªIdentifierÍ)›Í)¤©TextInputNªIdentifierÍ)¥Í)­¨onChangeÂÂ‘M·ArrowFunctionExpressionÍ)®Í)øÀÂÂÂ‘NªIdentifierÍ)¯Í)´¥valueQ®BlockStatementÍ)¹Í)ø‘R³ExpressionStatementÍ)ÌÍ)é]´AssignmentExpressionÍ)ÌÍ)è¡=T°MemberExpressionÍ)ÌÍ)àV®ThisExpressionÍ)ÌÍ)ĞNªIdentifierÍ)ÑÍ)à¯confirmPasswordÂÂNªIdentifierÍ)ãÍ)è¥valueÂNªIdentifierÍ*Í*©TextInputÂR³ExpressionStatementÍ*Í*ªS®CallExpressionÍ*Í*©T°MemberExpressionÍ*Í*:V®ThisExpressionÍ*Í* NªIdentifierÍ*!Í*:¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ*;Í*¢ÀÂÂÂ’NªIdentifierÍ*<Í*B¦elmtIdNªIdentifierÍ*DÍ*S¯isInitialRenderQ®BlockStatementÍ*XÍ*¢’R³ExpressionStatementÍ*gÍ*uS®CallExpressionÍ*gÍ*tT°MemberExpressionÍ*gÍ*rNªIdentifierÍ*gÍ*k¤LineNªIdentifierÍ*lÍ*r¦createÂÂÂR³ExpressionStatementÍ*ƒÍ*—S®CallExpressionÍ*ƒÍ*–NªIdentifierÍ*ƒÍ*”±__Line__lineStyleÂNªIdentifierÍ*¤Í*¨¤LineÂR³ExpressionStatementÍ*´Í-LS®CallExpressionÍ*´Í-KT°MemberExpressionÍ*´Í*ÒV®ThisExpressionÍ*´Í*¸NªIdentifierÍ*¹Í*Ò¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ*ÓÍ-BÀÂÂÂ’NªIdentifierÍ*ÔÍ*Ú¦elmtIdNªIdentifierÍ*ÜÍ*ë¯isInitialRenderQ®BlockStatementÍ*ğÍ-B˜R³ExpressionStatementÍ*ÿÍ+£S®CallExpressionÍ*ÿÍ+¢T°MemberExpressionÍ*ÿÍ+NªIdentifierÍ*ÿÍ+¦ButtonNªIdentifierÍ+Í+¯createWithLabelÂÂ’Z°ObjectExpressionÍ+Í+ƒ•[¨PropertyÍ+Í+&ÂÂÂP§LiteralÍ+Í+¢id¤"id"P§LiteralÍ+Í+&Î  G¨16777287¤init[¨PropertyÍ+(Í+5ÂÂÂP§LiteralÍ+(Í+.¤type¦"type"P§LiteralÍ+0Í+5Í'¥10003¤init[¨PropertyÍ+7Í+AÂÂÂNªIdentifierÍ+7Í+=¦paramsb¯ArrayExpressionÍ+?Í+A¤init[¨PropertyÍ+CÍ+hÂÂÂP§LiteralÍ+CÍ+OªbundleName¬"bundleName"P§LiteralÍ+QÍ+hµcom.huawei.quickstart·"com.huawei.quickstart"¤init[¨PropertyÍ+jÍ+ÂÂÂP§LiteralÍ+jÍ+vªmoduleName¬"moduleName"P§LiteralÍ+xÍ+§default©"default"¤initZ°ObjectExpressionÍ+…Í+¡‘[¨PropertyÍ+‡Í+ŸÂÂÂNªIdentifierÍ+‡Í+‹¤typeT°MemberExpressionÍ+Í+ŸNªIdentifierÍ+Í+—ªButtonTypeNªIdentifierÍ+˜Í+Ÿ§CapsuleÂÂ¤initÂR³ExpressionStatementÍ+±Í+ÇS®CallExpressionÍ+±Í+ÆT°MemberExpressionÍ+±Í+½NªIdentifierÍ+±Í+·¦ButtonNªIdentifierÍ+¸Í+½¥widthÂÂ‘P§LiteralÍ+¾Í+Å¥328vp§'328vp'ÂR³ExpressionStatementÍ+ÕÍ+ëS®CallExpressionÍ+ÕÍ+êT°MemberExpressionÍ+ÕÍ+âNªIdentifierÍ+ÕÍ+Û¦ButtonNªIdentifierÍ+ÜÍ+â¦heightÂÂ‘P§LiteralÍ+ãÍ+é¤40vp¦'40vp'ÂR³ExpressionStatementÍ+ùÍ,S®CallExpressionÍ+ùÍ,T°MemberExpressionÍ+ùÍ,NªIdentifierÍ+ùÍ+ÿ¦ButtonNªIdentifierÍ, Í,¨fontSizeÂÂ‘P§LiteralÍ,	Í,¤16fp¦'16fp'ÂR³ExpressionStatementÍ,Í,DS®CallExpressionÍ,Í,CT°MemberExpressionÍ,Í,0NªIdentifierÍ,Í,%¦ButtonNªIdentifierÍ,&Í,0ªfontWeightÂÂ‘T°MemberExpressionÍ,1Í,BNªIdentifierÍ,1Í,;ªFontWeightNªIdentifierÍ,<Í,B¦MediumÂÂÂR³ExpressionStatementÍ,RÍ,tS®CallExpressionÍ,RÍ,sT°MemberExpressionÍ,RÍ,hNªIdentifierÍ,RÍ,X¦ButtonNªIdentifierÍ,YÍ,h¯backgroundColorÂÂ‘P§LiteralÍ,iÍ,r§#007DFF©'#007DFF'ÂR³ExpressionStatementÍ,‚Í,àS®CallExpressionÍ,‚Í,ßT°MemberExpressionÍ,‚Í,NªIdentifierÍ,‚Í,ˆ¦ButtonNªIdentifierÍ,‰Í,¦marginÂÂ‘Z°ObjectExpressionÍ,Í,Ş’[¨PropertyÍ,£Í,®ÂÂÂNªIdentifierÍ,£Í,¦£topP§LiteralÍ,¨Í,®¤48vp¦'48vp'¤init[¨PropertyÍ,ÁÍ,ÏÂÂÂNªIdentifierÍ,ÁÍ,Ç¦bottomP§LiteralÍ,ÉÍ,Ï¤12vp¦'12vp'¤initÂR³ExpressionStatementÍ,îÍ-7S®CallExpressionÍ,îÍ-6T°MemberExpressionÍ,îÍ,üNªIdentifierÍ,îÍ,ô¦ButtonNªIdentifierÍ,õÍ,ü§onClickÂÂ‘M·ArrowFunctionExpressionÍ,ıÍ-5ÀÂÂÂQ®BlockStatementÍ-Í-5‘R³ExpressionStatementÍ-Í-&S®CallExpressionÍ-Í-%T°MemberExpressionÍ-Í-#V®ThisExpressionÍ-Í-NªIdentifierÍ-Í-#¨registerÂÂÂÂNªIdentifierÍ-DÍ-J¦ButtonÂR³ExpressionStatementÍ-VÍ-cS®CallExpressionÍ-VÍ-bT°MemberExpressionÍ-VÍ-`NªIdentifierÍ-VÍ-\¦ButtonNªIdentifierÍ-]Í-`£popÂÂÂR³ExpressionStatementÍ-mÍ/S®CallExpressionÍ-mÍ/T°MemberExpressionÍ-mÍ-‹V®ThisExpressionÍ-mÍ-qNªIdentifierÍ-rÍ-‹¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ-ŒÍ/ÀÂÂÂ’NªIdentifierÍ-Í-“¦elmtIdNªIdentifierÍ-•Í-¤¯isInitialRenderQ®BlockStatementÍ-©Í/•R³ExpressionStatementÍ-¸Í.3S®CallExpressionÍ-¸Í.2T°MemberExpressionÍ-¸Í-ÃNªIdentifierÍ-¸Í-¼¤TextNªIdentifierÍ-½Í-Ã¦createÂÂ‘Z°ObjectExpressionÍ-ÄÍ.1•[¨PropertyÍ-ÆÍ-ÔÂÂÂP§LiteralÍ-ÆÍ-Ê¢id¤"id"P§LiteralÍ-ÌÍ-ÔÎ  ;¨16777275¤init[¨PropertyÍ-ÖÍ-ãÂÂÂP§LiteralÍ-ÖÍ-Ü¤type¦"type"P§LiteralÍ-ŞÍ-ãÍ'¥10003¤init[¨PropertyÍ-åÍ-ïÂÂÂNªIdentifierÍ-åÍ-ë¦paramsb¯ArrayExpressionÍ-íÍ-ï¤init[¨PropertyÍ-ñÍ.ÂÂÂP§LiteralÍ-ñÍ-ıªbundleName¬"bundleName"P§LiteralÍ-ÿÍ.µcom.huawei.quickstart·"com.huawei.quickstart"¤init[¨PropertyÍ.Í./ÂÂÂP§LiteralÍ.Í.$ªmoduleName¬"moduleName"P§LiteralÍ.&Í./§default©"default"¤initÂR³ExpressionStatementÍ.AÍ.[S®CallExpressionÍ.AÍ.ZT°MemberExpressionÍ.AÍ.ONªIdentifierÍ.AÍ.E¤TextNªIdentifierÍ.FÍ.O©fontColorÂÂ‘P§LiteralÍ.PÍ.Y§#007DFF©'#007DFF'ÂR³ExpressionStatementÍ.iÍ.S®CallExpressionÍ.iÍ.~T°MemberExpressionÍ.iÍ.vNªIdentifierÍ.iÍ.m¤TextNªIdentifierÍ.nÍ.v¨fontSizeÂÂ‘P§LiteralÍ.wÍ.}¤16fp¦'16fp'ÂR³ExpressionStatementÍ.Í.°S®CallExpressionÍ.Í.¯T°MemberExpressionÍ.Í.œNªIdentifierÍ.Í.‘¤TextNªIdentifierÍ.’Í.œªfontWeightÂÂ‘T°MemberExpressionÍ.Í.®NªIdentifierÍ.Í.§ªFontWeightNªIdentifierÍ.¨Í.®¦MediumÂÂÂR³ExpressionStatementÍ.¾Í/S®CallExpressionÍ.¾Í/T°MemberExpressionÍ.¾Í.ÊNªIdentifierÍ.¾Í.Â¤TextNªIdentifierÍ.ÃÍ.Ê§onClickÂÂ‘M·ArrowFunctionExpressionÍ.ËÍ/ÀÂÂÂQ®BlockStatementÍ.ÑÍ/‘R³ExpressionStatementÍ.äÍ.òS®CallExpressionÍ.äÍ.ñT°MemberExpressionÍ.äÍ.ïV®ThisExpressionÍ.äÍ.èNªIdentifierÍ.éÍ.ï¦onBackÂÂÂÂNªIdentifierÍ/Í/¤TextÂR³ExpressionStatementÍ/ Í/+S®CallExpressionÍ/ Í/*T°MemberExpressionÍ/ Í/(NªIdentifierÍ/ Í/$¤TextNªIdentifierÍ/%Í/(£popÂÂÂR³ExpressionStatementÍ/5Í27S®CallExpressionÍ/5Í26T°MemberExpressionÍ/5Í/SV®ThisExpressionÍ/5Í/9NªIdentifierÍ/:Í/S¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ/TÍ21ÀÂÂÂ’NªIdentifierÍ/UÍ/[¦elmtIdNªIdentifierÍ/]Í/l¯isInitialRenderQ®BlockStatementÍ/qÍ21’R³ExpressionStatementÍ/€Í/ŒS®CallExpressionÍ/€Í/‹T°MemberExpressionÍ/€Í/‰NªIdentifierÍ/€Í/‚¢IfNªIdentifierÍ/ƒÍ/‰¦createÂÂÂU«IfStatementÍ/šÍ2&T°MemberExpressionÍ/Í/±V®ThisExpressionÍ/Í/¢NªIdentifierÍ/£Í/±®isShowProgressÂÂQ®BlockStatementÍ/³Í1²‘R³ExpressionStatementÍ/ÆÍ1£S®CallExpressionÍ/ÆÍ1¢T°MemberExpressionÍ/ÆÍ/åV®ThisExpressionÍ/ÆÍ/ÊNªIdentifierÍ/ËÍ/åºifElseBranchUpdateFunctionÂÂ’P§LiteralÍ/æÍ/ç ¡0M·ArrowFunctionExpressionÍ/éÍ1¡ÀÂÂÂQ®BlockStatementÍ/ïÍ1¡‘R³ExpressionStatementÍ0Í1S®CallExpressionÍ0Í1T°MemberExpressionÍ0Í0$V®ThisExpressionÍ0Í0
+NªIdentifierÍ0Í0$¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ0%Í1{ÀÂÂÂ’NªIdentifierÍ0&Í0,¦elmtIdNªIdentifierÍ0.Í0=¯isInitialRenderQ®BlockStatementÍ0BÍ1{•R³ExpressionStatementÍ0]Í0vS®CallExpressionÍ0]Í0uT°MemberExpressionÍ0]Í0sNªIdentifierÍ0]Í0l¯LoadingProgressNªIdentifierÍ0mÍ0s¦createÂÂÂR³ExpressionStatementÍ0Í0±S®CallExpressionÍ0Í0°T°MemberExpressionÍ0Í0¥NªIdentifierÍ0Í0Ÿ¯LoadingProgressNªIdentifierÍ0 Í0¥¥colorÂÂ‘P§LiteralÍ0¦Í0¯§#182431©'#182431'ÂR³ExpressionStatementÍ0ËÍ0éS®CallExpressionÍ0ËÍ0èT°MemberExpressionÍ0ËÍ0àNªIdentifierÍ0ËÍ0Ú¯LoadingProgressNªIdentifierÍ0ÛÍ0à¥widthÂÂ‘P§LiteralÍ0áÍ0ç¤30vp¦'30vp'ÂR³ExpressionStatementÍ1Í1"S®CallExpressionÍ1Í1!T°MemberExpressionÍ1Í1NªIdentifierÍ1Í1¯LoadingProgressNªIdentifierÍ1Í1¦heightÂÂ‘P§LiteralÍ1Í1 ¤30vp¦'30vp'ÂR³ExpressionStatementÍ1<Í1dS®CallExpressionÍ1<Í1cT°MemberExpressionÍ1<Í1RNªIdentifierÍ1<Í1K¯LoadingProgressNªIdentifierÍ1LÍ1R¦marginÂÂ‘Z°ObjectExpressionÍ1SÍ1b‘[¨PropertyÍ1UÍ1`ÂÂÂNªIdentifierÍ1UÍ1X£topP§LiteralÍ1ZÍ1`¤20vp¦'20vp'¤initÂNªIdentifierÍ1}Í1Œ¯LoadingProgressÂÂQ®BlockStatementÍ1ÅÍ2&‘R³ExpressionStatementÍ1ØÍ2S®CallExpressionÍ1ØÍ2T°MemberExpressionÍ1ØÍ1÷V®ThisExpressionÍ1ØÍ1ÜNªIdentifierÍ1İÍ1÷ºifElseBranchUpdateFunctionÂÂ’P§LiteralÍ1øÍ1ù¡1M·ArrowFunctionExpressionÍ1ûÍ2ÀÂÂÂQ®BlockStatementÍ2Í2ÂNªIdentifierÍ23Í25¢IfÂR³ExpressionStatementÍ2AÍ2JS®CallExpressionÍ2AÍ2IT°MemberExpressionÍ2AÍ2GNªIdentifierÍ2AÍ2C¢IfNªIdentifierÍ2DÍ2G£popÂÂÂR³ExpressionStatementÍ2TÍ2ÂS®CallExpressionÍ2TÍ2ÁT°MemberExpressionÍ2TÍ2rV®ThisExpressionÍ2TÍ2XNªIdentifierÍ2YÍ2r¹observeComponentCreation2ÂÂ’M·ArrowFunctionExpressionÍ2sÍ2¹ÀÂÂÂ’NªIdentifierÍ2tÍ2z¦elmtIdNªIdentifierÍ2|Í2‹¯isInitialRenderQ®BlockStatementÍ2Í2¹‘R³ExpressionStatementÍ2ŸÍ2®S®CallExpressionÍ2ŸÍ2­T°MemberExpressionÍ2ŸÍ2«NªIdentifierÍ2ŸÍ2¤¥BlankNªIdentifierÍ2¥Í2«¦createÂÂÂNªIdentifierÍ2»Í2À¥BlankÂR³ExpressionStatementÍ2ÌÍ2ØS®CallExpressionÍ2ÌÍ2×T°MemberExpressionÍ2ÌÍ2ÕNªIdentifierÍ2ÌÍ2Ñ¥BlankNªIdentifierÍ2ÒÍ2Õ£popÂÂÂR³ExpressionStatementÍ2âÍ2ïS®CallExpressionÍ2âÍ2îT°MemberExpressionÍ2âÍ2ìNªIdentifierÍ2âÍ2è¦ColumnNªIdentifierÍ2éÍ2ì£popÂÂÂ_°MethodDefinitionÍ2üÍ34ÂÂNªIdentifierÍ2üÍ3¨rerender¦methodM²FunctionExpressionÍ3Í34ÀÂÂÂQ®BlockStatementÍ3Í34‘R³ExpressionStatementÍ3Í3-S®CallExpressionÍ3Í3,T°MemberExpressionÍ3Í3*V®ThisExpressionÍ3Í3NªIdentifierÍ3Í3*³updateDirtyElementsÂÂÂÀ’Ôre•¤type¥start£endªspecifiers¦source±ImportDeclarationÍîÍ‘Ôrf”¤type¥start£end¥local¶ImportDefaultSpecifierÍõÍNªIdentifierÍõÍ¬promptActionP§LiteralÍÍ²@ohos.promptAction´"@ohos.promptAction"e±ImportDeclarationÍÍQ‘Ôrg•¤type¥start£end¨imported¥local¯ImportSpecifierÍ'Í2NªIdentifierÍ'Í2«UserManagerNªIdentifierÍ'Í2«UserManagerP§LiteralÍ:ÍP´../model/UserManager¶'../model/UserManager'

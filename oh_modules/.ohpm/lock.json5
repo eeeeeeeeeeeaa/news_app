@@ -1,0 +1,216 @@
+{
+  "lockVersion": "1.0",
+  "settings": {
+    "resolveConflict": true,
+    "resolveConflictStrict": false,
+    "installAll": true
+  },
+  "overrides": {},
+  "overrideDependencyMap": {},
+  "modules": {
+    ".": {
+      "name": "",
+      "dependencies": {},
+      "devDependencies": {},
+      "dynamicDependencies": {},
+      "maskedByOverrideDependencyMap": false
+    },
+    "commons/uicomponents": {
+      "name": "uicomponents",
+      "dependencies": {},
+      "devDependencies": {},
+      "dynamicDependencies": {},
+      "maskedByOverrideDependencyMap": false
+    },
+    "commons/utils": {
+      "name": "utils",
+      "dependencies": {},
+      "devDependencies": {},
+      "dynamicDependencies": {},
+      "maskedByOverrideDependencyMap": false
+    },
+    "features/follows": {
+      "name": "follows",
+      "dependencies": {},
+      "devDependencies": {},
+      "dynamicDependencies": {},
+      "maskedByOverrideDependencyMap": false
+    },
+    "features/login": {
+      "name": "login",
+      "dependencies": {},
+      "devDependencies": {},
+      "dynamicDependencies": {},
+      "maskedByOverrideDependencyMap": false
+    },
+    "features/mine": {
+      "name": "mine",
+      "dependencies": {
+        "login": {
+          "specifier": "file:features/login",
+          "version": "file:features/login"
+        }
+      },
+      "devDependencies": {},
+      "dynamicDependencies": {},
+      "maskedByOverrideDependencyMap": false
+    },
+    "features/news": {
+      "name": "news",
+      "dependencies": {
+        "utils": {
+          "specifier": "file:commons/utils",
+          "version": "file:commons/utils"
+        },
+        "uicomponents": {
+          "specifier": "file:commons/uicomponents",
+          "version": "file:commons/uicomponents"
+        }
+      },
+      "devDependencies": {},
+      "dynamicDependencies": {},
+      "maskedByOverrideDependencyMap": false
+    },
+    "features/quickstart": {
+      "name": "quickstart",
+      "dependencies": {
+        "utils": {
+          "specifier": "file:commons/utils",
+          "version": "file:commons/utils"
+        },
+        "uicomponents": {
+          "specifier": "file:commons/uicomponents",
+          "version": "file:commons/uicomponents"
+        }
+      },
+      "devDependencies": {},
+      "dynamicDependencies": {},
+      "maskedByOverrideDependencyMap": false
+    },
+    "features/video": {
+      "name": "video",
+      "dependencies": {
+        "utils": {
+          "specifier": "file:commons/utils",
+          "version": "file:commons/utils"
+        },
+        "uicomponents": {
+          "specifier": "file:commons/uicomponents",
+          "version": "file:commons/uicomponents"
+        }
+      },
+      "devDependencies": {},
+      "dynamicDependencies": {},
+      "maskedByOverrideDependencyMap": false
+    },
+    "products/default": {
+      "name": "default",
+      "dependencies": {
+        "video": {
+          "specifier": "file:features/video",
+          "version": "file:features/video"
+        },
+        "news": {
+          "specifier": "file:features/news",
+          "version": "file:features/news"
+        },
+        "quickstart": {
+          "specifier": "file:features/quickstart",
+          "version": "file:features/quickstart"
+        },
+        "follow": {
+          "specifier": "file:features/follows",
+          "version": "file:features/follows"
+        },
+        "mine": {
+          "specifier": "file:features/mine",
+          "version": "file:features/mine"
+        },
+        "login": {
+          "specifier": "file:features/login",
+          "version": "file:features/login"
+        }
+      },
+      "devDependencies": {},
+      "dynamicDependencies": {},
+      "maskedByOverrideDependencyMap": false
+    }
+  },
+  "packages": {
+    "uicomponents@file:commons/uicomponents": {
+      "storePath": "commons/uicomponents",
+      "dependencies": {},
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "utils@file:commons/utils": {
+      "storePath": "commons/utils",
+      "dependencies": {},
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "login@file:features/login": {
+      "storePath": "features/login",
+      "dependencies": {},
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "news@file:features/news": {
+      "storePath": "features/news",
+      "dependencies": {
+        "utils": "commons/utils",
+        "uicomponents": "commons/uicomponents"
+      },
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "video@file:features/video": {
+      "storePath": "features/video",
+      "dependencies": {
+        "utils": "commons/utils",
+        "uicomponents": "commons/uicomponents"
+      },
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "quickstart@file:features/quickstart": {
+      "storePath": "features/quickstart",
+      "dependencies": {
+        "utils": "commons/utils",
+        "uicomponents": "commons/uicomponents"
+      },
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "follow@file:features/follows": {
+      "storePath": "features/follows",
+      "dependencies": {},
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "mine@file:features/mine": {
+      "storePath": "features/mine",
+      "dependencies": {
+        "login": "features/login"
+      },
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    }
+  }
+}

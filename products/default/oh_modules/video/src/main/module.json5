@@ -1,0 +1,11 @@
+{
+  "module": {
+    "name": "video",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet",
+      "2in1"
+    ]
+  }
+}

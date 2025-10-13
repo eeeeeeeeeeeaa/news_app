@@ -1,0 +1,1004 @@
+{
+  "ohos-module-default": {
+    "SELECT_TARGET": "default",
+    "MODULE_BUILD_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build",
+    "TARGETS": {
+      "default": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\outputs\\default",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\loader_out\\default",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\loader_out_lite\\default",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\res\\default",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\cache\\default\\default@CompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\cache\\default\\default@CompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\loader\\default\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\manifest\\default",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\source_map\\default"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      },
+      "ohosTest": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\ohosTest",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\ohosTest\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\outputs\\ohosTest",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\loader_out\\ohosTest",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\res\\ohosTest",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\manifest\\ohosTest",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\build\\default\\intermediates\\source_map\\ohosTest"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      }
+    },
+    "BUILD_OPTION": {
+      "default-default": {
+        "debuggable": true,
+        "copyFrom": "default",
+        "name": "debug"
+      }
+    },
+    "BUILD_PROFILE_OPT": {
+      "apiType": "stageMode",
+      "buildOption": {},
+      "buildOptionSet": [
+        {
+          "name": "release",
+          "arkOptions": {
+            "obfuscation": {
+              "ruleOptions": {
+                "enable": true,
+                "files": [
+                  "./obfuscation-rules.txt"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "name": "default"
+        },
+        {
+          "name": "debug"
+        }
+      ],
+      "targets": [
+        {
+          "name": "default"
+        },
+        {
+          "name": "ohosTest"
+        }
+      ]
+    },
+    "BUILD_CACHE_DIR": ""
+  },
+  "ohos-module-news": {
+    "SELECT_TARGET": "default",
+    "MODULE_BUILD_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build",
+    "TARGETS": {
+      "default": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\src\\main",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\src\\main\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\outputs\\default",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\loader_out\\default",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\loader_out_lite\\default",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\res\\default",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\loader\\default\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\manifest\\default",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\source_map\\default"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      },
+      "ohosTest": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\src\\ohosTest",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\src\\ohosTest\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\outputs\\ohosTest",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\loader_out\\ohosTest",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\res\\ohosTest",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\manifest\\ohosTest",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\build\\default\\intermediates\\source_map\\ohosTest"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      }
+    },
+    "BUILD_OPTION": {
+      "default-default": {
+        "debuggable": true,
+        "copyFrom": "default",
+        "name": "debug"
+      }
+    },
+    "BUILD_PROFILE_OPT": {
+      "apiType": "stageMode",
+      "buildOption": {},
+      "buildOptionSet": [
+        {
+          "name": "release",
+          "arkOptions": {
+            "obfuscation": {
+              "ruleOptions": {
+                "enable": true,
+                "files": [
+                  "./obfuscation-rules.txt"
+                ]
+              },
+              "consumerFiles": [
+                "./consumer-rules.txt"
+              ]
+            }
+          }
+        },
+        {
+          "name": "default"
+        },
+        {
+          "name": "debug"
+        }
+      ],
+      "targets": [
+        {
+          "name": "default"
+        },
+        {
+          "name": "ohosTest"
+        }
+      ]
+    },
+    "BUILD_CACHE_DIR": ""
+  },
+  "ohos-module-video": {
+    "SELECT_TARGET": "default",
+    "MODULE_BUILD_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build",
+    "TARGETS": {
+      "default": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\src\\main",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\src\\main\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\outputs\\default",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\loader_out\\default",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\loader_out_lite\\default",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\res\\default",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\loader\\default\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\manifest\\default",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\source_map\\default"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      },
+      "ohosTest": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\src\\ohosTest",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\src\\ohosTest\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\outputs\\ohosTest",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\loader_out\\ohosTest",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\res\\ohosTest",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\manifest\\ohosTest",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\build\\default\\intermediates\\source_map\\ohosTest"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      }
+    },
+    "BUILD_OPTION": {
+      "default-default": {
+        "debuggable": true,
+        "copyFrom": "default",
+        "name": "debug"
+      }
+    },
+    "BUILD_PROFILE_OPT": {
+      "apiType": "stageMode",
+      "buildOption": {},
+      "buildOptionSet": [
+        {
+          "name": "release",
+          "arkOptions": {
+            "obfuscation": {
+              "ruleOptions": {
+                "enable": true,
+                "files": [
+                  "./obfuscation-rules.txt"
+                ]
+              },
+              "consumerFiles": [
+                "./consumer-rules.txt"
+              ]
+            }
+          }
+        },
+        {
+          "name": "default"
+        },
+        {
+          "name": "debug"
+        }
+      ],
+      "targets": [
+        {
+          "name": "default"
+        },
+        {
+          "name": "ohosTest"
+        }
+      ]
+    },
+    "BUILD_CACHE_DIR": ""
+  },
+  "ohos-module-quickstart": {
+    "SELECT_TARGET": "default",
+    "MODULE_BUILD_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build",
+    "TARGETS": {
+      "default": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\src\\main",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\src\\main\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\outputs\\default",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\loader_out\\default",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\loader_out_lite\\default",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\res\\default",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\loader\\default\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\manifest\\default",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\source_map\\default"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      },
+      "ohosTest": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\src\\ohosTest",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\src\\ohosTest\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\outputs\\ohosTest",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\loader_out\\ohosTest",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\res\\ohosTest",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\manifest\\ohosTest",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart\\build\\default\\intermediates\\source_map\\ohosTest"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      }
+    },
+    "BUILD_OPTION": {
+      "default-default": {
+        "debuggable": true,
+        "copyFrom": "default",
+        "name": "debug"
+      }
+    },
+    "BUILD_PROFILE_OPT": {
+      "apiType": "stageMode",
+      "buildOption": {},
+      "buildOptionSet": [
+        {
+          "name": "release",
+          "arkOptions": {
+            "obfuscation": {
+              "ruleOptions": {
+                "enable": true,
+                "files": [
+                  "./obfuscation-rules.txt"
+                ]
+              },
+              "consumerFiles": [
+                "./consumer-rules.txt"
+              ]
+            }
+          }
+        },
+        {
+          "name": "default"
+        },
+        {
+          "name": "debug"
+        }
+      ],
+      "targets": [
+        {
+          "name": "default"
+        },
+        {
+          "name": "ohosTest"
+        }
+      ]
+    },
+    "BUILD_CACHE_DIR": ""
+  },
+  "ohos-module-utils": {
+    "SELECT_TARGET": "default",
+    "MODULE_BUILD_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build",
+    "TARGETS": {
+      "default": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\main",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\main\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\outputs\\default",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\loader_out\\default",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\loader_out_lite\\default",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\res\\default",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\loader\\default\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\manifest\\default",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\source_map\\default"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      },
+      "ohosTest": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\ohosTest",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\ohosTest\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\outputs\\ohosTest",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\loader_out\\ohosTest",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\res\\ohosTest",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\manifest\\ohosTest",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\build\\default\\intermediates\\source_map\\ohosTest"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      }
+    },
+    "BUILD_OPTION": {
+      "default-default": {
+        "debuggable": true,
+        "copyFrom": "default",
+        "name": "debug"
+      }
+    },
+    "BUILD_PROFILE_OPT": {
+      "apiType": "stageMode",
+      "buildOption": {},
+      "buildOptionSet": [
+        {
+          "name": "release",
+          "arkOptions": {
+            "obfuscation": {
+              "ruleOptions": {
+                "enable": false,
+                "files": [
+                  "./obfuscation-rules.txt"
+                ]
+              },
+              "consumerFiles": [
+                "./consumer-rules.txt"
+              ]
+            }
+          }
+        },
+        {
+          "name": "default"
+        },
+        {
+          "name": "debug"
+        }
+      ],
+      "targets": [
+        {
+          "name": "default"
+        },
+        {
+          "name": "ohosTest"
+        }
+      ]
+    },
+    "BUILD_CACHE_DIR": ""
+  },
+  "ohos-module-uicomponents": {
+    "SELECT_TARGET": "default",
+    "MODULE_BUILD_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build",
+    "TARGETS": {
+      "default": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\src\\main",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\src\\main\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\outputs\\default",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\loader_out\\default",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\loader_out_lite\\default",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\res\\default",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\loader\\default\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\manifest\\default",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\source_map\\default"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      },
+      "ohosTest": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\src\\ohosTest",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\src\\ohosTest\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\outputs\\ohosTest",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\loader_out\\ohosTest",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\res\\ohosTest",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\manifest\\ohosTest",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\build\\default\\intermediates\\source_map\\ohosTest"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      }
+    },
+    "BUILD_OPTION": {
+      "default-default": {
+        "debuggable": true,
+        "copyFrom": "default",
+        "name": "debug"
+      }
+    },
+    "BUILD_PROFILE_OPT": {
+      "apiType": "stageMode",
+      "buildOption": {},
+      "buildOptionSet": [
+        {
+          "name": "release",
+          "arkOptions": {
+            "obfuscation": {
+              "ruleOptions": {
+                "enable": false,
+                "files": [
+                  "./obfuscation-rules.txt"
+                ]
+              },
+              "consumerFiles": [
+                "./consumer-rules.txt"
+              ]
+            }
+          }
+        },
+        {
+          "name": "default"
+        },
+        {
+          "name": "debug"
+        }
+      ],
+      "targets": [
+        {
+          "name": "default"
+        },
+        {
+          "name": "ohosTest"
+        }
+      ]
+    },
+    "BUILD_CACHE_DIR": ""
+  },
+  "ohos-module-mine": {
+    "SELECT_TARGET": "default",
+    "MODULE_BUILD_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build",
+    "TARGETS": {
+      "default": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\main",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\main\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\outputs\\default",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\loader_out\\default",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\loader_out_lite\\default",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\res\\default",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\loader\\default\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\manifest\\default",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\source_map\\default"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      },
+      "ohosTest": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\ohosTest",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\ohosTest\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\outputs\\ohosTest",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\loader_out\\ohosTest",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\res\\ohosTest",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\manifest\\ohosTest",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\build\\default\\intermediates\\source_map\\ohosTest"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      }
+    },
+    "BUILD_OPTION": {
+      "default-default": {
+        "debuggable": true,
+        "copyFrom": "default",
+        "name": "debug"
+      }
+    },
+    "BUILD_PROFILE_OPT": {
+      "apiType": "stageMode",
+      "buildOption": {},
+      "buildOptionSet": [
+        {
+          "name": "release",
+          "arkOptions": {
+            "obfuscation": {
+              "ruleOptions": {
+                "enable": false,
+                "files": [
+                  "./obfuscation-rules.txt"
+                ]
+              },
+              "consumerFiles": [
+                "./consumer-rules.txt"
+              ]
+            }
+          }
+        },
+        {
+          "name": "default"
+        },
+        {
+          "name": "debug"
+        }
+      ],
+      "targets": [
+        {
+          "name": "default"
+        },
+        {
+          "name": "ohosTest"
+        }
+      ]
+    },
+    "BUILD_CACHE_DIR": ""
+  },
+  "ohos-module-login": {
+    "SELECT_TARGET": "default",
+    "MODULE_BUILD_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build",
+    "TARGETS": {
+      "default": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\outputs\\default",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\loader_out\\default",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\loader_out_lite\\default",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\res\\default",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\loader\\default\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\manifest\\default",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\source_map\\default"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      },
+      "ohosTest": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\ohosTest",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\ohosTest\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\outputs\\ohosTest",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\loader_out\\ohosTest",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\res\\ohosTest",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\manifest\\ohosTest",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\build\\default\\intermediates\\source_map\\ohosTest"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      }
+    },
+    "BUILD_OPTION": {
+      "default-default": {
+        "debuggable": true,
+        "copyFrom": "default",
+        "name": "debug"
+      }
+    },
+    "BUILD_PROFILE_OPT": {
+      "apiType": "stageMode",
+      "buildOption": {},
+      "buildOptionSet": [
+        {
+          "name": "release",
+          "arkOptions": {
+            "obfuscation": {
+              "ruleOptions": {
+                "enable": false,
+                "files": [
+                  "./obfuscation-rules.txt"
+                ]
+              },
+              "consumerFiles": [
+                "./consumer-rules.txt"
+              ]
+            }
+          }
+        },
+        {
+          "name": "default"
+        },
+        {
+          "name": "debug"
+        }
+      ],
+      "targets": [
+        {
+          "name": "default"
+        },
+        {
+          "name": "ohosTest"
+        }
+      ]
+    },
+    "BUILD_CACHE_DIR": ""
+  },
+  "ohos-module-follows": {
+    "SELECT_TARGET": "default",
+    "MODULE_BUILD_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build",
+    "TARGETS": {
+      "default": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\src\\main",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\src\\main\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\outputs\\default",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\loader_out\\default",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\loader_out_lite\\default",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\res\\default",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\loader\\default\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\manifest\\default",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\source_map\\default"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      },
+      "ohosTest": {
+        "SOURCE_ROOT": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\src\\ohosTest",
+        "RESOURCES_PATH": [
+          "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\src\\ohosTest\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\outputs\\ohosTest",
+          "INTERMEDIA_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\loader_out\\ohosTest",
+          "JS_LITE_ASSETS_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
+          "RES_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\res\\ohosTest",
+          "RES_PROFILE_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
+          "WORKER_LOADER": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
+          "MANIFEST_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\manifest\\ohosTest",
+          "OUTPUT_METADATA_JSON": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
+          "SOURCE_MAP_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\build\\default\\intermediates\\source_map\\ohosTest"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      }
+    },
+    "BUILD_OPTION": {
+      "default-default": {
+        "debuggable": true,
+        "copyFrom": "default",
+        "name": "debug"
+      }
+    },
+    "BUILD_PROFILE_OPT": {
+      "apiType": "stageMode",
+      "buildOption": {},
+      "buildOptionSet": [
+        {
+          "name": "release",
+          "arkOptions": {
+            "obfuscation": {
+              "ruleOptions": {
+                "enable": false,
+                "files": [
+                  "./obfuscation-rules.txt"
+                ]
+              },
+              "consumerFiles": [
+                "./consumer-rules.txt"
+              ]
+            }
+          }
+        },
+        {
+          "name": "default"
+        },
+        {
+          "name": "debug"
+        }
+      ],
+      "targets": [
+        {
+          "name": "default"
+        },
+        {
+          "name": "ohosTest"
+        }
+      ]
+    },
+    "BUILD_CACHE_DIR": ""
+  },
+  "ohos-project": {
+    "SELECT_PRODUCT_NAME": "default",
+    "MODULE_BUILD_DIR": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\build",
+    "BUNDLE_NAME": "com.huawei.quickstart",
+    "BUILD_PATH": {
+      "OUTPUT_PATH": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\build\\outputs\\default"
+    },
+    "MODULES": [
+      {
+        "name": "default",
+        "srcPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default",
+        "targets": [
+          {
+            "name": "default",
+            "applyToProducts": [
+              "default"
+            ]
+          }
+        ],
+        "belongProjectPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete"
+      },
+      {
+        "name": "news",
+        "srcPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news",
+        "belongProjectPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete"
+      },
+      {
+        "name": "video",
+        "srcPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video",
+        "belongProjectPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete"
+      },
+      {
+        "name": "quickstart",
+        "srcPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\quickstart",
+        "belongProjectPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete"
+      },
+      {
+        "name": "utils",
+        "srcPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils",
+        "belongProjectPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete"
+      },
+      {
+        "name": "uicomponents",
+        "srcPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents",
+        "belongProjectPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete"
+      },
+      {
+        "name": "mine",
+        "srcPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine",
+        "belongProjectPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete"
+      },
+      {
+        "name": "login",
+        "srcPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login",
+        "belongProjectPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete"
+      },
+      {
+        "name": "follows",
+        "srcPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows",
+        "belongProjectPath": "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete"
+      }
+    ],
+    "PROFILE_OPT": {
+      "app": {
+        "signingConfigs": [],
+        "products": [
+          {
+            "name": "default",
+            "signingConfig": "default",
+            "compatibleSdkVersion": "5.0.5(17)",
+            "targetSdkVersion": "5.0.5(17)",
+            "runtimeOS": "HarmonyOS"
+          }
+        ],
+        "buildModeSet": [
+          {
+            "name": "debug"
+          },
+          {
+            "name": "release"
+          }
+        ]
+      },
+      "modules": [
+        {
+          "name": "default",
+          "srcPath": "./products/default",
+          "targets": [
+            {
+              "name": "default",
+              "applyToProducts": [
+                "default"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "news",
+          "srcPath": "./features/news"
+        },
+        {
+          "name": "video",
+          "srcPath": "./features/video"
+        },
+        {
+          "name": "quickstart",
+          "srcPath": "./features/quickstart"
+        },
+        {
+          "name": "utils",
+          "srcPath": "./commons/utils"
+        },
+        {
+          "name": "uicomponents",
+          "srcPath": "./commons/uicomponents"
+        },
+        {
+          "name": "mine",
+          "srcPath": "./features/mine"
+        },
+        {
+          "name": "login",
+          "srcPath": "./features/login"
+        },
+        {
+          "name": "follows",
+          "srcPath": "./features/follows"
+        }
+      ]
+    },
+    "CONFIG_PROPERTIES": {
+      "enableSignTask": true,
+      "skipNativeIncremental": false,
+      "hvigor.keepDependency": true
+    },
+    "OVERALL_PROJECT_PATHS": [
+      "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete"
+    ],
+    "BUILD_CACHE_DIR": ""
+  },
+  "version": 1
+}
