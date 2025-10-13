@@ -137,6 +137,14 @@
     }
   },
   "packages": {
+    "login@file:features/login": {
+      "storePath": "features/login",
+      "dependencies": {},
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
     "uicomponents@file:commons/uicomponents": {
       "storePath": "commons/uicomponents",
       "dependencies": {},
@@ -153,8 +161,8 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "login@file:features/login": {
-      "storePath": "features/login",
+    "follow@file:features/follows": {
+      "storePath": "features/follows",
       "dependencies": {},
       "dynamicDependencies": {},
       "dev": false,
@@ -183,29 +191,21 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "quickstart@file:features/quickstart": {
-      "storePath": "features/quickstart",
+    "mine@file:features/mine": {
+      "storePath": "features/mine",
       "dependencies": {
-        "utils": "commons/utils",
-        "uicomponents": "commons/uicomponents"
+        "login": "features/login"
       },
       "dynamicDependencies": {},
       "dev": false,
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "follow@file:features/follows": {
-      "storePath": "features/follows",
-      "dependencies": {},
-      "dynamicDependencies": {},
-      "dev": false,
-      "dynamic": false,
-      "maskedByOverrideDependencyMap": false
-    },
-    "mine@file:features/mine": {
-      "storePath": "features/mine",
+    "quickstart@file:features/quickstart": {
+      "storePath": "features/quickstart",
       "dependencies": {
-        "login": "features/login"
+        "utils": "commons/utils",
+        "uicomponents": "commons/uicomponents"
       },
       "dynamicDependencies": {},
       "dev": false,
