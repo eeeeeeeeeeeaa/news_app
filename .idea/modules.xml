@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/QS06_Complete.iml" filepath="$PROJECT_DIR$/.idea/modules/QS06_Complete.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/default/default.iml" filepath="$PROJECT_DIR$/.idea/modules/default/default.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/follows/follows.iml" filepath="$PROJECT_DIR$/.idea/modules/follows/follows.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/login/login.iml" filepath="$PROJECT_DIR$/.idea/modules/login/login.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mine/mine.iml" filepath="$PROJECT_DIR$/.idea/modules/mine/mine.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/news/news.iml" filepath="$PROJECT_DIR$/.idea/modules/news/news.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/news_app.iml" filepath="$PROJECT_DIR$/.idea/modules/news_app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/quickstart/quickstart.iml" filepath="$PROJECT_DIR$/.idea/modules/quickstart/quickstart.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/uicomponents/uicomponents.iml" filepath="$PROJECT_DIR$/.idea/modules/uicomponents/uicomponents.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/utils/utils.iml" filepath="$PROJECT_DIR$/.idea/modules/utils/utils.iml" />
