@@ -2141,7 +2141,7 @@
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets": {
-      "mtimeMs": 1760519757473.4785,
+      "mtimeMs": 1760529549370.105,
       "children": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\Index.ets",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
@@ -2245,7 +2245,7 @@
       ]
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\MainViewModel.ets": {
-      "mtimeMs": 1760520157578.7412,
+      "mtimeMs": 1760528801005.5625,
       "children": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\ItemData.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\NewsData.ets",
@@ -2269,7 +2269,7 @@
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\BaiduHotSearchParser.ets": {
-      "mtimeMs": 1760516474311.2388,
+      "mtimeMs": 1760525734778.3208,
       "children": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\HttpUtils.ets"
       ],

@@ -279,34 +279,57 @@ export class NewsPage extends ViewPU {
     private mainViewModel: MainViewModel;
     private detailWebController: webview.WebviewController;
     async aboutToAppear() {
-        await this.loadHotNewsData();
         this.categories = this.mainViewModel.getNewsCategories();
         if (this.categories.length > 0) {
             this.currentCategory = this.categories[0];
         }
+        await this.loadHotNewsData(this.currentCategory);
     }
     /**
      * 加载热搜数据
      */
-    async loadHotNewsData() {
+    private getTabKeyForCategory(category: string): string {
+        switch (category) {
+            case '财经':
+                return 'finance';
+            case '民生':
+                return 'livelihood';
+            case '体育':
+                return 'sports';
+            default:
+                return 'realtime';
+        }
+    }
+    async loadHotNewsData(category?: string) {
+        const targetCategory: string = category ?? this.currentCategory;
         this.isLoading = true;
         try {
-            // 异步获取热搜数据
-            const hotItems = await BaiduHotSearchParser.getHotSearchData();
+            const tabKey: string = this.getTabKeyForCategory(targetCategory);
+            const hotItems = await BaiduHotSearchParser.getHotSearchData(tabKey);
+            const sourceLabel: string = targetCategory === '热搜' ? '百度热搜' : `百度${targetCategory}榜`;
             this.hotNewsData = hotItems.map((it, idx) => {
                 const detailUrl: string | undefined = it.rawUrl && it.rawUrl.length > 0 ? it.rawUrl : it.linkurl;
-                const imageSource: string | undefined = it.imageUrl && it.imageUrl.length > 0 ? it.imageUrl : undefined;
-                return new NewsData(idx + 1, it.card_title, '', '百度热榜', '', imageSource ?? null, '热榜', parseInt(it.heat_score || '0') || 0, true, idx < 3, detailUrl ?? null);
+                const imageSource: string | undefined = targetCategory === '热搜' && it.imageUrl && it.imageUrl.length > 0 ? it.imageUrl : undefined;
+                return new NewsData(idx + 1, it.card_title, '', sourceLabel, '', imageSource ?? null, targetCategory, parseInt(it.heat_score || '0') || 0, true, idx < 3, detailUrl ?? null);
             });
+            this.currentCategory = targetCategory;
         }
         catch (error) {
-            console.error('加载新闻数据失败:', error);
-            // 使用备用数据
+            console.error('获取榜单数据失败:', error);
             this.hotNewsData = this.mainViewModel.getMockHotNewsData();
         }
         finally {
             this.isLoading = false;
         }
+    }
+    private onCategorySelected(category: string): void {
+        if (this.currentCategory === category) {
+            return;
+        }
+        this.currentCategory = category;
+        this.loadHotNewsData(category).catch((error: Error) => {
+            console.error('切换榜单失败:', error);
+        });
     }
     private openNewsDetail(news: NewsData): void {
         if (!news.detailUrl || news.detailUrl.length === 0) {
@@ -413,8 +436,8 @@ export class NewsPage extends ViewPU {
             Image.margin({ right: '4vp' });
             Image.fillColor('#333333');
             Image.onClick(() => {
-                // 刷新热搜数据
-                this.loadHotNewsData();
+                // 刷新榜单数据
+                this.loadHotNewsData(this.currentCategory);
             });
         }, Image);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -453,7 +476,7 @@ export class NewsPage extends ViewPU {
             Column.create();
             Column.alignItems(HorizontalAlign.Center);
             Column.onClick(() => {
-                this.currentCategory = category;
+                this.onCategorySelected(category);
             });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -931,89 +954,38 @@ export class NewsPage extends ViewPU {
             Column.create();
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 榜单数据展示
+            Column.create();
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 榜单标题
+            Row.create();
+            // 榜单标题
+            Row.width('100%');
+            // 榜单标题
+            Row.padding({ left: 20, right: 20, top: 16, bottom: 12 });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(this.currentCategory + '榜');
+            Text.fontSize(18);
+            Text.fontWeight(FontWeight.Bold);
+            Text.fontColor('#182431');
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Blank.create();
+        }, Blank);
+        Blank.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
             If.create();
-            // Hot news section with header
-            if (this.currentCategory === "热搜") {
+            if (this.isLoading) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Column.create();
-                    }, Column);
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        // 热点新闻标题
-                        Row.create();
-                        // 热点新闻标题
-                        Row.width('100%');
-                        // 热点新闻标题
-                        Row.padding({ left: 20, right: 20, top: 16, bottom: 12 });
-                    }, Row);
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create('热点新闻');
-                        Text.fontSize(18);
-                        Text.fontWeight(FontWeight.Bold);
-                        Text.fontColor('#182431');
-                    }, Text);
-                    Text.pop();
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Blank.create();
-                    }, Blank);
-                    Blank.pop();
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        If.create();
-                        if (this.isLoading) {
-                            this.ifElseBranchUpdateFunction(0, () => {
-                                this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                    LoadingProgress.create();
-                                    LoadingProgress.width('16vp');
-                                    LoadingProgress.height('16vp');
-                                    LoadingProgress.margin({ right: '8vp' });
-                                }, LoadingProgress);
-                            });
-                        }
-                        else {
-                            this.ifElseBranchUpdateFunction(1, () => {
-                            });
-                        }
-                    }, If);
-                    If.pop();
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create('更多');
-                        Text.fontSize(13);
-                        Text.fontColor('#999999');
-                        Text.onClick(() => {
-                            // 处理更多点击
-                        });
-                    }, Text);
-                    Text.pop();
-                    // 热点新闻标题
-                    Row.pop();
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        // 热点新闻列表
-                        Column.create();
-                        // 热点新闻列表
-                        Column.width('100%');
-                        // 热点新闻列表
-                        Column.padding({ left: 20, right: 20 });
-                        // 热点新闻列表
-                        Column.backgroundColor(Color.White);
-                        // 热点新闻列表
-                        Column.borderRadius(12);
-                        // 热点新闻列表
-                        Column.margin({ bottom: 16, left: 12, right: 12 });
-                        // 热点新闻列表
-                        Column.shadow({ radius: 8, color: '#1A000000', offsetX: 0, offsetY: 2 });
-                    }, Column);
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        ForEach.create();
-                        const forEachItemGenFunction = (_item, index: number) => {
-                            const news = _item;
-                            this.buildHotNewsItem.bind(this)(news, index);
-                        };
-                        this.forEachUpdateFunction(elmtId, this.hotNewsData, forEachItemGenFunction, undefined, true, false);
-                    }, ForEach);
-                    ForEach.pop();
-                    // 热点新闻列表
-                    Column.pop();
-                    Column.pop();
+                        LoadingProgress.create();
+                        LoadingProgress.width('16vp');
+                        LoadingProgress.height('16vp');
+                        LoadingProgress.margin({ right: '8vp' });
+                    }, LoadingProgress);
                 });
             }
             else {
@@ -1022,6 +994,46 @@ export class NewsPage extends ViewPU {
             }
         }, If);
         If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('更多');
+            Text.fontSize(13);
+            Text.fontColor('#999999');
+            Text.onClick(() => {
+                this.loadHotNewsData(this.currentCategory);
+            });
+        }, Text);
+        Text.pop();
+        // 榜单标题
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 榜单列表
+            Column.create();
+            // 榜单列表
+            Column.width('100%');
+            // 榜单列表
+            Column.padding({ left: 20, right: 20 });
+            // 榜单列表
+            Column.backgroundColor(Color.White);
+            // 榜单列表
+            Column.borderRadius(12);
+            // 榜单列表
+            Column.margin({ bottom: 16, left: 12, right: 12 });
+            // 榜单列表
+            Column.shadow({ radius: 8, color: '#1A000000', offsetX: 0, offsetY: 2 });
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            ForEach.create();
+            const forEachItemGenFunction = (_item, index: number) => {
+                const news = _item;
+                this.buildHotNewsItem.bind(this)(news, index);
+            };
+            this.forEachUpdateFunction(elmtId, this.hotNewsData, forEachItemGenFunction, undefined, true, false);
+        }, ForEach);
+        ForEach.pop();
+        // 榜单列表
+        Column.pop();
+        // 榜单数据展示
+        Column.pop();
         Column.pop();
         // Content area
         Scroll.pop();
