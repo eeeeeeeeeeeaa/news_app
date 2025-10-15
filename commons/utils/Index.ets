@@ -14,6 +14,8 @@
  */
 
 // Export common utilities
-export { CommonUtils } from './src/main/ets/components/CommonUtils';
-export { StorageUtils } from './src/main/ets/components/StorageUtils';
+export { default as CommonUtils } from './src/main/ets/components/CommonUtils';
+export { default as StorageUtils } from './src/main/ets/components/StorageUtils';
 export { MainViewModel } from './src/MainViewModel';
+export { HttpUtils } from './src/HttpUtils';
+export { BaiduHotSearchParser, BaiduHotSearchItem } from './src/BaiduHotSearchParser';

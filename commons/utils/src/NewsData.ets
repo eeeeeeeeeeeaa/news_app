@@ -45,7 +45,12 @@ export default class NewsData {
   /**
    * News image URL.
    */
-  imageUrl: Resource;
+  imageUrl: Resource | string | null;
+
+  /**
+   * Navigation target URL.
+   */
+  detailUrl: string | null;
   
   /**
    * News category.
@@ -73,11 +78,12 @@ export default class NewsData {
     summary: string,
     source: string,
     publishTime: string,
-    imageUrl: Resource,
+    imageUrl: Resource | string | null,
     category: string,
     readCount: number,
     isHot: boolean = false,
-    isTop: boolean = false
+    isTop: boolean = false,
+    detailUrl: string | null = null
   ) {
     this.id = id;
     this.title = title;
@@ -89,5 +95,6 @@ export default class NewsData {
     this.readCount = readCount;
     this.isHot = isHot;
     this.isTop = isTop;
+    this.detailUrl = detailUrl;
   }
 }

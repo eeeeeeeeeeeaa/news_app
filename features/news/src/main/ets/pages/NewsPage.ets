@@ -1,3 +1,5 @@
+import { BaiduHotSearchParser } from 'utils';
+import webview from '@ohos.web.webview';
 /*
  * Copyright (c) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,7 +47,12 @@ class NewsData {
   /**
    * News image URL.
    */
-  imageUrl: Resource;
+  imageUrl: Resource | string | null;
+
+  /**
+   * News detail url.
+   */
+  detailUrl: string | null;
 
   /**
    * News category.
@@ -73,11 +80,12 @@ class NewsData {
     summary: string,
     source: string,
     publishTime: string,
-    imageUrl: Resource,
+    imageUrl: Resource | string | null,
     category: string,
     readCount: number,
     isHot: boolean = false,
-    isTop: boolean = false
+    isTop: boolean = false,
+    detailUrl: string | null = null
   ) {
     this.id = id;
     this.title = title;
@@ -89,6 +97,7 @@ class NewsData {
     this.readCount = readCount;
     this.isHot = isHot;
     this.isTop = isTop;
+    this.detailUrl = detailUrl;
   }
 }
 
@@ -208,7 +217,7 @@ class MainViewModel {
    * @return {Array<string>} categories.
    */
   getNewsCategories(): Array<string> {
-    return ["推荐", "科技", "财经", "体育", "教育", "环保", "文化", "健康", "旅游"];
+    return ["热搜", "财经", "民生", "体育"];
   }
 
   /**
@@ -226,6 +235,40 @@ class MainViewModel {
       return count.toString();
     }
   }
+
+  /**
+   * Get mock hot news data as fallback.
+   *
+   * @return {Array<NewsData>} hotNewsData.
+   */
+  getMockHotNewsData(): Array<NewsData> {
+    return [
+      new NewsData(
+        1,
+        "科技突破：人工智能在医疗领域取得重大进展",
+        "最新研究显示，AI技术在疾病诊断和治疗方案制定方面展现出巨大潜力...",
+        "科技日报",
+        "2小时前",
+        $r('app.media.fig1'),
+        "科技",
+        125000,
+        true,
+        true
+      ),
+      new NewsData(
+        2,
+        "经济观察：全球股市震荡，投资者需谨慎",
+        "受多重因素影响，全球主要股市出现不同程度波动，专家建议理性投资...",
+        "财经网",
+        "3小时前",
+        $r('app.media.fig2'),
+        "财经",
+        89000,
+        true,
+        false
+      )
+    ];
+  }
 }
 
 /**
@@ -233,18 +276,70 @@ class MainViewModel {
  */
 @Component
 export struct NewsPage {
-  @State currentCategory: string = "推荐";
+  @State currentCategory: string = "热搜";
   @State hotNewsData: NewsData[] = [];
-  @State newsListData: NewsData[] = [];
   @State categories: string[] = [];
   @State searchText: string = '';
   @State showSearchAction: boolean = false;
+  @State isLoading: boolean = false;
+  @State selectedNewsUrl: string | null = null;
   private mainViewModel: MainViewModel = new MainViewModel();
+  private detailWebController: webview.WebviewController = new webview.WebviewController();
 
-  aboutToAppear() {
-    this.hotNewsData = this.mainViewModel.getHotNewsData();
-    this.newsListData = this.mainViewModel.getNewsListData();
+  async aboutToAppear() {
+    await this.loadHotNewsData();
     this.categories = this.mainViewModel.getNewsCategories();
+    if (this.categories.length > 0) {
+      this.currentCategory = this.categories[0];
+    }
+  }
+
+  /**
+   * 加载热搜数据
+   */
+  async loadHotNewsData() {
+    this.isLoading = true;
+    try {
+      // 异步获取热搜数据
+      const hotItems = await BaiduHotSearchParser.getHotSearchData();
+      this.hotNewsData = hotItems.map((it, idx) => {
+        const detailUrl: string | undefined = it.rawUrl && it.rawUrl.length > 0 ? it.rawUrl : it.linkurl;
+        const imageSource: string | undefined = it.imageUrl && it.imageUrl.length > 0 ? it.imageUrl : undefined;
+        return new NewsData(
+          idx + 1,
+          it.card_title,
+          '',
+          '百度热榜',
+          '',
+          imageSource ?? null,
+          '热榜',
+          parseInt(it.heat_score || '0') || 0,
+          true,
+          idx < 3,
+          detailUrl ?? null
+        );
+      });
+    } catch (error) {
+      console.error('加载新闻数据失败:', error);
+      // 使用备用数据
+      this.hotNewsData = this.mainViewModel.getMockHotNewsData();
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  private openNewsDetail(news: NewsData): void {
+    if (!news.detailUrl || news.detailUrl.length === 0) {
+      this.getUIContext().getPromptAction().showToast({
+        message: '暂未提供有效链接'
+      });
+      return;
+    }
+    this.selectedNewsUrl = news.detailUrl;
+  }
+
+  private closeNewsDetail(): void {
+    this.selectedNewsUrl = null;
   }
 
   /**
@@ -301,13 +396,30 @@ export struct NewsPage {
             // 处理消息点击
           })
 
-        Image($r('app.media.menu')) // 更多图标
+        Image($r('app.media.menu')) // 刷新图标
           .width('20vp')
           .height('20vp')
           .margin({ right: '4vp' })
           .fillColor('#333333')
           .onClick(() => {
-            // 处理更多操作
+            // 刷新热搜数据
+            this.loadHotNewsData();
+          })
+
+        // 测试按钮
+        Text('测试')
+          .fontSize('12fp')
+          .fontColor('#007DFF')
+          .margin({ right: '4vp' })
+          .onClick(async () => {
+            // 测试爬取功能
+            console.log('🧪 用户点击测试按钮');
+            try {
+              // 这里可以调用测试方法
+              console.log('开始测试爬取功能...');
+            } catch (error) {
+              console.error('测试失败:', error);
+            }
           })
       }
       .height('36vp')
@@ -416,11 +528,19 @@ export struct NewsPage {
         .layoutWeight(1)
         .alignItems(HorizontalAlign.Start)
 
-        Image(news.imageUrl || '')
-          .width('70vp')
-          .height('50vp')
-          .borderRadius('6vp')
-          .objectFit(ImageFit.Cover)
+        if (typeof news.imageUrl === 'string') {
+          Image(news.imageUrl as string)
+            .width('70vp')
+            .height('50vp')
+            .borderRadius('6vp')
+            .objectFit(ImageFit.Cover)
+        } else if (news.imageUrl) {
+          Image(news.imageUrl as Resource)
+            .width('70vp')
+            .height('50vp')
+            .borderRadius('6vp')
+            .objectFit(ImageFit.Cover)
+        }
       }
       .width('100%')
       .alignItems(VerticalAlign.Top)
@@ -436,7 +556,7 @@ export struct NewsPage {
     .width('100%')
     .padding({ top: '8vp', bottom: '8vp' })
     .onClick(() => {
-      // Handle news click
+      this.openNewsDetail(news);
     })
   }
 
@@ -540,8 +660,15 @@ export struct NewsPage {
         .layoutWeight(1)
         .alignItems(HorizontalAlign.Start)
 
-        if (news.imageUrl) {
-          Image(news.imageUrl || '')
+        if (typeof news.imageUrl === 'string') {
+          Image(news.imageUrl as string)
+            .width(100)
+            .height(75)
+            .borderRadius(8)
+            .objectFit(ImageFit.Cover)
+            .margin({ left: 12 })
+        } else if (news.imageUrl) {
+          Image(news.imageUrl as Resource)
             .width(100)
             .height(75)
             .borderRadius(8)
@@ -559,11 +686,12 @@ export struct NewsPage {
     .margin({ bottom: 8, left: 12, right: 12 })
     .shadow({ radius: 8, color: '#1A000000', offsetX: 0, offsetY: 2 })
     .onClick(() => {
-      // Handle news click
+      this.openNewsDetail(news);
     })
   }
 
-  build() {
+  @Builder
+  buildMainLayout() {
     Column() {
       // Search bar
       this.buildSearchBar()
@@ -590,7 +718,7 @@ export struct NewsPage {
       Scroll() {
         Column() {
           // Hot news section with header
-          if (this.currentCategory === "推荐") {
+          if (this.currentCategory === "热搜") {
             Column() {
               // 热点新闻标题
               Row() {
@@ -600,6 +728,13 @@ export struct NewsPage {
                   .fontColor('#182431')
 
                 Blank()
+
+                if (this.isLoading) {
+                  LoadingProgress()
+                    .width('16vp')
+                    .height('16vp')
+                    .margin({ right: '8vp' })
+                }
 
                 Text('更多')
                   .fontSize(13)
@@ -626,32 +761,59 @@ export struct NewsPage {
             }
           }
 
-          // News list section
-          Column() {
-            // 列表标题
-            if (this.currentCategory !== "推荐") {
-              Text(this.currentCategory)
-                .fontSize(20)
-                .fontWeight(FontWeight.Bold)
-                .fontColor('#182431')
-                .margin({ left: 20, top: 16, bottom: 16 })
-                .alignSelf(ItemAlign.Start)
-            }
-
-            // 新闻列表
-            Column() {
-              ForEach(this.newsListData, (news: NewsData) => {
-                this.buildNewsListItem(news)
-              })
-            }
-          }
         }
       }
       .scrollBar(BarState.Off)
       .layoutWeight(1)
     }
+    .padding({ top: '48vp' })
     .width('100%')
     .height('100%')
     .backgroundColor('#F8F9FA')
+  }
+
+  @Builder
+  buildDetailLayer(url: string) {
+    Column() {
+      Row() {
+        Text('关闭')
+          .fontSize(16)
+          .fontColor('#E60012')
+          .padding({ left: 16, right: 16, top: 16, bottom: 16 })
+          .onClick(() => {
+            this.closeNewsDetail();
+          })
+
+        Blank()
+
+        Text('新闻详情')
+          .fontSize(16)
+          .fontWeight(FontWeight.Medium)
+          .fontColor('#182431')
+          .margin({ right: 24 })
+      }
+      .width('100%')
+      .backgroundColor('#FFFFFF')
+
+      Web({ src: url, controller: this.detailWebController })
+        .layoutWeight(1)
+        .width('100%')
+    }
+    .padding({ top: '48vp' })
+    .width('100%')
+    .height('100%')
+    .backgroundColor('#FFFFFF')
+  }
+
+  build() {
+    Stack({ alignContent: Alignment.TopStart }) {
+      this.buildMainLayout();
+
+      if (this.selectedNewsUrl !== null) {
+        this.buildDetailLayer(this.selectedNewsUrl as string);
+      }
+    }
+    .width('100%')
+    .height('100%')
   }
 }

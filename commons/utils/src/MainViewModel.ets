@@ -1,4 +1,4 @@
-  /*
+﻿  /*
    * Copyright (c) 2024 Huawei Device Co., Ltd.
    * Licensed under the Apache License, Version 2.0 (the "License");
    * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 
   import ItemData from './ItemData';
   import NewsData from './NewsData';
+  import { BaiduHotSearchParser, BaiduHotSearchItem } from './BaiduHotSearchParser';
 
   /**
    * Binds data to components and provides interfaces.
@@ -41,17 +42,8 @@
      * @return {Array<PageResource>} firstGridData.
      */
     getFirstGridData(): Array<ItemData> {
-      let firstGridData: ItemData[] = [
-        new ItemData(0, $r('app.string.my_love'), $r('app.media.love')),
-        new ItemData(1, $r('app.string.history_record'), $r('app.media.record')),
-        new ItemData(2, $r('app.string.message'), $r('app.media.message')),
-        new ItemData(3, $r('app.string.shopping_cart'), $r('app.media.shopping')),
-        new ItemData(4, $r('app.string.my_goal'), $r('app.media.target')),
-        new ItemData(5, $r('app.string.group'), $r('app.media.circle')),
-        new ItemData(6, $r('app.string.favorites'), $r('app.media.favorite')),
-        new ItemData(7, $r('app.string.recycle_bin'), $r('app.media.recycle'))
-      ];
-      return firstGridData;
+      // 该模块不再依赖应用侧的特定资源，返回空集合由上层自行渲染
+      return [];
     }
 
     /**
@@ -60,32 +52,53 @@
      * @return {Array<PageResource>} settingListData.
      */
     getSettingListData(): Array<Array<ItemData>> {
-      let settingListData: ItemData[][] = [
-        [
-          new ItemData(0, $r('app.string.setting_list_news'), $r('app.media.news'), $r("app.string.setting_toggle"))
-        ],
-        [
-          new ItemData(1, $r('app.string.setting_list_font'), $r('app.media.data')),
-          new ItemData(2, $r('app.string.setting_list_menu'), $r('app.media.menu')),
-        ],
-        [
-          new ItemData(3, $r('app.string.clear_cache'), $r('app.media.storage')),
-          new ItemData(4, $r('app.string.setting_list_privacy'), $r('app.media.person_shield')),
-        ],
-        [
-          new ItemData(5, $r('app.string.setting_list_about'), $r('app.media.about'))
-        ]
-      ];
-      return settingListData;
+      return [];
     }
 
     /**
-     * Get hot news data.
+     * Get hot news data from Baidu hot search.
+     *
+     * @return {Promise<Array<NewsData>>} hotNewsData.
+     */
+    async getHotNewsData(): Promise<Array<NewsData>> {
+      try {
+        // 获取百度热搜数据
+        const hotSearchItems = await BaiduHotSearchParser.getHotSearchData();
+        
+        // 转换为NewsData格式
+        const hotNewsData: NewsData[] = hotSearchItems.map((item: BaiduHotSearchItem, index: number) => {
+          const news: NewsData = new NewsData(
+            index + 1,
+            item.card_title,
+            `热搜指数: ${BaiduHotSearchParser.formatHeatScore(item.heat_score)}`,
+            "百度热搜",
+            "刚刚",
+            $r('app.media.fig1'),
+            "热搜",
+            parseInt(item.heat_score),
+            true,
+            index < 3
+          );
+          const detailUrl: string | undefined = item.rawUrl && item.rawUrl.length > 0 ? item.rawUrl : item.linkurl;
+          news.detailUrl = detailUrl ?? null;
+          return news;
+        });
+        
+        return hotNewsData;
+      } catch (error) {
+        console.error('获取热搜数据失败:', error);
+        // 返回备用数据
+        return this.getMockHotNewsData();
+      }
+    }
+
+    /**
+     * Get mock hot news data as fallback.
      *
      * @return {Array<NewsData>} hotNewsData.
      */
-    getHotNewsData(): Array<NewsData> {
-      let hotNewsData: NewsData[] = [
+    getMockHotNewsData(): Array<NewsData> {
+      return [
         new NewsData(
           1,
           "科技突破：人工智能在医疗领域取得重大进展",
@@ -111,7 +124,6 @@
           false
         )
       ];
-      return hotNewsData;
     }
 
     /**
@@ -155,7 +167,7 @@
      * @return {Array<string>} categories.
      */
     getNewsCategories(): Array<string> {
-      return ["推荐", "科技", "财经", "体育", "教育", "环保", "文化", "健康", "旅游"];
+      return ["热搜", "财经", "民生", "体育"];
     }
 
     /**

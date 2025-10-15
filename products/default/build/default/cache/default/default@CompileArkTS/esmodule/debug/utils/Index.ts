@@ -1,0 +1,6 @@
+export { default as CommonUtils } from "@bundle:com.huawei.quickstart/default@utils/ets/components/CommonUtils";
+export { default as StorageUtils } from "@bundle:com.huawei.quickstart/default@utils/ets/components/StorageUtils";
+export { MainViewModel } from "@bundle:com.huawei.quickstart/default@utils/src/MainViewModel";
+export { HttpUtils } from "@bundle:com.huawei.quickstart/default@utils/src/HttpUtils";
+export { BaiduHotSearchParser } from "@bundle:com.huawei.quickstart/default@utils/src/BaiduHotSearchParser";
+export type { BaiduHotSearchItem } from "@bundle:com.huawei.quickstart/default@utils/src/BaiduHotSearchParser";

@@ -4,12 +4,16 @@ if (!("finalizeConstruction" in ViewPU.prototype)) {
 interface NewsPage_Params {
     currentCategory?: string;
     hotNewsData?: NewsData[];
-    newsListData?: NewsData[];
     categories?: string[];
     searchText?: string;
     showSearchAction?: boolean;
+    isLoading?: boolean;
+    selectedNewsUrl?: string | null;
     mainViewModel?: MainViewModel;
+    detailWebController?: webview.WebviewController;
 }
+import { BaiduHotSearchParser } from "@bundle:com.huawei.quickstart/default@utils/Index";
+import webview from "@ohos:web.webview";
 /*
  * Copyright (c) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,7 +55,11 @@ class NewsData {
     /**
      * News image URL.
      */
-    imageUrl: Resource;
+    imageUrl: Resource | string | null;
+    /**
+     * News detail url.
+     */
+    detailUrl: string | null;
     /**
      * News category.
      */
@@ -68,7 +76,7 @@ class NewsData {
      * Whether news is top.
      */
     isTop: boolean;
-    constructor(id: number, title: string, summary: string, source: string, publishTime: string, imageUrl: Resource, category: string, readCount: number, isHot: boolean = false, isTop: boolean = false) {
+    constructor(id: number, title: string, summary: string, source: string, publishTime: string, imageUrl: Resource | string | null, category: string, readCount: number, isHot: boolean = false, isTop: boolean = false, detailUrl: string | null = null) {
         this.id = id;
         this.title = title;
         this.summary = summary;
@@ -79,6 +87,7 @@ class NewsData {
         this.readCount = readCount;
         this.isHot = isHot;
         this.isTop = isTop;
+        this.detailUrl = detailUrl;
     }
 }
 /**
@@ -118,7 +127,7 @@ class MainViewModel {
      * @return {Array<string>} categories.
      */
     getNewsCategories(): Array<string> {
-        return ["推荐", "科技", "财经", "体育", "教育", "环保", "文化", "健康", "旅游"];
+        return ["热搜", "财经", "民生", "体育"];
     }
     /**
      * Format read count.
@@ -137,6 +146,17 @@ class MainViewModel {
             return count.toString();
         }
     }
+    /**
+     * Get mock hot news data as fallback.
+     *
+     * @return {Array<NewsData>} hotNewsData.
+     */
+    getMockHotNewsData(): Array<NewsData> {
+        return [
+            new NewsData(1, "科技突破：人工智能在医疗领域取得重大进展", "最新研究显示，AI技术在疾病诊断和治疗方案制定方面展现出巨大潜力...", "科技日报", "2小时前", { "id": 16777236, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "科技", 125000, true, true),
+            new NewsData(2, "经济观察：全球股市震荡，投资者需谨慎", "受多重因素影响，全球主要股市出现不同程度波动，专家建议理性投资...", "财经网", "3小时前", { "id": 16777237, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "财经", 89000, true, false)
+        ];
+    }
 }
 export class NewsPage extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
@@ -144,13 +164,15 @@ export class NewsPage extends ViewPU {
         if (typeof paramsLambda === "function") {
             this.paramsGenerator_ = paramsLambda;
         }
-        this.__currentCategory = new ObservedPropertySimplePU("推荐", this, "currentCategory");
+        this.__currentCategory = new ObservedPropertySimplePU("热搜", this, "currentCategory");
         this.__hotNewsData = new ObservedPropertyObjectPU([], this, "hotNewsData");
-        this.__newsListData = new ObservedPropertyObjectPU([], this, "newsListData");
         this.__categories = new ObservedPropertyObjectPU([], this, "categories");
         this.__searchText = new ObservedPropertySimplePU('', this, "searchText");
         this.__showSearchAction = new ObservedPropertySimplePU(false, this, "showSearchAction");
+        this.__isLoading = new ObservedPropertySimplePU(false, this, "isLoading");
+        this.__selectedNewsUrl = new ObservedPropertyObjectPU(null, this, "selectedNewsUrl");
         this.mainViewModel = new MainViewModel();
+        this.detailWebController = new webview.WebviewController();
         this.setInitiallyProvidedValue(params);
         this.finalizeConstruction();
     }
@@ -161,9 +183,6 @@ export class NewsPage extends ViewPU {
         if (params.hotNewsData !== undefined) {
             this.hotNewsData = params.hotNewsData;
         }
-        if (params.newsListData !== undefined) {
-            this.newsListData = params.newsListData;
-        }
         if (params.categories !== undefined) {
             this.categories = params.categories;
         }
@@ -173,8 +192,17 @@ export class NewsPage extends ViewPU {
         if (params.showSearchAction !== undefined) {
             this.showSearchAction = params.showSearchAction;
         }
+        if (params.isLoading !== undefined) {
+            this.isLoading = params.isLoading;
+        }
+        if (params.selectedNewsUrl !== undefined) {
+            this.selectedNewsUrl = params.selectedNewsUrl;
+        }
         if (params.mainViewModel !== undefined) {
             this.mainViewModel = params.mainViewModel;
+        }
+        if (params.detailWebController !== undefined) {
+            this.detailWebController = params.detailWebController;
         }
     }
     updateStateVars(params: NewsPage_Params) {
@@ -182,18 +210,20 @@ export class NewsPage extends ViewPU {
     purgeVariableDependenciesOnElmtId(rmElmtId) {
         this.__currentCategory.purgeDependencyOnElmtId(rmElmtId);
         this.__hotNewsData.purgeDependencyOnElmtId(rmElmtId);
-        this.__newsListData.purgeDependencyOnElmtId(rmElmtId);
         this.__categories.purgeDependencyOnElmtId(rmElmtId);
         this.__searchText.purgeDependencyOnElmtId(rmElmtId);
         this.__showSearchAction.purgeDependencyOnElmtId(rmElmtId);
+        this.__isLoading.purgeDependencyOnElmtId(rmElmtId);
+        this.__selectedNewsUrl.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__currentCategory.aboutToBeDeleted();
         this.__hotNewsData.aboutToBeDeleted();
-        this.__newsListData.aboutToBeDeleted();
         this.__categories.aboutToBeDeleted();
         this.__searchText.aboutToBeDeleted();
         this.__showSearchAction.aboutToBeDeleted();
+        this.__isLoading.aboutToBeDeleted();
+        this.__selectedNewsUrl.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
@@ -210,13 +240,6 @@ export class NewsPage extends ViewPU {
     }
     set hotNewsData(newValue: NewsData[]) {
         this.__hotNewsData.set(newValue);
-    }
-    private __newsListData: ObservedPropertyObjectPU<NewsData[]>;
-    get newsListData() {
-        return this.__newsListData.get();
-    }
-    set newsListData(newValue: NewsData[]) {
-        this.__newsListData.set(newValue);
     }
     private __categories: ObservedPropertyObjectPU<string[]>;
     get categories() {
@@ -239,11 +262,63 @@ export class NewsPage extends ViewPU {
     set showSearchAction(newValue: boolean) {
         this.__showSearchAction.set(newValue);
     }
+    private __isLoading: ObservedPropertySimplePU<boolean>;
+    get isLoading() {
+        return this.__isLoading.get();
+    }
+    set isLoading(newValue: boolean) {
+        this.__isLoading.set(newValue);
+    }
+    private __selectedNewsUrl: ObservedPropertyObjectPU<string | null>;
+    get selectedNewsUrl() {
+        return this.__selectedNewsUrl.get();
+    }
+    set selectedNewsUrl(newValue: string | null) {
+        this.__selectedNewsUrl.set(newValue);
+    }
     private mainViewModel: MainViewModel;
-    aboutToAppear() {
-        this.hotNewsData = this.mainViewModel.getHotNewsData();
-        this.newsListData = this.mainViewModel.getNewsListData();
+    private detailWebController: webview.WebviewController;
+    async aboutToAppear() {
+        await this.loadHotNewsData();
         this.categories = this.mainViewModel.getNewsCategories();
+        if (this.categories.length > 0) {
+            this.currentCategory = this.categories[0];
+        }
+    }
+    /**
+     * 加载热搜数据
+     */
+    async loadHotNewsData() {
+        this.isLoading = true;
+        try {
+            // 异步获取热搜数据
+            const hotItems = await BaiduHotSearchParser.getHotSearchData();
+            this.hotNewsData = hotItems.map((it, idx) => {
+                const detailUrl: string | undefined = it.rawUrl && it.rawUrl.length > 0 ? it.rawUrl : it.linkurl;
+                const imageSource: string | undefined = it.imageUrl && it.imageUrl.length > 0 ? it.imageUrl : undefined;
+                return new NewsData(idx + 1, it.card_title, '', '百度热榜', '', imageSource ?? null, '热榜', parseInt(it.heat_score || '0') || 0, true, idx < 3, detailUrl ?? null);
+            });
+        }
+        catch (error) {
+            console.error('加载新闻数据失败:', error);
+            // 使用备用数据
+            this.hotNewsData = this.mainViewModel.getMockHotNewsData();
+        }
+        finally {
+            this.isLoading = false;
+        }
+    }
+    private openNewsDetail(news: NewsData): void {
+        if (!news.detailUrl || news.detailUrl.length === 0) {
+            this.getUIContext().getPromptAction().showToast({
+                message: '暂未提供有效链接'
+            });
+            return;
+        }
+        this.selectedNewsUrl = news.detailUrl;
+    }
+    private closeNewsDetail(): void {
+        this.selectedNewsUrl = null;
     }
     /**
      * Build enhanced search bar.
@@ -338,9 +413,34 @@ export class NewsPage extends ViewPU {
             Image.margin({ right: '4vp' });
             Image.fillColor('#333333');
             Image.onClick(() => {
-                // 处理更多操作
+                // 刷新热搜数据
+                this.loadHotNewsData();
             });
         }, Image);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 测试按钮
+            Text.create('测试');
+            // 测试按钮
+            Text.fontSize('12fp');
+            // 测试按钮
+            Text.fontColor('#007DFF');
+            // 测试按钮
+            Text.margin({ right: '4vp' });
+            // 测试按钮
+            Text.onClick(async () => {
+                // 测试爬取功能
+                console.log('🧪 用户点击测试按钮');
+                try {
+                    // 这里可以调用测试方法
+                    console.log('开始测试爬取功能...');
+                }
+                catch (error) {
+                    console.error('测试失败:', error);
+                }
+            });
+        }, Text);
+        // 测试按钮
+        Text.pop();
         // 操作按钮
         Row.pop();
         Row.pop();
@@ -397,7 +497,7 @@ export class NewsPage extends ViewPU {
             Column.width('100%');
             Column.padding({ top: '8vp', bottom: '8vp' });
             Column.onClick(() => {
-                // Handle news click
+                this.openNewsDetail(news);
             });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -497,12 +597,35 @@ export class NewsPage extends ViewPU {
         Row.pop();
         Column.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create(news.imageUrl || '');
-            Image.width('70vp');
-            Image.height('50vp');
-            Image.borderRadius('6vp');
-            Image.objectFit(ImageFit.Cover);
-        }, Image);
+            If.create();
+            if (typeof news.imageUrl === 'string') {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Image.create(news.imageUrl as string);
+                        Image.width('70vp');
+                        Image.height('50vp');
+                        Image.borderRadius('6vp');
+                        Image.objectFit(ImageFit.Cover);
+                    }, Image);
+                });
+            }
+            else if (news.imageUrl) {
+                this.ifElseBranchUpdateFunction(1, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Image.create(news.imageUrl as Resource);
+                        Image.width('70vp');
+                        Image.height('50vp');
+                        Image.borderRadius('6vp');
+                        Image.objectFit(ImageFit.Cover);
+                    }, Image);
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(2, () => {
+                });
+            }
+        }, If);
+        If.pop();
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             If.create();
@@ -538,7 +661,7 @@ export class NewsPage extends ViewPU {
             Column.margin({ bottom: 8, left: 12, right: 12 });
             Column.shadow({ radius: 8, color: '#1A000000', offsetX: 0, offsetY: 2 });
             Column.onClick(() => {
-                // Handle news click
+                this.openNewsDetail(news);
             });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -720,10 +843,22 @@ export class NewsPage extends ViewPU {
         Column.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             If.create();
-            if (news.imageUrl) {
+            if (typeof news.imageUrl === 'string') {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Image.create(news.imageUrl || '');
+                        Image.create(news.imageUrl as string);
+                        Image.width(100);
+                        Image.height(75);
+                        Image.borderRadius(8);
+                        Image.objectFit(ImageFit.Cover);
+                        Image.margin({ left: 12 });
+                    }, Image);
+                });
+            }
+            else if (news.imageUrl) {
+                this.ifElseBranchUpdateFunction(1, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Image.create(news.imageUrl as Resource);
                         Image.width(100);
                         Image.height(75);
                         Image.borderRadius(8);
@@ -733,7 +868,7 @@ export class NewsPage extends ViewPU {
                 });
             }
             else {
-                this.ifElseBranchUpdateFunction(1, () => {
+                this.ifElseBranchUpdateFunction(2, () => {
                 });
             }
         }, If);
@@ -741,9 +876,10 @@ export class NewsPage extends ViewPU {
         Row.pop();
         Column.pop();
     }
-    initialRender() {
+    buildMainLayout(parent = null) {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
+            Column.padding({ top: '48vp' });
             Column.width('100%');
             Column.height('100%');
             Column.backgroundColor('#F8F9FA');
@@ -797,7 +933,7 @@ export class NewsPage extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             If.create();
             // Hot news section with header
-            if (this.currentCategory === "推荐") {
+            if (this.currentCategory === "热搜") {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Column.create();
@@ -821,6 +957,24 @@ export class NewsPage extends ViewPU {
                         Blank.create();
                     }, Blank);
                     Blank.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        If.create();
+                        if (this.isLoading) {
+                            this.ifElseBranchUpdateFunction(0, () => {
+                                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                    LoadingProgress.create();
+                                    LoadingProgress.width('16vp');
+                                    LoadingProgress.height('16vp');
+                                    LoadingProgress.margin({ right: '8vp' });
+                                }, LoadingProgress);
+                            });
+                        }
+                        else {
+                            this.ifElseBranchUpdateFunction(1, () => {
+                            });
+                        }
+                    }, If);
+                    If.pop();
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Text.create('更多');
                         Text.fontSize(13);
@@ -862,61 +1016,81 @@ export class NewsPage extends ViewPU {
                     Column.pop();
                 });
             }
-            // News list section
             else {
                 this.ifElseBranchUpdateFunction(1, () => {
                 });
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            // News list section
-            Column.create();
-        }, Column);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            If.create();
-            // 列表标题
-            if (this.currentCategory !== "推荐") {
-                this.ifElseBranchUpdateFunction(0, () => {
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create(this.currentCategory);
-                        Text.fontSize(20);
-                        Text.fontWeight(FontWeight.Bold);
-                        Text.fontColor('#182431');
-                        Text.margin({ left: 20, top: 16, bottom: 16 });
-                        Text.alignSelf(ItemAlign.Start);
-                    }, Text);
-                    Text.pop();
-                });
-            }
-            // 新闻列表
-            else {
-                this.ifElseBranchUpdateFunction(1, () => {
-                });
-            }
-        }, If);
-        If.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            // 新闻列表
-            Column.create();
-        }, Column);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            ForEach.create();
-            const forEachItemGenFunction = _item => {
-                const news = _item;
-                this.buildNewsListItem.bind(this)(news);
-            };
-            this.forEachUpdateFunction(elmtId, this.newsListData, forEachItemGenFunction);
-        }, ForEach);
-        ForEach.pop();
-        // 新闻列表
-        Column.pop();
-        // News list section
-        Column.pop();
         Column.pop();
         // Content area
         Scroll.pop();
         Column.pop();
+    }
+    buildDetailLayer(url: string, parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.padding({ top: '48vp' });
+            Column.width('100%');
+            Column.height('100%');
+            Column.backgroundColor('#FFFFFF');
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.backgroundColor('#FFFFFF');
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('关闭');
+            Text.fontSize(16);
+            Text.fontColor('#E60012');
+            Text.padding({ left: 16, right: 16, top: 16, bottom: 16 });
+            Text.onClick(() => {
+                this.closeNewsDetail();
+            });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Blank.create();
+        }, Blank);
+        Blank.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('新闻详情');
+            Text.fontSize(16);
+            Text.fontWeight(FontWeight.Medium);
+            Text.fontColor('#182431');
+            Text.margin({ right: 24 });
+        }, Text);
+        Text.pop();
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Web.create({ src: url, controller: this.detailWebController });
+            Web.layoutWeight(1);
+            Web.width('100%');
+        }, Web);
+        Column.pop();
+    }
+    initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Stack.create({ alignContent: Alignment.TopStart });
+            Stack.width('100%');
+            Stack.height('100%');
+        }, Stack);
+        this.buildMainLayout.bind(this)();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.selectedNewsUrl !== null) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.buildDetailLayer.bind(this)(this.selectedNewsUrl as string);
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        Stack.pop();
     }
     rerender() {
         this.updateDirtyElements();

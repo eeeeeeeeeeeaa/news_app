@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { preferences } from '@kit.PreferencesKit';
+import { preferences } from '@kit.ArkData';
 
 export default class StorageUtils {
   private static prefs: preferences.Preferences;
@@ -21,7 +21,7 @@ export default class StorageUtils {
 
   static async initPreferences(): Promise<void> {
     if (!StorageUtils.prefs) {
-      StorageUtils.prefs = await preferences.getPreferences(globalThis.context, StorageUtils.PREFS_NAME);
+      StorageUtils.prefs = await preferences.getPreferences(getContext(), StorageUtils.PREFS_NAME);
     }
   }
 

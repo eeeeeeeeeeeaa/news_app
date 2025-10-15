@@ -155,7 +155,7 @@
      * @return {Array<string>} categories.
      */
     getNewsCategories(): Array<string> {
-      return ["推荐", "科技", "财经", "体育", "教育", "环保", "文化", "健康", "旅游"];
+      return ["热搜", "财经", "民生", "体育"];
     }
 
     /**

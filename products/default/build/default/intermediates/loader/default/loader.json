@@ -1,18 +1,18 @@
 {
   "modulePathMap": {
-    "default": "C:\\Users\\Administrator\\Desktop\\news_app\\products\\default",
-    "news": "C:\\Users\\Administrator\\Desktop\\news_app\\features\\news",
-    "video": "C:\\Users\\Administrator\\Desktop\\news_app\\features\\video",
-    "quickstart": "C:\\Users\\Administrator\\Desktop\\news_app\\features\\quickstart",
-    "utils": "C:\\Users\\Administrator\\Desktop\\news_app\\commons\\utils",
-    "uicomponents": "C:\\Users\\Administrator\\Desktop\\news_app\\commons\\uicomponents",
-    "mine": "C:\\Users\\Administrator\\Desktop\\news_app\\features\\mine",
-    "login": "C:\\Users\\Administrator\\Desktop\\news_app\\features\\login",
-    "follows": "C:\\Users\\Administrator\\Desktop\\news_app\\features\\follows"
+    "default": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default",
+    "news": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news",
+    "video": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video",
+    "quickstart": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\quickstart",
+    "utils": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils",
+    "uicomponents": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents",
+    "mine": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine",
+    "login": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login",
+    "follows": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows"
   },
   "compileMode": "esmodule",
-  "projectRootPath": "C:\\Users\\Administrator\\Desktop\\news_app",
-  "nodeModulesPath": "C:\\Users\\Administrator\\Desktop\\news_app\\products\\default\\build\\default\\intermediates\\loader_out\\default\\node_modules",
+  "projectRootPath": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app",
+  "nodeModulesPath": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\build\\default\\intermediates\\loader_out\\default\\node_modules",
   "byteCodeHarInfo": {},
   "declarationEntry": [],
   "moduleName": "default",
@@ -25,9 +25,9 @@
   "routerMap": [],
   "hspResourcesMap": {},
   "updateVersionInfo": {},
-  "anBuildOutPut": "C:\\Users\\Administrator\\Desktop\\news_app\\products\\default\\build\\default\\intermediates\\loader_out\\default\\an\\arm64-v8a",
+  "anBuildOutPut": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\build\\default\\intermediates\\loader_out\\default\\an\\arm64-v8a",
   "anBuildMode": "type",
   "patchConfig": {
-    "changedFileList": "C:\\Users\\Administrator\\Desktop\\news_app\\products\\default\\build\\default\\intermediates\\patch\\default\\changedFileList.json"
+    "changedFileList": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\build\\default\\intermediates\\patch\\default\\changedFileList.json"
   }
 }
