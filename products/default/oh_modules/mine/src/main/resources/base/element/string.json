@@ -1,0 +1,11 @@
+{
+  "string": [
+    { "name": "tab_news", "value": "新闻" },
+    { "name": "tab_video", "value": "视频" },
+    { "name": "tab_follow", "value": "关注" },
+    { "name": "tab_mine", "value": "我的" },
+    { "name": "logout", "value": "退出登录" },
+    { "name": "welcome", "value": "欢迎" },
+    { "name": "user_info", "value": "个人信息" }
+  ]
+}

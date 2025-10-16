@@ -1972,7 +1972,9 @@
       "parent": [
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\web.d.ts",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
-        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets"
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets",
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets"
       ],
       "error": false
     },
@@ -2108,8 +2110,9 @@
       ]
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets": {
-      "mtimeMs": 1760506107382.728,
+      "mtimeMs": 1760601284641.328,
       "children": [
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\Index.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\Index.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\Index.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\Index.ets",
@@ -2117,7 +2120,9 @@
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\Index.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\Index.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\Index.ets",
-        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets"
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
+        "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts",
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\Index.ets"
       ],
       "parent": [],
       "error": false
@@ -2133,17 +2138,22 @@
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets": {
-      "mtimeMs": 1760506107214.442,
-      "children": [],
+      "mtimeMs": 1760600729470.5237,
+      "children": [
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\Index.ets",
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\Index.ets",
+        "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
+      ],
       "parent": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets"
       ],
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets": {
-      "mtimeMs": 1760519757473.4785,
+      "mtimeMs": 1760600729473.526,
       "children": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\Index.ets",
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\Index.ets",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
       ],
       "parent": [
@@ -2219,7 +2229,9 @@
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\BaiduHotSearchParser.ets"
       ],
       "parent": [
-        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets"
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets",
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets"
       ],
       "error": false
     },
@@ -2245,7 +2257,7 @@
       ]
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\MainViewModel.ets": {
-      "mtimeMs": 1760520157578.7412,
+      "mtimeMs": 1760528801005.5625,
       "children": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\ItemData.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\NewsData.ets",
@@ -2269,7 +2281,7 @@
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\BaiduHotSearchParser.ets": {
-      "mtimeMs": 1760516474311.2388,
+      "mtimeMs": 1760525734778.3208,
       "children": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\HttpUtils.ets"
       ],
@@ -2331,6 +2343,61 @@
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.connection.d.ts"
       ],
       "error": false
+    },
+    "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\Index.ets": {
+      "mtimeMs": 1760594353683.0781,
+      "children": [
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonButton.ets",
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonInput.ets",
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonLoading.ets",
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonSearchBar.ets"
+      ],
+      "parent": [
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets",
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets",
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets"
+      ],
+      "error": false
+    },
+    "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonButton.ets": {
+      "mtimeMs": 1760597212087.1777,
+      "children": [],
+      "parent": [
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\Index.ets"
+      ],
+      "error": false,
+      "errorCodes": [
+        2416
+      ]
+    },
+    "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonInput.ets": {
+      "mtimeMs": 1760506107047.503,
+      "children": [],
+      "parent": [
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\Index.ets"
+      ],
+      "error": false
+    },
+    "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonLoading.ets": {
+      "mtimeMs": 1760506107048.0476,
+      "children": [],
+      "parent": [
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\Index.ets"
+      ],
+      "error": false
+    },
+    "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonSearchBar.ets": {
+      "mtimeMs": 1760601647849.6938,
+      "children": [],
+      "parent": [
+        "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\Index.ets"
+      ],
+      "error": false,
+      "errorCodes": [
+        8,
+        40,
+        2307
+      ]
     }
   }
 }

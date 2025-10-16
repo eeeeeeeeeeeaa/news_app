@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "default",
   "version": "1.0.0",
   "description": "Please describe the basic information.",
@@ -12,6 +12,7 @@
     "follow": "file:../../features/follows",
     "mine": "file:../../features/mine",
     "login": "file:../../features/login",
-
+    "uicomponents": "file:../../commons/uicomponents",
+    "utils": "file:../../commons/utils"
   }
 }

@@ -52,10 +52,11 @@ class RealtimeData {
     content?: RealtimeItem[];
 }
 export class BaiduHotSearchParser {
-    private static readonly API_URL = 'https://top.baidu.com/api/board?platform=pc&tab=realtime';
-    static async getHotSearchData(): Promise<BaiduHotSearchItem[]> {
+    private static readonly API_BASE_URL = 'https://top.baidu.com/api/board?platform=pc&tab=';
+    static async getHotSearchData(tab: string = 'realtime'): Promise<BaiduHotSearchItem[]> {
         try {
-            const json = await HttpUtils.get(BaiduHotSearchParser.API_URL);
+            const requestUrl: string = `${BaiduHotSearchParser.API_BASE_URL}${tab}`;
+            const json = await HttpUtils.get(requestUrl);
             const list = BaiduHotSearchParser.parseRealtimeJson(json);
             if (list.length > 0) {
                 return list;

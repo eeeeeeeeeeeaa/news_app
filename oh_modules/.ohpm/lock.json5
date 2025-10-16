@@ -31,7 +31,12 @@
     },
     "features/follows": {
       "name": "follows",
-      "dependencies": {},
+      "dependencies": {
+        "uicomponents": {
+          "specifier": "file:commons/uicomponents",
+          "version": "file:commons/uicomponents"
+        }
+      },
       "devDependencies": {},
       "dynamicDependencies": {},
       "maskedByOverrideDependencyMap": false
@@ -129,6 +134,14 @@
         "login": {
           "specifier": "file:features/login",
           "version": "file:features/login"
+        },
+        "uicomponents": {
+          "specifier": "file:commons/uicomponents",
+          "version": "file:commons/uicomponents"
+        },
+        "utils": {
+          "specifier": "file:commons/utils",
+          "version": "file:commons/utils"
         }
       },
       "devDependencies": {},
@@ -145,14 +158,6 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "utils@file:commons/utils": {
-      "storePath": "commons/utils",
-      "dependencies": {},
-      "dynamicDependencies": {},
-      "dev": false,
-      "dynamic": false,
-      "maskedByOverrideDependencyMap": false
-    },
     "uicomponents@file:commons/uicomponents": {
       "storePath": "commons/uicomponents",
       "dependencies": {},
@@ -161,8 +166,8 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "video@file:features/video": {
-      "storePath": "features/video",
+    "news@file:features/news": {
+      "storePath": "features/news",
       "dependencies": {
         "utils": "commons/utils",
         "uicomponents": "commons/uicomponents"
@@ -172,16 +177,8 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "follow@file:features/follows": {
-      "storePath": "features/follows",
-      "dependencies": {},
-      "dynamicDependencies": {},
-      "dev": false,
-      "dynamic": false,
-      "maskedByOverrideDependencyMap": false
-    },
-    "news@file:features/news": {
-      "storePath": "features/news",
+    "video@file:features/video": {
+      "storePath": "features/video",
       "dependencies": {
         "utils": "commons/utils",
         "uicomponents": "commons/uicomponents"
@@ -202,11 +199,29 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
+    "follow@file:features/follows": {
+      "storePath": "features/follows",
+      "dependencies": {
+        "uicomponents": "commons/uicomponents"
+      },
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
     "mine@file:features/mine": {
       "storePath": "features/mine",
       "dependencies": {
         "login": "features/login"
       },
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "utils@file:commons/utils": {
+      "storePath": "commons/utils",
+      "dependencies": {},
       "dynamicDependencies": {},
       "dev": false,
       "dynamic": false,
