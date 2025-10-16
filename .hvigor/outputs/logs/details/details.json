@@ -3,10 +3,7 @@
     "MODULES": [
       {
         "MODULE_NAME": "c21f969b5f03d33d43e04f8f136e7682",
-        "API_TYPE": "stageMode",
-        "INCREMENTAL_TASKS": {
-          "COMPILE_ARKTS": true
-        }
+        "API_TYPE": "stageMode"
       },
       {
         "MODULE_NAME": "508c75c8507a2ae5223dfd2faeb98122",
@@ -50,61 +47,71 @@
     "IS_HVIGORFILE_TYPE_CHECK": false,
     "TASK_TIME": {
       "c21f969b5f03d33d43e04f8f136e7682": {
-        "CreateModuleInfo": 1161300,
-        "PreCheckSyscap": 283100,
-        "GeneratePkgContextInfo": 3959700,
-        "ProcessIntegratedHsp": 1271700,
-        "SyscapTransform": 1243700,
-        "ProcessStartupConfig": 2009500,
-        "ConfigureCmake": 465700,
-        "BuildNativeWithCmake": 251600,
-        "BuildJS": 2607300,
-        "BuildNativeWithNinja": 1533700,
-        "CompileArkTS": 975506300,
-        "PackageHap": 54732300,
-        "SignHap": 1043400,
-        "CollectDebugSymbol": 2969500,
-        "assembleHap": 149800
-      },
-      "2b3583e6e17721c54496bd04e57a0c15": {
-        "ConfigureCmake": 299300,
-        "BuildNativeWithCmake": 262100,
-        "BuildNativeWithNinja": 807500
-      },
-      "4b9fd96ea9bad44c52cdc82569434346": {
-        "ConfigureCmake": 164500,
-        "BuildNativeWithCmake": 224800,
-        "BuildNativeWithNinja": 998500
-      },
-      "d56b699830e77ba53855679cb1d252da": {
-        "ConfigureCmake": 307400,
-        "BuildNativeWithCmake": 345000,
-        "BuildNativeWithNinja": 858400
+        "init": 797100,
+        "CreateModuleInfo": 1912100,
+        "PreCheckSyscap": 521800,
+        "GeneratePkgContextInfo": 8030700,
+        "ProcessIntegratedHsp": 2026900,
+        "SyscapTransform": 12437100,
+        "ProcessStartupConfig": 3251500,
+        "ConfigureCmake": 375600,
+        "BuildNativeWithCmake": 325900,
+        "BuildJS": 3947400,
+        "BuildNativeWithNinja": 1193400,
+        "SignHap": 3102200,
+        "CollectDebugSymbol": 5409600,
+        "assembleHap": 321100
       },
       "508c75c8507a2ae5223dfd2faeb98122": {
-        "ConfigureCmake": 183200,
-        "BuildNativeWithCmake": 219100,
-        "BuildNativeWithNinja": 1308000
+        "init": 689400,
+        "ConfigureCmake": 581700,
+        "BuildNativeWithCmake": 289700,
+        "BuildNativeWithNinja": 982500
       },
       "421b47ffd946ca083b65cd668c6b17e6": {
-        "ConfigureCmake": 179000,
-        "BuildNativeWithCmake": 214500,
-        "BuildNativeWithNinja": 781400
+        "init": 379000,
+        "ConfigureCmake": 293800,
+        "BuildNativeWithCmake": 429600,
+        "BuildNativeWithNinja": 915800
       },
       "1f921ae5a6816fd42a8d546be70f22cd": {
-        "ConfigureCmake": 185100,
-        "BuildNativeWithCmake": 211100,
-        "BuildNativeWithNinja": 1093100
+        "init": 324900,
+        "ConfigureCmake": 271600,
+        "BuildNativeWithCmake": 309000,
+        "BuildNativeWithNinja": 1011400
       },
-      "d306c37e058603cfea275b98b3286af8": {
-        "ConfigureCmake": 254900,
-        "BuildNativeWithCmake": 195800,
-        "BuildNativeWithNinja": 821700
+      "2b3583e6e17721c54496bd04e57a0c15": {
+        "init": 347200,
+        "ConfigureCmake": 332500,
+        "BuildNativeWithCmake": 776200,
+        "BuildNativeWithNinja": 1733400
+      },
+      "4b9fd96ea9bad44c52cdc82569434346": {
+        "init": 331300,
+        "ConfigureCmake": 216700,
+        "BuildNativeWithCmake": 346200,
+        "BuildNativeWithNinja": 2130300
       },
       "918b81db5e91d031548b963c93845e5b": {
-        "ConfigureCmake": 179600,
-        "BuildNativeWithCmake": 291200,
-        "BuildNativeWithNinja": 908400
+        "init": 251400,
+        "ConfigureCmake": 268400,
+        "BuildNativeWithCmake": 313800,
+        "BuildNativeWithNinja": 971500
+      },
+      "d56b699830e77ba53855679cb1d252da": {
+        "init": 209000,
+        "ConfigureCmake": 397900,
+        "BuildNativeWithCmake": 601900,
+        "BuildNativeWithNinja": 1717800
+      },
+      "d306c37e058603cfea275b98b3286af8": {
+        "init": 430100,
+        "ConfigureCmake": 546000,
+        "BuildNativeWithCmake": 267500,
+        "BuildNativeWithNinja": 936900
+      },
+      "APP": {
+        "init": 348600
       }
     },
     "CONFIG_PROPERTIES": {
@@ -112,7 +119,7 @@
       "skipNativeIncremental": false,
       "hvigor_keepDependency": true
     },
-    "TOTAL_TIME": 1652127600,
-    "BUILD_ID": "202510162016509360"
+    "BUILD_ID": "202510162023544160",
+    "TOTAL_TIME": 959146100
   }
 }
