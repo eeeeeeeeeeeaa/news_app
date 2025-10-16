@@ -1,0 +1,757 @@
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚU“if (!("finalizeConstruction" in ViewPU.prototype)) {
+    Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
+}
+import { CommonSearchBar } from 'uicomponents';
+import { VideoPage } from 'video';
+import { NewsPage } from 'news';
+import { LoginPage } from 'login';
+import { MinePage } from 'mine';
+import { UserManager } from 'login';
+import webview from '@ohos.web.webview';
+import { BaiduHotSearchParser } from 'utils';
+class Index extends ViewPU {
+    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
+        super(parent, __localStorage, elmtId, extraInfo);
+        if (typeof paramsLambda === "function") {
+            this.paramsGenerator_ = paramsLambda;
+        }
+        this.__currentUser = new ObservedPropertyObjectPU(null, this, "currentUser");
+        this.__isLoggedIn = new ObservedPropertySimplePU(false, this, "isLoggedIn");
+        this.__currentTabIndex = new ObservedPropertySimplePU(0, this, "currentTabIndex");
+        this.__followSearchText = new ObservedPropertySimplePU('', this, "followSearchText");
+        this.__followHotTitles = new ObservedPropertyObjectPU([], this, "followHotTitles");
+        this.__followSelectedUrl = new ObservedPropertyObjectPU(null, this, "followSelectedUrl");
+        this.followWebController = new webview.WebviewController();
+        this.tabsController = new TabsController();
+        this.userManager = UserManager.getInstance();
+        this.setInitiallyProvidedValue(params);
+        this.finalizeConstruction();
+    }
+    setInitiallyProvidedValue(params) {
+        if (params.currentUser !== undefined) {
+            this.currentUser = params.currentUser;
+        }
+        if (params.isLoggedIn !== undefined) {
+            this.isLoggedIn = params.isLoggedIn;
+        }
+        if (params.currentTabIndex !== undefined) {
+            this.currentTabIndex = params.currentTabIndex;
+        }
+        if (params.followSearchText !== undefined) {
+            this.followSearchText = params.followSearchText;
+        }
+        if (params.followHotTitles !== undefined) {
+            this.followHotTitles = params.followHotTitles;
+        }
+        if (params.followSelectedUrl !== undefined) {
+            this.followSelectedUrl = params.followSelectedUrl;
+        }
+        if (params.followWebController !== undefined) {
+            this.followWebController = params.followWebController;
+        }
+        if (params.tabsController !== undefined) {
+            this.tabsController = params.tabsController;
+        }
+        if (params.userManager !== undefined) {
+            this.userManager = params.userManager;
+        }
+    }
+    updateStateVars(params) {
+    }
+    purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__currentUser.purgeDependencyOnElmtId(rmElmtId);
+        this.__isLoggedIn.purgeDependencyOnElmtId(rmElmtId);
+        this.__currentTabIndex.purgeDependencyOnElmtId(rmElmtId);
+        this.__followSearchText.purgeDependencyOnElmtId(rmElmtId);
+        this.__followHotTitles.purgeDependencyOnElmtId(rmElmtId);
+        this.__followSelectedUrl.purgeDependencyOnElmtId(rmElmtId);
+    }
+    aboutToBeDeleted() {
+        this.__currentUser.aboutToBeDeleted();
+        this.__isLoggedIn.aboutToBeDeleted();
+        this.__currentTabIndex.aboutToBeDeleted();
+        this.__followSearchText.aboutToBeDeleted();
+        this.__followHotTitles.aboutToBeDeleted();
+        this.__followSelectedUrl.aboutToBeDeleted();
+        SubscriberManager.Get().delete(this.id__());
+        this.aboutToBeDeletedInternal();
+    }
+    get currentUser() {
+        return this.__currentUser.get();
+    }
+    set currentUser(newValue) {
+        this.__currentUser.set(newValue);
+    }
+    get isLoggedIn() {
+        return this.__isLoggedIn.get();
+    }
+    set isLoggedIn(newValue) {
+        this.__isLoggedIn.set(newValue);
+    }
+    get currentTabIndex() {
+        return this.__currentTabIndex.get();
+    }
+    set currentTabIndex(newValue) {
+        this.__currentTabIndex.set(newValue);
+    }
+    get followSearchText() {
+        return this.__followSearchText.get();
+    }
+    set followSearchText(newValue) {
+        this.__followSearchText.set(newValue);
+    }
+    get followHotTitles() {
+        return this.__followHotTitles.get();
+    }
+    set followHotTitles(newValue) {
+        this.__followHotTitles.set(newValue);
+    }
+    get followSelectedUrl() {
+        return this.__followSelectedUrl.get();
+    }
+    set followSelectedUrl(newValue) {
+        this.__followSelectedUrl.set(newValue);
+    }
+    openFollowBrowser(url) {
+        this.followSelectedUrl = url;
+    }
+    closeFollowBrowser() {
+        this.followSelectedUrl = null;
+    }
+    buildFollowBrowserLayer(url, parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.padding({ top: '48vp' });
+            Column.width('100%');
+            Column.height('100%');
+            Column.backgroundColor('#FFFFFF');
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.backgroundColor('#FFFFFF');
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('å…³é—­');
+            Text.fontSize(16);
+            Text.fontColor('#E60012');
+            Text.padding({ left: 16, right: 16, top: 16, bottom: 16 });
+            Text.onClick(() => {
+                this.closeFollowBrowser();
+            });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Blank.create();
+        }, Blank);
+        Blank.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('æœç´¢ç»“æžœ');
+            Text.fontSize(16);
+            Text.fontWeight(FontWeight.Medium);
+            Text.fontColor('#182431');
+            Text.margin({ right: 24 });
+        }, Text);
+        Text.pop();
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Web.create({ src: url, controller: this.followWebController });
+            Web.layoutWeight(1);
+            Web.width('100%');
+        }, Web);
+        Column.pop();
+    }
+    FollowPage(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Stack.create({ alignContent: Alignment.TopStart });
+            Stack.width('100%');
+            Stack.height('100%');
+        }, Stack);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.padding({ top: '48vp' });
+            Column.width('100%');
+            Column.height('100%');
+            Column.backgroundColor('#F8F9FA');
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            __Common__.create();
+            __Common__.padding({ left: '12vp', right: '12vp', top: '8vp', bottom: '8vp' });
+        }, __Common__);
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new 
+                    // é¡¶éƒ¨æœç´¢æ¡†ï¼ˆå…¬å…±ç»„ä»¶ï¼‰
+                    CommonSearchBar(this, {
+                        value: this.followSearchText,
+                        placeholder: 'æœç´¢æ–°é—»',
+                        hotTitles: this.followHotTitles,
+                        onSearch: (url) => {
+                            this.openFollowBrowser(url);
+                        }
+                    }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 72, col: 9 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            value: this.followSearchText,
+                            placeholder: 'æœç´¢æ–°é—»',
+                            hotTitles: this.followHotTitles,
+                            onSearch: (url) => {
+                                this.openFollowBrowser(url);
+                            }
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        value: this.followSearchText,
+                        hotTitles: this.followHotTitles
+                    });
+                }
+            }, { name: "CommonSearchBar" });
+        }
+        __Common__.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // é¡µé¢å†…å®¹
+            Text.create('æˆ‘çš„å…³æ³¨');
+            // é¡µé¢å†…å®¹
+            Text.fontSize('20fp');
+            // é¡µé¢å†…å®¹
+            Text.fontWeight(FontWeight.Bold);
+            // é¡µé¢å†…å®¹
+            Text.margin({ top: '40vp', bottom: '20vp' });
+        }, Text);
+        // é¡µé¢å†…å®¹
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('å…³æ³¨åŠŸèƒ½å¼€å‘ä¸­...');
+            Text.fontSize('16fp');
+            Text.fontColor('#999999');
+            Text.margin('20vp');
+        }, Text);
+        Text.pop();
+        Column.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.followSelectedUrl !== null) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.buildFollowBrowserLayer.bind(this)(this.followSelectedUrl);
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        Stack.pop();
+    }
+    async aboutToAppear() {
+        try {
+            await this.userManager.initPreferences();
+            this.currentUser = await this.userManager.getCurrentUser();
+            this.isLoggedIn = this.currentUser !== null;
+            console.log('Login status initialized:', this.isLoggedIn);
+            // é¢„å–çƒ­æœæ ‡é¢˜ä¾›å…³æ³¨é¡µä½¿ç”¨
+            const realtime = await BaiduHotSearchParser.getHotSearchData('realtime');
+            this.followHotTitles = realtime.slice(0, 10).map((it) => it.card_title);
+        }
+        catch (error) {
+            console.error('Failed to initialize login status:', error);
+            this.isLoggedIn = false;
+        }
+    }
+    TabBuilder(title, index, parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.justifyContent(FlexAlign.Center);
+            Column.height(56);
+            Column.width('100%');
+            Column.onClick(() => {
+                this.currentTabIndex = index;
+                this.tabsController.changeIndex(this.currentTabIndex);
+            });
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(title);
+            Text.margin({ top: 4 });
+            Text.fontSize(10);
+            Text.fontColor(this.currentTabIndex === index ? '#E60012' : '#666666');
+        }, Text);
+        Text.pop();
+        Column.pop();
+    }
+    async checkLoginStatus() {
+        this.currentUser = await this.userManager.getCurrentUser();
+        this.isLoggedIn = this.currentUser !== null;
+    }
+    initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.isLoggedIn) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        // å®¸èŒ¬æ«¥è¤°æ›ªç´é„å‰§ãšTabæ¤¤ç”¸æ½°
+                        Navigation.create(new NavPathStack(), { moduleName: "default", pagePath: "products/default/src/main/ets/pages/Index", isUserCreateStack: false });
+                        // å®¸èŒ¬æ«¥è¤°æ›ªç´é„å‰§ãšTabæ¤¤ç”¸æ½°
+                        Navigation.width('100%');
+                        // å®¸èŒ¬æ«¥è¤°æ›ªç´é„å‰§ãšTabæ¤¤ç”¸æ½°
+                        Navigation.height('100%');
+                    }, Navigation);
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Column.create();
+                        Column.width('100%');
+                        Column.height('100%');
+                        Column.backgroundColor('#F5F5F5');
+                    }, Column);
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Tabs.create({
+                            barPosition: BarPosition.End,
+                            controller: this.tabsController
+                        });
+                        Tabs.margin({ bottom: 64 });
+                        Tabs.width('100%');
+                        Tabs.height('100%');
+                        Tabs.barHeight(80);
+                        Tabs.barMode(BarMode.Fixed);
+                        Tabs.onChange((index) => {
+                            this.currentTabIndex = index;
+                        });
+                    }, Tabs);
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        TabContent.create(() => {
+                            {
+                                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                    if (isInitialRender) {
+                                        let componentCall = new NewsPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 159, col: 15 });
+                                        ViewPU.create(componentCall);
+                                        let paramsLambda = () => {
+                                            return {};
+                                        };
+                                        componentCall.paramsGenerator_ = paramsLambda;
+                                    }
+                                    else {
+                                        this.updateStateVarsOfChildByElmtId(elmtId, {});
+                                    }
+                                }, { name: "NewsPage" });
+                            }
+                        });
+                        TabContent.padding({ left: 12, right: 12 });
+                        TabContent.backgroundColor('#F5F5F5');
+                        TabContent.tabBar({ builder: () => {
+                                this.TabBuilder.call(this, { "id": 16777275, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, 0);
+                            } });
+                    }, TabContent);
+                    TabContent.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        TabContent.create(() => {
+                            {
+                                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                    if (isInitialRender) {
+                                        let componentCall = new VideoPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 167, col: 15 });
+                                        ViewPU.create(componentCall);
+                                        let paramsLambda = () => {
+                                            return {};
+                                        };
+                                        componentCall.paramsGenerator_ = paramsLambda;
+                                    }
+                                    else {
+                                        this.updateStateVarsOfChildByElmtId(elmtId, {});
+                                    }
+                                }, { name: "VideoPage" });
+                            }
+                        });
+                        TabContent.padding({ left: 12, right: 12 });
+                        TabContent.backgroundColor('#F5F5F5');
+                        TabContent.tabBar({ builder: () => {
+                                this.TabBuilder.call(this, { "id": 16777276, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, 1);
+                            } });
+                    }, TabContent);
+                    TabContent.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        TabContent.create(() => {
+                            this.FollowPage.bind(this)();
+                        });
+                        TabContent.padding({ left: 12, right: 12 });
+                        TabContent.backgroundColor('#F5F5F5');
+                        TabContent.tabBar({ builder: () => {
+                                this.TabBuilder.call(this, { "id": 16777273, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, 2);
+                            } });
+                    }, TabContent);
+                    TabContent.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        TabContent.create(() => {
+                            {
+                                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                    if (isInitialRender) {
+                                        let componentCall = new MinePage(this, {
+                                            onLogout: () => {
+                                                this.checkLoginStatus();
+                                            }
+                                        }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 183, col: 15 });
+                                        ViewPU.create(componentCall);
+                                        let paramsLambda = () => {
+                                            return {
+                                                onLogout: () => {
+                                                    this.checkLoginStatus();
+                                                }
+                                            };
+                                        };
+                                        componentCall.paramsGenerator_ = paramsLambda;
+                                    }
+                                    else {
+                                        this.updateStateVarsOfChildByElmtId(elmtId, {});
+                                    }
+                                }, { name: "MinePage" });
+                            }
+                        });
+                        TabContent.padding({ left: 12, right: 12 });
+                        TabContent.backgroundColor('#F5F5F5');
+                        TabContent.tabBar({ builder: () => {
+                                this.TabBuilder.call(this, { "id": 16777274, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, 3);
+                            } });
+                    }, TabContent);
+                    TabContent.pop();
+                    Tabs.pop();
+                    Column.pop();
+                    // å®¸èŒ¬æ«¥è¤°æ›ªç´é„å‰§ãšTabæ¤¤ç”¸æ½°
+                    Navigation.pop();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new 
+                                // éˆî†æ«¥è¤°æ›ªç´é„å‰§ãšé§è¯²ç¶æ¤¤ç”¸æ½°
+                                LoginPage(this, {
+                                    onLoginSuccess: () => {
+                                        this.checkLoginStatus();
+                                    }
+                                }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 210, col: 7 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        onLoginSuccess: () => {
+                                            this.checkLoginStatus();
+                                        }
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {});
+                            }
+                        }, { name: "LoginPage" });
+                    }
+                });
+            }
+        }, If);
+        If.pop();
+    }
+    rerender() {
+        this.updateDirtyElements();
+    }
+    static getEntryName() {
+        return "Index";
+    }
+}
+registerNamedRoute(() => new Index(undefined, {}), "", { bundleName: "com.huawei.quickstart", moduleName: "default", pagePath: "pages/Index", pageFullPath: "products/default/src/main/ets/pages/Index", integratedHsp: "false", moduleType: "followWithHap" });
+//# sourceMappingURL=Index.js.mapÂ—Ù\G:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\commons\uicomponents\Index.etsÙVG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\features\video\Index.etsÙUG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\features\news\Index.etsÙVG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\features\login\Index.etsÙUG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\features\mine\Index.etsÙV hvigor_ignore_G:_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.web.webview.d.tsÙUG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\commons\utils\Index.etsÙkG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\products\default\src\main\ets\pages\Index.etsÔrBšªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath¬shouldEmitJs§defaultÃÂÙNG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\products\defaultÙ=G:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete§default¥1.0.0Ô  ÙNG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\products\defaultÃÃÚ`ï»¿import { CommonSearchBar } from 'uicomponents';
+import {VideoPage} from 'video';
+import {NewsPage} from 'news';
+import {LoginPage} from 'login';
+import {RegisterPage} from 'login';
+import {MinePage} from 'mine';
+import {UserManager} from 'login';
+import {UserInfo} from 'login'
+import Mine from 'mine/src/main/ets/view/Mine';
+import webview from '@ohos.web.webview';
+import { BaiduHotSearchParser, BaiduHotSearchItem } from 'utils';
+
+
+@Entry
+@Component
+struct Index {
+  @State currentUser: UserInfo | null = null;
+  @State isLoggedIn: boolean = false;
+  @State currentTabIndex: number = 0; // æ¦›æ¨¿î…»é–«å¤‰è…‘"é‚ä¼´æ¤ˆ"æ¤¤?
+  
+  @State followSearchText: string = '';
+  @State followHotTitles: string[] = [];
+  @State followSelectedUrl: string | null = null;
+  private followWebController: webview.WebviewController = new webview.WebviewController();
+
+  private openFollowBrowser(url: string): void {
+    this.followSelectedUrl = url;
+  }
+
+  private closeFollowBrowser(): void {
+    this.followSelectedUrl = null;
+  }
+
+  @Builder
+  buildFollowBrowserLayer(url: string) {
+    Column() {
+      Row() {
+        Text('å…³é—­')
+          .fontSize(16)
+          .fontColor('#E60012')
+          .padding({ left: 16, right: 16, top: 16, bottom: 16 })
+          .onClick(() => {
+            this.closeFollowBrowser();
+          })
+
+        Blank()
+
+        Text('æœç´¢ç»“æžœ')
+          .fontSize(16)
+          .fontWeight(FontWeight.Medium)
+          .fontColor('#182431')
+          .margin({ right: 24 })
+      }
+      .width('100%')
+      .backgroundColor('#FFFFFF')
+
+      Web({ src: url, controller: this.followWebController })
+        .layoutWeight(1)
+        .width('100%')
+    }
+    .padding({ top: '48vp' })
+    .width('100%')
+    .height('100%')
+    .backgroundColor('#FFFFFF')
+  }
+
+  @Builder
+  FollowPage() {
+    Stack({ alignContent: Alignment.TopStart }) {
+      Column() {
+        // é¡¶éƒ¨æœç´¢æ¡†ï¼ˆå…¬å…±ç»„ä»¶ï¼‰
+        CommonSearchBar({
+          value: this.followSearchText,
+          placeholder: 'æœç´¢æ–°é—»',
+          hotTitles: this.followHotTitles,
+          onSearch: (url: string) => {
+            this.openFollowBrowser(url);
+          }
+        })
+        .padding({ left: '12vp', right: '12vp', top: '8vp', bottom: '8vp' })
+
+        // é¡µé¢å†…å®¹
+        Text('æˆ‘çš„å…³æ³¨')
+          .fontSize('20fp')
+          .fontWeight(FontWeight.Bold)
+          .margin({ top: '40vp', bottom: '20vp' })
+        Text('å…³æ³¨åŠŸèƒ½å¼€å‘ä¸­...')
+          .fontSize('16fp')
+          .fontColor('#999999')
+          .margin('20vp')
+      }
+      .padding({ top: '48vp' })
+      .width('100%')
+      .height('100%')
+      .backgroundColor('#F8F9FA')
+
+      if (this.followSelectedUrl !== null) {
+        this.buildFollowBrowserLayer(this.followSelectedUrl as string);
+      }
+    }
+    .width('100%')
+    .height('100%')
+  }
+  private tabsController: TabsController = new TabsController();
+  private userManager: UserManager = UserManager.getInstance();
+
+  async aboutToAppear() {
+    try {
+      await this.userManager.initPreferences();
+      this.currentUser = await this.userManager.getCurrentUser();
+      this.isLoggedIn = this.currentUser !== null;
+      console.log('Login status initialized:', this.isLoggedIn);
+      // é¢„å–çƒ­æœæ ‡é¢˜ä¾›å…³æ³¨é¡µä½¿ç”¨
+      const realtime = await BaiduHotSearchParser.getHotSearchData('realtime');
+      this.followHotTitles = realtime.slice(0, 10).map((it: BaiduHotSearchItem) => it.card_title);
+    } catch (error) {
+      console.error('Failed to initialize login status:', error);
+      this.isLoggedIn = false;
+    }
+  }
+
+  @Builder
+  TabBuilder(
+    title: Resource,
+    index: number
+  ) {
+    Column() {
+      Text(title)
+        .margin({ top: 4 })
+        .fontSize(10)
+        .fontColor(this.currentTabIndex === index ? '#E60012' : '#666666')
+    }
+    .justifyContent(FlexAlign.Center)
+    .height(56)
+    .width('100%')
+    .onClick(() => {
+      this.currentTabIndex = index;
+      this.tabsController.changeIndex(this.currentTabIndex);
+    })
+  }
+
+  async checkLoginStatus() {
+    this.currentUser = await this.userManager.getCurrentUser();
+    this.isLoggedIn = this.currentUser !== null;
+  }
+
+  build() {
+    if (this.isLoggedIn) {
+      // å®¸èŒ¬æ«¥è¤°æ›ªç´é„å‰§ãšTabæ¤¤ç”¸æ½°
+
+      Navigation() {
+        Column() {
+          Tabs({
+            barPosition: BarPosition.End, // æ´æ›¢å„´ç€µè‰°åŸ…
+            controller: this.tabsController
+          }) {
+            // 1. é‚ä¼´æ¤ˆTabé”›å ¢å‚¨å¯®?é”›?
+            TabContent() {
+              NewsPage()
+            }
+            .padding({ left: 12, right: 12 })
+            .backgroundColor('#F5F5F5')
+            .tabBar(this.TabBuilder($r('app.string.tab_news'), 0))
+
+            // 2. ç‘™å—›î•¶Tabé”›å ¢å‚¨å¯®?é”›?
+            TabContent() {
+              VideoPage()
+            }
+            .padding({ left: 12, right: 12 })
+            .backgroundColor('#F5F5F5')
+            .tabBar(this.TabBuilder($r('app.string.tab_video'), 1))
+
+            // 3. éè™«æ•žTabé”›å ¢å‚¨å¯®?é”›?
+            TabContent() {
+              this.FollowPage()
+            }
+            .padding({ left: 12, right: 12 })
+            .backgroundColor('#F5F5F5')
+            .tabBar(this.TabBuilder($r('app.string.tab_follow'), 2))
+
+            // 4. éŽ´æˆ æ®‘Tabé”›å ¢å‚¨å¯®?é”›?
+            TabContent() {
+              MinePage({
+                onLogout: () => {
+                  this.checkLoginStatus();
+                }
+              })
+            }
+            .padding({ left: 12, right: 12 })
+            .backgroundColor('#F5F5F5')
+            .tabBar(this.TabBuilder($r('app.string.tab_mine'), 3))
+          }
+          .margin({ bottom: 64 }) // é–«å‚žåŽ¤æ´æ›¢å„´ç»¯è¤ç²ºé?
+          .width('100%')
+          .height('100%')
+          .barHeight(80)
+          .barMode(BarMode.Fixed)
+          .onChange((index: number) => {
+            this.currentTabIndex = index;
+          })
+        }
+        .width('100%')
+        .height('100%')
+        .backgroundColor('#F5F5F5')
+      }
+      .width('100%')
+      .height('100%')
+    } else {
+      // éˆî†æ«¥è¤°æ›ªç´é„å‰§ãšé§è¯²ç¶æ¤¤ç”¸æ½°
+      LoginPage({
+        onLoginSuccess: () => {
+          this.checkLoginStatus();
+        }
+      })
+    }
+  }
+}
+
+
+
+
+
+
+
+
+ÀÔrC—±@ohos.web.webview¤news¥video¬uicomponents¥login¥utils¤mineÔrD—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙV hvigor_ignore_G:_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.web.webview.d.tsÔrE‘¯hostModulesInfo“ÔrF’²hostDependencyName®hostModuleName±@ohos.web.webview§defaultF±@ohos.web.webview¤newsF±@ohos.web.webview¥videoÃªoh-resolveÂDAÂÙUG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\features\news\Index.etsAÃªoh-resolveÂDAÂÙVG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\features\video\Index.etsAÃªoh-resolveÂDAÂÙ\G:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\commons\uicomponents\Index.etsAÃªoh-resolveÂDAÂÙVG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\features\login\Index.etsAÃªoh-resolveÂDAÂÙUG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\commons\utils\Index.etsAÃªoh-resolveÂDAÂÙUG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\features\mine\Index.etsAÃªoh-resolveÂ“ÔrG–§version¤fileªsourceRoot§sources¥names¨mappings¨Index.js ‘©Index.etsÜÆ˜”   ”  ”	  
+”  ”  ”   !”.  /”/  0˜”   ” ”	 ” ” ” ”! ”"  ˜”   ” ”	 ” ” ” ” ”  ˜”   ” ”	 ” ” ” ”! ”"  ˜”   ” ”	 ” ” ” ” ”  ˜”   ” ”	 ” ” ” ”# !”$ "–”  	 ” 	” 	” 	”' 	'”( 	(˜”  
+ ” 
+”	 
+	” 
+” 
+3”% 
+9”, 
+Ì@”- 
+ÌA’” ” ‘”  ’”: (”> ,’”9 ”> $’”> #”? $’”? $”ÌA &’”> %”Ì@ '’”Ì@ ,”ÌD 0–”# ;”' ?”. ÌF”/ ÌG”Ì@ ÌX”ÌB ÌZ”” Ìg+”" Ìg/”0 Ìg=”2 Ìg?•” Ìh%”& Ìh0”' Ìh1”2 Ìh<”4 Ìh>‘” 
+ÌA’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ”” 
+” ” ” '—” ” ” 	” ”! ”$  ”% !’” ” ’” 
+” —” ” ” 	” ”! ”% !”& "’” ” ”” "” "” "” "%’” #” #
+š” #” #
+” <” <” <” <”  <”" <”( <”* <–” #” #
+” =” =
+” =” =–” #” #
+” >” >” >”  >–” #” #
+” ?”" ?”# ?”, ?’” $” $	–” $” $	” 5” 5” 5” 5–” $” $	” 6” 6”  6”) 6 ”” %” %” %” %–” %” %” &” &” &” &–” %” %” '” '” '”$ 'Ü ” %” %” (” (” (” (” (”! (”# (”% (”* ($”, (&”. ((”0 (*”3 (-”5 (/”7 (1”9 (3”? (9”ÌA (;”ÌC (=”ÌE (?—” %” %” )” )” )” )” )–” *” *” *”' *#”) *%”* *&’” +
+” +’” %” %’” -” -’” -” -”” /” /” /” /–” /” /” 0” 0” 0” 0˜” /” /” 1” 1” 1”& 1 ”' 1!”- 1'–” /” /” 2” 2” 2”$ 2š” /” /” 3” 3” 3” 3” 3”! 3”# 3”% 3’” /” /’” $” $	ž” 8” 8	” 8
+” 8” 8” 8”! 8”# 8”- 8 ”/ 8"”3 8&”4 8'”ÌG 8:”ÌI 8<–” 8” 8	” 9	” 9” 9” 9–” 8” 8	” :	” :” :” :’” #” #
+‘” Ì@’” ÌC” ÌCš” ÌD” ÌD	” ÌD
+” ÌD”' ÌD”) ÌD”2 ÌD#”3 ÌD$”; ÌD,”= ÌD.–” ÌD” ÌD	” Ìd” Ìd
+” Ìd” Ìd–” ÌD” ÌD	” Ìe” Ìe” Ìe” Ìe’” ÌE” ÌEš” ÌE” ÌE” Ì[” Ì[” Ì[” Ì[”  Ì[”" Ì[”( Ì[”* Ì[–” ÌE” ÌE” Ì\” Ì\” Ì\” Ì\–” ÌE” ÌE” Ì]” Ì]” Ì]”  Ì]–” ÌE” ÌE” Ì^”" Ì^”# Ì^”, Ì^ Ü ” ÌO	” ÌO” ÌO”! ÌO”% ÌO”' ÌO”- ÌO”/ ÌO!”4 ÌO&”6 ÌO(”< ÌO.”> ÌO0”ÌA ÌO3”ÌC ÌO5”ÌH ÌO:”ÌJ ÌO<”ÌP ÌOÌB”ÌR ÌOÌD”ÌW ÌOÌI”ÌY ÌOÌK’” ÌF”" ÌF“” ÌG”# ÌG”* ÌG–” ÌH
+” ÌH” ÌH”# ÌH”$ ÌH”4 ÌH&”” ÌI
+”# ÌI”% ÌI”+ ÌI–” ÌJ
+”! ÌJ”# ÌJ”' ÌJ”( ÌJ”7 ÌJ)—” ÌK
+”  ÌK”" ÌK”# ÌK”& ÌK ”( ÌK"”* ÌK$˜” ÌL”  ÌL”! ÌL”2 ÌL"”3 ÌL#”6 ÌL&”7 ÌL'”8 ÌL(’” ÌM
+” ÌM‘” ÌN	–” ÌH
+”! ÌH”# ÌH”' ÌH”( ÌH”8 ÌH&”” ÌI
+”' ÌI”) ÌI”/ ÌI–” ÌJ
+”% ÌJ”' ÌJ”+ ÌJ”, ÌJ”; ÌJ)—” ÌK
+”$ ÌK”& ÌK”' ÌK”* ÌK ”, ÌK"”. ÌK$˜”  ÌL”$ ÌL”% ÌL”6 ÌL"”7 ÌL#”: ÌL&”; ÌL'”< ÌL(’” ÌM
+” ÌM–” ÌH
+” ÌH” ÌH”# ÌH”$ ÌH”4 ÌH&–” ÌJ
+”! ÌJ”# ÌJ”' ÌJ”( ÌJ”7 ÌJ)’” ÌQ” ÌQ”” ÌR” ÌR” ÌR” ÌR’” ÌQ” ÌQ–” ÌR” ÌR” ÌS” ÌS” ÌS”  ÌS’” ÌQ” ÌQ˜” ÌR” ÌR” ÌT” ÌT” ÌT”& ÌT ”' ÌT!”+ ÌT%’” ÌQ” ÌQž” ÌR” ÌR” ÌU” ÌU” ÌU” ÌU” ÌU” ÌU”% ÌU”' ÌU!”- ÌU'”/ ÌU)”5 ÌU/”7 ÌU1’” ÌQ” ÌQ’” ÌR” ÌR”” ÌV” ÌV” ÌV”$ ÌV–” ÌV” ÌV” ÌW” ÌW” ÌW”  ÌW–” ÌV” ÌV” ÌX” ÌX” ÌX”$ ÌX–” ÌV” ÌV” ÌY” ÌY” ÌY” ÌY’” ÌV” ÌV’” ÌE” ÌE˜” Ì`” Ì`
+” Ì`” Ì`”& Ì` ”+ Ì`%”/ Ì`)”1 Ì`+™” Ìa” Ìa” Ìa”0 Ìa$”< Ìa%”Ì@ Ìa)”ÌA Ìa*”ÌR ÌaÌE”ÌS ÌaÌF‘” Ìb‘” Ìb’” ÌD” ÌD	‘” Ìf”” Ìj”	 Ìj”
+ Ìj” Ìj’” Ìk” Ìk™” Ìl” Ìl” Ìl” Ìl”" Ìl”# Ìl”2 Ìl,”4 Ìl.”5 Ìl/” Ìm” Ìm
+” Ìm” Ìm” Ìm”% Ìm”) Ìm#”* Ìm$”5 Ìm/”6 Ìm0”ÌD Ìm>”ÌF ÌmÌ@”ÌG ÌmÌA›” Ìn” Ìn
+” Ìn” Ìn” Ìn”" Ìn”# Ìn”. Ìn(”3 Ìn-”7 Ìn1”8 Ìn2œ” Ìo” Ìo” Ìo” Ìo” Ìo”3 Ìo-”5 Ìo/”9 Ìo3”: Ìo4”ÌD Ìo>”ÌE Ìo?”ÌF ÌoÌ@’” Ìp” Ìpœ” Ìq” Ìq” Ìq” Ìq”# Ìq”7 Ìq1”8 Ìq2”ÌH ÌqÌB”ÌI ÌqÌC”ÌS ÌqÌM”ÌT ÌqÌN”ÌU ÌqÌOÜ ” Ìr” Ìr
+” Ìr”  Ìr”# Ìr”+ Ìr%”, Ìr&”1 Ìr+”2 Ìr,”3 Ìr-”5 Ìr/”7 Ìr1”8 Ìr2”9 Ìr3”< Ìr6”= Ìr7”> Ìr8”Ì@ ÌrÌN”ÌB ÌrÌP”ÌD ÌrÌR”ÌE ÌrÌS”ÌG ÌrÌU”ÌH ÌrÌV”ÌR ÌrÌ`”ÌS ÌrÌa”ÌT ÌrÌb‘”	 Ìs”” Ìs” Ìs” Ìs” Ìsš” Ìt” Ìt” Ìt” Ìt” Ìt”> Ìt8”Ì@ Ìt:”ÌE Ìt?”ÌF ÌtÌ@”ÌG ÌtÌA—” Ìu” Ìu
+” Ìu” Ìu” Ìu”# Ìu”$ Ìu‘”	 Ìv’” Ìw” Ìw–” Ìz” Ìz” Ì{” Ì{” Ì|” Ì|’” Ì~” Ì~
+˜” Ì~” Ì~
+” Ì„”! Ì„”" Ì„”+ Ì„”, Ì„”2 Ì„$–” Ì~” Ì~
+” Ì…” Ì…” Ì…” Ì…–” Ì~” Ì~
+” Ì†” Ì†
+” Ì†” Ì†—” Ì~” Ì~
+” Ì‡” Ì‡” Ì‡” Ì‡”  Ì‡—” Ìˆ” Ìˆ
+” Ìˆ”$ Ìˆ”' Ìˆ”, Ìˆ"”- Ìˆ#œ” Ì‰” Ì‰
+” Ì‰”# Ì‰”$ Ì‰”/ Ì‰%”0 Ì‰&”4 Ì‰*”5 Ì‰+”ÌD Ì‰:”ÌE Ì‰;”ÌF Ì‰<’” ÌŠ” ÌŠ”” Ì” Ì
+” Ì” Ìš” Ì” Ì
+” Ì€	” Ì€” Ì€” Ì€” Ì€” Ì€”  Ì€”" Ì€–” Ì” Ì
+” Ì	” Ì” Ì” ÌÜ ” Ì” Ì
+” Ì‚	” Ì‚” Ì‚” Ì‚”  Ì‚”/ Ì‚'”4 Ì‚,”9 Ì‚1”: Ì‚2”; Ì‚3”< Ì‚4”ÌE Ì‚=”ÌF Ì‚>”ÌG Ì‚?”ÌH Ì‚Ì@”ÌQ Ì‚ÌI’” Ì” Ì
+’” Ì~” Ì~
+‘” Ì‹”” Ì”	 Ì”
+ Ì” Ì” ÌŽ” ÌŽ” ÌŽ	” ÌŽ” ÌŽ”! ÌŽ”% ÌŽ!”& ÌŽ"”1 ÌŽ-”2 ÌŽ.”Ì@ ÌŽ<”ÌB ÌŽ>”ÌC ÌŽ?›” Ì” Ì” Ì	” Ì” Ì” Ì” Ì”* Ì&”/ Ì+”3 Ì/”4 Ì0’” Ì” Ì‘” Ì’–” Ì“” Ì“” Ì“” Ì“” Ì“”! Ì“’” Ì””* Ì”’” Ì–”" Ì–’” Ì””* Ì”–” Ì–”" Ì–”# ÌÍ”( ÌÍ”) ÌÍ”/ ÌÍ’” Ì””* Ì”–” Ì–”" Ì–”# ÌÎ”) ÌÎ”* ÌÎ”0 ÌÎ’” Ì—” Ì—–” Ì—” Ì—” ÌÉ	”$ ÌÉ”% ÌÉ”+ ÌÉ–” Ì—” Ì—” ÌÊ	”% ÌÊ”& ÌÊ”, ÌÊ–” Ì—” Ì—” ÌË	”. ÌË”/ ÌË”8 ÌË"“” Ì˜
+” Ì˜”$ Ì˜–” Ì™”' Ì™”) Ì™”4 Ì™$”5 Ì™%”8 Ì™(–” Ìš”& Ìš”( Ìš”, Ìš”- Ìš”; Ìš+‘” Ì›š” Ì˜
+” Ì˜” ÌÀ”# ÌÀ”$ ÌÀ”& ÌÀ”, ÌÀ”. ÌÀ”0 ÌÀ”2 ÌÀ –” Ì˜
+” Ì˜” ÌÁ”" ÌÁ”# ÌÁ”) ÌÁ–” Ì˜
+” Ì˜” ÌÂ”# ÌÂ”$ ÌÂ”* ÌÂ–” Ì˜
+” Ì˜” ÌÃ”& ÌÃ”' ÌÃ”) ÌÃ˜” Ì˜
+” Ì˜” ÌÄ”$ ÌÄ”% ÌÄ”, ÌÄ”- ÌÄ”2 ÌÄ ™” Ì˜
+” Ì˜” ÌÅ”% ÌÅ”& ÌÅ”' ÌÅ”, ÌÅ"”. ÌÅ$”0 ÌÅ&—” ÌÆ”  ÌÆ”! ÌÆ”0 ÌÆ ”3 ÌÆ#”8 ÌÆ(”9 ÌÆ)’” ÌÇ
+” ÌÇ’”Ì@ Ìž”ÌH Ìžœ”# Ì ”* Ì ”+ Ì ”- Ì ”1 Ì ”3 Ì ”5 Ì ”7 Ì !”< Ì &”> Ì (”Ì@ Ì *”ÌB Ì ,””# Ì¡”2 Ì¡”3 Ì¡”< Ì¡&’”# Ì¢”) Ì¢–”  Ì¢”$ Ì¢”% Ì¢”/ Ì¢#”Ìª Ì¢?”Ì« Ì¢Ì@’”Ì@ Ì¦”ÌI Ì¦œ”# Ì¨”* Ì¨”+ Ì¨”- Ì¨”1 Ì¨”3 Ì¨”5 Ì¨”7 Ì¨!”< Ì¨&”> Ì¨(”Ì@ Ì¨*”ÌB Ì¨,””# Ì©”2 Ì©”3 Ì©”< Ì©&’”# Ìª”) Ìª–”  Ìª”$ Ìª”% Ìª”/ Ìª#”Ìª ÌªÌ@”Ì« ÌªÌA•” Ì®”  Ì®”! Ì®”+ Ì®”8 Ì®œ”# Ì°”* Ì°”+ Ì°”- Ì°”1 Ì°”3 Ì°”5 Ì°”7 Ì°!”< Ì°&”> Ì°(”Ì@ Ì°*”ÌB Ì°,””# Ì±”2 Ì±”3 Ì±”< Ì±&’”# Ì²”) Ì²–”  Ì²”$ Ì²”% Ì²”/ Ì²#”Ìª Ì²ÌA”Ì« Ì²ÌB“”Ì@ Ì¶”ÌH Ì¶”ÌO Ì¶•”, Ì·”4 Ì·”6 Ì·”9 Ì·”; Ì·–”0 Ì¸”4 Ì¸”5 Ì¸”ÌE Ì¸'”ÌG Ì¸)”ÌH Ì¸*’”, Ì¹”- Ì¹‘”) Ìº•”0 Ì·”8 Ì·”: Ì·”= Ì·”? Ì·–”4 Ì¸”8 Ì¸”9 Ì¸”ÌI Ì¸'”ÌK Ì¸)”ÌL Ì¸*’”0 Ì¹”1 Ì¹œ”# Ì¼”* Ì¼”+ Ì¼”- Ì¼”1 Ì¼”3 Ì¼”5 Ì¼”7 Ì¼!”< Ì¼&”> Ì¼(”Ì@ Ì¼*”ÌB Ì¼,””# Ì½”2 Ì½”3 Ì½”< Ì½&’”# Ì¾”) Ì¾–”  Ì¾”$ Ì¾”% Ì¾”/ Ì¾#”Ìª Ì¾?”Ì« Ì¾Ì@’” Ì˜
+” Ì˜’” Ì—” Ì—’” Ì””& Ì”’” Ì–” Ì–‘” ÌÏ‘” ÌÏ’”  ÌÐ”2 ÌÐ“”  ÌÑ”) ÌÑ”0 ÌÑ•”$ ÌÒ”2 ÌÒ”4 ÌÒ”7 ÌÒ”9 ÌÒ–”( ÌÓ
+”, ÌÓ”- ÌÓ”= ÌÓ”? ÌÓ!”Ì@ ÌÓ"’”$ ÌÔ”% ÌÔ	‘”! ÌÕ•”( ÌÒ”6 ÌÒ”8 ÌÒ”; ÌÒ”= ÌÒ–”, ÌÓ
+”0 ÌÓ”1 ÌÓ”ÌA ÌÓ”ÌC ÌÓ!”ÌD ÌÓ"’”( ÌÔ”) ÌÔ	‘” ÌÖ‘” Ì×ÔrH–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜÏ‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  ÌŽ ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ìž ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌÐ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  ÌÝ ‘”  ÌÞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìð ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìý ‘”  Ìþ ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ‘”  ÍN ‘”  ÍO ‘”  ÍP ‘”  ÍQ ‘”  ÍR ‘”  ÍS ‘”  ÍT ‘”  ÍU ‘”  ÍV ‘”  ÍW ‘”  ÍX ‘”  ÍY ‘”  ÍZ ‘”  Í[ ‘”  Í\ ‘”  Í] ‘”  Í^ ‘”  Í_ ‘”  Í` ‘”  Ía ‘”  Íb ‘”  Íc ‘”  Íd ‘”  Íe ‘”  Íf ‘”  Íg ‘”  Íh ‘”  Íi ‘”  Íj ‘”  Ík ‘”  Íl ‘”  Ím ‘”  Ín ‘”  Ío ‘”  Íp ‘”  Íq ‘”  Ír ‘”  Ís ‘”  Ít ‘”  Íu ‘”  Ív ‘”  Íw ‘”  Íx ‘”  Íy ‘”  Íz ‘”  Í{ ‘”  Í| ‘”  Í} ‘”  Í~ ‘”  Í ‘”  Í€ ‘”  Í ‘”  Í‚ ‘”  Íƒ ‘”  Í„ ‘”  Í… ‘”  Í† ‘”  Í‡ ‘”  Íˆ ‘”  Í‰ ‘”  ÍŠ ‘”  Í‹ ‘”  ÍŒ ‘”  Í ‘”  ÍŽ ‘”  Í ‘”  Í ‘”  Í‘ ‘”  Í’ ‘”  Í“ ‘”  Í” ‘”  Í• ‘”  Í– ‘”  Í— ‘”  Í˜ ‘”  Í™ ‘”  Íš ‘”  Í› ‘”  Íœ ‘”  Í ‘”  Íž ‘”  ÍŸ ‘”  Í  ‘”  Í¡ ‘”  Í¢ ‘”  Í£ ‘”  Í¤ ‘”  Í¥ ‘”  Í¦ ‘”  Í§ ‘”  Í¨ ‘”  Í© ‘”  Íª ‘”  Í« ‘”  Í¬ ‘”  Í­ ‘”  Í® ‘”  Í¯ ‘”  Í° ‘”  Í± ‘”  Í² ‘”  Í³ ‘”  Í´ ‘”  Íµ ‘”  Í¶ ‘”  Í· ‘”  Í¸ ‘”  Í¹ ‘”  Íº ‘”  Í» ‘”  Í¼ ‘”  Í½ ‘”  Í¾ ‘”  Í¿ ‘”  ÍÀ ‘”  ÍÁ ‘”  ÍÂ ‘”  ÍÃ ‘”  ÍÄ ‘”  ÍÅ ‘”  ÍÆ ‘”  ÍÇ ‘”  ÍÈ ‘”  ÍÉ ‘”  ÍÊ ‘”  ÍË ‘”  ÍÌ ‘”  ÍÍ ‘”  ÍÎ ÔrI’§missing¦pluginÃ¦genAbcÂÔ  ÔrJ”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache˜ÔrK•¤type¥start£endªspecifiers¦source±ImportDeclarationÌ€Ì¯‘ÔrL•¤type¥start£end¨imported¥local¯ImportSpecifierÌ‰Ì˜ÔrM”¤type¥start£end¤nameªIdentifierÌ‰Ì˜¯CommonSearchBarMªIdentifierÌ‰Ì˜¯CommonSearchBarÔrN•¤type¥start£end¥value£raw§LiteralÌ Ì®¬uicomponents®'uicomponents'K±ImportDeclarationÌ±ÌÓ‘L¯ImportSpecifierÌºÌÃMªIdentifierÌºÌÃ©VideoPageMªIdentifierÌºÌÃ©VideoPageN§LiteralÌËÌÒ¥video§'video'K±ImportDeclarationÌÕÌõ‘L¯ImportSpecifierÌÞÌæMªIdentifierÌÞÌæ¨NewsPageMªIdentifierÌÞÌæ¨NewsPageN§LiteralÌîÌô¤news¦'news'K±ImportDeclarationÌ÷Í‘L¯ImportSpecifierÍ Í	MªIdentifierÍ Í	©LoginPageMªIdentifierÍ Í	©LoginPageN§LiteralÍÍ¥login§'login'K±ImportDeclarationÍÍ;‘L¯ImportSpecifierÍ$Í,MªIdentifierÍ$Í,¨MinePageMªIdentifierÍ$Í,¨MinePageN§LiteralÍ4Í:¤mine¦'mine'K±ImportDeclarationÍ=Ía‘L¯ImportSpecifierÍFÍQMªIdentifierÍFÍQ«UserManagerMªIdentifierÍFÍQ«UserManagerN§LiteralÍYÍ`¥login§'login'K±ImportDeclarationÍcÍ‹‘ÔrO”¤type¥start£end¥local¶ImportDefaultSpecifierÍjÍqMªIdentifierÍjÍq§webviewN§LiteralÍwÍŠ±@ohos.web.webview³'@ohos.web.webview'K±ImportDeclarationÍÍº‘L¯ImportSpecifierÍ–ÍªMªIdentifierÍ–Íª´BaiduHotSearchParserMªIdentifierÍ–Íª´BaiduHotSearchParserN§LiteralÍ²Í¹¥utils§'utils'

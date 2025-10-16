@@ -150,8 +150,8 @@
     }
   },
   "packages": {
-    "login@file:features/login": {
-      "storePath": "features/login",
+    "utils@file:commons/utils": {
+      "storePath": "commons/utils",
       "dependencies": {},
       "dynamicDependencies": {},
       "dev": false,
@@ -166,11 +166,29 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "news@file:features/news": {
-      "storePath": "features/news",
+    "login@file:features/login": {
+      "storePath": "features/login",
+      "dependencies": {},
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "quickstart@file:features/quickstart": {
+      "storePath": "features/quickstart",
       "dependencies": {
         "utils": "commons/utils",
         "uicomponents": "commons/uicomponents"
+      },
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "mine@file:features/mine": {
+      "storePath": "features/mine",
+      "dependencies": {
+        "login": "features/login"
       },
       "dynamicDependencies": {},
       "dev": false,
@@ -179,17 +197,6 @@
     },
     "video@file:features/video": {
       "storePath": "features/video",
-      "dependencies": {
-        "utils": "commons/utils",
-        "uicomponents": "commons/uicomponents"
-      },
-      "dynamicDependencies": {},
-      "dev": false,
-      "dynamic": false,
-      "maskedByOverrideDependencyMap": false
-    },
-    "quickstart@file:features/quickstart": {
-      "storePath": "features/quickstart",
       "dependencies": {
         "utils": "commons/utils",
         "uicomponents": "commons/uicomponents"
@@ -209,19 +216,12 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "mine@file:features/mine": {
-      "storePath": "features/mine",
+    "news@file:features/news": {
+      "storePath": "features/news",
       "dependencies": {
-        "login": "features/login"
+        "utils": "commons/utils",
+        "uicomponents": "commons/uicomponents"
       },
-      "dynamicDependencies": {},
-      "dev": false,
-      "dynamic": false,
-      "maskedByOverrideDependencyMap": false
-    },
-    "utils@file:commons/utils": {
-      "storePath": "commons/utils",
-      "dependencies": {},
       "dynamicDependencies": {},
       "dev": false,
       "dynamic": false,

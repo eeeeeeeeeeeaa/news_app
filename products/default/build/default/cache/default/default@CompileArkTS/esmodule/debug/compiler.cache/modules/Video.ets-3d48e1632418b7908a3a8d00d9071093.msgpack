@@ -1,341 +1,0 @@
-Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚif (!("finalizeConstruction" in ViewPU.prototype)) {
-    Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
-}
-// ets/view/Video.ets
-import { CommonSearchBar } from 'uicomponents';
-import { BaiduHotSearchParser } from 'utils';
-import webview from '@ohos.web.webview';
-export default class VideoPage extends ViewPU {
-    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
-        super(parent, __localStorage, elmtId, extraInfo);
-        if (typeof paramsLambda === "function") {
-            this.paramsGenerator_ = paramsLambda;
-        }
-        this.__searchText = new ObservedPropertySimplePU('', this, "searchText");
-        this.__selectedUrl = new ObservedPropertyObjectPU(null, this, "selectedUrl");
-        this.webController = new webview.WebviewController();
-        this.__hotTitles = new ObservedPropertyObjectPU([], this, "hotTitles");
-        this.setInitiallyProvidedValue(params);
-        this.finalizeConstruction();
-    }
-    setInitiallyProvidedValue(params) {
-        if (params.searchText !== undefined) {
-            this.searchText = params.searchText;
-        }
-        if (params.selectedUrl !== undefined) {
-            this.selectedUrl = params.selectedUrl;
-        }
-        if (params.webController !== undefined) {
-            this.webController = params.webController;
-        }
-        if (params.hotTitles !== undefined) {
-            this.hotTitles = params.hotTitles;
-        }
-    }
-    updateStateVars(params) {
-    }
-    purgeVariableDependenciesOnElmtId(rmElmtId) {
-        this.__searchText.purgeDependencyOnElmtId(rmElmtId);
-        this.__selectedUrl.purgeDependencyOnElmtId(rmElmtId);
-        this.__hotTitles.purgeDependencyOnElmtId(rmElmtId);
-    }
-    aboutToBeDeleted() {
-        this.__searchText.aboutToBeDeleted();
-        this.__selectedUrl.aboutToBeDeleted();
-        this.__hotTitles.aboutToBeDeleted();
-        SubscriberManager.Get().delete(this.id__());
-        this.aboutToBeDeletedInternal();
-    }
-    get searchText() {
-        return this.__searchText.get();
-    }
-    set searchText(newValue) {
-        this.__searchText.set(newValue);
-    }
-    get selectedUrl() {
-        return this.__selectedUrl.get();
-    }
-    set selectedUrl(newValue) {
-        this.__selectedUrl.set(newValue);
-    }
-    get hotTitles() {
-        return this.__hotTitles.get();
-    }
-    set hotTitles(newValue) {
-        this.__hotTitles.set(newValue);
-    }
-    async aboutToAppear() {
-        try {
-            const realtime = await BaiduHotSearchParser.getHotSearchData('realtime');
-            this.hotTitles = realtime.slice(0, 10).map((it) => it.card_title);
-        }
-        catch (_) {
-            this.hotTitles = [];
-        }
-    }
-    openBrowser(url) {
-        this.selectedUrl = url;
-    }
-    closeBrowser() {
-        this.selectedUrl = null;
-    }
-    buildBrowserLayer(url, parent = null) {
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Column.create();
-            Column.padding({ top: '48vp' });
-            Column.width('100%');
-            Column.height('100%');
-            Column.backgroundColor('#FFFFFF');
-        }, Column);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Row.create();
-            Row.width('100%');
-            Row.backgroundColor('#FFFFFF');
-        }, Row);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('å…³é—­');
-            Text.fontSize(16);
-            Text.fontColor('#E60012');
-            Text.padding({ left: 16, right: 16, top: 16, bottom: 16 });
-            Text.onClick(() => {
-                this.closeBrowser();
-            });
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Blank.create();
-        }, Blank);
-        Blank.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('æœç´¢ç»“æœ');
-            Text.fontSize(16);
-            Text.fontWeight(FontWeight.Medium);
-            Text.fontColor('#182431');
-            Text.margin({ right: 24 });
-        }, Text);
-        Text.pop();
-        Row.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Web.create({ src: url, controller: this.webController });
-            Web.layoutWeight(1);
-            Web.width('100%');
-        }, Web);
-        Column.pop();
-    }
-    initialRender() {
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Stack.create({ alignContent: Alignment.TopStart });
-            Stack.width('100%');
-            Stack.height('100%');
-        }, Stack);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Column.create();
-            Column.padding({ top: '48vp' });
-            Column.width('100%');
-            Column.height('100%');
-            Column.backgroundColor('#F8F9FA');
-        }, Column);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            __Common__.create();
-            __Common__.padding({ left: '12vp', right: '12vp', top: '8vp', bottom: '8vp' });
-        }, __Common__);
-        {
-            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                if (isInitialRender) {
-                    let componentCall = new 
-                    // é¡¶éƒ¨æœç´¢æ¡†ï¼ˆå…¬å…±ç»„ä»¶ï¼‰
-                    CommonSearchBar(this, {
-                        value: this.searchText,
-                        placeholder: 'æœç´¢æ–°é—»',
-                        hotTitles: this.hotTitles,
-                        onSearch: (url) => {
-                            this.openBrowser(url);
-                        }
-                    }, undefined, elmtId, () => { }, { page: "features/video/src/main/ets/view/Video.ets", line: 67, col: 9 });
-                    ViewPU.create(componentCall);
-                    let paramsLambda = () => {
-                        return {
-                            value: this.searchText,
-                            placeholder: 'æœç´¢æ–°é—»',
-                            hotTitles: this.hotTitles,
-                            onSearch: (url) => {
-                                this.openBrowser(url);
-                            }
-                        };
-                    };
-                    componentCall.paramsGenerator_ = paramsLambda;
-                }
-                else {
-                    this.updateStateVarsOfChildByElmtId(elmtId, {
-                        value: this.searchText,
-                        hotTitles: this.hotTitles
-                    });
-                }
-            }, { name: "CommonSearchBar" });
-        }
-        __Common__.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            // é¡µé¢å†…å®¹
-            Text.create('è§†é¢‘èµ„è®¯');
-            // é¡µé¢å†…å®¹
-            Text.fontSize('20fp');
-            // é¡µé¢å†…å®¹
-            Text.fontWeight(FontWeight.Bold);
-            // é¡µé¢å†…å®¹
-            Text.margin('40vp');
-        }, Text);
-        // é¡µé¢å†…å®¹
-        Text.pop();
-        Column.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            If.create();
-            if (this.selectedUrl !== null) {
-                this.ifElseBranchUpdateFunction(0, () => {
-                    this.buildBrowserLayer.bind(this)(this.selectedUrl);
-                });
-            }
-            else {
-                this.ifElseBranchUpdateFunction(1, () => {
-                });
-            }
-        }, If);
-        If.pop();
-        Stack.pop();
-    }
-    rerender() {
-        this.updateDirtyElements();
-    }
-}
-//# sourceMappingURL=Video.js.mapÂ“ÙSC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\uicomponents\Index.etsÙLC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\Index.etsÙ] hvigor_ignore_F:_huawei_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.web.webview.d.tsÙ_C:\Users\Administrator\DevEcoStudioProjects\news_app\features\video\src\main\ets\view\Video.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥videoÃÂÙCC:\Users\Administrator\DevEcoStudioProjects\news_app\features\videoÙ4C:\Users\Administrator\DevEcoStudioProjects\news_app¥video¥1.0.0ÔrC’§pkgNameªpkgVersion¥video¥1.0.0‘ÔrD’²hostDependencyName®hostModuleName­../view/Video¥videoÙCC:\Users\Administrator\DevEcoStudioProjects\news_app\features\videoÃÃÚ	Ÿï»¿// ets/view/Video.ets
-import { CommonSearchBar } from 'uicomponents';
-import { BaiduHotSearchParser } from 'utils';
-import webview from '@ohos.web.webview';
-
-@Component
-export default struct VideoPage {
-  @State searchText: string = '';
-  @State selectedUrl: string | null = null;
-  private webController: webview.WebviewController = new webview.WebviewController();
-  @State hotTitles: string[] = [];
-
-  async aboutToAppear() {
-    try {
-      const realtime = await BaiduHotSearchParser.getHotSearchData('realtime');
-      this.hotTitles = realtime.slice(0, 10).map((it) => it.card_title);
-    } catch (_) {
-      this.hotTitles = [];
-    }
-  }
-
-  private openBrowser(url: string): void {
-    this.selectedUrl = url;
-  }
-
-  private closeBrowser(): void {
-    this.selectedUrl = null;
-  }
-
-  @Builder
-  buildBrowserLayer(url: string) {
-    Column() {
-      Row() {
-        Text('å…³é—­')
-          .fontSize(16)
-          .fontColor('#E60012')
-          .padding({ left: 16, right: 16, top: 16, bottom: 16 })
-          .onClick(() => {
-            this.closeBrowser();
-          })
-
-        Blank()
-
-        Text('æœç´¢ç»“æœ')
-          .fontSize(16)
-          .fontWeight(FontWeight.Medium)
-          .fontColor('#182431')
-          .margin({ right: 24 })
-      }
-      .width('100%')
-      .backgroundColor('#FFFFFF')
-
-      Web({ src: url, controller: this.webController })
-        .layoutWeight(1)
-        .width('100%')
-    }
-    .padding({ top: '48vp' })
-    .width('100%')
-    .height('100%')
-    .backgroundColor('#FFFFFF')
-  }
-
-  build() {
-    Stack({ alignContent: Alignment.TopStart }) {
-      Column() {
-        // é¡¶éƒ¨æœç´¢æ¡†ï¼ˆå…¬å…±ç»„ä»¶ï¼‰
-        CommonSearchBar({
-          value: this.searchText,
-          placeholder: 'æœç´¢æ–°é—»',
-          hotTitles: this.hotTitles,
-          onSearch: (url: string) => {
-            this.openBrowser(url);
-          }
-        })
-        .padding({ left: '12vp', right: '12vp', top: '8vp', bottom: '8vp' })
-
-        // é¡µé¢å†…å®¹
-        Text('è§†é¢‘èµ„è®¯')
-          .fontSize('20fp')
-          .fontWeight(FontWeight.Bold)
-          .margin('40vp')
-        // åç»­å¯æ·»åŠ è§†é¢‘åˆ†ç±»ã€æ¨èè§†é¢‘åˆ—è¡¨ç­‰
-      }
-      .padding({ top: '48vp' })
-      .width('100%')
-      .height('100%')
-      .backgroundColor('#F8F9FA')
-
-      if (this.selectedUrl !== null) {
-        this.buildBrowserLayer(this.selectedUrl as string);
-      }
-    }
-    .width('100%')
-    .height('100%')
-  }
-}
-ÀÔrE“±@ohos.web.webview¥utils¬uicomponentsÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙ] hvigor_ignore_F:_huawei_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.web.webview.d.tsAÃªoh-resolveÂFAÂÙLC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\Index.etsAÃªoh-resolveÂFAÂÙSC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\uicomponents\Index.etsAÃªoh-resolveÂ“ÔrG–§version¤fileªsourceRoot§sources¥names¨mappings¨Video.js ‘©Video.etsÜ Ì’”   ”  ˜”   ” ”	 	” ” ”   ”. .”/ /˜”   ” ”	 	” ” ”% %”, ,”- -–”   ” ” ” ”' '”( (–”   ” ” ” ” ” ‘”  ’”9 ”;  ’”: &”> *–” 	5”! 	9”( 	Ì@”) 	ÌA”: 	ÌR”< 	ÌT’”8 
-”: 
-!‘” (’” 	” ’” 	” ’” 	” ’” 	” ’” 
-	” 
-’” 
-	” 
-”” ”	 ”
- ” ’” ” œ” ” ” ” ”# ”7 1”8 2”ÌH ÌB”ÌI ÌC”ÌS ÌM”ÌT ÌN”ÌU ÌOÜ ” ” 
-” ” ” ”% ”&  ”+ %”, &”- '”/ )”1 +”2 ,”3 -”6 0”7 1”8 2”: 4”< 6”> 8”? 9”ÌA ;”ÌB <”ÌL ÌF”ÌM ÌG”ÌN ÌH‘”	 ”” ” ” ” —” ” 
-” ” ” ” ”  ‘”	 ’” ” ”” 
-” ” ” !—” ” ” 	” ” ” ” ’” ” ’” 
-” —” ” ” 	” ” ” ”  ’” ” ”” ” ” ” ’” ” 
-š” ” 
-” 8” 8” 8” 8”  8”" 8”( 8”* 8–” ” 
-” 9” 9
-” 9” 9–” ” 
-” :” :” :”  :–” ” 
-” ;”" ;”# ;”, ;’”  ”  	–”  ”  	” 1” 1” 1” 1–”  ”  	” 2” 2”  2”) 2 ”” !” !” !” !–” !” !” "” "” "” "–” !” !” #” #” #”$ #Ü ” !” !” $” $” $” $” $”! $”# $”% $”* $$”, $&”. $(”0 $*”3 $-”5 $/”7 $1”9 $3”? $9”ÌA $;”ÌC $=”ÌE $?—” !” !” %” %” %” %” %–” &” &” &”! &”# &”$ & ’” '
-” '’” !” !’” )” )’” )” )”” +” +” +” +–” +” +” ,” ,” ,” ,˜” +” +” -” -” -”& - ”' -!”- -'–” +” +” .” .” .”$ .š” +” +” /” /” /” /” /”! /”# /”% /’” +” +’”  ”  	” 4” 4	” 4
-” 4” 4” 4”! 4”# 4”- 4 ”/ 4"”3 4&”4 4'”ÌA 44”ÌC 46–” 4” 4	” 5	” 5” 5” 5–” 4” 4	” 6	” 6” 6” 6’” ” 
-‘” <‘” >š” ?” ?	” ?
-” ?”' ?”) ?”2 ?#”3 ?$”; ?,”= ?.–” ?” ?	” Ì\” Ì\
-” Ì\” Ì\–” ?” ?	” Ì]” Ì]” Ì]” Ì]’” Ì@” Ì@š” Ì@” Ì@” ÌS” ÌS” ÌS” ÌS”  ÌS”" ÌS”( ÌS”* ÌS–” Ì@” Ì@” ÌT” ÌT” ÌT” ÌT–” Ì@” Ì@” ÌU” ÌU” ÌU”  ÌU–” Ì@” Ì@” ÌV”" ÌV”# ÌV”, ÌV Ü ” ÌJ	” ÌJ” ÌJ”! ÌJ”% ÌJ”' ÌJ”- ÌJ”/ ÌJ!”4 ÌJ&”6 ÌJ(”< ÌJ.”> ÌJ0”ÌA ÌJ3”ÌC ÌJ5”ÌH ÌJ:”ÌJ ÌJ<”ÌP ÌJÌB”ÌR ÌJÌD”ÌW ÌJÌI”ÌY ÌJÌK’” ÌA”" ÌA“” ÌB”# ÌB”* ÌB–” ÌC
-” ÌC” ÌC”# ÌC”$ ÌC”. ÌC ”” ÌD
-”# ÌD”% ÌD”+ ÌD–” ÌE
-”! ÌE”# ÌE”' ÌE”( ÌE”1 ÌE#—” ÌF
-”  ÌF”" ÌF”# ÌF”& ÌF ”( ÌF"”* ÌF$˜” ÌG”  ÌG”! ÌG”, ÌG”- ÌG”0 ÌG ”1 ÌG!”2 ÌG"’” ÌH
-” ÌH‘” ÌI	–” ÌC
-”! ÌC”# ÌC”' ÌC”( ÌC”2 ÌC ”” ÌD
-”' ÌD”) ÌD”/ ÌD–” ÌE
-”% ÌE”' ÌE”+ ÌE”, ÌE”5 ÌE#—” ÌF
-”$ ÌF”& ÌF”' ÌF”* ÌF ”, ÌF"”. ÌF$˜”  ÌG”$ ÌG”% ÌG”0 ÌG”1 ÌG”4 ÌG ”5 ÌG!”6 ÌG"’” ÌH
-” ÌH–” ÌC
-” ÌC” ÌC”# ÌC”$ ÌC”. ÌC –” ÌE
-”! ÌE”# ÌE”' ÌE”( ÌE”1 ÌE#’” ÌL” ÌL”” ÌM” ÌM” ÌM” ÌM’” ÌL” ÌL–” ÌM” ÌM” ÌN” ÌN” ÌN”  ÌN’” ÌL” ÌL˜” ÌM” ÌM” ÌO” ÌO” ÌO”& ÌO ”' ÌO!”+ ÌO%’” ÌL” ÌL–” ÌM” ÌM” ÌP” ÌP” ÌP” ÌP’” ÌL” ÌL’” ÌM” ÌM’” Ì@” Ì@˜” ÌX” ÌX
-” ÌX” ÌX”  ÌX”% ÌX”) ÌX#”+ ÌX%™” ÌY” ÌY” ÌY”* ÌY”6 ÌY”: ÌY#”; ÌY$”ÌF ÌY9”ÌG ÌY:‘” ÌZ‘” ÌZ’” ?” ?	‘” Ì^ÔrH–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜ Ñ‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
- ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌĞ ÔrI’§missing¦pluginÃ¦genAbcÂÔ  ÔrJ”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache“ÔrK•¤type¥start£endªspecifiers¦source±ImportDeclarationÌ—ÌÆ‘ÔrL•¤type¥start£end¨imported¥local¯ImportSpecifierÌ Ì¯ÔrM”¤type¥start£end¤nameªIdentifierÌ Ì¯¯CommonSearchBarMªIdentifierÌ Ì¯¯CommonSearchBarÔrN•¤type¥start£end¥value£raw§LiteralÌ·ÌÅ¬uicomponents®'uicomponents'K±ImportDeclarationÌÈÌõ‘L¯ImportSpecifierÌÑÌåMªIdentifierÌÑÌå´BaiduHotSearchParserMªIdentifierÌÑÌå´BaiduHotSearchParserN§LiteralÌíÌô¥utils§'utils'K±ImportDeclarationÌ÷Í‘ÔrO”¤type¥start£end¥local¶ImportDefaultSpecifierÌşÍMªIdentifierÌşÍ§webviewN§LiteralÍÍ±@ohos.web.webview³'@ohos.web.webview'
