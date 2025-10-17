@@ -26,3 +26,5 @@ export { MainViewModel } from './utils/src/MainViewModel';
 // Export data models
 export { default as ItemData } from './utils/src/ItemData';
 export { default as NewsData } from './utils/src/NewsData';
+export { NewsHeadlineService, NewsHeadlineItem } from './utils/src/NewsHeadlineService';
+export { NewsApiConfig, buildNewsApiUrl, NewsApiRequestParams, maskApiKey } from './utils/src/NewsApiConfig';

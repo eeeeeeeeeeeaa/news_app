@@ -19,3 +19,5 @@ export { default as StorageUtils } from './src/main/ets/components/StorageUtils'
 export { MainViewModel } from './src/MainViewModel';
 export { HttpUtils } from './src/HttpUtils';
 export { BaiduHotSearchParser, BaiduHotSearchItem } from './src/BaiduHotSearchParser';
+export { NewsHeadlineService, NewsHeadlineItem } from './src/NewsHeadlineService';
+export { NewsApiConfig, buildNewsApiUrl, NewsApiRequestParams, maskApiKey } from './src/NewsApiConfig';

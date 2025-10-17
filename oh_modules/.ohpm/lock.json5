@@ -166,17 +166,6 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "news@file:features/news": {
-      "storePath": "features/news",
-      "dependencies": {
-        "utils": "commons/utils",
-        "uicomponents": "commons/uicomponents"
-      },
-      "dynamicDependencies": {},
-      "dev": false,
-      "dynamic": false,
-      "maskedByOverrideDependencyMap": false
-    },
     "video@file:features/video": {
       "storePath": "features/video",
       "dependencies": {
@@ -190,6 +179,17 @@
     },
     "quickstart@file:features/quickstart": {
       "storePath": "features/quickstart",
+      "dependencies": {
+        "utils": "commons/utils",
+        "uicomponents": "commons/uicomponents"
+      },
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "news@file:features/news": {
+      "storePath": "features/news",
       "dependencies": {
         "utils": "commons/utils",
         "uicomponents": "commons/uicomponents"

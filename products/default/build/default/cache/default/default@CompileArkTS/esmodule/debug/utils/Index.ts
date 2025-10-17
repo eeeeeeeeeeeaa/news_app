@@ -4,3 +4,7 @@ export { MainViewModel } from "@bundle:com.huawei.quickstart/default@utils/src/M
 export { HttpUtils } from "@bundle:com.huawei.quickstart/default@utils/src/HttpUtils";
 export { BaiduHotSearchParser } from "@bundle:com.huawei.quickstart/default@utils/src/BaiduHotSearchParser";
 export type { BaiduHotSearchItem } from "@bundle:com.huawei.quickstart/default@utils/src/BaiduHotSearchParser";
+export { NewsHeadlineService } from "@bundle:com.huawei.quickstart/default@utils/src/NewsHeadlineService";
+export type { NewsHeadlineItem } from "@bundle:com.huawei.quickstart/default@utils/src/NewsHeadlineService";
+export { NewsApiConfig, buildNewsApiUrl, maskApiKey } from "@bundle:com.huawei.quickstart/default@utils/src/NewsApiConfig";
+export type { NewsApiRequestParams } from "@bundle:com.huawei.quickstart/default@utils/src/NewsApiConfig";

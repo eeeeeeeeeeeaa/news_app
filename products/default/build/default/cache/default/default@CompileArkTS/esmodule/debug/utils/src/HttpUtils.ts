@@ -5,7 +5,19 @@ export class HttpUtils {
         if (typeof result === 'string') {
             return result;
         }
-        // ArkTS http 在文本场景通常返回 string，这里保守返回空字符串
+        if (result instanceof Uint8Array) {
+            let out = '';
+            const len = result.length;
+            for (let i = 0; i < len; i++) {
+                out += String.fromCharCode(result[i]);
+            }
+            try {
+                return decodeURIComponent(escape(out));
+            }
+            catch (_) {
+                return out;
+            }
+        }
         return '';
     }
     static async get(url: string): Promise<string> {
