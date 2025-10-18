@@ -159,16 +159,16 @@
     }
   },
   "packages": {
-    "uicomponents@file:commons/uicomponents": {
-      "storePath": "commons/uicomponents",
+    "utils@file:commons/utils": {
+      "storePath": "commons/utils",
       "dependencies": {},
       "dynamicDependencies": {},
       "dev": false,
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "utils@file:commons/utils": {
-      "storePath": "commons/utils",
+    "uicomponents@file:commons/uicomponents": {
+      "storePath": "commons/uicomponents",
       "dependencies": {},
       "dynamicDependencies": {},
       "dev": false,
@@ -205,17 +205,6 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "news@file:features/news": {
-      "storePath": "features/news",
-      "dependencies": {
-        "utils": "commons/utils",
-        "uicomponents": "commons/uicomponents"
-      },
-      "dynamicDependencies": {},
-      "dev": false,
-      "dynamic": false,
-      "maskedByOverrideDependencyMap": false
-    },
     "follow@file:features/follows": {
       "storePath": "features/follows",
       "dependencies": {
@@ -241,6 +230,17 @@
       "storePath": "features/mine",
       "dependencies": {
         "login": "features/login"
+      },
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "news@file:features/news": {
+      "storePath": "features/news",
+      "dependencies": {
+        "utils": "commons/utils",
+        "uicomponents": "commons/uicomponents"
       },
       "dynamicDependencies": {},
       "dev": false,
