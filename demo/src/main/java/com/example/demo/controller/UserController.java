@@ -28,8 +28,17 @@ public class UserController {
     // 登录接口
     @PostMapping("/login")
     public Result<String> login(
-            @RequestParam String userPhone,
-            @RequestParam String userPassword) {
+            @RequestParam(required = false) String userPhone,
+            @RequestParam(required = false) String userPassword) {
+        System.out.println("===== Controller 接收到的参数 =====");
+        System.out.println("userPhone: " + userPhone);
+        System.out.println("userPassword: " + userPassword);
+        System.out.println("===================================");
+        
+        if (userPhone == null || userPassword == null) {
+            return Result.error("手机号或密码不能为空");
+        }
+        
         return userService.login(userPhone, userPassword);
     }
 }

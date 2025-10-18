@@ -23,6 +23,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())  // 开发环境关闭CSRF（简化测试）
+                .formLogin(form -> form.disable())  // 禁用默认的表单登录
+                .httpBasic(basic -> basic.disable())  // 禁用HTTP Basic认证
                 .authorizeHttpRequests(auth -> auth
                         // 公开接口（无需登录）
                         .requestMatchers("/api/users/register", "/api/users/login").permitAll()

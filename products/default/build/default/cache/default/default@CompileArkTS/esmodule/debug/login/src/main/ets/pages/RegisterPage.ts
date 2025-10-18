@@ -3,20 +3,24 @@ if (!("finalizeConstruction" in ViewPU.prototype)) {
 }
 interface RegisterPage_Params {
     account?: string;
+    username?: string;
     password?: string;
     confirmPassword?: string;
     isShowProgress?: boolean;
     timeOutId?: number;
     userManager?: UserManager;
+    authService?: AuthService;
     onBack?: () => void;
 }
 import promptAction from "@ohos:promptAction";
+import router from "@ohos:router";
 import { UserManager } from "@bundle:com.huawei.quickstart/default@login/ets/model/UserManager";
+import { AuthService } from "@bundle:com.huawei.quickstart/default@login/ets/model/useregister";
 export function RegisterPageBuilder(parent = null) {
     {
         (parent ? parent : this).observeComponentCreation2((elmtId, isInitialRender) => {
             if (isInitialRender) {
-                let componentCall = new RegisterPage(parent ? parent : this, {}, undefined, elmtId, () => { }, { page: "features/login/src/main/ets/pages/RegisterPage.ets", line: 22, col: 3 });
+                let componentCall = new RegisterPage(parent ? parent : this, {}, undefined, elmtId, () => { }, { page: "features/login/src/main/ets/pages/RegisterPage.ets", line: 23, col: 3 });
                 ViewPU.create(componentCall);
                 let paramsLambda = () => {
                     return {};
@@ -54,18 +58,25 @@ export class RegisterPage extends ViewPU {
             this.paramsGenerator_ = paramsLambda;
         }
         this.__account = new ObservedPropertySimplePU('', this, "account");
+        this.__username = new ObservedPropertySimplePU('', this, "username");
         this.__password = new ObservedPropertySimplePU('', this, "password");
         this.__confirmPassword = new ObservedPropertySimplePU('', this, "confirmPassword");
         this.__isShowProgress = new ObservedPropertySimplePU(false, this, "isShowProgress");
         this.timeOutId = -1;
         this.userManager = UserManager.getInstance();
-        this.onBack = () => { };
+        this.authService = AuthService.getInstance();
+        this.onBack = () => {
+            router.back();
+        };
         this.setInitiallyProvidedValue(params);
         this.finalizeConstruction();
     }
     setInitiallyProvidedValue(params: RegisterPage_Params) {
         if (params.account !== undefined) {
             this.account = params.account;
+        }
+        if (params.username !== undefined) {
+            this.username = params.username;
         }
         if (params.password !== undefined) {
             this.password = params.password;
@@ -82,6 +93,9 @@ export class RegisterPage extends ViewPU {
         if (params.userManager !== undefined) {
             this.userManager = params.userManager;
         }
+        if (params.authService !== undefined) {
+            this.authService = params.authService;
+        }
         if (params.onBack !== undefined) {
             this.onBack = params.onBack;
         }
@@ -90,12 +104,14 @@ export class RegisterPage extends ViewPU {
     }
     purgeVariableDependenciesOnElmtId(rmElmtId) {
         this.__account.purgeDependencyOnElmtId(rmElmtId);
+        this.__username.purgeDependencyOnElmtId(rmElmtId);
         this.__password.purgeDependencyOnElmtId(rmElmtId);
         this.__confirmPassword.purgeDependencyOnElmtId(rmElmtId);
         this.__isShowProgress.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__account.aboutToBeDeleted();
+        this.__username.aboutToBeDeleted();
         this.__password.aboutToBeDeleted();
         this.__confirmPassword.aboutToBeDeleted();
         this.__isShowProgress.aboutToBeDeleted();
@@ -108,6 +124,13 @@ export class RegisterPage extends ViewPU {
     }
     set account(newValue: string) {
         this.__account.set(newValue);
+    }
+    private __username: ObservedPropertySimplePU<string>;
+    get username() {
+        return this.__username.get();
+    }
+    set username(newValue: string) {
+        this.__username.set(newValue);
     }
     private __password: ObservedPropertySimplePU<string>;
     get password() {
@@ -132,23 +155,29 @@ export class RegisterPage extends ViewPU {
     }
     private timeOutId: number;
     private userManager: UserManager;
+    private authService: AuthService;
     private onBack: () => void;
     async register(): Promise<void> {
-        if (this.account === '' || this.password === '' || this.confirmPassword === '') {
+        if (this.account === '' || this.username === '' || this.password === '' || this.confirmPassword === '') {
             promptAction.showToast({
-                message: { "id": 16777291, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
+                message: "请输入完整信息"
+            });
+            return;
+        }
+        if (this.password !== this.confirmPassword) {
+            promptAction.showToast({
+                message: "两次输入的密码不一样"
             });
             return;
         }
         this.isShowProgress = true;
         try {
-            const success = await this.userManager.registerUser(this.account, this.password, this.confirmPassword);
+            const success: boolean = await this.authService.register(this.account, this.username, this.password);
             if (success) {
                 if (this.timeOutId === -1) {
                     this.timeOutId = setTimeout(() => {
                         this.isShowProgress = false;
                         this.timeOutId = -1;
-                        // 注册成功后返回登录页面
                         this.onBack();
                     }, 1500);
                 }
@@ -179,11 +208,8 @@ export class RegisterPage extends ViewPU {
             Column.backgroundColor('#F1F3F5');
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            // 返回按钮
             Row.create();
-            // 返回按钮
             Row.width('100%');
-            // 返回按钮
             Row.padding({ top: '20vp', left: '12vp', right: '12vp' });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -203,7 +229,6 @@ export class RegisterPage extends ViewPU {
             Blank.create();
         }, Blank);
         Blank.pop();
-        // 返回按钮
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Image.create({ "id": 16777309, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
@@ -215,14 +240,14 @@ export class RegisterPage extends ViewPU {
             });
         }, Image);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777303, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+            Text.create("注册");
             Text.fontSize('24fp');
             Text.fontWeight(FontWeight.Medium);
             Text.fontColor('#182431');
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777302, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+            Text.create("创建账号，开始你的精彩之旅");
             Text.fontSize('16fp');
             Text.fontColor('#99182431');
             Text.margin({
@@ -232,7 +257,19 @@ export class RegisterPage extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            TextInput.create({ placeholder: { "id": 16777285, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" } });
+            TextInput.create({ placeholder: "请输入昵称" });
+            TextInput.maxLength(20);
+            __TextInput__inputStyle();
+            TextInput.onChange((value: string) => {
+                this.username = value;
+            });
+        }, TextInput);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Line.create();
+            __Line__lineStyle();
+        }, Line);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            TextInput.create({ placeholder: "请输入手机号" });
             TextInput.maxLength(11);
             TextInput.type(InputType.Number);
             __TextInput__inputStyle();
@@ -245,7 +282,7 @@ export class RegisterPage extends ViewPU {
             __Line__lineStyle();
         }, Line);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            TextInput.create({ placeholder: { "id": 16777298, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" } });
+            TextInput.create({ placeholder: "请输入密码" });
             TextInput.maxLength(8);
             TextInput.type(InputType.Password);
             __TextInput__inputStyle();
@@ -258,7 +295,7 @@ export class RegisterPage extends ViewPU {
             __Line__lineStyle();
         }, Line);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            TextInput.create({ placeholder: { "id": 16777289, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" } });
+            TextInput.create({ placeholder: "确认密码" });
             TextInput.maxLength(8);
             TextInput.type(InputType.Password);
             __TextInput__inputStyle();
@@ -271,7 +308,7 @@ export class RegisterPage extends ViewPU {
             __Line__lineStyle();
         }, Line);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Button.createWithLabel({ "id": 16777300, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, { type: ButtonType.Capsule });
+            Button.createWithLabel("注册", { type: ButtonType.Capsule });
             Button.width('328vp');
             Button.height('40vp');
             Button.fontSize('16fp');
@@ -287,10 +324,8 @@ export class RegisterPage extends ViewPU {
         }, Button);
         Button.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777288, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
-            Text.fontColor('#007DFF');
-            Text.fontSize('16fp');
-            Text.fontWeight(FontWeight.Medium);
+            Text.create("返回登录");
+            __Text__blueTextStyle();
             Text.onClick(() => {
                 this.onBack();
             });

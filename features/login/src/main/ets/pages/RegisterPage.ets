@@ -16,6 +16,7 @@
 import { promptAction } from '@kit.ArkUI';
 import { router } from '@kit.ArkUI';
 import { UserManager } from '../model/UserManager';
+import { AuthService } from '../model/useregister';
 
 @Builder
 export function RegisterPageBuilder() {
@@ -53,31 +54,42 @@ function blueTextStyle() {
 @Component
 export struct RegisterPage {
   @State account: string = '';
+  @State username: string = '';
   @State password: string = '';
   @State confirmPassword: string = '';
   @State isShowProgress: boolean = false;
   private timeOutId: number = -1;
   private userManager: UserManager = UserManager.getInstance();
-  onBack: () => void = () => {};
+  private authService: AuthService = AuthService.getInstance();
+
+  onBack: () => void = () => {
+    router.back();
+  };
 
   async register(): Promise<void> {
-    if (this.account === '' || this.password === '' || this.confirmPassword === '') {
+    if (this.account === '' || this.username === '' || this.password === '' || this.confirmPassword === '') {
       promptAction.showToast({
-        message: $r('app.string.input_empty_tips')
+        message: "请输入完整信息"
+      });
+      return;
+    }
+
+    if (this.password !== this.confirmPassword) {
+      promptAction.showToast({
+        message: "两次输入的密码不一样"
       });
       return;
     }
 
     this.isShowProgress = true;
-    
+
     try {
-      const success = await this.userManager.registerUser(this.account, this.password, this.confirmPassword);
+      const success: boolean = await this.authService.register(this.account, this.username, this.password);
       if (success) {
         if (this.timeOutId === -1) {
           this.timeOutId = setTimeout(() => {
             this.isShowProgress = false;
             this.timeOutId = -1;
-            // 注册成功后返回登录页面
             this.onBack();
           }, 1500);
         }
@@ -97,7 +109,6 @@ export struct RegisterPage {
 
   build() {
     Column() {
-      // 返回按钮
       Row() {
         Button() {
           Image($r('app.media.ic_back'))
@@ -108,11 +119,12 @@ export struct RegisterPage {
         .onClick(() => {
           this.onBack();
         })
-        
+
         Blank()
       }
       .width('100%')
       .padding({ top: '20vp', left: '12vp', right: '12vp' })
+
       Image($r('app.media.logo'))
         .width('78vp')
         .height('78vp')
@@ -120,11 +132,13 @@ export struct RegisterPage {
           top: '150vp',
           bottom: '8vp'
         })
-      Text($r('app.string.register_page'))
+
+      Text("注册")
         .fontSize('24fp')
         .fontWeight(FontWeight.Medium)
         .fontColor('#182431')
-      Text($r('app.string.register_more'))
+
+      Text("创建账号，开始你的精彩之旅")
         .fontSize('16fp')
         .fontColor('#99182431')
         .margin({
@@ -132,7 +146,16 @@ export struct RegisterPage {
           top: '8vp'
         })
 
-      TextInput({ placeholder: $r('app.string.account') })
+      TextInput({ placeholder: "请输入昵称" })
+        .maxLength(20)
+        .inputStyle()
+        .onChange((value: string) => {
+          this.username = value;
+        })
+      Line()
+        .lineStyle()
+
+      TextInput({ placeholder: "请输入手机号" })
         .maxLength(11)
         .type(InputType.Number)
         .inputStyle()
@@ -142,7 +165,7 @@ export struct RegisterPage {
       Line()
         .lineStyle()
 
-      TextInput({ placeholder: $r('app.string.password') })
+      TextInput({ placeholder: "请输入密码" })
         .maxLength(8)
         .type(InputType.Password)
         .inputStyle()
@@ -152,7 +175,7 @@ export struct RegisterPage {
       Line()
         .lineStyle()
 
-      TextInput({ placeholder: $r('app.string.confirm_password') })
+      TextInput({ placeholder: "确认密码" })
         .maxLength(8)
         .type(InputType.Password)
         .inputStyle()
@@ -162,7 +185,7 @@ export struct RegisterPage {
       Line()
         .lineStyle()
 
-      Button($r('app.string.register'), { type: ButtonType.Capsule })
+      Button("注册", { type: ButtonType.Capsule })
         .width('328vp')
         .height('40vp')
         .fontSize('16fp')
@@ -176,10 +199,8 @@ export struct RegisterPage {
           this.register();
         })
 
-      Text($r('app.string.back_to_login'))
-        .fontColor('#007DFF')
-        .fontSize('16fp')
-        .fontWeight(FontWeight.Medium)
+      Text("返回登录")
+        .blueTextStyle()
         .onClick(() => {
           this.onBack();
         })

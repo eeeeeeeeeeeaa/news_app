@@ -1,413 +1,0 @@
-Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚzimport NewsData from './NewsData';
-import { BaiduHotSearchParser } from './BaiduHotSearchParser';
-/**
- * Binds data to components and provides interfaces.
- */
-export class MainViewModel {
-    /**
-     * Get swiper image data.
-     *
-     * @return {Array<Resource>} swiperImages.
-     */
-    getSwiperImages() {
-        let swiperImages = [
-            { "id": 16777236, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" },
-            { "id": 16777237, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" },
-            { "id": 16777238, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" },
-            { "id": 16777239, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
-        ];
-        return swiperImages;
-    }
-    /**
-     * Get data of the first grid.
-     *
-     * @return {Array<PageResource>} firstGridData.
-     */
-    getFirstGridData() {
-        // è¯¥æ¨¡å—ä¸å†ä¾èµ–åº”ç”¨ä¾§çš„ç‰¹å®šèµ„æºï¼Œè¿”å›ç©ºé›†åˆç”±ä¸Šå±‚è‡ªè¡Œæ¸²æŸ“
-        return [];
-    }
-    /**
-     * Get data of the setting list.
-     *
-     * @return {Array<PageResource>} settingListData.
-     */
-    getSettingListData() {
-        return [];
-    }
-    /**
-     * Get hot news data from Baidu hot search.
-     *
-     * @return {Promise<Array<NewsData>>} hotNewsData.
-     */
-    async getHotNewsData() {
-        try {
-            // è·å–ç™¾åº¦çƒ­æœæ•°æ®
-            const hotSearchItems = await BaiduHotSearchParser.getHotSearchData();
-            // è½¬æ¢ä¸ºNewsDataæ ¼å¼
-            const hotNewsData = hotSearchItems.map((item, index) => {
-                const news = new NewsData(index + 1, item.card_title, `çƒ­æœæŒ‡æ•°: ${BaiduHotSearchParser.formatHeatScore(item.heat_score)}`, "ç™¾åº¦çƒ­æœ", "åˆšåˆš", { "id": 16777236, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "çƒ­æœ", parseInt(item.heat_score), true, index < 3);
-                const detailUrl = item.rawUrl && item.rawUrl.length > 0 ? item.rawUrl : item.linkurl;
-                news.detailUrl = detailUrl ?? null;
-                return news;
-            });
-            return hotNewsData;
-        }
-        catch (error) {
-            console.error('è·å–çƒ­æœæ•°æ®å¤±è´¥:', error);
-            // è¿”å›å¤‡ç”¨æ•°æ®
-            return this.getMockHotNewsData();
-        }
-    }
-    /**
-     * Get mock hot news data as fallback.
-     *
-     * @return {Array<NewsData>} hotNewsData.
-     */
-    getMockHotNewsData() {
-        return [
-            new NewsData(1, "ç§‘æŠ€çªç ´ï¼šäººå·¥æ™ºèƒ½åœ¨åŒ»ç–—é¢†åŸŸå–å¾—é‡å¤§è¿›å±•", "æœ€æ–°ç ”ç©¶æ˜¾ç¤ºï¼ŒAIæŠ€æœ¯åœ¨ç–¾ç—…è¯Šæ–­å’Œæ²»ç–—æ–¹æ¡ˆåˆ¶å®šæ–¹é¢å±•ç°å‡ºå·¨å¤§æ½œåŠ›...", "ç§‘æŠ€æ—¥æŠ¥", "2å°æ—¶å‰", { "id": 16777236, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "ç§‘æŠ€", 125000, true, true),
-            new NewsData(2, "ç»æµè§‚å¯Ÿï¼šå…¨çƒè‚¡å¸‚éœ‡è¡ï¼ŒæŠ•èµ„è€…éœ€è°¨æ…", "å—å¤šé‡å› ç´ å½±å“ï¼Œå…¨çƒä¸»è¦è‚¡å¸‚å‡ºç°ä¸åŒç¨‹åº¦æ³¢åŠ¨ï¼Œä¸“å®¶å»ºè®®ç†æ€§æŠ•èµ„...", "è´¢ç»ç½‘", "3å°æ—¶å‰", { "id": 16777237, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "è´¢ç»", 89000, true, false)
-        ];
-    }
-    /**
-     * Get news list data.
-     *
-     * @return {Array<NewsData>} newsListData.
-     */
-    getNewsListData() {
-        let newsListData = [
-            new NewsData(3, "æ•™è‚²æ”¹é©ï¼šæ–°è¯¾ç¨‹æ ‡å‡†æ­£å¼å‘å¸ƒ", "æ•™è‚²éƒ¨å‘å¸ƒæœ€æ–°è¯¾ç¨‹æ ‡å‡†ï¼Œå¼ºè°ƒç´ è´¨æ•™è‚²ä¸åˆ›æ–°èƒ½åŠ›åŸ¹å…»...", "æ•™è‚²æ—¶æŠ¥", "5å°æ—¶å‰", { "id": 16777238, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "æ•™è‚²", 67000, false, false),
-            new NewsData(4, "ç¯ä¿è¡ŒåŠ¨ï¼šå¤šåœ°å¯åŠ¨ç»¿è‰²å‡ºè¡Œè®¡åˆ’", "ä¸ºå‡å°‘ç¢³æ’æ”¾ï¼Œå¤šä¸ªåŸå¸‚æ¨å‡ºç»¿è‰²å‡ºè¡Œæ¿€åŠ±æ”¿ç­–...", "ç¯ä¿æ—¥æŠ¥", "6å°æ—¶å‰", { "id": 16777239, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "ç¯ä¿", 43000, false, false)
-        ];
-        return newsListData;
-    }
-    /**
-     * Get news categories.
-     *
-     * @return {Array<string>} categories.
-     */
-    getNewsCategories() {
-        return ["çƒ­æœ", "è´¢ç»", "æ°‘ç”Ÿ", "ä½“è‚²"];
-    }
-    /**
-     * Format read count.
-     *
-     * @param {number} count - read count.
-     * @return {string} formatted count.
-     */
-    formatReadCount(count) {
-        if (count >= 10000) {
-            return Math.floor(count / 10000) + "ä¸‡";
-        }
-        else if (count >= 1000) {
-            return Math.floor(count / 1000) + "k";
-        }
-        else {
-            return count.toString();
-        }
-    }
-}
-export default new MainViewModel();
-//# sourceMappingURL=MainViewModel.js.mapÂ’ÙSC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\NewsData.etsÙ_C:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\BaiduHotSearchParser.etsÙXC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\MainViewModel.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥utilsÃÂÙBC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utilsÙ4C:\Users\Administrator\DevEcoStudioProjects\news_app¥utils¥1.0.0ÔrC’§pkgNameªpkgVersion¥utils¥1.0.0‘ÔrD’²hostDependencyName®hostModuleName³./src/MainViewModel¥utilsÙBC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utilsÃÃÚìï»¿  /*
-   * Copyright (c) 2024 Huawei Device Co., Ltd.
-   * Licensed under the Apache License, Version 2.0 (the "License");
-   * you may not use this file except in compliance with the License.
-   * You may obtain a copy of the License at
-   *
-   *     http://www.apache.org/licenses/LICENSE-2.0
-   *
-   * Unless required by applicable law or agreed to in writing, software
-   * distributed under the License is distributed on an "AS IS" BASIS,
-   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   * See the License for the specific language governing permissions and
-   * limitations under the License.
-   */
-
-  import ItemData from './ItemData';
-  import NewsData from './NewsData';
-  import { BaiduHotSearchParser, BaiduHotSearchItem } from './BaiduHotSearchParser';
-
-  /**
-   * Binds data to components and provides interfaces.
-   */
-  export class MainViewModel {
-    /**
-     * Get swiper image data.
-     *
-     * @return {Array<Resource>} swiperImages.
-     */
-    getSwiperImages(): Array<Resource> {
-      let swiperImages: Resource[] = [
-        $r('app.media.fig1'),
-        $r('app.media.fig2'),
-        $r('app.media.fig3'),
-        $r('app.media.fig4')
-      ];
-      return swiperImages;
-    }
-
-    /**
-     * Get data of the first grid.
-     *
-     * @return {Array<PageResource>} firstGridData.
-     */
-    getFirstGridData(): Array<ItemData> {
-      // è¯¥æ¨¡å—ä¸å†ä¾èµ–åº”ç”¨ä¾§çš„ç‰¹å®šèµ„æºï¼Œè¿”å›ç©ºé›†åˆç”±ä¸Šå±‚è‡ªè¡Œæ¸²æŸ“
-      return [];
-    }
-
-    /**
-     * Get data of the setting list.
-     *
-     * @return {Array<PageResource>} settingListData.
-     */
-    getSettingListData(): Array<Array<ItemData>> {
-      return [];
-    }
-
-    /**
-     * Get hot news data from Baidu hot search.
-     *
-     * @return {Promise<Array<NewsData>>} hotNewsData.
-     */
-    async getHotNewsData(): Promise<Array<NewsData>> {
-      try {
-        // è·å–ç™¾åº¦çƒ­æœæ•°æ®
-        const hotSearchItems = await BaiduHotSearchParser.getHotSearchData();
-        
-        // è½¬æ¢ä¸ºNewsDataæ ¼å¼
-        const hotNewsData: NewsData[] = hotSearchItems.map((item: BaiduHotSearchItem, index: number) => {
-          const news: NewsData = new NewsData(
-            index + 1,
-            item.card_title,
-            `çƒ­æœæŒ‡æ•°: ${BaiduHotSearchParser.formatHeatScore(item.heat_score)}`,
-            "ç™¾åº¦çƒ­æœ",
-            "åˆšåˆš",
-            $r('app.media.fig1'),
-            "çƒ­æœ",
-            parseInt(item.heat_score),
-            true,
-            index < 3
-          );
-          const detailUrl: string | undefined = item.rawUrl && item.rawUrl.length > 0 ? item.rawUrl : item.linkurl;
-          news.detailUrl = detailUrl ?? null;
-          return news;
-        });
-        
-        return hotNewsData;
-      } catch (error) {
-        console.error('è·å–çƒ­æœæ•°æ®å¤±è´¥:', error);
-        // è¿”å›å¤‡ç”¨æ•°æ®
-        return this.getMockHotNewsData();
-      }
-    }
-
-    /**
-     * Get mock hot news data as fallback.
-     *
-     * @return {Array<NewsData>} hotNewsData.
-     */
-    getMockHotNewsData(): Array<NewsData> {
-      return [
-        new NewsData(
-          1,
-          "ç§‘æŠ€çªç ´ï¼šäººå·¥æ™ºèƒ½åœ¨åŒ»ç–—é¢†åŸŸå–å¾—é‡å¤§è¿›å±•",
-          "æœ€æ–°ç ”ç©¶æ˜¾ç¤ºï¼ŒAIæŠ€æœ¯åœ¨ç–¾ç—…è¯Šæ–­å’Œæ²»ç–—æ–¹æ¡ˆåˆ¶å®šæ–¹é¢å±•ç°å‡ºå·¨å¤§æ½œåŠ›...",
-          "ç§‘æŠ€æ—¥æŠ¥",
-          "2å°æ—¶å‰",
-          $r('app.media.fig1'),
-          "ç§‘æŠ€",
-          125000,
-          true,
-          true
-        ),
-        new NewsData(
-          2,
-          "ç»æµè§‚å¯Ÿï¼šå…¨çƒè‚¡å¸‚éœ‡è¡ï¼ŒæŠ•èµ„è€…éœ€è°¨æ…",
-          "å—å¤šé‡å› ç´ å½±å“ï¼Œå…¨çƒä¸»è¦è‚¡å¸‚å‡ºç°ä¸åŒç¨‹åº¦æ³¢åŠ¨ï¼Œä¸“å®¶å»ºè®®ç†æ€§æŠ•èµ„...",
-          "è´¢ç»ç½‘",
-          "3å°æ—¶å‰",
-          $r('app.media.fig2'),
-          "è´¢ç»",
-          89000,
-          true,
-          false
-        )
-      ];
-    }
-
-    /**
-     * Get news list data.
-     *
-     * @return {Array<NewsData>} newsListData.
-     */
-    getNewsListData(): Array<NewsData> {
-      let newsListData: NewsData[] = [
-        new NewsData(
-          3,
-          "æ•™è‚²æ”¹é©ï¼šæ–°è¯¾ç¨‹æ ‡å‡†æ­£å¼å‘å¸ƒ",
-          "æ•™è‚²éƒ¨å‘å¸ƒæœ€æ–°è¯¾ç¨‹æ ‡å‡†ï¼Œå¼ºè°ƒç´ è´¨æ•™è‚²ä¸åˆ›æ–°èƒ½åŠ›åŸ¹å…»...",
-          "æ•™è‚²æ—¶æŠ¥",
-          "5å°æ—¶å‰",
-          $r('app.media.fig3'),
-          "æ•™è‚²",
-          67000,
-          false,
-          false
-        ),
-        new NewsData(
-          4,
-          "ç¯ä¿è¡ŒåŠ¨ï¼šå¤šåœ°å¯åŠ¨ç»¿è‰²å‡ºè¡Œè®¡åˆ’",
-          "ä¸ºå‡å°‘ç¢³æ’æ”¾ï¼Œå¤šä¸ªåŸå¸‚æ¨å‡ºç»¿è‰²å‡ºè¡Œæ¿€åŠ±æ”¿ç­–...",
-          "ç¯ä¿æ—¥æŠ¥",
-          "6å°æ—¶å‰",
-          $r('app.media.fig4'),
-          "ç¯ä¿",
-          43000,
-          false,
-          false
-        )
-      ];
-      return newsListData;
-    }
-
-    /**
-     * Get news categories.
-     *
-     * @return {Array<string>} categories.
-     */
-    getNewsCategories(): Array<string> {
-      return ["çƒ­æœ", "è´¢ç»", "æ°‘ç”Ÿ", "ä½“è‚²"];
-    }
-
-    /**
-     * Format read count.
-     *
-     * @param {number} count - read count.
-     * @return {string} formatted count.
-     */
-    formatReadCount(count: number): string {
-      if (count >= 10000) {
-        return Math.floor(count / 10000) + "ä¸‡";
-      } else if (count >= 1000) {
-        return Math.floor(count / 1000) + "k";
-      } else {
-        return count.toString();
-      }
-    }
-  }
-
-  export default new MainViewModel();
-ÀÔrE’¶./BaiduHotSearchParserª./NewsDataÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÂÙ_C:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\BaiduHotSearchParser.etsAÃªoh-resolveÂFAÂÙSC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\NewsData.etsAÃªoh-resolveÂ“ÔrG–§version¤fileªsourceRoot§sources¥names¨mappings°MainViewModel.js ‘±MainViewModel.etsÜ o–”  ” 	” ” ”! #”" $˜”  ” 	”	 ” ” 5”% ;”= ÌS”> ÌT‘”  ‘” ””  ” ” ” ‘” ‘” ’” ” ”” ” 
-” ” %’”	 "”
- "”” #” #” #” #’” $” $‘” &‘” *’” +” +’” ,”' ,%”” -” -” -” -’” .” .‘” 0‘” 4’” 5” 5”” 6” 6” 6” 6’” 7” 7‘” 9‘” =”” >”	 >	”
- >
-” >’” ?” ?
-’” Ì@” Ì@š” ÌA” ÌA”  ÌA”# ÌA”) ÌA%”= ÌA9”> ÌA:”ÌN ÌAÌJ”ÌP ÌAÌL”ÌQ ÌAÌM’” ÌC” ÌC” ÌD” ÌD” ÌD”  ÌD(”. ÌD6”/ ÌD7”2 ÌD:”3 ÌD;”4 ÌD<”8 ÌDÌT”: ÌDÌV”? ÌDÌc”ÌA ÌDÌe”ÌC ÌDÌgÜ .” ÌE
-” ÌE” ÌE” ÌE!”! ÌE%”) ÌE-”* ÌF”/ ÌF”2 ÌF”3 ÌF”5 ÌG”9 ÌG”: ÌG”ÌD ÌG”ÌF ÌH”ÌO ÌH”Ìc ÌH)”Ìd ÌH*”Ìs ÌH9”Ìt ÌH:”Ìx ÌH>”Ìy ÌH?”Ìƒ ÌHÌI”Ì„ ÌHÌJ”Ì† ÌHÌL”Ìˆ ÌI”Ì ÌI”Ì ÌJ”Ì” ÌJ”Í ÌL”Í	 ÌL”Í ÌM”Í ÌM”Í ÌM”Í ÌM”Í ÌM”Í# ÌM$”Í$ ÌM%”Í& ÌN”Í* ÌN”Í, ÌO”Í1 ÌO”Í4 ÌO”Í5 ÌO”Í6 ÌP”Í7 ÌPÜ ” ÌQ
-” ÌQ” ÌQ”" ÌQ0”& ÌQ4”' ÌQ5”- ÌQ;”1 ÌQ?”5 ÌQÌC”6 ÌQÌD”< ÌQÌJ”= ÌQÌK”ÌC ÌQÌQ”ÌF ÌQÌT”ÌG ÌQÌU”ÌH ÌQÌV”ÌI ÌQÌW”ÌJ ÌQÌX”ÌN ÌQÌ\”ÌO ÌQÌ]”ÌU ÌQÌc”ÌV ÌQÌd”ÌW ÌQÌe”ÌX ÌQÌf”Ì\ ÌQÌj”Ì] ÌQÌk”Ìd ÌQÌr”Ìe ÌQÌs™” ÌR
-” ÌR” ÌR” ÌR”! ÌR”* ÌR$”. ÌR(”2 ÌR,”3 ÌR-”” ÌS
-” ÌS” ÌS” ÌS”” ÌT” ÌT	” ÌT
-” ÌT”” ÌV” ÌV” ÌV” ÌV‘”	 ÌW”” ÌW” ÌW” ÌW” ÌWš” ÌX” ÌX” ÌX” ÌX” ÌX”% ÌX!”' ÌX#”, ÌX(”- ÌX)”. ÌX*’” ÌY” ÌY—” ÌZ” ÌZ” ÌZ” ÌZ”* ÌZ&”, ÌZ(”- ÌZ)‘”	 Ì[’” Ì\” Ì\‘” Ì^‘” Ìb’” Ìc” Ìc’” Ìd” ÌdÜ ” Ìe” Ìe” Ìe” Ìf
-” Ìf” Ìg
-”2 Ìg ”4 Ìh
-”ÌY Ìh/”Ì[ Ìi
-”Ìa Ìi”Ìc Ìj
-”Ìi Ìj”ÌÚ Ìl
-”ÌŞ Ìl”Ìà Ìm
-”Ìæ Ìm”Ìè Ìn
-”Ìì Ìn”Ìî Ìo
-”Ìò Ìo”Ìó Ìp	Ü ” Ìq” Ìq” Ìq” Ìr
-” Ìr” Ìs
-”0 Ìs”2 Ìt
-”ÌV Ìt.”ÌX Ìu
-”Ì] Ìu”Ì_ Ìv
-”Ìe Ìv”ÌÖ Ìx
-”ÌÚ Ìx”ÌÜ Ìy
-”Ìá Ìy”Ìã Ìz
-”Ìç Ìz”Ìé Ì{
-”Ìî Ì{”Ìï Ì|	’”	 Ì}”
- Ì}’” Ì~” Ì~‘” Ì€‘” Ì„’” Ì…” Ì…”” Ì†” Ì†
-” Ì†” Ì†%Ü ” Ì‡” Ì‡” Ì‡” Ìˆ
-” Ìˆ” Ì‰
-”, Ì‰”. ÌŠ
-”ÌL ÌŠ(”ÌN Ì‹
-”ÌT Ì‹”ÌV ÌŒ
-”Ì\ ÌŒ”ÌÍ Ì
-”ÌÑ Ì”ÌÓ Ì
-”ÌØ Ì”ÌÚ Ì
-”Ìß Ì”Ìá Ì‘
-”Ìæ Ì‘”Ìç Ì’	Ü ” Ì“” Ì“” Ì“” Ì”
-” Ì”” Ì•
-”- Ì•”/ Ì–
-”ÌI Ì–$”ÌK Ì—
-”ÌQ Ì—”ÌS Ì˜
-”ÌY Ì˜”ÌÊ Ìš
-”ÌÎ Ìš”ÌĞ Ì›
-”ÌÕ Ì›”Ì× Ìœ
-”ÌÜ Ìœ”ÌŞ Ì
-”Ìã Ì”Ìä Ì	’”	 ÌŸ”
- ÌŸ”” Ì ” Ì ” Ì ” Ì ’” Ì¡” Ì¡‘” Ì£‘” Ì§’” Ì¨” Ì¨œ” Ì©” Ì©” Ì©” Ì©” Ì©” Ì©” Ì©”  Ì©”" Ì© ”& Ì©$”' Ì©%”( Ì©&’” Ìª” Ìª‘” Ì¬‘” Ì±”” Ì²” Ì²” Ì²” Ì²!–” Ì³” Ì³
-” Ì³” Ì³” Ì³” Ì³” Ì´” Ì´” Ì´” Ì´” Ì´” Ì´”# Ì´”& Ì´"”+ Ì´'”, Ì´(”/ Ì´+”2 Ì´.”3 Ì´/‘”	 Ìµ–” Ìµ” Ìµ” Ìµ” Ìµ” Ìµ”  Ìµ ” Ì¶” Ì¶” Ì¶” Ì¶” Ì¶” Ì¶”# Ì¶”& Ì¶"”* Ì¶&”+ Ì¶'”. Ì¶*”1 Ì¶-”2 Ì¶.‘”	 Ì·‘” Ì·—” Ì¸” Ì¸” Ì¸” Ì¸”! Ì¸”# Ì¸”$ Ì¸ ‘”	 Ì¹’” Ìº” Ìº‘” Ì»–”  Ì½” Ì½” Ì½”  Ì½"”" Ì½$”# Ì½%ÔrH–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜ p‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
- ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ÔrI’§missing¦pluginÃ¦genAbcÂÔ  ÔrJ”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache‘ÔrK–¤type¥start£end«declarationªspecifiers¦source¶ExportNamedDeclarationÌ¤ÍğÔrL–¤type¥start£end¢idªsuperClass¤body°ClassDeclarationÌ«ÍğÔrM”¤type¥start£end¤nameªIdentifierÌ±Ì¾­MainViewModelÀÔrN”¤type¥start£end¤body©ClassBodyÌ¿Íğ˜ÔrO˜¤type¥start£end¦static¨computed£key¤kind¥value°MethodDefinitionÍ/Í€ÂÂMªIdentifierÍ/Í>¯getSwiperImages¦methodÔrP™¤type¥start£end¢idªexpression©generator¥async¦params¤body²FunctionExpressionÍ>Í€ÀÂÂÂN®BlockStatementÍAÍ€’ÔrQ•¤type¥start£end¬declarations¤kind³VariableDeclarationÍLÍ[‘ÔrR•¤type¥start£end¢id¤init²VariableDeclaratorÍPÍZMªIdentifierÍPÍ\¬swiperImagesÔrS”¤type¥start£end¨elements¯ArrayExpressionÍ_ÍZ”ÔrT”¤type¥start£endªproperties°ObjectExpressionÍnÍÛ•ÔrU™¤type¥start£end¦method©shorthand¨computed£key¥value¤kind¨PropertyÍpÍ~ÂÂÂÔrV•¤type¥start£end¥value£raw§LiteralÍpÍt¢id¤"id"V§LiteralÍvÍ~Î  ¨16777236¤initU¨PropertyÍ€ÍÂÂÂV§LiteralÍ€Í†¤type¦"type"V§LiteralÍˆÍÍN ¥20000¤initU¨PropertyÍÍ™ÂÂÂMªIdentifierÍÍ•¦paramsS¯ArrayExpressionÍ—Í™¤initU¨PropertyÍ›ÍÀÂÂÂV§LiteralÍ›Í§ªbundleName¬"bundleName"V§LiteralÍ©ÍÀµcom.huawei.quickstart·"com.huawei.quickstart"¤initU¨PropertyÍÂÍÙÂÂÂV§LiteralÍÂÍÎªmoduleName¬"moduleName"V§LiteralÍĞÍÙ§default©"default"¤initT°ObjectExpressionÍêÍW•U¨PropertyÍìÍúÂÂÂV§LiteralÍìÍğ¢id¤"id"V§LiteralÍòÍúÎ  ¨16777237¤initU¨PropertyÍüÍ	ÂÂÂV§LiteralÍüÍ¤type¦"type"V§LiteralÍÍ	ÍN ¥20000¤initU¨PropertyÍÍÂÂÂMªIdentifierÍÍ¦paramsS¯ArrayExpressionÍÍ¤initU¨PropertyÍÍ<ÂÂÂV§LiteralÍÍ#ªbundleName¬"bundleName"V§LiteralÍ%Í<µcom.huawei.quickstart·"com.huawei.quickstart"¤initU¨PropertyÍ>ÍUÂÂÂV§LiteralÍ>ÍJªmoduleName¬"moduleName"V§LiteralÍLÍU§default©"default"¤initT°ObjectExpressionÍfÍÓ•U¨PropertyÍhÍvÂÂÂV§LiteralÍhÍl¢id¤"id"V§LiteralÍnÍvÎ  ¨16777238¤initU¨PropertyÍxÍ…ÂÂÂV§LiteralÍxÍ~¤type¦"type"V§LiteralÍ€Í…ÍN ¥20000¤initU¨PropertyÍ‡Í‘ÂÂÂMªIdentifierÍ‡Í¦paramsS¯ArrayExpressionÍÍ‘¤initU¨PropertyÍ“Í¸ÂÂÂV§LiteralÍ“ÍŸªbundleName¬"bundleName"V§LiteralÍ¡Í¸µcom.huawei.quickstart·"com.huawei.quickstart"¤initU¨PropertyÍºÍÑÂÂÂV§LiteralÍºÍÆªmoduleName¬"moduleName"V§LiteralÍÈÍÑ§default©"default"¤initT°ObjectExpressionÍâÍO•U¨PropertyÍäÍòÂÂÂV§LiteralÍäÍè¢id¤"id"V§LiteralÍêÍòÎ  ¨16777239¤initU¨PropertyÍôÍÂÂÂV§LiteralÍôÍú¤type¦"type"V§LiteralÍüÍÍN ¥20000¤initU¨PropertyÍÍÂÂÂMªIdentifierÍÍ	¦paramsS¯ArrayExpressionÍÍ¤initU¨PropertyÍÍ4ÂÂÂV§LiteralÍÍªbundleName¬"bundleName"V§LiteralÍÍ4µcom.huawei.quickstart·"com.huawei.quickstart"¤initU¨PropertyÍ6ÍMÂÂÂV§LiteralÍ6ÍBªmoduleName¬"moduleName"V§LiteralÍDÍM§default©"default"¤init£letÔrW”¤type¥start£end¨argument¯ReturnStatementÍeÍyMªIdentifierÍlÍx¬swiperImagesO°MethodDefinitionÍùÍQÂÂMªIdentifierÍùÍ	°getFirstGridData¦methodP²FunctionExpressionÍ	ÍQÀÂÂÂN®BlockStatementÍÍQ‘W¯ReturnStatementÍ@ÍJS¯ArrayExpressionÍGÍIO°MethodDefinitionÍÎÍÿÂÂMªIdentifierÍÎÍà²getSettingListData¦methodP²FunctionExpressionÍàÍÿÀÂÂÂN®BlockStatementÍãÍÿ‘W¯ReturnStatementÍîÍøS¯ArrayExpressionÍõÍ÷O°MethodDefinitionÍˆÍ	QÂÂMªIdentifierÍÍœ®getHotNewsData¦methodP²FunctionExpressionÍœÍ	QÀÂÂÃN®BlockStatementÍŸÍ	Q‘ÔrX–¤type¥start£end¥block§handler©finalizer¬TryStatementÍªÍ	JN®BlockStatementÍ®Í°“Q³VariableDeclarationÍÖÍ‘R²VariableDeclaratorÍÜÍMªIdentifierÍÜÍê®hotSearchItemsW¯AwaitExpressionÍíÍÔrY–¤type¥start£end¦callee©arguments¨optional®CallExpressionÍóÍÔrZ—¤type¥start£end¦object¨property¨computed¨optional°MemberExpressionÍóÍMªIdentifierÍóÍ´BaiduHotSearchParserMªIdentifierÍÍ°getHotSearchDataÂÂÂ¥constQ³VariableDeclarationÍGÍ„‘R²VariableDeclaratorÍMÍƒMªIdentifierÍMÍX«hotNewsDataY®CallExpressionÍ[ÍƒZ°MemberExpressionÍ[ÍmMªIdentifierÍ[Íi®hotSearchItemsMªIdentifierÍjÍm£mapÂÂ‘P·ArrowFunctionExpressionÍnÍ‚ÀÂÂÂ’MªIdentifierÍoÍs¤itemMªIdentifierÍuÍz¥indexN®BlockStatementÍÍ‚”Q³VariableDeclarationÍ’Í¹‘R²VariableDeclaratorÍ˜Í¸MªIdentifierÍ˜Íœ¤newsÔr[•¤type¥start£end¦callee©arguments­NewExpressionÍŸÍ¸MªIdentifierÍ£Í«¨NewsDatašÔr\–¤type¥start£end¤left¨operator¥right°BinaryExpressionÍ¬ÍµMªIdentifierÍ¬Í±¥index¡+V§LiteralÍ´Íµ¡1Z°MemberExpressionÍ·ÍÆMªIdentifierÍ·Í»¤itemMªIdentifierÍ¼ÍÆªcard_titleÂÂÔr]•¤type¥start£end«expressions¦quasis¯TemplateLiteralÍÈÍ‘Y®CallExpressionÍÑÍZ°MemberExpressionÍÑÍõMªIdentifierÍÑÍå´BaiduHotSearchParserMªIdentifierÍæÍõ¯formatHeatScoreÂÂ‘Z°MemberExpressionÍöÍMªIdentifierÍöÍú¤itemMªIdentifierÍûÍªheat_scoreÂÂÂ’Ôr^•¤type¥start£end¥value¤tail¯TemplateElementÍÉÍÏÔr_’£raw¦cooked®çƒ­æœæŒ‡æ•°: ®çƒ­æœæŒ‡æ•°: Â^¯TemplateElementÍÍ_  ÃV§LiteralÍ
-Í¬ç™¾åº¦çƒ­æœ®"ç™¾åº¦çƒ­æœ"V§LiteralÍÍ¦åˆšåˆš¨"åˆšåˆš"T°ObjectExpressionÍÍ…•U¨PropertyÍÍ(ÂÂÂV§LiteralÍÍ¢id¤"id"V§LiteralÍ Í(Î  ¨16777236¤initU¨PropertyÍ*Í7ÂÂÂV§LiteralÍ*Í0¤type¦"type"V§LiteralÍ2Í7ÍN ¥20000¤initU¨PropertyÍ9ÍCÂÂÂMªIdentifierÍ9Í?¦paramsS¯ArrayExpressionÍAÍC¤initU¨PropertyÍEÍjÂÂÂV§LiteralÍEÍQªbundleName¬"bundleName"V§LiteralÍSÍjµcom.huawei.quickstart·"com.huawei.quickstart"¤initU¨PropertyÍlÍƒÂÂÂV§LiteralÍlÍxªmoduleName¬"moduleName"V§LiteralÍzÍƒ§default©"default"¤initV§LiteralÍ‡Í‹¦çƒ­æœ¨"çƒ­æœ"Y®CallExpressionÍÍ¦MªIdentifierÍÍ•¨parseInt‘Z°MemberExpressionÍ–Í¥MªIdentifierÍ–Íš¤itemMªIdentifierÍ›Í¥ªheat_scoreÂÂÂV§LiteralÍ¨Í¬Ã¤true\°BinaryExpressionÍ®Í·MªIdentifierÍ®Í³¥index¡<V§LiteralÍ¶Í·¡3¥constQ³VariableDeclarationÍËÍ ‘R²VariableDeclaratorÍÑÍMªIdentifierÍÑÍÚ©detailUrlÔr`–¤type¥start£end¤testªconsequent©alternateµConditionalExpressionÍİÍ\±LogicalExpressionÍİÍZ°MemberExpressionÍİÍèMªIdentifierÍİÍá¤itemMªIdentifierÍâÍè¦rawUrlÂÂ¢&&\°BinaryExpressionÍìÍZ°MemberExpressionÍìÍşZ°MemberExpressionÍìÍ÷MªIdentifierÍìÍğ¤itemMªIdentifierÍñÍ÷¦rawUrlÂÂMªIdentifierÍøÍş¦lengthÂÂ¡>V§LiteralÍÍ ¡0Z°MemberExpressionÍÍMªIdentifierÍÍ	¤itemMªIdentifierÍ
-Í¦rawUrlÂÂZ°MemberExpressionÍÍMªIdentifierÍÍ¤itemMªIdentifierÍÍ§linkurlÂÂ¥constÔra”¤type¥start£endªexpression³ExpressionStatementÍ2ÍUÔrb–¤type¥start£end¨operator¤left¥right´AssignmentExpressionÍ2ÍT¡=Z°MemberExpressionÍ2Í@MªIdentifierÍ2Í6¤newsMªIdentifierÍ7Í@©detailUrlÂÂ\±LogicalExpressionÍCÍTMªIdentifierÍCÍL©detailUrl¢??V§LiteralÍPÍTÀ¤nullW¯ReturnStatementÍgÍsMªIdentifierÍnÍr¤newsÂ¥constW¯ReturnStatementÍ’Í¥MªIdentifierÍ™Í¤«hotNewsDataÔrc•¤type¥start£end¥param¤body«CatchClauseÍºÍ	JMªIdentifierÍÁÍÆ¥errorN®BlockStatementÍÈÍ	J’a³ExpressionStatementÍ×ÍùY®CallExpressionÍ×ÍøZ°MemberExpressionÍ×ÍäMªIdentifierÍ×ÍŞ§consoleMªIdentifierÍßÍä¥errorÂÂ’V§LiteralÍåÍğ¹è·å–çƒ­æœæ•°æ®å¤±è´¥:»'è·å–çƒ­æœæ•°æ®å¤±è´¥:'MªIdentifierÍòÍ÷¥errorÂW¯ReturnStatementÍ	Í	?Y®CallExpressionÍ	%Í	>Z°MemberExpressionÍ	%Í	<Ôrd“¤type¥start£end®ThisExpressionÍ	%Í	)MªIdentifierÍ	*Í	<²getMockHotNewsDataÂÂÂÀO°MethodDefinitionÍ	ÌÍîÂÂMªIdentifierÍ	ÌÍ	Ş²getMockHotNewsData¦methodP²FunctionExpressionÍ	ŞÍîÀÂÂÂN®BlockStatementÍ	áÍî‘W¯ReturnStatementÍ	ìÍçS¯ArrayExpressionÍ	óÍæ’[­NewExpressionÍ
-Í
-éMªIdentifierÍ
-Í
-¨NewsDatašV§LiteralÍ
-Í
-¡1V§LiteralÍ
-Í
-(Ù<ç§‘æŠ€çªç ´ï¼šäººå·¥æ™ºèƒ½åœ¨åŒ»ç–—é¢†åŸŸå–å¾—é‡å¤§è¿›å±•Ù>"ç§‘æŠ€çªç ´ï¼šäººå·¥æ™ºèƒ½åœ¨åŒ»ç–—é¢†åŸŸå–å¾—é‡å¤§è¿›å±•"V§LiteralÍ
-*Í
-OÙ_æœ€æ–°ç ”ç©¶æ˜¾ç¤ºï¼ŒAIæŠ€æœ¯åœ¨ç–¾ç—…è¯Šæ–­å’Œæ²»ç–—æ–¹æ¡ˆåˆ¶å®šæ–¹é¢å±•ç°å‡ºå·¨å¤§æ½œåŠ›...Ùa"æœ€æ–°ç ”ç©¶æ˜¾ç¤ºï¼ŒAIæŠ€æœ¯åœ¨ç–¾ç—…è¯Šæ–­å’Œæ²»ç–—æ–¹æ¡ˆåˆ¶å®šæ–¹é¢å±•ç°å‡ºå·¨å¤§æ½œåŠ›..."V§LiteralÍ
-QÍ
-W¬ç§‘æŠ€æ—¥æŠ¥®"ç§‘æŠ€æ—¥æŠ¥"V§LiteralÍ
-YÍ
-_ª2å°æ—¶å‰¬"2å°æ—¶å‰"T°ObjectExpressionÍ
-aÍ
-Î•U¨PropertyÍ
-cÍ
-qÂÂÂV§LiteralÍ
-cÍ
-g¢id¤"id"V§LiteralÍ
-iÍ
-qÎ  ¨16777236¤initU¨PropertyÍ
-sÍ
-€ÂÂÂV§LiteralÍ
-sÍ
-y¤type¦"type"V§LiteralÍ
-{Í
-€ÍN ¥20000¤initU¨PropertyÍ
-‚Í
-ŒÂÂÂMªIdentifierÍ
-‚Í
-ˆ¦paramsS¯ArrayExpressionÍ
-ŠÍ
-Œ¤initU¨PropertyÍ
-Í
-³ÂÂÂV§LiteralÍ
-Í
-šªbundleName¬"bundleName"V§LiteralÍ
-œÍ
-³µcom.huawei.quickstart·"com.huawei.quickstart"¤initU¨PropertyÍ
-µÍ
-ÌÂÂÂV§LiteralÍ
-µÍ
-ÁªmoduleName¬"moduleName"V§LiteralÍ
-ÃÍ
-Ì§default©"default"¤initV§LiteralÍ
-ĞÍ
-Ô¦ç§‘æŠ€¨"ç§‘æŠ€"V§LiteralÍ
-ÖÍ
-ÜÎ èH¦125000V§LiteralÍ
-ŞÍ
-âÃ¤trueV§LiteralÍ
-äÍ
-èÃ¤true[­NewExpressionÍ
-øÍÛMªIdentifierÍ
-üÍ¨NewsDatašV§LiteralÍÍ¡2V§LiteralÍÍÙ6ç»æµè§‚å¯Ÿï¼šå…¨çƒè‚¡å¸‚éœ‡è¡ï¼ŒæŠ•èµ„è€…éœ€è°¨æ…Ù8"ç»æµè§‚å¯Ÿï¼šå…¨çƒè‚¡å¸‚éœ‡è¡ï¼ŒæŠ•èµ„è€…éœ€è°¨æ…"V§LiteralÍÍBÙ`å—å¤šé‡å› ç´ å½±å“ï¼Œå…¨çƒä¸»è¦è‚¡å¸‚å‡ºç°ä¸åŒç¨‹åº¦æ³¢åŠ¨ï¼Œä¸“å®¶å»ºè®®ç†æ€§æŠ•èµ„...Ùb"å—å¤šé‡å› ç´ å½±å“ï¼Œå…¨çƒä¸»è¦è‚¡å¸‚å‡ºç°ä¸åŒç¨‹åº¦æ³¢åŠ¨ï¼Œä¸“å®¶å»ºè®®ç†æ€§æŠ•èµ„..."V§LiteralÍDÍI©è´¢ç»ç½‘«"è´¢ç»ç½‘"V§LiteralÍKÍQª3å°æ—¶å‰¬"3å°æ—¶å‰"T°ObjectExpressionÍSÍÀ•U¨PropertyÍUÍcÂÂÂV§LiteralÍUÍY¢id¤"id"V§LiteralÍ[ÍcÎ  ¨16777237¤initU¨PropertyÍeÍrÂÂÂV§LiteralÍeÍk¤type¦"type"V§LiteralÍmÍrÍN ¥20000¤initU¨PropertyÍtÍ~ÂÂÂMªIdentifierÍtÍz¦paramsS¯ArrayExpressionÍ|Í~¤initU¨PropertyÍ€Í¥ÂÂÂV§LiteralÍ€ÍŒªbundleName¬"bundleName"V§LiteralÍÍ¥µcom.huawei.quickstart·"com.huawei.quickstart"¤initU¨PropertyÍ§Í¾ÂÂÂV§LiteralÍ§Í³ªmoduleName¬"moduleName"V§LiteralÍµÍ¾§default©"default"¤initV§LiteralÍÂÍÆ¦è´¢ç»¨"è´¢ç»"V§LiteralÍÈÍÍÎ [¨¥89000V§LiteralÍÏÍÓÃ¤trueV§LiteralÍÕÍÚÂ¥falseO°MethodDefinitionÍZÍŒÂÂMªIdentifierÍZÍi¯getNewsListData¦methodP²FunctionExpressionÍiÍŒÀÂÂÂN®BlockStatementÍlÍŒ’Q³VariableDeclarationÍwÍg‘R²VariableDeclaratorÍ{ÍfMªIdentifierÍ{Í‡¬newsListDataS¯ArrayExpressionÍŠÍf’[­NewExpressionÍ™ÍtMªIdentifierÍÍ¥¨NewsDatašV§LiteralÍ¦Í§¡3V§LiteralÍ©Í¹Ù*æ•™è‚²æ”¹é©ï¼šæ–°è¯¾ç¨‹æ ‡å‡†æ­£å¼å‘å¸ƒÙ,"æ•™è‚²æ”¹é©ï¼šæ–°è¯¾ç¨‹æ ‡å‡†æ­£å¼å‘å¸ƒ"V§LiteralÍ»ÍÙÙNæ•™è‚²éƒ¨å‘å¸ƒæœ€æ–°è¯¾ç¨‹æ ‡å‡†ï¼Œå¼ºè°ƒç´ è´¨æ•™è‚²ä¸åˆ›æ–°èƒ½åŠ›åŸ¹å…»...ÙP"æ•™è‚²éƒ¨å‘å¸ƒæœ€æ–°è¯¾ç¨‹æ ‡å‡†ï¼Œå¼ºè°ƒç´ è´¨æ•™è‚²ä¸åˆ›æ–°èƒ½åŠ›åŸ¹å…»..."V§LiteralÍÛÍá¬æ•™è‚²æ—¶æŠ¥®"æ•™è‚²æ—¶æŠ¥"V§LiteralÍãÍéª5å°æ—¶å‰¬"5å°æ—¶å‰"T°ObjectExpressionÍëÍX•U¨PropertyÍíÍûÂÂÂV§LiteralÍíÍñ¢id¤"id"V§LiteralÍóÍûÎ  ¨16777238¤initU¨PropertyÍıÍ
-ÂÂÂV§LiteralÍıÍ¤type¦"type"V§LiteralÍÍ
-ÍN ¥20000¤initU¨PropertyÍÍÂÂÂMªIdentifierÍÍ¦paramsS¯ArrayExpressionÍÍ¤initU¨PropertyÍÍ=ÂÂÂV§LiteralÍÍ$ªbundleName¬"bundleName"V§LiteralÍ&Í=µcom.huawei.quickstart·"com.huawei.quickstart"¤initU¨PropertyÍ?ÍVÂÂÂV§LiteralÍ?ÍKªmoduleName¬"moduleName"V§LiteralÍMÍV§default©"default"¤initV§LiteralÍZÍ^¦æ•™è‚²¨"æ•™è‚²"V§LiteralÍ`ÍeÎ ¸¥67000V§LiteralÍgÍlÂ¥falseV§LiteralÍnÍsÂ¥false[­NewExpressionÍƒÍ[MªIdentifierÍ‡Í¨NewsDatašV§LiteralÍÍ‘¡4V§LiteralÍ“Í¤Ù-ç¯ä¿è¡ŒåŠ¨ï¼šå¤šåœ°å¯åŠ¨ç»¿è‰²å‡ºè¡Œè®¡åˆ’Ù/"ç¯ä¿è¡ŒåŠ¨ï¼šå¤šåœ°å¯åŠ¨ç»¿è‰²å‡ºè¡Œè®¡åˆ’"V§LiteralÍ¦ÍÀÙBä¸ºå‡å°‘ç¢³æ’æ”¾ï¼Œå¤šä¸ªåŸå¸‚æ¨å‡ºç»¿è‰²å‡ºè¡Œæ¿€åŠ±æ”¿ç­–...ÙD"ä¸ºå‡å°‘ç¢³æ’æ”¾ï¼Œå¤šä¸ªåŸå¸‚æ¨å‡ºç»¿è‰²å‡ºè¡Œæ¿€åŠ±æ”¿ç­–..."V§LiteralÍÂÍÈ¬ç¯ä¿æ—¥æŠ¥®"ç¯ä¿æ—¥æŠ¥"V§LiteralÍÊÍĞª6å°æ—¶å‰¬"6å°æ—¶å‰"T°ObjectExpressionÍÒÍ?•U¨PropertyÍÔÍâÂÂÂV§LiteralÍÔÍØ¢id¤"id"V§LiteralÍÚÍâÎ  ¨16777239¤initU¨PropertyÍäÍñÂÂÂV§LiteralÍäÍê¤type¦"type"V§LiteralÍìÍñÍN ¥20000¤initU¨PropertyÍóÍıÂÂÂMªIdentifierÍóÍù¦paramsS¯ArrayExpressionÍûÍı¤initU¨PropertyÍÿÍ$ÂÂÂV§LiteralÍÿÍªbundleName¬"bundleName"V§LiteralÍÍ$µcom.huawei.quickstart·"com.huawei.quickstart"¤initU¨PropertyÍ&Í=ÂÂÂV§LiteralÍ&Í2ªmoduleName¬"moduleName"V§LiteralÍ4Í=§default©"default"¤initV§LiteralÍAÍE¦ç¯ä¿¨"ç¯ä¿"V§LiteralÍGÍLÍ§ø¥43000V§LiteralÍNÍSÂ¥falseV§LiteralÍUÍZÂ¥false£letW¯ReturnStatementÍqÍ…MªIdentifierÍxÍ„¬newsListDataO°MethodDefinitionÍõÍ;ÂÂMªIdentifierÍõÍ±getNewsCategories¦methodP²FunctionExpressionÍÍ;ÀÂÂÂN®BlockStatementÍ	Í;‘W¯ReturnStatementÍÍ4S¯ArrayExpressionÍÍ3”V§LiteralÍÍ ¦çƒ­æœ¨"çƒ­æœ"V§LiteralÍ"Í&¦è´¢ç»¨"è´¢ç»"V§LiteralÍ(Í,¦æ°‘ç”Ÿ¨"æ°‘ç”Ÿ"V§LiteralÍ.Í2¦ä½“è‚²¨"ä½“è‚²"O°MethodDefinitionÍÌÍíÂÂMªIdentifierÍÌÍÛ¯formatReadCount¦methodP²FunctionExpressionÍÛÍíÀÂÂÂ‘MªIdentifierÍÜÍá¥countN®BlockStatementÍãÍí‘`«IfStatementÍîÍæ\°BinaryExpressionÍòÍ MªIdentifierÍòÍ÷¥count¢>=V§LiteralÍûÍ Í'¥10000N®BlockStatementÍÍC‘W¯ReturnStatementÍÍ8\°BinaryExpressionÍÍ7Y®CallExpressionÍÍ1Z°MemberExpressionÍÍ"MªIdentifierÍÍ¤MathMªIdentifierÍÍ"¥floorÂÂ‘\°BinaryExpressionÍ#Í0MªIdentifierÍ#Í(¥count¡/V§LiteralÍ+Í0Í'¥10000Â¡+V§LiteralÍ4Í7£ä¸‡¥"ä¸‡"`«IfStatementÍRÍæ\°BinaryExpressionÍVÍcMªIdentifierÍVÍ[¥count¢>=V§LiteralÍ_ÍcÍè¤1000N®BlockStatementÍeÍ¥‘W¯ReturnStatementÍtÍš\°BinaryExpressionÍ{Í™Y®CallExpressionÍ{Í“Z°MemberExpressionÍ{Í…MªIdentifierÍ{Í¤MathMªIdentifierÍ€Í…¥floorÂÂ‘\°BinaryExpressionÍ†Í’MªIdentifierÍ†Í‹¥count¡/V§LiteralÍÍ’Íè¤1000Â¡+V§LiteralÍ–Í™¡k£"k"N®BlockStatementÍ´Íæ‘W¯ReturnStatementÍÃÍÛY®CallExpressionÍÊÍÚZ°MemberExpressionÍÊÍØMªIdentifierÍÊÍÏ¥countMªIdentifierÍĞÍØ¨toStringÂÂÂÀ’Ôre•¤type¥start£endªspecifiers¦source±ImportDeclaration "‘Ôrf”¤type¥start£end¥local¶ImportDefaultSpecifierMªIdentifier¨NewsDataV§Literal!ª./NewsData¬'./NewsData'e±ImportDeclaration$Ìb‘Ôrg•¤type¥start£end¨imported¥local¯ImportSpecifier-ÌAMªIdentifier-ÌA´BaiduHotSearchParserMªIdentifier-ÌA´BaiduHotSearchParserV§LiteralÌIÌa¶./BaiduHotSearchParser¸'./BaiduHotSearchParser'

@@ -14,9 +14,22 @@
  */
 
 import { promptAction } from '@kit.ArkUI';
-import { router } from '@kit.ArkUI';
-import { UserManager } from '../model/UserManager';
 import { RegisterPage } from './RegisterPage';
+import { AuthService } from '../model/UserService'
+
+
+interface RegisterFormData {
+  userPhone: string;
+  userPassword: string;
+  userName: string;
+}
+
+interface ApiResponse {
+  code: number;
+  message: string;
+  data?: string; // 根据实际响应结构调整
+}
+
 
 @Extend(TextInput)
 function inputStyle() {
@@ -52,9 +65,11 @@ export struct LoginPage {
   @State password: string = '';
   @State isShowProgress: boolean = false;
   @State showRegisterPage: boolean = false;
+  @State testResult: string = ''; // 新增：测试结果显示
   private timeOutId: number = -1;
-  pathStack: NavPathStack = new NavPathStack();
-  private userManager: UserManager = UserManager.getInstance();
+
+  private userService: AuthService = AuthService.getInstance();
+
   onLoginSuccess: () => void = () => {};
 
   @Builder
@@ -70,15 +85,15 @@ export struct LoginPage {
   async login(): Promise<void> {
     if (this.account === '' || this.password === '') {
       promptAction.showToast({
-        message: $r('app.string.input_empty_tips')
+        message: "请输入账号和密码"
       });
       return;
     }
 
     this.isShowProgress = true;
-    
+
     try {
-      const success = await this.userManager.loginUser(this.account, this.password);
+      const success:boolean = await this.userService.login(this.account, this.password);
       if (success) {
         if (this.timeOutId === -1) {
           this.timeOutId = setTimeout(() => {
@@ -114,9 +129,7 @@ export struct LoginPage {
       .height('100%')
       .backgroundColor('#F1F3F5')
     } else {
-      Navigation(this.pathStack) {
-        NavDestination() {
-          Column() {
+      Column() {
         Image($r('app.media.logo'))
           .width('78vp')
           .height('78vp')
@@ -124,11 +137,11 @@ export struct LoginPage {
             top: '150vp',
             bottom: '8vp'
           })
-        Text($r('app.string.login_page'))
+        Text('登录')
           .fontSize('24fp')
           .fontWeight(FontWeight.Medium)
           .fontColor('#182431')
-        Text($r('app.string.login_more'))
+        Text('更多精彩内容等你发现')
           .fontSize('16fp')
           .fontColor('#99182431')
           .margin({
@@ -136,7 +149,7 @@ export struct LoginPage {
             top: '8vp'
           })
 
-        TextInput({ placeholder: $r('app.string.account') })
+        TextInput({ placeholder: "请输入手机号"})
           .maxLength(11)
           .type(InputType.Number)
           .inputStyle()
@@ -146,7 +159,7 @@ export struct LoginPage {
         Line()
           .lineStyle()
 
-        TextInput({ placeholder: $r('app.string.password') })
+        TextInput({ placeholder:"请输入密码"})
           .maxLength(8)
           .type(InputType.Password)
           .inputStyle()
@@ -156,15 +169,6 @@ export struct LoginPage {
         Line()
           .lineStyle()
 
-        Row() {
-          Text($r('app.string.message_login'))
-            .blueTextStyle()
-          Text($r('app.string.forgot_password'))
-            .blueTextStyle()
-        }
-        .justifyContent(FlexAlign.SpaceBetween)
-        .width('328vp')
-        .margin({ top: '8vp' })
 
         Button($r('app.string.login'), { type: ButtonType.Capsule })
           .width('328vp')
@@ -179,6 +183,7 @@ export struct LoginPage {
           .onClick(() => {
             this.login();
           })
+
         Text($r('app.string.register_account'))
           .fontColor('#007DFF')
           .fontSize('16fp')
@@ -196,41 +201,15 @@ export struct LoginPage {
         }
 
         Blank()
-        Text($r('app.string.other_login_method'))
-          .fontColor('#838D97')
-          .fontSize('12fp')
-          .fontWeight(FontWeight.Medium)
-          .margin({
-            top: '50vp',
-            bottom: '12vp'
-          })
-        Row({ space: 44 }) {
-          this.imageButton($r('app.media.login_method1'))
-          this.imageButton($r('app.media.login_method2'))
-          this.imageButton($r('app.media.login_method3'))
-        }
-        .margin({ bottom: '16vp' })
-        }
-        .height('100%')
-        .width('100%')
-        .padding({
-          left: '12vp',
-          right: '12vp',
-          bottom: '24vp'
-        })
       }
-      .backgroundColor('#F1F3F5')
-      .width('100%')
       .height('100%')
-      .hideTitleBar(true)
-      .hideToolBar(true)
-
-      }
-      .backgroundColor('#F1F3F5')
       .width('100%')
-      .height('100%')
-      .hideTitleBar(true)
-      .hideToolBar(true)
+      .padding({
+        left: '12vp',
+        right: '12vp',
+        bottom: '24vp'
+      })
+      .backgroundColor('#F1F3F5')
     }
   }
 }

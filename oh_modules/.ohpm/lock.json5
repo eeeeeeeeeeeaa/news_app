@@ -43,7 +43,16 @@
     },
     "features/login": {
       "name": "login",
-      "dependencies": {},
+      "dependencies": {
+        "utils": {
+          "specifier": "file:commons/utils",
+          "version": "file:commons/utils"
+        },
+        "BackendConfig": {
+          "specifier": "file:commons/utils",
+          "version": "file:commons/utils"
+        }
+      },
       "devDependencies": {},
       "dynamicDependencies": {},
       "maskedByOverrideDependencyMap": false
@@ -150,14 +159,6 @@
     }
   },
   "packages": {
-    "login@file:features/login": {
-      "storePath": "features/login",
-      "dependencies": {},
-      "dynamicDependencies": {},
-      "dev": false,
-      "dynamic": false,
-      "maskedByOverrideDependencyMap": false
-    },
     "uicomponents@file:commons/uicomponents": {
       "storePath": "commons/uicomponents",
       "dependencies": {},
@@ -166,19 +167,35 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "video@file:features/video": {
-      "storePath": "features/video",
+    "utils@file:commons/utils": {
+      "storePath": "commons/utils",
+      "dependencies": {},
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "BackendConfig@file:commons/utils": {
+      "storePath": "commons/utils",
+      "dependencies": {},
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "login@file:features/login": {
+      "storePath": "features/login",
       "dependencies": {
         "utils": "commons/utils",
-        "uicomponents": "commons/uicomponents"
+        "BackendConfig": "commons/utils"
       },
       "dynamicDependencies": {},
       "dev": false,
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "quickstart@file:features/quickstart": {
-      "storePath": "features/quickstart",
+    "video@file:features/video": {
+      "storePath": "features/video",
       "dependencies": {
         "utils": "commons/utils",
         "uicomponents": "commons/uicomponents"
@@ -209,19 +226,22 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "mine@file:features/mine": {
-      "storePath": "features/mine",
+    "quickstart@file:features/quickstart": {
+      "storePath": "features/quickstart",
       "dependencies": {
-        "login": "features/login"
+        "utils": "commons/utils",
+        "uicomponents": "commons/uicomponents"
       },
       "dynamicDependencies": {},
       "dev": false,
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "utils@file:commons/utils": {
-      "storePath": "commons/utils",
-      "dependencies": {},
+    "mine@file:features/mine": {
+      "storePath": "features/mine",
+      "dependencies": {
+        "login": "features/login"
+      },
       "dynamicDependencies": {},
       "dev": false,
       "dynamic": false,

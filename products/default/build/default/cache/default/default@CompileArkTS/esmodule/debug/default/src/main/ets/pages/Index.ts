@@ -409,15 +409,15 @@ class Index extends ViewPU {
                                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                                     if (isInitialRender) {
                                         let componentCall = new MinePage(this, {
-                                            onLogout: () => {
-                                                this.checkLoginStatus();
+                                            onLogout: async () => {
+                                                await this.checkLoginStatus();
                                             }
                                         }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 183, col: 15 });
                                         ViewPU.create(componentCall);
                                         let paramsLambda = () => {
                                             return {
-                                                onLogout: () => {
-                                                    this.checkLoginStatus();
+                                                onLogout: async () => {
+                                                    await this.checkLoginStatus();
                                                 }
                                             };
                                         };
@@ -450,15 +450,15 @@ class Index extends ViewPU {
                                 let componentCall = new 
                                 // 鏈櫥褰曪紝鏄剧ず鐧诲綍椤甸潰
                                 LoginPage(this, {
-                                    onLoginSuccess: () => {
-                                        this.checkLoginStatus();
+                                    onLoginSuccess: async () => {
+                                        await this.checkLoginStatus();
                                     }
                                 }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 210, col: 7 });
                                 ViewPU.create(componentCall);
                                 let paramsLambda = () => {
                                     return {
-                                        onLoginSuccess: () => {
-                                            this.checkLoginStatus();
+                                        onLoginSuccess: async () => {
+                                            await this.checkLoginStatus();
                                         }
                                     };
                                 };

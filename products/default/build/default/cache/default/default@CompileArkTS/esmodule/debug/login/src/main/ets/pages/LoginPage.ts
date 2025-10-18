@@ -6,14 +6,24 @@ interface LoginPage_Params {
     password?: string;
     isShowProgress?: boolean;
     showRegisterPage?: boolean;
+    testResult?: string;
     timeOutId?: number;
-    pathStack?: NavPathStack;
-    userManager?: UserManager;
+    userService?: AuthService;
     onLoginSuccess?: () => void;
 }
 import promptAction from "@ohos:promptAction";
-import { UserManager } from "@bundle:com.huawei.quickstart/default@login/ets/model/UserManager";
 import { RegisterPage } from "@bundle:com.huawei.quickstart/default@login/ets/pages/RegisterPage";
+import { AuthService } from "@bundle:com.huawei.quickstart/default@login/ets/model/UserService";
+interface RegisterFormData {
+    userPhone: string;
+    userPassword: string;
+    userName: string;
+}
+interface ApiResponse {
+    code: number;
+    message: string;
+    data?: string; // 根据实际响应结构调整
+}
 function __TextInput__inputStyle(): void {
     TextInput.placeholderColor('#99182431');
     TextInput.height('45vp');
@@ -42,9 +52,9 @@ export class LoginPage extends ViewPU {
         this.__password = new ObservedPropertySimplePU('', this, "password");
         this.__isShowProgress = new ObservedPropertySimplePU(false, this, "isShowProgress");
         this.__showRegisterPage = new ObservedPropertySimplePU(false, this, "showRegisterPage");
+        this.__testResult = new ObservedPropertySimplePU('', this, "testResult");
         this.timeOutId = -1;
-        this.pathStack = new NavPathStack();
-        this.userManager = UserManager.getInstance();
+        this.userService = AuthService.getInstance();
         this.onLoginSuccess = () => { };
         this.setInitiallyProvidedValue(params);
         this.finalizeConstruction();
@@ -62,14 +72,14 @@ export class LoginPage extends ViewPU {
         if (params.showRegisterPage !== undefined) {
             this.showRegisterPage = params.showRegisterPage;
         }
+        if (params.testResult !== undefined) {
+            this.testResult = params.testResult;
+        }
         if (params.timeOutId !== undefined) {
             this.timeOutId = params.timeOutId;
         }
-        if (params.pathStack !== undefined) {
-            this.pathStack = params.pathStack;
-        }
-        if (params.userManager !== undefined) {
-            this.userManager = params.userManager;
+        if (params.userService !== undefined) {
+            this.userService = params.userService;
         }
         if (params.onLoginSuccess !== undefined) {
             this.onLoginSuccess = params.onLoginSuccess;
@@ -82,12 +92,14 @@ export class LoginPage extends ViewPU {
         this.__password.purgeDependencyOnElmtId(rmElmtId);
         this.__isShowProgress.purgeDependencyOnElmtId(rmElmtId);
         this.__showRegisterPage.purgeDependencyOnElmtId(rmElmtId);
+        this.__testResult.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__account.aboutToBeDeleted();
         this.__password.aboutToBeDeleted();
         this.__isShowProgress.aboutToBeDeleted();
         this.__showRegisterPage.aboutToBeDeleted();
+        this.__testResult.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
@@ -119,9 +131,15 @@ export class LoginPage extends ViewPU {
     set showRegisterPage(newValue: boolean) {
         this.__showRegisterPage.set(newValue);
     }
+    private __testResult: ObservedPropertySimplePU<string>; // 新增：测试结果显示
+    get testResult() {
+        return this.__testResult.get();
+    }
+    set testResult(newValue: string) {
+        this.__testResult.set(newValue);
+    }
     private timeOutId: number;
-    private pathStack: NavPathStack;
-    private userManager: UserManager;
+    private userService: AuthService;
     private onLoginSuccess: () => void;
     imageButton(src: Resource, parent = null) {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -138,13 +156,13 @@ export class LoginPage extends ViewPU {
     async login(): Promise<void> {
         if (this.account === '' || this.password === '') {
             promptAction.showToast({
-                message: { "id": 16777291, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
+                message: "请输入账号和密码"
             });
             return;
         }
         this.isShowProgress = true;
         try {
-            const success = await this.userManager.loginUser(this.account, this.password);
+            const success: boolean = await this.userService.login(this.account, this.password);
             if (success) {
                 if (this.timeOutId === -1) {
                     this.timeOutId = setTimeout(() => {
@@ -185,7 +203,7 @@ export class LoginPage extends ViewPU {
                                     onBack: () => {
                                         this.showRegisterPage = false;
                                     }
-                                }, undefined, elmtId, () => { }, { page: "features/login/src/main/ets/pages/LoginPage.ets", line: 107, col: 9 });
+                                }, undefined, elmtId, () => { }, { page: "features/login/src/main/ets/pages/LoginPage.ets", line: 122, col: 9 });
                                 ViewPU.create(componentCall);
                                 let paramsLambda = () => {
                                     return {
@@ -207,172 +225,118 @@ export class LoginPage extends ViewPU {
             else {
                 this.ifElseBranchUpdateFunction(1, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Navigation.create(this.pathStack, { moduleName: "default", pagePath: "features/login/src/main/ets/pages/LoginPage", isUserCreateStack: true });
-                        Navigation.backgroundColor('#F1F3F5');
-                        Navigation.width('100%');
-                        Navigation.height('100%');
-                        Navigation.hideTitleBar(true);
-                        Navigation.hideToolBar(true);
-                    }, Navigation);
+                        Column.create();
+                        Column.height('100%');
+                        Column.width('100%');
+                        Column.padding({
+                            left: '12vp',
+                            right: '12vp',
+                            bottom: '24vp'
+                        });
+                        Column.backgroundColor('#F1F3F5');
+                    }, Column);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        NavDestination.create(() => {
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                Column.create();
-                                Column.height('100%');
-                                Column.width('100%');
-                                Column.padding({
-                                    left: '12vp',
-                                    right: '12vp',
-                                    bottom: '24vp'
-                                });
-                            }, Column);
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                Image.create({ "id": 16777309, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
-                                Image.width('78vp');
-                                Image.height('78vp');
-                                Image.margin({
-                                    top: '150vp',
-                                    bottom: '8vp'
-                                });
-                            }, Image);
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                Text.create({ "id": 16777294, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
-                                Text.fontSize('24fp');
-                                Text.fontWeight(FontWeight.Medium);
-                                Text.fontColor('#182431');
-                            }, Text);
-                            Text.pop();
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                Text.create({ "id": 16777293, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
-                                Text.fontSize('16fp');
-                                Text.fontColor('#99182431');
-                                Text.margin({
-                                    bottom: '30vp',
-                                    top: '8vp'
-                                });
-                            }, Text);
-                            Text.pop();
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                TextInput.create({ placeholder: { "id": 16777285, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" } });
-                                TextInput.maxLength(11);
-                                TextInput.type(InputType.Number);
-                                __TextInput__inputStyle();
-                                TextInput.onChange((value: string) => {
-                                    this.account = value;
-                                });
-                            }, TextInput);
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                Line.create();
-                                __Line__lineStyle();
-                            }, Line);
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                TextInput.create({ placeholder: { "id": 16777298, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" } });
-                                TextInput.maxLength(8);
-                                TextInput.type(InputType.Password);
-                                __TextInput__inputStyle();
-                                TextInput.onChange((value: string) => {
-                                    this.password = value;
-                                });
-                            }, TextInput);
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                Line.create();
-                                __Line__lineStyle();
-                            }, Line);
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                Row.create();
-                                Row.justifyContent(FlexAlign.SpaceBetween);
-                                Row.width('328vp');
-                                Row.margin({ top: '8vp' });
-                            }, Row);
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                Text.create({ "id": 16777296, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
-                                __Text__blueTextStyle();
-                            }, Text);
-                            Text.pop();
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                Text.create({ "id": 16777290, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
-                                __Text__blueTextStyle();
-                            }, Text);
-                            Text.pop();
-                            Row.pop();
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                Button.createWithLabel({ "id": 16777292, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, { type: ButtonType.Capsule });
-                                Button.width('328vp');
-                                Button.height('40vp');
-                                Button.fontSize('16fp');
-                                Button.fontWeight(FontWeight.Medium);
-                                Button.backgroundColor('#007DFF');
-                                Button.margin({
-                                    top: '48vp',
-                                    bottom: '12vp'
-                                });
-                                Button.onClick(() => {
-                                    this.login();
-                                });
-                            }, Button);
-                            Button.pop();
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                Text.create({ "id": 16777301, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
-                                Text.fontColor('#007DFF');
-                                Text.fontSize('16fp');
-                                Text.fontWeight(FontWeight.Medium);
-                                Text.onClick(() => {
-                                    this.showRegisterPage = true;
-                                });
-                            }, Text);
-                            Text.pop();
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                If.create();
-                                if (this.isShowProgress) {
-                                    this.ifElseBranchUpdateFunction(0, () => {
-                                        this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                            LoadingProgress.create();
-                                            LoadingProgress.color('#182431');
-                                            LoadingProgress.width('30vp');
-                                            LoadingProgress.height('30vp');
-                                            LoadingProgress.margin({ top: '20vp' });
-                                        }, LoadingProgress);
-                                    });
-                                }
-                                else {
-                                    this.ifElseBranchUpdateFunction(1, () => {
-                                    });
-                                }
-                            }, If);
-                            If.pop();
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                Blank.create();
-                            }, Blank);
-                            Blank.pop();
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                Text.create({ "id": 16777297, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
-                                Text.fontColor('#838D97');
-                                Text.fontSize('12fp');
-                                Text.fontWeight(FontWeight.Medium);
-                                Text.margin({
-                                    top: '50vp',
-                                    bottom: '12vp'
-                                });
-                            }, Text);
-                            Text.pop();
-                            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                Row.create({ space: 44 });
-                                Row.margin({ bottom: '16vp' });
-                            }, Row);
-                            this.imageButton.bind(this)({ "id": 16777306, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
-                            this.imageButton.bind(this)({ "id": 16777307, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
-                            this.imageButton.bind(this)({ "id": 16777308, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
-                            Row.pop();
-                            Column.pop();
-                        }, { moduleName: "default", pagePath: "features/login/src/main/ets/pages/LoginPage" });
-                        NavDestination.backgroundColor('#F1F3F5');
-                        NavDestination.width('100%');
-                        NavDestination.height('100%');
-                        NavDestination.hideTitleBar(true);
-                        NavDestination.hideToolBar(true);
-                    }, NavDestination);
-                    NavDestination.pop();
-                    Navigation.pop();
+                        Image.create({ "id": 16777309, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+                        Image.width('78vp');
+                        Image.height('78vp');
+                        Image.margin({
+                            top: '150vp',
+                            bottom: '8vp'
+                        });
+                    }, Image);
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('登录');
+                        Text.fontSize('24fp');
+                        Text.fontWeight(FontWeight.Medium);
+                        Text.fontColor('#182431');
+                    }, Text);
+                    Text.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('更多精彩内容等你发现');
+                        Text.fontSize('16fp');
+                        Text.fontColor('#99182431');
+                        Text.margin({
+                            bottom: '30vp',
+                            top: '8vp'
+                        });
+                    }, Text);
+                    Text.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        TextInput.create({ placeholder: "请输入手机号" });
+                        TextInput.maxLength(11);
+                        TextInput.type(InputType.Number);
+                        __TextInput__inputStyle();
+                        TextInput.onChange((value: string) => {
+                            this.account = value;
+                        });
+                    }, TextInput);
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Line.create();
+                        __Line__lineStyle();
+                    }, Line);
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        TextInput.create({ placeholder: "请输入密码" });
+                        TextInput.maxLength(8);
+                        TextInput.type(InputType.Password);
+                        __TextInput__inputStyle();
+                        TextInput.onChange((value: string) => {
+                            this.password = value;
+                        });
+                    }, TextInput);
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Line.create();
+                        __Line__lineStyle();
+                    }, Line);
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Button.createWithLabel({ "id": 16777292, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, { type: ButtonType.Capsule });
+                        Button.width('328vp');
+                        Button.height('40vp');
+                        Button.fontSize('16fp');
+                        Button.fontWeight(FontWeight.Medium);
+                        Button.backgroundColor('#007DFF');
+                        Button.margin({
+                            top: '48vp',
+                            bottom: '12vp'
+                        });
+                        Button.onClick(() => {
+                            this.login();
+                        });
+                    }, Button);
+                    Button.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create({ "id": 16777301, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+                        Text.fontColor('#007DFF');
+                        Text.fontSize('16fp');
+                        Text.fontWeight(FontWeight.Medium);
+                        Text.onClick(() => {
+                            this.showRegisterPage = true;
+                        });
+                    }, Text);
+                    Text.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        If.create();
+                        if (this.isShowProgress) {
+                            this.ifElseBranchUpdateFunction(0, () => {
+                                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                    LoadingProgress.create();
+                                    LoadingProgress.color('#182431');
+                                    LoadingProgress.width('30vp');
+                                    LoadingProgress.height('30vp');
+                                    LoadingProgress.margin({ top: '20vp' });
+                                }, LoadingProgress);
+                            });
+                        }
+                        else {
+                            this.ifElseBranchUpdateFunction(1, () => {
+                            });
+                        }
+                    }, If);
+                    If.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Blank.create();
+                    }, Blank);
+                    Blank.pop();
+                    Column.pop();
                 });
             }
         }, If);

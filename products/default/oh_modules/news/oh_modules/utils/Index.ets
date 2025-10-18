@@ -21,3 +21,4 @@ export { HttpUtils } from './src/HttpUtils';
 export { BaiduHotSearchParser, BaiduHotSearchItem } from './src/BaiduHotSearchParser';
 export { NewsHeadlineService, NewsHeadlineItem } from './src/NewsHeadlineService';
 export { NewsApiConfig, buildNewsApiUrl, NewsApiRequestParams, maskApiKey } from './src/NewsApiConfig';
+export { BackendConfig, withBase, type BackendConfigShape, type ResultShape, type LoginParams, type RegisterParams } from './src/BackendConfig';

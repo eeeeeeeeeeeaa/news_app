@@ -14,5 +14,5 @@ spring:
 
 # JWT配置
 jwt:
-  secret: your-secret-key-123456  # 密钥（生产环境需复杂且保密）
+  secret: your-secret-key-123456-abcdefghijklmnopqrstuvwxyz0123456789  # 密钥（生产环境需复杂且保密，至少32字符）
   expiration: 86400000  # 令牌过期时间（24小时，单位：毫秒）

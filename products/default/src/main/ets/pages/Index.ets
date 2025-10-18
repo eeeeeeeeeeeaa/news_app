@@ -181,8 +181,8 @@ struct Index {
             // 4. 鎴戠殑Tab锛堢储寮?锛?
             TabContent() {
               MinePage({
-                onLogout: () => {
-                  this.checkLoginStatus();
+                onLogout: async () => {
+                  await this.checkLoginStatus();
                 }
               })
             }
@@ -208,8 +208,8 @@ struct Index {
     } else {
       // 鏈櫥褰曪紝鏄剧ず鐧诲綍椤甸潰
       LoginPage({
-        onLoginSuccess: () => {
-          this.checkLoginStatus();
+        onLoginSuccess: async () => {
+          await this.checkLoginStatus();
         }
       })
     }

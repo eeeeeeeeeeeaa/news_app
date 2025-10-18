@@ -1,9 +1,16 @@
 import preferences from "@ohos:data.preferences";
 import promptAction from "@ohos:promptAction";
+import { HttpUtils, withBase, type ResultShape } from "@bundle:com.huawei.quickstart/default@utils/Index";
 export interface UserInfo {
     account: string;
     password: string;
     username: string;
+}
+// 新增：定义登录/注册请求的接口
+export interface LoginRequest {
+    userPhone: string;
+    userPassword: string;
+    userName?: string;
 }
 export class UserManager {
     private static instance: UserManager;
@@ -11,6 +18,7 @@ export class UserManager {
     private readonly PREFERENCES_NAME = 'user_data';
     private readonly USER_KEY = 'user_info';
     private readonly CURRENT_USER_KEY = 'current_user';
+    private readonly TOKEN_KEY = 'auth_token';
     private constructor() { }
     public static getInstance(): UserManager {
         if (!UserManager.instance) {
@@ -27,79 +35,60 @@ export class UserManager {
             console.error('Failed to get preferences:', err);
         }
     }
-    // 注册用户
-    public async registerUser(account: string, password: string, confirmPassword: string): Promise<boolean> {
-        if (password !== confirmPassword) {
-            promptAction.showToast({
-                message: { "id": 16777299, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
-            });
-            return false;
-        }
-        if (!this.dataPreferences) {
-            await this.initPreferences();
-        }
-        try {
-            // 检查用户是否已存在
-            const existingUsers = await this.getAllUsers();
-            const userExists = existingUsers.some(user => user.account === account);
-            if (userExists) {
-                promptAction.showToast({
-                    message: { "id": 16777286, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
-                });
-                return false;
-            }
-            // 创建新用户
-            const newUser: UserInfo = {
-                account: account,
-                password: password,
-                username: `用户${account.slice(-4)}` // 使用手机号后4位作为默认用户名
-            };
-            existingUsers.push(newUser);
-            await this.dataPreferences?.put(this.USER_KEY, JSON.stringify(existingUsers));
-            await this.dataPreferences?.flush();
-            // 确保注册后不会自动登录，清除任何之前的登录状态
-            await this.dataPreferences?.delete(this.CURRENT_USER_KEY);
-            await this.dataPreferences?.flush();
-            promptAction.showToast({
-                message: { "id": 16777304, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
-            });
-            return true;
-        }
-        catch (err) {
-            console.error('Failed to register user:', err);
-            return false;
-        }
-    }
-    // 用户登录
+    // 用户登录（调用后端接口）
     public async loginUser(account: string, password: string): Promise<boolean> {
         if (!this.dataPreferences) {
             await this.initPreferences();
         }
         try {
-            const allUsers = await this.getAllUsers();
-            const user = allUsers.find(u => u.account === account);
-            if (!user) {
-                promptAction.showToast({
-                    message: { "id": 16777287, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
-                });
-                return false;
+            const url = withBase('/api/users/login');
+            // 修复第97行：使用具体的接口类型而不是Record<string, string>
+            const form: LoginRequest = {
+                userPhone: account,
+                userPassword: password
+            };
+            const respText = await HttpUtils.postForm(url, form);
+            const resp: ResultShape<string> = JSON.parse(respText);
+            if (resp.code === 200 && resp.data) {
+                const token = resp.data;
+                const currentUser: UserInfo = { account: account, password: '', username: `用户${account.slice(-4)}` };
+                await this.dataPreferences?.put(this.TOKEN_KEY, token);
+                await this.dataPreferences?.put(this.CURRENT_USER_KEY, JSON.stringify(currentUser));
+                await this.dataPreferences?.flush();
+                promptAction.showToast({ message: { "id": 16777295, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" } });
+                return true;
             }
-            if (user.password !== password) {
-                promptAction.showToast({
-                    message: { "id": 16777305, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
-                });
-                return false;
+            // 新增：根据不同的错误码提供具体的错误提示
+            let errorMessage = resp.message ?? '登录失败';
+            if (resp.code === 400) {
+                errorMessage = '请求参数错误，请检查输入';
             }
-            // 保存当前登录用户
-            await this.dataPreferences?.put(this.CURRENT_USER_KEY, JSON.stringify(user));
-            await this.dataPreferences?.flush();
-            promptAction.showToast({
-                message: { "id": 16777295, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
-            });
-            return true;
+            else if (resp.code === 401) {
+                errorMessage = '用户名或密码错误';
+            }
+            else if (resp.code === 404) {
+                errorMessage = '用户不存在，请先注册';
+            }
+            else if (resp.code === 500) {
+                errorMessage = '服务器内部错误，请稍后再试';
+            }
+            promptAction.showToast({ message: errorMessage });
+            return false;
         }
         catch (err) {
             console.error('Failed to login user:', err);
+            // 新增：更详细的错误信息
+            let errorMessage = '登录失败，请稍后再试';
+            if (err.message.includes('Network')) {
+                errorMessage = '网络连接失败，请检查网络设置';
+            }
+            else if (err.message.includes('Timeout')) {
+                errorMessage = '请求超时，请检查网络连接';
+            }
+            else if (err.message.includes('JSON')) {
+                errorMessage = '服务器响应格式错误';
+            }
+            promptAction.showToast({ message: errorMessage });
             return false;
         }
     }
@@ -127,6 +116,7 @@ export class UserManager {
         }
         try {
             await this.dataPreferences?.delete(this.CURRENT_USER_KEY);
+            await this.dataPreferences?.delete(this.TOKEN_KEY);
             await this.dataPreferences?.flush();
         }
         catch (err) {
@@ -165,5 +155,31 @@ export class UserManager {
             console.error('Failed to get all users:', err);
             return [];
         }
+    }
+    // 获取JWT令牌
+    public async getToken(): Promise<string | null> {
+        if (!this.dataPreferences) {
+            await this.initPreferences();
+        }
+        try {
+            const token = await this.dataPreferences?.get(this.TOKEN_KEY, '');
+            if (token && token !== '') {
+                return token as string;
+            }
+            return null;
+        }
+        catch (err) {
+            console.error('Failed to get token:', err);
+            return null;
+        }
+    }
+    // 便捷方法：获取认证请求头
+    public async getAuthHeaders(): Promise<Record<string, string>> {
+        const token = await this.getToken();
+        const headers: Record<string, string> = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        return headers;
     }
 }
