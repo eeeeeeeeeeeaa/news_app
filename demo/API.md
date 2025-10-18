@@ -163,6 +163,60 @@ curl -X POST "http://localhost:8080/api/news/follow" \
 
 ---
 
+### 2) 获取用户关注的新闻列表
+- **URL**: `/api/news/followed`
+- **Method**: GET
+- **Auth**: 需要；请求头 `Authorization: Bearer <jwt-token>`
+
+#### 请求参数
+无
+
+#### 成功响应
+```json
+{
+  "code": 200,
+  "message": "成功",
+  "data": [
+    {
+      "followId": 1,
+      "userId": 1,
+      "newsId": "abc123",
+      "newsTitle": "示例新闻标题",
+      "imageUrl": "https://example.com/images/news123.jpg",
+      "newsContent": "这是新闻的正文内容...",
+      "followTime": "2025-10-18T21:30:00"
+    },
+    {
+      "followId": 2,
+      "userId": 1,
+      "newsId": "xyz789",
+      "newsTitle": "另一条新闻",
+      "imageUrl": null,
+      "newsContent": "另一条新闻的正文...",
+      "followTime": "2025-10-18T20:15:00"
+    }
+  ]
+}
+```
+
+#### 失败响应（示例）
+- 未登录或令牌无效：
+```json
+{
+  "code": 400,
+  "message": "请先登录",
+  "data": null
+}
+```
+
+#### curl 示例
+```bash
+curl -X GET "http://localhost:8080/api/news/followed" \
+  -H "Authorization: Bearer <jwt-token>"
+```
+
+---
+
 ## 错误码约定
 - 200：成功
 - 400：业务失败（参数错误、未登录、重复操作等）
