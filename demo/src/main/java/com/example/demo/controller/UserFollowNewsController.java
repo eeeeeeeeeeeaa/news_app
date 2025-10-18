@@ -24,9 +24,10 @@ public class UserFollowNewsController {
     @PostMapping("/follow")
     public Result<Void> followNews(
             HttpServletRequest request,  // 用于获取请求头中的令牌
-            @RequestParam String newsId,
-            @RequestParam String newsTitle,
-            @RequestParam(required = false) String newsUrl) {  // 新闻链接可选
+            @RequestParam String newsTitle,  // 新闻标题必填
+            @RequestParam String newsContent,  // 新闻正文必填
+            @RequestParam(required = false) String newsId,  // 新闻ID可选
+            @RequestParam(required = false) String imageUrl) {  // 图片链接可选
 
         // 1. 从请求头获取令牌并验证
         String token = jwtUtil.getTokenFromRequest(request);
@@ -38,6 +39,6 @@ public class UserFollowNewsController {
         Integer userId = jwtUtil.getUserIdFromToken(token);
 
         // 3. 调用服务层关注新闻
-        return followNewsService.followNews(userId, newsId, newsTitle, newsUrl);
+        return followNewsService.followNews(userId, newsId, newsTitle, imageUrl, newsContent);
     }
 }

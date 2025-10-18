@@ -23,8 +23,11 @@ public class UserFollowNews {
     @Column(name = "news_title", nullable = false)
     private String newsTitle;  // 新闻标题
 
-    @Column(name = "news_url")
-    private String newsUrl;  // 新闻链接（可选）
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;  // 图片链接（可选）
+
+    @Column(name = "news_content", columnDefinition = "TEXT")
+    private String newsContent;  // 新闻正文（可选）
 
     @Column(name = "follow_time", nullable = false, updatable = false)
     private LocalDateTime followTime;  // 关注时间

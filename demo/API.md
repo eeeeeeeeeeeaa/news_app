@@ -109,9 +109,10 @@ curl -X POST "http://localhost:8080/api/users/login" \
 - **Auth**: 需要；请求头 `Authorization: Bearer <jwt-token>`
 
 #### 请求参数
-- newsId (string, 必填)：新闻唯一标识
 - newsTitle (string, 必填)：新闻标题
-- newsUrl (string, 可选)：新闻链接
+- newsContent (string, 必填)：新闻正文
+- newsId (string, 可选)：新闻唯一标识（如不提供，系统自动生成）
+- imageUrl (string, 可选)：图片链接
 
 #### 成功响应
 ```json
@@ -143,12 +144,21 @@ curl -X POST "http://localhost:8080/api/users/login" \
 
 #### curl 示例
 ```bash
+# 完整参数示例（包含可选的newsId和imageUrl）
 curl -X POST "http://localhost:8080/api/news/follow" \
   -H "Authorization: Bearer <jwt-token>" \
   -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "newsId=abc123" \
   -d "newsTitle=示例新闻标题" \
-  -d "newsUrl=https://example.com/news/abc123"
+  -d "newsContent=这是新闻的正文内容..." \
+  -d "newsId=abc123" \
+  -d "imageUrl=https://example.com/images/news123.jpg"
+
+# 最简参数示例（仅必填参数，newsId将自动生成）
+curl -X POST "http://localhost:8080/api/news/follow" \
+  -H "Authorization: Bearer <jwt-token>" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "newsTitle=示例新闻标题" \
+  -d "newsContent=这是新闻的正文内容..."
 ```
 
 ---
