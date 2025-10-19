@@ -1,0 +1,927 @@
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ-·/*
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import preferences from "@ohos.data.preferences";
+import util from "@ohos.util";
+/**
+ * JWT ç®¡ç†å™¨
+ * è´Ÿè´£ JWT Token çš„å­˜å‚¨ã€è·å–ã€è§£æå’ŒéªŒè¯
+ */
+export class JwtManager {
+    constructor() {
+        this.dataPreferences = null;
+        /** Preferences å­˜å‚¨åç§° */
+        this.PREFERENCES_NAME = 'jwt_storage';
+        /** JWT Token å­˜å‚¨é”® */
+        this.JWT_TOKEN_KEY = 'jwt_token';
+        /** Token åˆ·æ–°æ—¶é—´å­˜å‚¨é”®ï¼ˆå¯é€‰ï¼‰ */
+        this.TOKEN_REFRESH_TIME_KEY = 'token_refresh_time';
+        /** ç¼“å­˜çš„ token */
+        this.cachedToken = null;
+        /** ç¼“å­˜çš„ payload */
+        this.cachedPayload = null;
+    }
+    /**
+     * è·å–å•ä¾‹å®ä¾‹
+     */
+    static getInstance() {
+        if (!JwtManager.instance) {
+            JwtManager.instance = new JwtManager();
+        }
+        return JwtManager.instance;
+    }
+    /**
+     * åˆå§‹åŒ– Preferences æ•°æ®å­˜å‚¨
+     */
+    async initPreferences() {
+        try {
+            if (!this.dataPreferences) {
+                this.dataPreferences = await preferences.getPreferences(getContext(), this.PREFERENCES_NAME);
+                console.log('JwtManager: Preferences åˆå§‹åŒ–æˆåŠŸ');
+            }
+        }
+        catch (err) {
+            console.error('JwtManager: åˆå§‹åŒ– Preferences å¤±è´¥:', err);
+            throw new Error('JWT å­˜å‚¨åˆå§‹åŒ–å¤±è´¥');
+        }
+    }
+    /**
+     * å­˜å‚¨ JWT Token
+     * @param token JWT Token å­—ç¬¦ä¸²
+     * @returns æ˜¯å¦å­˜å‚¨æˆåŠŸ
+     */
+    async saveToken(token) {
+        if (!token || typeof token !== 'string' || token.trim() === '') {
+            console.error('JwtManager: æ— æ•ˆçš„ token');
+            return false;
+        }
+        if (!this.dataPreferences) {
+            await this.initPreferences();
+        }
+        try {
+            // å­˜å‚¨ token
+            await this.dataPreferences?.put(this.JWT_TOKEN_KEY, token);
+            // å­˜å‚¨åˆ·æ–°æ—¶é—´
+            await this.dataPreferences?.put(this.TOKEN_REFRESH_TIME_KEY, Date.now());
+            // æŒä¹…åŒ–
+            await this.dataPreferences?.flush();
+            // æ›´æ–°ç¼“å­˜
+            this.cachedToken = token;
+            this.cachedPayload = this.parseJwtPayload(token);
+            console.log('JwtManager: Token å­˜å‚¨æˆåŠŸ');
+            return true;
+        }
+        catch (err) {
+            console.error('JwtManager: å­˜å‚¨ token å¤±è´¥:', err);
+            return false;
+        }
+    }
+    /**
+     * è·å–å­˜å‚¨çš„ JWT Token
+     * @returns JWT Token å­—ç¬¦ä¸²ï¼Œä¸å­˜åœ¨åˆ™è¿”å› null
+     */
+    async getToken() {
+        // ä¼˜å…ˆè¿”å›ç¼“å­˜
+        if (this.cachedToken) {
+            return this.cachedToken;
+        }
+        if (!this.dataPreferences) {
+            await this.initPreferences();
+        }
+        try {
+            const token = await this.dataPreferences?.get(this.JWT_TOKEN_KEY, '');
+            if (token && typeof token === 'string' && token !== '') {
+                this.cachedToken = token;
+                return token;
+            }
+            return null;
+        }
+        catch (err) {
+            console.error('JwtManager: è·å– token å¤±è´¥:', err);
+            return null;
+        }
+    }
+    /**
+     * åˆ é™¤å­˜å‚¨çš„ JWT Token
+     * @returns æ˜¯å¦åˆ é™¤æˆåŠŸ
+     */
+    async removeToken() {
+        if (!this.dataPreferences) {
+            await this.initPreferences();
+        }
+        try {
+            await this.dataPreferences?.delete(this.JWT_TOKEN_KEY);
+            await this.dataPreferences?.delete(this.TOKEN_REFRESH_TIME_KEY);
+            await this.dataPreferences?.flush();
+            // æ¸…ç©ºç¼“å­˜
+            this.cachedToken = null;
+            this.cachedPayload = null;
+            console.log('JwtManager: Token åˆ é™¤æˆåŠŸ');
+            return true;
+        }
+        catch (err) {
+            console.error('JwtManager: åˆ é™¤ token å¤±è´¥:', err);
+            return false;
+        }
+    }
+    /**
+     * è§£æ JWT Token çš„ Payload éƒ¨åˆ†
+     * JWT æ ¼å¼: header.payload.signature
+     * @param token JWT Token å­—ç¬¦ä¸²
+     * @returns è§£æåçš„ Payload å¯¹è±¡ï¼Œè§£æå¤±è´¥è¿”å›ç©ºå¯¹è±¡
+     */
+    parseJwtPayload(token) {
+        try {
+            // JWT ç”±ä¸‰éƒ¨åˆ†ç»„æˆï¼Œç”¨ . åˆ†éš”
+            const parts = token.split('.');
+            if (parts.length !== 3) {
+                console.error('JwtManager: JWT æ ¼å¼æ— æ•ˆï¼Œåº”è¯¥åŒ…å«3éƒ¨åˆ†');
+                const emptyPayload = {};
+                return emptyPayload;
+            }
+            // è·å– payload éƒ¨åˆ†ï¼ˆç¬¬äºŒéƒ¨åˆ†ï¼‰
+            const payloadBase64 = parts[1];
+            // Base64 è§£ç 
+            const payloadStr = this.base64UrlDecode(payloadBase64);
+            // è§£æ JSON
+            const payload = JSON.parse(payloadStr);
+            console.log('JwtManager: JWT Payload è§£ææˆåŠŸ:', payload);
+            return payload;
+        }
+        catch (err) {
+            console.error('JwtManager: è§£æ JWT Payload å¤±è´¥:', err);
+            const emptyPayload = {};
+            return emptyPayload;
+        }
+    }
+    /**
+     * Base64 URL è§£ç 
+     * @param base64Url Base64 URL ç¼–ç çš„å­—ç¬¦ä¸²
+     * @returns è§£ç åçš„å­—ç¬¦ä¸²
+     */
+    base64UrlDecode(base64Url) {
+        try {
+            // Base64 URL ä½¿ç”¨ - å’Œ _ æ›¿æ¢äº† + å’Œ /
+            let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            // è¡¥é½ padding
+            const padding = base64.length % 4;
+            if (padding > 0) {
+                base64 += '='.repeat(4 - padding);
+            }
+            // ä½¿ç”¨ util.Base64Helper è¿›è¡Œè§£ç 
+            const decoder = new util.Base64Helper();
+            const uint8Array = decoder.decodeSync(base64);
+            // å°† Uint8Array è½¬æ¢ä¸ºå­—ç¬¦ä¸²
+            const textDecoder = util.TextDecoder.create('utf-8', { ignoreBOM: true });
+            const decodedStr = textDecoder.decodeWithStream(uint8Array, { stream: false });
+            return decodedStr;
+        }
+        catch (err) {
+            const errorMessage = err instanceof Error ? err.message : 'Base64 è§£ç å¤±è´¥';
+            console.error('JwtManager: Base64 è§£ç å¤±è´¥:', err);
+            throw new Error(`JWT Base64 è§£ç å¤±è´¥: ${errorMessage}`);
+        }
+    }
+    /**
+     * è·å– JWT Token çš„ Payload
+     * @returns Payload å¯¹è±¡ï¼Œä¸å­˜åœ¨æˆ–è§£æå¤±è´¥è¿”å› null
+     */
+    async getPayload() {
+        // ä¼˜å…ˆè¿”å›ç¼“å­˜
+        if (this.cachedPayload) {
+            return this.cachedPayload;
+        }
+        const token = await this.getToken();
+        if (!token) {
+            return null;
+        }
+        const payload = this.parseJwtPayload(token);
+        if (Object.keys(payload).length === 0) {
+            return null;
+        }
+        this.cachedPayload = payload;
+        return payload;
+    }
+    /**
+     * æ£€æŸ¥ Token æ˜¯å¦è¿‡æœŸ
+     * @returns true è¡¨ç¤ºå·²è¿‡æœŸï¼Œfalse è¡¨ç¤ºæœªè¿‡æœŸï¼Œnull è¡¨ç¤ºæ— æ³•åˆ¤æ–­
+     */
+    async isTokenExpired() {
+        const payload = await this.getPayload();
+        if (!payload || !payload.exp) {
+            console.warn('JwtManager: æ— æ³•è·å– token è¿‡æœŸæ—¶é—´');
+            return null;
+        }
+        // exp æ˜¯ç§’çº§æ—¶é—´æˆ³ï¼Œéœ€è¦è½¬æ¢ä¸ºæ¯«ç§’
+        const expirationTime = payload.exp * 1000;
+        const currentTime = Date.now();
+        const isExpired = currentTime >= expirationTime;
+        console.log(`JwtManager: Token ${isExpired ? 'å·²è¿‡æœŸ' : 'æœªè¿‡æœŸ'}`);
+        return isExpired;
+    }
+    /**
+     * æ£€æŸ¥ Token æ˜¯å¦æœ‰æ•ˆï¼ˆå­˜åœ¨ä¸”æœªè¿‡æœŸï¼‰
+     * @returns true è¡¨ç¤ºæœ‰æ•ˆï¼Œfalse è¡¨ç¤ºæ— æ•ˆ
+     */
+    async isTokenValid() {
+        const token = await this.getToken();
+        if (!token) {
+            console.log('JwtManager: Token ä¸å­˜åœ¨');
+            return false;
+        }
+        const isExpired = await this.isTokenExpired();
+        if (isExpired === null) {
+            // æ— æ³•åˆ¤æ–­è¿‡æœŸæ—¶é—´ï¼Œè®¤ä¸º token æ— æ•ˆ
+            console.warn('JwtManager: æ— æ³•åˆ¤æ–­ token æœ‰æ•ˆæ€§');
+            return false;
+        }
+        const isValid = !isExpired;
+        console.log(`JwtManager: Token ${isValid ? 'æœ‰æ•ˆ' : 'æ— æ•ˆ'}`);
+        return isValid;
+    }
+    /**
+     * è·å– Token è¿‡æœŸæ—¶é—´
+     * @returns Date å¯¹è±¡ï¼Œä¸å­˜åœ¨è¿”å› null
+     */
+    async getExpirationDate() {
+        const payload = await this.getPayload();
+        if (!payload || !payload.exp) {
+            return null;
+        }
+        // exp æ˜¯ç§’çº§æ—¶é—´æˆ³ï¼Œéœ€è¦è½¬æ¢ä¸ºæ¯«ç§’
+        return new Date(payload.exp * 1000);
+    }
+    /**
+     * è·å– Token å‰©ä½™æœ‰æ•ˆæ—¶é—´ï¼ˆæ¯«ç§’ï¼‰
+     * @returns å‰©ä½™æ—¶é—´ï¼ˆæ¯«ç§’ï¼‰ï¼Œå·²è¿‡æœŸè¿”å› 0ï¼Œæ— æ³•åˆ¤æ–­è¿”å› null
+     */
+    async getTimeToExpiration() {
+        const expirationDate = await this.getExpirationDate();
+        if (!expirationDate) {
+            return null;
+        }
+        const remainingTime = expirationDate.getTime() - Date.now();
+        return remainingTime > 0 ? remainingTime : 0;
+    }
+    /**
+     * è·å–å®Œæ•´çš„ Token ä¿¡æ¯
+     * @returns JwtTokenInfo å¯¹è±¡ï¼Œä¸å­˜åœ¨è¿”å› null
+     */
+    async getTokenInfo() {
+        const token = await this.getToken();
+        if (!token) {
+            return null;
+        }
+        const payload = await this.getPayload();
+        if (!payload) {
+            return null;
+        }
+        const isExpired = await this.isTokenExpired();
+        const expirationDate = await this.getExpirationDate();
+        const tokenInfo = {
+            token: token,
+            payload: payload,
+            isValid: isExpired === false,
+            isExpired: isExpired === true,
+            expirationDate: expirationDate
+        };
+        return tokenInfo;
+    }
+    /**
+     * è·å–è®¤è¯è¯·æ±‚å¤´
+     * @returns åŒ…å« Authorization çš„è¯·æ±‚å¤´å¯¹è±¡
+     */
+    async getAuthHeaders() {
+        const token = await this.getToken();
+        const headers = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        return headers;
+    }
+    /**
+     * ä» Payload ä¸­è·å–ç”¨æˆ·ä¿¡æ¯
+     * @returns ç”¨æˆ·ä¿¡æ¯å¯¹è±¡ï¼Œä¸å­˜åœ¨è¿”å› null
+     */
+    async getUserInfoFromToken() {
+        const payload = await this.getPayload();
+        if (!payload) {
+            return null;
+        }
+        return {
+            userId: payload.userId,
+            userPhone: payload.userPhone,
+            userName: payload.userName
+        };
+    }
+    /**
+     * æ¸…é™¤æ‰€æœ‰ç¼“å­˜
+     */
+    clearCache() {
+        this.cachedToken = null;
+        this.cachedPayload = null;
+        console.log('JwtManager: ç¼“å­˜å·²æ¸…é™¤');
+    }
+}
+JwtManager.instance = null;
+//# sourceMappingURL=JwtManager.js.mapÂ’ÙT hvigor_ignore_D:_Deveco_sdk_default_openharmony_ets_api_@ohos.data.preferences.d.tsÙH hvigor_ignore_D:_Deveco_sdk_default_openharmony_ets_api_@ohos.util.d.tsÙXC:\Users\12461\Desktop\hmosbig\news_app\features\login\src\main\ets\model\JwtManager.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥loginÃÂÙ6C:\Users\12461\Desktop\hmosbig\news_app\features\loginÙ'C:\Users\12461\Desktop\hmosbig\news_app¥login¥1.0.0ÔrC’§pkgNameªpkgVersion¥login¥1.0.0“ÔrD’²hostDependencyName®hostModuleName¿./src/main/ets/model/JwtManager¥loginD¬./JwtManager¥loginD¬./JwtManager¥loginÙ6C:\Users\12461\Desktop\hmosbig\news_app\features\loginÃÃÚ/ê/*
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { preferences } from '@kit.ArkData';
+import { util } from '@kit.ArkTS';
+
+/**
+ * JWT Token è½½è·æ¥å£
+ * å®šä¹‰ JWT Token è§£æåçš„æ•°æ®ç»“æ„
+ */
+export interface JwtPayload {
+  /** ç”¨æˆ·ID */
+  userId?: string;
+
+  /** ç”¨æˆ·æ‰‹æœºå· */
+  userPhone?: string;
+
+  /** ç”¨æˆ·å */
+  userName?: string;
+
+  /** ç­¾å‘æ—¶é—´ï¼ˆç§’çº§æ—¶é—´æˆ³ï¼‰ */
+  iat?: number;
+
+  /** è¿‡æœŸæ—¶é—´ï¼ˆç§’çº§æ—¶é—´æˆ³ï¼‰ */
+  exp?: number;
+
+  /** ä¸»é¢˜ */
+  sub?: string;
+
+  /** ç­¾å‘è€… */
+  iss?: string;
+
+  /** å—ä¼— */
+  aud?: string;
+}
+
+/**
+ * JWT Token ä¿¡æ¯æ¥å£
+ */
+export interface JwtTokenInfo {
+  /** åŸå§‹ token å­—ç¬¦ä¸² */
+  token: string;
+
+  /** è§£æåçš„è½½è·ä¿¡æ¯ */
+  payload: JwtPayload;
+
+  /** token æ˜¯å¦æœ‰æ•ˆ */
+  isValid: boolean;
+
+  /** token æ˜¯å¦è¿‡æœŸ */
+  isExpired: boolean;
+
+  /** è¿‡æœŸæ—¶é—´ï¼ˆDate å¯¹è±¡ï¼‰ */
+  expirationDate: Date | null;
+}
+
+/**
+ * ç”¨æˆ· Token ä¿¡æ¯æ¥å£
+ * ä» JWT Token ä¸­æå–çš„ç”¨æˆ·ä¿¡æ¯
+ */
+export interface UserTokenInfo {
+  /** ç”¨æˆ·ID */
+  userId?: string;
+  /** ç”¨æˆ·æ‰‹æœºå· */
+  userPhone?: string;
+  /** ç”¨æˆ·å */
+  userName?: string;
+}
+
+/**
+ * JWT ç®¡ç†å™¨
+ * è´Ÿè´£ JWT Token çš„å­˜å‚¨ã€è·å–ã€è§£æå’ŒéªŒè¯
+ */
+export class JwtManager {
+  private static instance: JwtManager | null = null;
+  private dataPreferences: preferences.Preferences | null = null;
+  /** Preferences å­˜å‚¨åç§° */
+  private readonly PREFERENCES_NAME: string = 'jwt_storage';
+  /** JWT Token å­˜å‚¨é”® */
+  private readonly JWT_TOKEN_KEY: string = 'jwt_token';
+  /** Token åˆ·æ–°æ—¶é—´å­˜å‚¨é”®ï¼ˆå¯é€‰ï¼‰ */
+  private readonly TOKEN_REFRESH_TIME_KEY: string = 'token_refresh_time';
+  /** ç¼“å­˜çš„ token */
+  private cachedToken: string | null = null;
+  /** ç¼“å­˜çš„ payload */
+  private cachedPayload: JwtPayload | null = null;
+
+  private constructor() {
+  }
+
+  /**
+   * è·å–å•ä¾‹å®ä¾‹
+   */
+  public static getInstance(): JwtManager {
+    if (!JwtManager.instance) {
+      JwtManager.instance = new JwtManager();
+    }
+    return JwtManager.instance;
+  }
+
+  /**
+   * åˆå§‹åŒ– Preferences æ•°æ®å­˜å‚¨
+   */
+  public async initPreferences(): Promise<void> {
+    try {
+      if (!this.dataPreferences) {
+        this.dataPreferences = await preferences.getPreferences(getContext(), this.PREFERENCES_NAME);
+        console.log('JwtManager: Preferences åˆå§‹åŒ–æˆåŠŸ');
+      }
+    } catch (err) {
+      console.error('JwtManager: åˆå§‹åŒ– Preferences å¤±è´¥:', err);
+      throw new Error('JWT å­˜å‚¨åˆå§‹åŒ–å¤±è´¥');
+    }
+  }
+
+  /**
+   * å­˜å‚¨ JWT Token
+   * @param token JWT Token å­—ç¬¦ä¸²
+   * @returns æ˜¯å¦å­˜å‚¨æˆåŠŸ
+   */
+  public async saveToken(token: string): Promise<boolean> {
+    if (!token || typeof token !== 'string' || token.trim() === '') {
+      console.error('JwtManager: æ— æ•ˆçš„ token');
+      return false;
+    }
+
+    if (!this.dataPreferences) {
+      await this.initPreferences();
+    }
+
+    try {
+      // å­˜å‚¨ token
+      await this.dataPreferences?.put(this.JWT_TOKEN_KEY, token);
+      // å­˜å‚¨åˆ·æ–°æ—¶é—´
+      await this.dataPreferences?.put(this.TOKEN_REFRESH_TIME_KEY, Date.now());
+      // æŒä¹…åŒ–
+      await this.dataPreferences?.flush();
+
+      // æ›´æ–°ç¼“å­˜
+      this.cachedToken = token;
+      this.cachedPayload = this.parseJwtPayload(token);
+
+      console.log('JwtManager: Token å­˜å‚¨æˆåŠŸ');
+      return true;
+    } catch (err) {
+      console.error('JwtManager: å­˜å‚¨ token å¤±è´¥:', err);
+      return false;
+    }
+  }
+
+  /**
+   * è·å–å­˜å‚¨çš„ JWT Token
+   * @returns JWT Token å­—ç¬¦ä¸²ï¼Œä¸å­˜åœ¨åˆ™è¿”å› null
+   */
+  public async getToken(): Promise<string | null> {
+    // ä¼˜å…ˆè¿”å›ç¼“å­˜
+    if (this.cachedToken) {
+      return this.cachedToken;
+    }
+
+    if (!this.dataPreferences) {
+      await this.initPreferences();
+    }
+
+    try {
+      const token = await this.dataPreferences?.get(this.JWT_TOKEN_KEY, '');
+      if (token && typeof token === 'string' && token !== '') {
+        this.cachedToken = token;
+        return token;
+      }
+      return null;
+    } catch (err) {
+      console.error('JwtManager: è·å– token å¤±è´¥:', err);
+      return null;
+    }
+  }
+
+  /**
+   * åˆ é™¤å­˜å‚¨çš„ JWT Token
+   * @returns æ˜¯å¦åˆ é™¤æˆåŠŸ
+   */
+  public async removeToken(): Promise<boolean> {
+    if (!this.dataPreferences) {
+      await this.initPreferences();
+    }
+
+    try {
+      await this.dataPreferences?.delete(this.JWT_TOKEN_KEY);
+      await this.dataPreferences?.delete(this.TOKEN_REFRESH_TIME_KEY);
+      await this.dataPreferences?.flush();
+
+      // æ¸…ç©ºç¼“å­˜
+      this.cachedToken = null;
+      this.cachedPayload = null;
+
+      console.log('JwtManager: Token åˆ é™¤æˆåŠŸ');
+      return true;
+    } catch (err) {
+      console.error('JwtManager: åˆ é™¤ token å¤±è´¥:', err);
+      return false;
+    }
+  }
+
+  /**
+   * è§£æ JWT Token çš„ Payload éƒ¨åˆ†
+   * JWT æ ¼å¼: header.payload.signature
+   * @param token JWT Token å­—ç¬¦ä¸²
+   * @returns è§£æåçš„ Payload å¯¹è±¡ï¼Œè§£æå¤±è´¥è¿”å›ç©ºå¯¹è±¡
+   */
+  private parseJwtPayload(token: string): JwtPayload {
+    try {
+      // JWT ç”±ä¸‰éƒ¨åˆ†ç»„æˆï¼Œç”¨ . åˆ†éš”
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        console.error('JwtManager: JWT æ ¼å¼æ— æ•ˆï¼Œåº”è¯¥åŒ…å«3éƒ¨åˆ†');
+        const emptyPayload: JwtPayload = {};
+        return emptyPayload;
+      }
+
+      // è·å– payload éƒ¨åˆ†ï¼ˆç¬¬äºŒéƒ¨åˆ†ï¼‰
+      const payloadBase64 = parts[1];
+
+      // Base64 è§£ç 
+      const payloadStr = this.base64UrlDecode(payloadBase64);
+
+      // è§£æ JSON
+      const payload: JwtPayload = JSON.parse(payloadStr) as JwtPayload;
+
+      console.log('JwtManager: JWT Payload è§£ææˆåŠŸ:', payload);
+      return payload;
+    } catch (err) {
+      console.error('JwtManager: è§£æ JWT Payload å¤±è´¥:', err);
+      const emptyPayload: JwtPayload = {};
+      return emptyPayload;
+    }
+  }
+
+  /**
+   * Base64 URL è§£ç 
+   * @param base64Url Base64 URL ç¼–ç çš„å­—ç¬¦ä¸²
+   * @returns è§£ç åçš„å­—ç¬¦ä¸²
+   */
+  private base64UrlDecode(base64Url: string): string {
+    try {
+      // Base64 URL ä½¿ç”¨ - å’Œ _ æ›¿æ¢äº† + å’Œ /
+      let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+
+      // è¡¥é½ padding
+      const padding = base64.length % 4;
+      if (padding > 0) {
+        base64 += '='.repeat(4 - padding);
+      }
+
+      // ä½¿ç”¨ util.Base64Helper è¿›è¡Œè§£ç 
+      const decoder = new util.Base64Helper();
+      const uint8Array = decoder.decodeSync(base64);
+
+      // å°† Uint8Array è½¬æ¢ä¸ºå­—ç¬¦ä¸²
+      const textDecoder = util.TextDecoder.create('utf-8', { ignoreBOM: true });
+      const decodedStr = textDecoder.decodeWithStream(uint8Array, { stream: false });
+
+      return decodedStr;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Base64 è§£ç å¤±è´¥';
+      console.error('JwtManager: Base64 è§£ç å¤±è´¥:', err);
+      throw new Error(`JWT Base64 è§£ç å¤±è´¥: ${errorMessage}`);
+    }
+  }
+
+  /**
+   * è·å– JWT Token çš„ Payload
+   * @returns Payload å¯¹è±¡ï¼Œä¸å­˜åœ¨æˆ–è§£æå¤±è´¥è¿”å› null
+   */
+  public async getPayload(): Promise<JwtPayload | null> {
+    // ä¼˜å…ˆè¿”å›ç¼“å­˜
+    if (this.cachedPayload) {
+      return this.cachedPayload;
+    }
+
+    const token = await this.getToken();
+    if (!token) {
+      return null;
+    }
+
+    const payload = this.parseJwtPayload(token);
+    if (Object.keys(payload).length === 0) {
+      return null;
+    }
+
+    this.cachedPayload = payload;
+    return payload;
+  }
+
+  /**
+   * æ£€æŸ¥ Token æ˜¯å¦è¿‡æœŸ
+   * @returns true è¡¨ç¤ºå·²è¿‡æœŸï¼Œfalse è¡¨ç¤ºæœªè¿‡æœŸï¼Œnull è¡¨ç¤ºæ— æ³•åˆ¤æ–­
+   */
+  public async isTokenExpired(): Promise<boolean | null> {
+    const payload = await this.getPayload();
+    if (!payload || !payload.exp) {
+      console.warn('JwtManager: æ— æ³•è·å– token è¿‡æœŸæ—¶é—´');
+      return null;
+    }
+
+    // exp æ˜¯ç§’çº§æ—¶é—´æˆ³ï¼Œéœ€è¦è½¬æ¢ä¸ºæ¯«ç§’
+    const expirationTime = payload.exp * 1000;
+    const currentTime = Date.now();
+
+    const isExpired = currentTime >= expirationTime;
+    console.log(`JwtManager: Token ${isExpired ? 'å·²è¿‡æœŸ' : 'æœªè¿‡æœŸ'}`);
+
+    return isExpired;
+  }
+
+  /**
+   * æ£€æŸ¥ Token æ˜¯å¦æœ‰æ•ˆï¼ˆå­˜åœ¨ä¸”æœªè¿‡æœŸï¼‰
+   * @returns true è¡¨ç¤ºæœ‰æ•ˆï¼Œfalse è¡¨ç¤ºæ— æ•ˆ
+   */
+  public async isTokenValid(): Promise<boolean> {
+    const token = await this.getToken();
+    if (!token) {
+      console.log('JwtManager: Token ä¸å­˜åœ¨');
+      return false;
+    }
+
+    const isExpired = await this.isTokenExpired();
+    if (isExpired === null) {
+      // æ— æ³•åˆ¤æ–­è¿‡æœŸæ—¶é—´ï¼Œè®¤ä¸º token æ— æ•ˆ
+      console.warn('JwtManager: æ— æ³•åˆ¤æ–­ token æœ‰æ•ˆæ€§');
+      return false;
+    }
+
+    const isValid = !isExpired;
+    console.log(`JwtManager: Token ${isValid ? 'æœ‰æ•ˆ' : 'æ— æ•ˆ'}`);
+    return isValid;
+  }
+
+  /**
+   * è·å– Token è¿‡æœŸæ—¶é—´
+   * @returns Date å¯¹è±¡ï¼Œä¸å­˜åœ¨è¿”å› null
+   */
+  public async getExpirationDate(): Promise<Date | null> {
+    const payload = await this.getPayload();
+    if (!payload || !payload.exp) {
+      return null;
+    }
+
+    // exp æ˜¯ç§’çº§æ—¶é—´æˆ³ï¼Œéœ€è¦è½¬æ¢ä¸ºæ¯«ç§’
+    return new Date(payload.exp * 1000);
+  }
+
+  /**
+   * è·å– Token å‰©ä½™æœ‰æ•ˆæ—¶é—´ï¼ˆæ¯«ç§’ï¼‰
+   * @returns å‰©ä½™æ—¶é—´ï¼ˆæ¯«ç§’ï¼‰ï¼Œå·²è¿‡æœŸè¿”å› 0ï¼Œæ— æ³•åˆ¤æ–­è¿”å› null
+   */
+  public async getTimeToExpiration(): Promise<number | null> {
+    const expirationDate = await this.getExpirationDate();
+    if (!expirationDate) {
+      return null;
+    }
+
+    const remainingTime = expirationDate.getTime() - Date.now();
+    return remainingTime > 0 ? remainingTime : 0;
+  }
+
+  /**
+   * è·å–å®Œæ•´çš„ Token ä¿¡æ¯
+   * @returns JwtTokenInfo å¯¹è±¡ï¼Œä¸å­˜åœ¨è¿”å› null
+   */
+  public async getTokenInfo(): Promise<JwtTokenInfo | null> {
+    const token = await this.getToken();
+    if (!token) {
+      return null;
+    }
+
+    const payload = await this.getPayload();
+    if (!payload) {
+      return null;
+    }
+
+    const isExpired = await this.isTokenExpired();
+    const expirationDate = await this.getExpirationDate();
+
+    const tokenInfo: JwtTokenInfo = {
+      token: token,
+      payload: payload,
+      isValid: isExpired === false,
+      isExpired: isExpired === true,
+      expirationDate: expirationDate
+    };
+
+    return tokenInfo;
+  }
+
+  /**
+   * è·å–è®¤è¯è¯·æ±‚å¤´
+   * @returns åŒ…å« Authorization çš„è¯·æ±‚å¤´å¯¹è±¡
+   */
+  public async getAuthHeaders(): Promise<Record<string, string>> {
+    const token = await this.getToken();
+    const headers: Record<string, string> = {};
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    return headers;
+  }
+
+  /**
+   * ä» Payload ä¸­è·å–ç”¨æˆ·ä¿¡æ¯
+   * @returns ç”¨æˆ·ä¿¡æ¯å¯¹è±¡ï¼Œä¸å­˜åœ¨è¿”å› null
+   */
+  public async getUserInfoFromToken(): Promise<UserTokenInfo | null> {
+    const payload = await this.getPayload();
+    if (!payload) {
+      return null;
+    }
+
+    return {
+      userId: payload.userId,
+      userPhone: payload.userPhone,
+      userName: payload.userName
+    };
+  }
+
+  /**
+   * æ¸…é™¤æ‰€æœ‰ç¼“å­˜
+   */
+  public clearCache(): void {
+    this.cachedToken = null;
+    this.cachedPayload = null;
+    console.log('JwtManager: ç¼“å­˜å·²æ¸…é™¤');
+  }
+}
+
+ÀÔrE’¶@ohos.data.preferencesª@ohos.utilÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙT hvigor_ignore_D:_Deveco_sdk_default_openharmony_ets_api_@ohos.data.preferences.d.tsÔrG‘¯hostModulesInfo”D¶@ohos.data.preferences¥loginD¶@ohos.data.preferences¥loginD¶@ohos.data.preferences¥loginD¶@ohos.data.preferences¥utilsÃªoh-resolveÂFAÃÙH hvigor_ignore_D:_Deveco_sdk_default_openharmony_ets_api_@ohos.util.d.tsG‘Dª@ohos.util¥loginÃªoh-resolveÂ“ÔrH–§version¤fileªsourceRoot§sources¥names¨mappings­JwtManager.js ‘®JwtManager.etsÜQ‘”    ‘” –”   ” 	” ” ”0 *”1 +–”   ” 	” ” ” !” "‘”  ÌQ ‘” ÌT””  ÌU ” ÌU” ÌU” ÌU‘” Ìc•” ÌW
+” ÌW” ÌW<”# ÌWÌ@”$ ÌWÌA’” ÌX” ÌX•” ÌY” ÌY#”  ÌY.”- ÌY;”. ÌY<’” ÌZ” ÌZ•” Ì[” Ì[ ” Ì[+”( Ì[6”) Ì[7’” Ì\”  Ì\•” Ì]”# Ì])”& Ì]4”: Ì]ÌH”; Ì]ÌI’” Ì^” Ì^•” Ì_
+” Ì_” Ì_'” Ì_+”  Ì_,’” Ì`” Ì`•” Ìa
+” Ìa” Ìa-”! Ìa1”" Ìa2’” Ìd” Ìd‘” Ìf‘” Ìh”” Ìi	”
+ Ìi” Ìi” Ìi—” Ìj” Ìj” Ìj	” Ìj” Ìj”  Ìj”" Ìj™” Ìk” Ìk” Ìk” Ìk”" Ìk”& Ìk ”0 Ìk*”2 Ìk,”3 Ìk-‘”	 Ìl–” Ìm” Ìm” Ìm” Ìm”" Ìm”# Ìm’” Ìn” Ìn‘” Ìp‘” Ìr”” Ìs	”	 Ìs”
+ Ìs” Ìs’” Ìt” Ìt—” Ìu” Ìu
+” Ìu” Ìu” Ìu”% Ìu”' Ìu!Ü ” Ìv” Ìv” Ìv”$ Ìv”' Ìv”- Ìv%”8 Ìv0”9 Ìv1”ÌG Ìv?”ÌH ÌvÌ@”ÌR ÌvÌJ”ÌT ÌvÌL”ÌV ÌvÌN”ÌZ ÌvÌR”Ì[ ÌvÌS”Ìk ÌvÌc”Ìl ÌvÌd”Ìm ÌvÌe˜” Ìw” Ìw” Ìw” Ìw” Ìw”; Ìw3”< Ìw4”= Ìw5‘” Ìx‘”	 Ìy”” Ìy” Ìy” Ìy” Ìyš” Ìz” Ìz” Ìz” Ìz” Ìz”; Ìz5”= Ìz7”Ì@ Ìz:”ÌA Ìz;”ÌB Ìz<˜” Ì{” Ì{” Ì{” Ì{” Ì{”) Ì{#”* Ì{$”+ Ì{%‘”	 Ì|’” Ì}” Ì}‘” Ì‘” Ìƒ–” Ì„	”	 Ì„”
+ Ì„” Ì„” Ì„” Ì„&Ü ” Ì…” Ì…” Ì…	” Ì…” Ì…” Ì…”" Ì…”' Ì…#”/ Ì…+”3 Ì…/”8 Ì…4”9 Ì…5”= Ì…9”? Ì…;”ÌD Ì…Ì@”ÌF Ì…ÌB”ÌH Ì…ÌD˜” Ì†” Ì†” Ì†” Ì†” Ì†”1 Ì†+”2 Ì†,”3 Ì†-”” Ì‡” Ì‡” Ì‡” Ì‡‘”	 Ìˆ—” ÌŠ” ÌŠ” ÌŠ	” ÌŠ” ÌŠ”! ÌŠ”# ÌŠ—” Ì‹” Ì‹” Ì‹” Ì‹”& Ì‹ ”( Ì‹"”) Ì‹#‘”	 ÌŒ’” Ì” Ì’” Ì” ÌŸ” Ì” Ì” Ì” Ì”& Ì ”( Ì"”+ Ì%”, Ì&”0 Ì*”1 Ì+”> Ì8”Ì@ Ì:”ÌE Ì?”ÌF ÌÌ@”ÌG ÌÌA’” Ì‘” Ì‘Ü ” Ì’” Ì’” Ì’” Ì’”& Ì’ ”( Ì’"”+ Ì’%”, Ì’&”0 Ì’*”1 Ì’+”ÌG Ì’ÌA”ÌI Ì’ÌC”ÌM Ì’ÌG”ÌN Ì’ÌH”ÌQ Ì’ÌK”ÌS Ì’ÌM”ÌT Ì’ÌN”ÌU Ì’ÌO’” Ì“” Ì“™” Ì”” Ì”” Ì”” Ì””& Ì” ”( Ì”"”- Ì”'”/ Ì”)”0 Ì”*’” Ì–” Ì–—” Ì—” Ì—
+” Ì—” Ì—” Ì—”$ Ì—”% Ì—œ” Ì˜” Ì˜
+” Ì˜” Ì˜”! Ì˜”% Ì˜”& Ì˜ ”5 Ì˜/”6 Ì˜0”; Ì˜5”< Ì˜6”= Ì˜7˜” Ìš” Ìš” Ìš” Ìš” Ìš”0 Ìš*”1 Ìš+”2 Ìš,”” Ì›” Ì›” Ì›” Ì›‘”	 Ìœ”” Ìœ” Ìœ” Ìœ” Ìœš” Ì” Ì” Ì” Ì” Ì”4 Ì.”6 Ì0”9 Ì3”: Ì4”; Ì5”” Ì” Ì” Ì” Ì‘”	 ÌŸ’” Ì ” Ì ‘” Ì¢‘” Ì¥”” Ì¦	”	 Ì¦”
+ Ì¦” Ì¦’” Ì§” Ì§–” Ì¨” Ì¨” Ì¨” Ì¨” Ì¨” Ì¨–” Ì©” Ì©” Ì©” Ì©”# Ì©”$ Ì©‘”	 Ìª—” Ì¬” Ì¬” Ì¬	” Ì¬” Ì¬”! Ì¬”# Ì¬—” Ì­” Ì­” Ì­” Ì­”& Ì­ ”( Ì­"”) Ì­#‘”	 Ì®’” Ì°” Ì°Ü ” Ì±” Ì±” Ì±” Ì±”  Ì±”$ Ì±”% Ì±”4 Ì±.”6 Ì±0”9 Ì±3”: Ì±4”> Ì±8”? Ì±9”ÌL Ì±ÌF”ÌN Ì±ÌH”ÌP Ì±ÌJ”ÌQ Ì±ÌK”ÌR Ì±ÌL” Ì²” Ì²
+” Ì²” Ì²”  Ì²”% Ì²”* Ì²$”2 Ì²,”6 Ì²0”; Ì²5”Ì@ Ì²:”ÌB Ì²<”ÌD Ì²>—” Ì³” Ì³” Ì³”  Ì³”# Ì³”( Ì³ ”) Ì³!”” Ì´” Ì´” Ì´” Ì´‘” Ìµ”” Ì¶” Ì¶” Ì¶” Ì¶‘”	 Ì·”” Ì·” Ì·” Ì·” Ì·š” Ì¸” Ì¸” Ì¸” Ì¸” Ì¸”4 Ì¸.”6 Ì¸0”9 Ì¸3”: Ì¸4”; Ì¸5”” Ì¹” Ì¹” Ì¹” Ì¹‘”	 Ìº’” Ì»” Ì»‘” Ì½‘” ÌÀ”” ÌÁ	”	 ÌÁ”
+ ÌÁ” ÌÁ—” ÌÂ” ÌÂ” ÌÂ	” ÌÂ” ÌÂ”! ÌÂ”# ÌÂ—” ÌÃ” ÌÃ” ÌÃ” ÌÃ”& ÌÃ ”( ÌÃ"”) ÌÃ#‘”	 ÌÄ’” ÌÆ” ÌÆ” ÌÇ” ÌÇ” ÌÇ” ÌÇ”& ÌÇ ”( ÌÇ"”. ÌÇ(”/ ÌÇ)”3 ÌÇ-”4 ÌÇ.”ÌA ÌÇ;”ÌB ÌÇ<”ÌC ÌÇ=” ÌÈ” ÌÈ” ÌÈ” ÌÈ”& ÌÈ ”( ÌÈ"”. ÌÈ(”/ ÌÈ)”3 ÌÈ-”4 ÌÈ.”ÌJ ÌÈÌD”ÌK ÌÈÌE”ÌL ÌÈÌF™” ÌÉ” ÌÉ” ÌÉ” ÌÉ”& ÌÉ ”( ÌÉ"”- ÌÉ'”/ ÌÉ)”0 ÌÉ*’” ÌË” ÌË—” ÌÌ” ÌÌ
+” ÌÌ” ÌÌ” ÌÌ”# ÌÌ”$ ÌÌ—” ÌÍ” ÌÍ
+” ÌÍ” ÌÍ”! ÌÍ”% ÌÍ”& ÌÍ ˜” ÌÏ” ÌÏ” ÌÏ” ÌÏ” ÌÏ”0 ÌÏ*”1 ÌÏ+”2 ÌÏ,”” ÌĞ” ÌĞ” ÌĞ” ÌĞ‘”	 ÌÑ”” ÌÑ” ÌÑ” ÌÑ” ÌÑš” ÌÒ” ÌÒ” ÌÒ” ÌÒ” ÌÒ”4 ÌÒ.”6 ÌÒ0”9 ÌÒ3”: ÌÒ4”; ÌÒ5”” ÌÓ” ÌÓ” ÌÓ” ÌÓ‘”	 ÌÔ’” ÌÕ” ÌÕ‘” Ì×‘” ÌÜ”” Ìİ
+” Ìİ” Ìİ” Ìİ'’” ÌŞ” ÌŞ’” Ìß”  Ìß›” Ìà” Ìà” Ìà” Ìà” Ìà”  Ìà”% Ìà”& Ìà ”) Ìà#”* Ìà$”+ Ìà%˜” Ìá” Ìá
+” Ìá” Ìá” Ìá”! Ìá”" Ìá”$ Ìá˜” Ìâ” Ìâ” Ìâ” Ìâ” Ìâ”< Ìâ4”= Ìâ5”> Ìâ6–” Ìã” Ìã”" Ìã”% Ìã)”' Ìã+”( Ìã,”” Ìä” Ìä”# Ìä”$ Ìä‘” Ìå’” Ìç”" Ìç™” Ìè” Ìè” Ìè”" Ìè”' Ìè!”( Ìè"”) Ìè#”* Ìè$”+ Ìè%’” Ìê” Ìê›” Ìë” Ìë” Ìë” Ìë”# Ìë”$ Ìë”3 Ìë-”4 Ìë.”ÌA Ìë;”ÌB Ìë<”ÌC Ìë=’” Ìí” Ìí›” Ìî” Ìî” Ìî” Ìî"”  Ìî&”! Ìî'”& Ìî,”' Ìî-”1 Ìî7”2 ÌîÌF”3 ÌîÌGš” Ìğ” Ìğ” Ìğ” Ìğ” Ìğ”7 Ìğ1”9 Ìğ3”Ì@ Ìğ:”ÌA Ìğ;”ÌB Ìğ<”” Ìñ” Ìñ” Ìñ” Ìñ‘”	 Ìò”” Ìò” Ìò” Ìò” Ìòš” Ìó” Ìó” Ìó” Ìó” Ìó”: Ìó4”< Ìó6”? Ìó9”Ì@ Ìó:”ÌA Ìó;–” Ìô” Ìô” Ìô”! Ìô'”# Ìô)”$ Ìô*”” Ìõ” Ìõ” Ìõ”  Ìõ‘”	 Ìö’” Ì÷” Ì÷‘” Ìù‘” Ìı”” Ìş
+” Ìş” Ìş” Ìş+’” Ìÿ” Ìÿ’” Í ”, Í &Ü ” Í” Í
+” Í” Í”" Í”# Í”* Í$”+ Í%”/ Í)”1 Í+”4 Í.”5 Í/”6 Í0”= Í7”> Í8”ÌB Í<”ÌD Í>”ÌG ÍÌA”ÌH ÍÌB”ÌI ÍÌC’” Í” Íš” Í” Í” Í” Í”" Í”# Í”) Í#”, Í&”- Í'”. Í(–” Í” Í
+” Í” Í” Í” Íœ” Í” Í” Í” Í” Í”$ Í”% Í”& Í”) Í!”0 Í(”1 Í)”2 Í*‘” Í’” Í	”( Í	"š” Í
+” Í
+” Í
+” Í
+”  Í
+”$ Í
+”% Í
+”1 Í
++”3 Í
+-”4 Í
+.›” Í” Í” Í” Í”& Í ”' Í!”1 Í+”2 Í,”8 Í2”9 Í3”: Í4’” Í”" ÍÜ ” Í” Í” Í”  Í”$ Í”% Í”0 Í*”1 Í+”7 Í1”8 Í2”? Í9”ÌA Í;”ÌC Í=”ÌL ÍÌF”ÌN ÍÌH”ÌR ÍÌL”ÌT ÍÌN”ÌU ÍÌO”ÌV ÍÌPÜ ” Í” Í” Í” Í”* Í$”+ Í%”; Í5”< Í6”ÌF ÍÌ@”ÌH ÍÌB”ÌJ ÍÌD”ÌP ÍÌJ”ÌR ÍÌL”ÌW ÍÌQ”ÌY ÍÌS”ÌZ ÍÌT”Ì[ ÍÌU”” Í” Í” Í” Í‘”	 Í”” Í” Í” Í” ÍÜ ” Í” Í” Í”! Í”$ Í”0 Í*”5 Í/”6 Í0”7 Í1”8 Í2”; Í5”< Í6”ÌC Í=”ÌD Í>”ÌE Í?”ÌF ÍÌ@”ÌS ÍÌM”ÌT ÍÌNš” Í” Í” Í” Í” Í”4 Í.”6 Í0”9 Í3”: Í4”; Í5š” Í” Í” Í” Í” Í”0 Í*”< Í6”> Í8”? Í9”Ì@ Í:‘”	 Í’” Í” Í‘” Í‘” Í”” Í	”	 Í”
+ Í” Í’” Í” Í–” Í” Í” Í” Í” Í”  Í–” Í ” Í ” Í ” Í ”% Í ”& Í  ‘”	 Í!š” Í#” Í#
+” Í#” Í#” Í#”  Í#”! Í#”) Í#%”+ Í#'”, Í#(•” Í$” Í$” Í$	” Í$” Í$”” Í%” Í%” Í%” Í%‘”	 Í&›” Í(” Í(
+” Í(” Í(” Í(” Í(”, Í((”- Í()”2 Í(.”3 Í(/”4 Í(0” Í)” Í)” Í)” Í)” Í)” Í)” Í)”  Í)”! Í)”' Í)#”, Í)(”- Í))”/ Í)+”” Í*” Í*” Í*” Í*‘”	 Í+—” Í-” Í-” Í-	” Í-” Í-”$ Í- ”% Í-!”” Í.” Í.” Í.” Í.’” Í/” Í/‘” Í1‘” Í4”” Í5	”	 Í5”
+ Í5” Í5š” Í6” Í6
+” Í6” Í6” Í6”" Í6”# Í6”- Í6)”/ Í6+”0 Í6,š” Í7” Í7” Í7	” Í7” Í7” Í7”  Í7”! Í7”$ Í7 ”& Í7"˜” Í8” Í8” Í8” Í8” Í8”6 Í80”7 Í81”8 Í82”” Í9” Í9” Í9” Í9‘”	 Í:’” Í<” Í<š” Í=” Í=
+” Í=” Í=”& Í="”' Í=#”* Í=&”- Í=)”1 Í=-”2 Í=.™” Í>” Í>
+” Í>” Í>”  Í>”! Í>”$ Í> ”& Í>"”' Í>#˜” Í@” Í@
+” Í@” Í@”% Í@!”) Í@%”7 Í@3”8 Í@4Ü ” ÍA” ÍA” ÍA” ÍA” ÍA”) ÍA%”2 ÍA.”3 ÍA/”4 ÍA0”5 ÍA1”: ÍA6”; ÍA7”< ÍA8”= ÍA9”ÌB ÍA>”ÌD ÍAÌ@”ÌE ÍAÌA”ÌF ÍAÌB”” ÍC” ÍC” ÍC” ÍC’” ÍD” ÍD‘” ÍF‘” ÍI”” ÍJ	”	 ÍJ”
+ ÍJ” ÍJš” ÍK” ÍK
+” ÍK” ÍK” ÍK”  ÍK”! ÍK”) ÍK%”+ ÍK'”, ÍK(•” ÍL” ÍL” ÍL	” ÍL” ÍL˜” ÍM” ÍM” ÍM” ÍM” ÍM”/ ÍM)”0 ÍM*”1 ÍM+”” ÍN” ÍN” ÍN” ÍN‘”	 ÍOš” ÍQ” ÍQ
+” ÍQ” ÍQ”  ÍQ”$ ÍQ ”% ÍQ!”3 ÍQ/”5 ÍQ1”6 ÍQ2–” ÍR” ÍR” ÍR” ÍR” ÍR”  ÍR’” ÍS”# ÍS˜” ÍT” ÍT” ÍT” ÍT” ÍT”5 ÍT/”6 ÍT0”7 ÍT1”” ÍU” ÍU” ÍU” ÍU‘”	 ÍV—” ÍX” ÍX
+” ÍX” ÍX” ÍX”" ÍX”# ÍXÜ ” ÍY” ÍY” ÍY” ÍY” ÍY”) ÍY%”0 ÍY,”1 ÍY-”2 ÍY.”3 ÍY/”7 ÍY3”8 ÍY4”9 ÍY5”: ÍY6”> ÍY:”Ì@ ÍY<”ÌA ÍY=”ÌB ÍY>”” ÍZ” ÍZ” ÍZ” ÍZ’” Í[” Í[‘” Í]‘” Í`”” Ía	”	 Ía”
+ Ía” Ía š” Íb” Íb
+” Íb” Íb” Íb”" Íb”# Íb”- Íb)”/ Íb+”0 Íb,š” Íc” Íc” Íc	” Íc” Íc” Íc”  Íc”! Íc”$ Íc ”& Íc"”” Íd” Íd” Íd” Íd‘”	 Íe’” Íg” Ígœ” Íh” Íh” Íh” Íh” Íh” Íh”  Íh”# Íh”& Íh"”* Íh&”+ Íh'”, Íh(’” Íi” Íi‘” Ík‘” Ín”” Ío	”	 Ío”
+ Ío” Ío"š” Íp” Íp
+” Íp” Íp”% Íp!”) Íp%”* Íp&”; Íp7”= Íp9”> Íp:•” Íq” Íq” Íq	” Íq” Íq”” Ír” Ír” Ír” Ír‘”	 Ís” Íu” Íu
+” Íu” Íu”, Íu(”- Íu)”4 Íu0”6 Íu2”9 Íu5”= Íu9”> Íu:”ÌA Íu=”ÌC Íu?”ÌD ÍuÌ@” Ív” Ív” Ív” Ív”  Ív”! Ív”" Ív”# Ív”0 Ív,”1 Ív-”2 Ív.”3 Ív/”4 Ív0”5 Ív1’” Íw” Íw‘” Íy‘” Í|”” Í}	”	 Í}”
+ Í}” Í}š” Í~” Í~
+” Í~” Í~” Í~”  Í~”! Í~”) Í~%”+ Í~'”, Í~(•” Í” Í” Í	” Í” Í”” Í€” Í€” Í€” Í€‘”	 Íš” Íƒ” Íƒ
+” Íƒ” Íƒ” Íƒ”" Íƒ”# Íƒ”- Íƒ)”/ Íƒ+”0 Íƒ,•” Í„” Í„” Í„	” Í„” Í„”” Í…” Í…” Í…” Í…‘”	 Í†š” Íˆ” Íˆ
+” Íˆ” Íˆ”  Íˆ”$ Íˆ ”% Íˆ!”3 Íˆ/”5 Íˆ1”6 Íˆ2š” Í‰” Í‰
+” Í‰” Í‰”% Í‰!”) Í‰%”* Í‰&”; Í‰7”= Í‰9”> Í‰:”” Í‹” Í‹
+” Í‹” Í‹$”” ÍŒ” ÍŒ” ÍŒ” ÍŒ”” Í” Í” Í” Í–” Í” Í” Í” Í”# Í”( Í"–” Í” Í” Í”  Í”% Í”) Í#”” Í” Í” Í”* Í$’”	 Í‘”
+ Í‘”” Í“” Í“” Í“” Í“’” Í”” Í”‘” Í–‘” Í™”” Íš	”	 Íš”
+ Íš” Íšš” Í›” Í›
+” Í›” Í›” Í›”  Í›”! Í›”) Í›%”+ Í›'”, Í›(–” Íœ” Íœ
+” Íœ” Íœ,” Íœ.” Íœ/”” Í” Í” Í” Íš” ÍŸ” ÍŸ” ÍŸ”# ÍŸ”$ ÍŸ”' ÍŸ!”1 ÍŸ+”6 ÍŸ0”8 ÍŸ2”9 ÍŸ3‘”	 Í ”” Í¢” Í¢” Í¢” Í¢’” Í£” Í£‘” Í¥‘” Í¨”” Í©	”	 Í©”
+ Í©” Í©#š” Íª” Íª
+” Íª” Íª” Íª”" Íª”# Íª”- Íª)”/ Íª+”0 Íª,•” Í«” Í«” Í«	” Í«” Í«”” Í¬” Í¬” Í¬” Í¬‘”	 Í­’” Í¯” Í¯–” Í°” Í°” Í°” Í°” Í°”" Í°–” Í±” Í±” Í±” Í±” Í±”( Í±"–” Í²” Í²” Í²” Í²” Í²”& Í² ’”	 Í³”
+ Í³’” Í´” Í´‘” Í¶‘” Í¸’” Í¹	” Í¹—” Íº” Íº” Íº	” Íº” Íº” Íº”  Íº—” Í»” Í»” Í»	” Í»” Í»”! Í»”" Í»˜” Í¼” Í¼” Í¼” Í¼” Í¼”' Í¼#”( Í¼$”) Í¼%’” Í½” Í½•”  ÌV” ÌV” ÌV/” ÌV3” ÌV4ÔrI–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜR‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌĞ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  Ìİ ‘”  ÌŞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìğ ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìı ‘”  Ìş ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ‘”  ÍN ‘”  ÍO ‘”  ÍP ‘”  ÍQ ÔrJ’§missing¦pluginÃ¦genAbcÂÔ  ÔrK”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache‘ÔrL–¤type¥start£end«declarationªspecifiers¦source¶ExportNamedDeclarationÍõÍ)bÔrM–¤type¥start£end¢idªsuperClass¤body°ClassDeclarationÍüÍ)bÔrN”¤type¥start£end¤nameªIdentifierÍÍªJwtManagerÀÔrO”¤type¥start£end¤body©ClassBodyÍÍ)bÜ ÔrP˜¤type¥start£end¦static¨computed£key¤kind¥value°MethodDefinitionÍÍÅÂÂNªIdentifierÍÍ«constructor«constructorÔrQ™¤type¥start£end¢idªexpression©generator¥async¦params¤body²FunctionExpressionÍÍÅÀÂÂÂO®BlockStatementÍ"ÍÅ–ÔrR”¤type¥start£endªexpression³ExpressionStatementÍ-ÍIÔrS–¤type¥start£end¨operator¤left¥right´AssignmentExpressionÍ-ÍH¡=ÔrT—¤type¥start£end¦object¨property¨computed¨optional°MemberExpressionÍ-ÍAÔrU“¤type¥start£end®ThisExpressionÍ-Í1NªIdentifierÍ2ÍA¯dataPreferencesÂÂÔrV•¤type¥start£end¥value£raw§LiteralÍDÍHÀ¤nullR³ExpressionStatementÍtÍšS´AssignmentExpressionÍtÍ™¡=T°MemberExpressionÍtÍ‰U®ThisExpressionÍtÍxNªIdentifierÍyÍ‰°PREFERENCES_NAMEÂÂV§LiteralÍŒÍ™«jwt_storage­'jwt_storage'R³ExpressionStatementÍÂÍãS´AssignmentExpressionÍÂÍâ¡=T°MemberExpressionÍÂÍÔU®ThisExpressionÍÂÍÆNªIdentifierÍÇÍÔ­JWT_TOKEN_KEYÂÂV§LiteralÍ×Íâ©jwt_token«'jwt_token'R³ExpressionStatementÍÍBS´AssignmentExpressionÍÍA¡=T°MemberExpressionÍÍ*U®ThisExpressionÍÍNªIdentifierÍÍ*¶TOKEN_REFRESH_TIME_KEYÂÂV§LiteralÍ-ÍA²token_refresh_time´'token_refresh_time'R³ExpressionStatementÍfÍ~S´AssignmentExpressionÍfÍ}¡=T°MemberExpressionÍfÍvU®ThisExpressionÍfÍjNªIdentifierÍkÍv«cachedTokenÂÂV§LiteralÍyÍ}À¤nullR³ExpressionStatementÍ¤Í¾S´AssignmentExpressionÍ¤Í½¡=T°MemberExpressionÍ¤Í¶U®ThisExpressionÍ¤Í¨NªIdentifierÍ©Í¶­cachedPayloadÂÂV§LiteralÍ¹Í½À¤nullP°MethodDefinitionÍìÍ“ÃÂNªIdentifierÍóÍş«getInstance¦methodQ²FunctionExpressionÍşÍ“ÀÂÂÂO®BlockStatementÍÍ“’ÔrW–¤type¥start£end¤testªconsequent©alternate«IfStatementÍÍgÔrX–¤type¥start£end¨operator¦prefix¨argument¯UnaryExpressionÍÍ$¡!ÃT°MemberExpressionÍÍ$NªIdentifierÍÍªJwtManagerNªIdentifierÍÍ$¨instanceÂÂO®BlockStatementÍ&Íg‘R³ExpressionStatementÍ5Í\S´AssignmentExpressionÍ5Í[¡=T°MemberExpressionÍ5ÍHNªIdentifierÍ5Í?ªJwtManagerNªIdentifierÍ@ÍH¨instanceÂÂÔrY•¤type¥start£end¦callee©arguments­NewExpressionÍKÍ[NªIdentifierÍOÍYªJwtManagerÀÔrZ”¤type¥start£end¨argument¯ReturnStatementÍqÍŒT°MemberExpressionÍxÍ‹NªIdentifierÍxÍ‚ªJwtManagerNªIdentifierÍƒÍ‹¨instanceÂÂP°MethodDefinitionÍÈÍ|ÂÂNªIdentifierÍÎÍİ¯initPreferences¦methodQ²FunctionExpressionÍİÍ|ÀÂÂÃO®BlockStatementÍàÍ|‘Ôr[–¤type¥start£end¥block§handler©finalizer¬TryStatementÍëÍuO®BlockStatementÍïÍâ‘W«IfStatementÍşÍ×X¯UnaryExpressionÍÍ¡!ÃT°MemberExpressionÍÍU®ThisExpressionÍÍNªIdentifierÍÍ¯dataPreferencesÂÂO®BlockStatementÍÍ×’R³ExpressionStatementÍ,Í‰S´AssignmentExpressionÍ,Íˆ¡=T°MemberExpressionÍ,Í@U®ThisExpressionÍ,Í0NªIdentifierÍ1Í@¯dataPreferencesÂÂZ¯AwaitExpressionÍCÍˆÔr\–¤type¥start£end¦callee©arguments¨optional®CallExpressionÍIÍˆT°MemberExpressionÍIÍcNªIdentifierÍIÍT«preferencesNªIdentifierÍUÍc®getPreferencesÂÂ’\®CallExpressionÍdÍpNªIdentifierÍdÍnªgetContextÂT°MemberExpressionÍrÍ‡U®ThisExpressionÍrÍvNªIdentifierÍwÍ‡°PREFERENCES_NAMEÂÂÂR³ExpressionStatementÍ›ÍÈ\®CallExpressionÍ›ÍÇT°MemberExpressionÍ›Í¦NªIdentifierÍ›Í¢§consoleNªIdentifierÍ£Í¦£logÂÂ‘V§LiteralÍ§ÍÆÙ'JwtManager: Preferences åˆå§‹åŒ–æˆåŠŸÙ)'JwtManager: Preferences åˆå§‹åŒ–æˆåŠŸ'ÂÀÔr]•¤type¥start£end¥param¤body«CatchClauseÍìÍuNªIdentifierÍóÍö£errO®BlockStatementÍøÍu’R³ExpressionStatementÍÍ=\®CallExpressionÍÍ<T°MemberExpressionÍÍNªIdentifierÍÍ§consoleNªIdentifierÍÍ¥errorÂÂ’V§LiteralÍÍ6Ù)JwtManager: åˆå§‹åŒ– Preferences å¤±è´¥:Ù+'JwtManager: åˆå§‹åŒ– Preferences å¤±è´¥:'NªIdentifierÍ8Í;£errÂZ®ThrowStatementÍKÍjY­NewExpressionÍQÍiNªIdentifierÍUÍZ¥Error‘V§LiteralÍ[Íh¹JWT å­˜å‚¨åˆå§‹åŒ–å¤±è´¥»'JWT å­˜å‚¨åˆå§‹åŒ–å¤±è´¥'ÀP°MethodDefinitionÍäÍxÂÂNªIdentifierÍêÍó©saveToken¦methodQ²FunctionExpressionÍóÍxÀÂÂÃ‘NªIdentifierÍôÍù¥tokenO®BlockStatementÍûÍx“W«IfStatementÍÍ¢Ôr^–¤type¥start£end¤left¨operator¥right±LogicalExpressionÍ
+ÍD^±LogicalExpressionÍ
+Í-X¯UnaryExpressionÍ
+Í¡!ÃNªIdentifierÍÍ¥token¢||^°BinaryExpressionÍÍ-X¯UnaryExpressionÍÍ ¦typeofÃNªIdentifierÍÍ ¥token£!==V§LiteralÍ%Í-¦string¨'string'¢||^°BinaryExpressionÍ1ÍD\®CallExpressionÍ1Í=T°MemberExpressionÍ1Í;NªIdentifierÍ1Í6¥tokenNªIdentifierÍ7Í;¤trimÂÂÂ£===V§LiteralÍBÍD ¢''O®BlockStatementÍFÍ¢’R³ExpressionStatementÍUÍ|\®CallExpressionÍUÍ{T°MemberExpressionÍUÍbNªIdentifierÍUÍ\§consoleNªIdentifierÍ]Íb¥errorÂÂ‘V§LiteralÍcÍz»JwtManager: æ— æ•ˆçš„ token½'JwtManager: æ— æ•ˆçš„ token'ÂZ¯ReturnStatementÍŠÍ—V§LiteralÍ‘Í–Â¥falseÀW«IfStatementÍ¬ÍşX¯UnaryExpressionÍ°ÍÅ¡!ÃT°MemberExpressionÍ±ÍÅU®ThisExpressionÍ±ÍµNªIdentifierÍ¶ÍÅ¯dataPreferencesÂÂO®BlockStatementÍÇÍş‘R³ExpressionStatementÍÖÍóZ¯AwaitExpressionÍÖÍò\®CallExpressionÍÜÍòT°MemberExpressionÍÜÍğU®ThisExpressionÍÜÍàNªIdentifierÍáÍğ¯initPreferencesÂÂÂÀ[¬TryStatementÍ	ÍqO®BlockStatementÍ	Í
+÷—R³ExpressionStatementÍ	4Í	oZ¯AwaitExpressionÍ	4Í	nR¯ChainExpressionÍ	:Í	n\®CallExpressionÍ	:Í	nT°MemberExpressionÍ	:Í	ST°MemberExpressionÍ	:Í	NU®ThisExpressionÍ	:Í	>NªIdentifierÍ	?Í	N¯dataPreferencesÂÂNªIdentifierÍ	PÍ	S£putÂÃ’T°MemberExpressionÍ	TÍ	fU®ThisExpressionÍ	TÍ	XNªIdentifierÍ	YÍ	f­JWT_TOKEN_KEYÂÂNªIdentifierÍ	hÍ	m¥tokenÂR³ExpressionStatementÍ	”Í	İZ¯AwaitExpressionÍ	”Í	ÜR¯ChainExpressionÍ	šÍ	Ü\®CallExpressionÍ	šÍ	ÜT°MemberExpressionÍ	šÍ	³T°MemberExpressionÍ	šÍ	®U®ThisExpressionÍ	šÍ	NªIdentifierÍ	ŸÍ	®¯dataPreferencesÂÂNªIdentifierÍ	°Í	³£putÂÃ’T°MemberExpressionÍ	´Í	ÏU®ThisExpressionÍ	´Í	¸NªIdentifierÍ	¹Í	Ï¶TOKEN_REFRESH_TIME_KEYÂÂ\®CallExpressionÍ	ÑÍ	ÛT°MemberExpressionÍ	ÑÍ	ÙNªIdentifierÍ	ÑÍ	Õ¤DateNªIdentifierÍ	ÖÍ	Ù£nowÂÂÂÂR³ExpressionStatementÍ	ÿÍ
+#Z¯AwaitExpressionÍ	ÿÍ
+"R¯ChainExpressionÍ
+Í
+"\®CallExpressionÍ
+Í
+"T°MemberExpressionÍ
+Í
+ T°MemberExpressionÍ
+Í
+U®ThisExpressionÍ
+Í
+	NªIdentifierÍ
+
+Í
+¯dataPreferencesÂÂNªIdentifierÍ
+Í
+ ¥flushÂÃÂR³ExpressionStatementÍ
+FÍ
+_S´AssignmentExpressionÍ
+FÍ
+^¡=T°MemberExpressionÍ
+FÍ
+VU®ThisExpressionÍ
+FÍ
+JNªIdentifierÍ
+KÍ
+V«cachedTokenÂÂNªIdentifierÍ
+YÍ
+^¥tokenR³ExpressionStatementÍ
+mÍ
+S´AssignmentExpressionÍ
+mÍ
+¡=T°MemberExpressionÍ
+mÍ
+U®ThisExpressionÍ
+mÍ
+qNªIdentifierÍ
+rÍ
+­cachedPayloadÂÂ\®CallExpressionÍ
+‚Í
+T°MemberExpressionÍ
+‚Í
+–U®ThisExpressionÍ
+‚Í
+†NªIdentifierÍ
+‡Í
+–¯parseJwtPayloadÂÂ‘NªIdentifierÍ
+—Í
+œ¥tokenÂR³ExpressionStatementÍ
+¬Í
+Ò\®CallExpressionÍ
+¬Í
+ÑT°MemberExpressionÍ
+¬Í
+·NªIdentifierÍ
+¬Í
+³§consoleNªIdentifierÍ
+´Í
+·£logÂÂ‘V§LiteralÍ
+¸Í
+Ğ¾JwtManager: Token å­˜å‚¨æˆåŠŸÙ 'JwtManager: Token å­˜å‚¨æˆåŠŸ'ÂZ¯ReturnStatementÍ
+àÍ
+ìV§LiteralÍ
+çÍ
+ëÃ¤true]«CatchClauseÍÍqNªIdentifierÍÍ£errO®BlockStatementÍÍq’R³ExpressionStatementÍÍK\®CallExpressionÍÍJT°MemberExpressionÍÍ)NªIdentifierÍÍ#§consoleNªIdentifierÍ$Í)¥errorÂÂ’V§LiteralÍ*ÍDÙ JwtManager: å­˜å‚¨ token å¤±è´¥:Ù"'JwtManager: å­˜å‚¨ token å¤±è´¥:'NªIdentifierÍFÍI£errÂZ¯ReturnStatementÍYÍfV§LiteralÍ`ÍeÂ¥falseÀP°MethodDefinitionÍÓÍNÂÂNªIdentifierÍÙÍá¨getToken¦methodQ²FunctionExpressionÍáÍNÀÂÂÃO®BlockStatementÍäÍN“W«IfStatementÍÍJT°MemberExpressionÍÍU®ThisExpressionÍÍ
+NªIdentifierÍÍ«cachedTokenÂÂO®BlockStatementÍÍJ‘Z¯ReturnStatementÍ'Í?T°MemberExpressionÍ.Í>U®ThisExpressionÍ.Í2NªIdentifierÍ3Í>«cachedTokenÂÂÀW«IfStatementÍTÍ¦X¯UnaryExpressionÍXÍm¡!ÃT°MemberExpressionÍYÍmU®ThisExpressionÍYÍ]NªIdentifierÍ^Ím¯dataPreferencesÂÂO®BlockStatementÍoÍ¦‘R³ExpressionStatementÍ~Í›Z¯AwaitExpressionÍ~Íš\®CallExpressionÍ„ÍšT°MemberExpressionÍ„Í˜U®ThisExpressionÍ„ÍˆNªIdentifierÍ‰Í˜¯initPreferencesÂÂÂÀ[¬TryStatementÍ°ÍGO®BlockStatementÍ´ÍÎ“Ôr_•¤type¥start£end¬declarations¤kind³VariableDeclarationÍÃÍ	‘Ôr`•¤type¥start£end¢id¤init²VariableDeclaratorÍÉÍNªIdentifierÍÉÍÎ¥tokenZ¯AwaitExpressionÍÑÍR¯ChainExpressionÍ×Í\®CallExpressionÍ×ÍT°MemberExpressionÍ×ÍğT°MemberExpressionÍ×ÍëU®ThisExpressionÍ×ÍÛNªIdentifierÍÜÍë¯dataPreferencesÂÂNªIdentifierÍíÍğ£getÂÃ’T°MemberExpressionÍñÍU®ThisExpressionÍñÍõNªIdentifierÍöÍ­JWT_TOKEN_KEYÂÂV§LiteralÍÍ ¢''Â¥constW«IfStatementÍÍ©^±LogicalExpressionÍÍM^±LogicalExpressionÍÍ=NªIdentifierÍÍ ¥token¢&&^°BinaryExpressionÍ$Í=X¯UnaryExpressionÍ$Í0¦typeofÃNªIdentifierÍ+Í0¥token£===V§LiteralÍ5Í=¦string¨'string'¢&&^°BinaryExpressionÍAÍMNªIdentifierÍAÍF¥token£!==V§LiteralÍKÍM ¢''O®BlockStatementÍOÍ©’R³ExpressionStatementÍbÍ{S´AssignmentExpressionÍbÍz¡=T°MemberExpressionÍbÍrU®ThisExpressionÍbÍfNªIdentifierÍgÍr«cachedTokenÂÂNªIdentifierÍuÍz¥tokenZ¯ReturnStatementÍÍšNªIdentifierÍ”Í™¥tokenÀZ¯ReturnStatementÍ·ÍÃV§LiteralÍ¾ÍÂÀ¤null]«CatchClauseÍØÍGNªIdentifierÍßÍâ£errO®BlockStatementÍäÍG’R³ExpressionStatementÍóÍ"\®CallExpressionÍóÍ!T°MemberExpressionÍóÍ NªIdentifierÍóÍú§consoleNªIdentifierÍûÍ ¥errorÂÂ’V§LiteralÍÍÙ JwtManager: è·å– token å¤±è´¥:Ù"'JwtManager: è·å– token å¤±è´¥:'NªIdentifierÍÍ £errÂZ¯ReturnStatementÍ0Í<V§LiteralÍ7Í;À¤nullÀP°MethodDefinitionÍ–ÍÂÂNªIdentifierÍœÍ§«removeToken¦methodQ²FunctionExpressionÍ§ÍÀÂÂÃO®BlockStatementÍªÍ’W«IfStatementÍµÍX¯UnaryExpressionÍ¹ÍÎ¡!ÃT°MemberExpressionÍºÍÎU®ThisExpressionÍºÍ¾NªIdentifierÍ¿ÍÎ¯dataPreferencesÂÂO®BlockStatementÍĞÍ‘R³ExpressionStatementÍßÍüZ¯AwaitExpressionÍßÍû\®CallExpressionÍåÍûT°MemberExpressionÍåÍùU®ThisExpressionÍåÍéNªIdentifierÍêÍù¯initPreferencesÂÂÂÀ[¬TryStatementÍÍO®BlockStatementÍÍ——R³ExpressionStatementÍ$Í[Z¯AwaitExpressionÍ$ÍZR¯ChainExpressionÍ*ÍZ\®CallExpressionÍ*ÍZT°MemberExpressionÍ*ÍFT°MemberExpressionÍ*Í>U®ThisExpressionÍ*Í.NªIdentifierÍ/Í>¯dataPreferencesÂÂNªIdentifierÍ@ÍF¦deleteÂÃ‘T°MemberExpressionÍGÍYU®ThisExpressionÍGÍKNªIdentifierÍLÍY­JWT_TOKEN_KEYÂÂÂR³ExpressionStatementÍiÍ©Z¯AwaitExpressionÍiÍ¨R¯ChainExpressionÍoÍ¨\®CallExpressionÍoÍ¨T°MemberExpressionÍoÍ‹T°MemberExpressionÍoÍƒU®ThisExpressionÍoÍsNªIdentifierÍtÍƒ¯dataPreferencesÂÂNªIdentifierÍ…Í‹¦deleteÂÃ‘T°MemberExpressionÍŒÍ§U®ThisExpressionÍŒÍNªIdentifierÍ‘Í§¶TOKEN_REFRESH_TIME_KEYÂÂÂR³ExpressionStatementÍ·ÍÛZ¯AwaitExpressionÍ·ÍÚR¯ChainExpressionÍ½ÍÚ\®CallExpressionÍ½ÍÚT°MemberExpressionÍ½ÍØT°MemberExpressionÍ½ÍÑU®ThisExpressionÍ½ÍÁNªIdentifierÍÂÍÑ¯dataPreferencesÂÂNªIdentifierÍÓÍØ¥flushÂÃÂR³ExpressionStatementÍşÍS´AssignmentExpressionÍşÍ¡=T°MemberExpressionÍşÍU®ThisExpressionÍşÍNªIdentifierÍÍ«cachedTokenÂÂV§LiteralÍÍÀ¤nullR³ExpressionStatementÍ$Í>S´AssignmentExpressionÍ$Í=¡=T°MemberExpressionÍ$Í6U®ThisExpressionÍ$Í(NªIdentifierÍ)Í6­cachedPayloadÂÂV§LiteralÍ9Í=À¤nullR³ExpressionStatementÍLÍr\®CallExpressionÍLÍqT°MemberExpressionÍLÍWNªIdentifierÍLÍS§consoleNªIdentifierÍTÍW£logÂÂ‘V§LiteralÍXÍp¾JwtManager: Token åˆ é™¤æˆåŠŸÙ 'JwtManager: Token åˆ é™¤æˆåŠŸ'ÂZ¯ReturnStatementÍ€ÍŒV§LiteralÍ‡Í‹Ã¤true]«CatchClauseÍ¡ÍNªIdentifierÍ¨Í«£errO®BlockStatementÍ­Í’R³ExpressionStatementÍ¼Íë\®CallExpressionÍ¼ÍêT°MemberExpressionÍ¼ÍÉNªIdentifierÍ¼ÍÃ§consoleNªIdentifierÍÄÍÉ¥errorÂÂ’V§LiteralÍÊÍäÙ JwtManager: åˆ é™¤ token å¤±è´¥:Ù"'JwtManager: åˆ é™¤ token å¤±è´¥:'NªIdentifierÍæÍé£errÂZ¯ReturnStatementÍùÍV§LiteralÍ ÍÂ¥falseÀP°MethodDefinitionÍÉÍ"ÂÂNªIdentifierÍÉÍØ¯parseJwtPayload¦methodQ²FunctionExpressionÍØÍ"ÀÂÂÂ‘NªIdentifierÍÙÍŞ¥tokenO®BlockStatementÍàÍ"‘[¬TryStatementÍëÍO®BlockStatementÍïÍn—_³VariableDeclarationÍ Í?‘`²VariableDeclaratorÍ&Í>NªIdentifierÍ&Í+¥parts\®CallExpressionÍ.Í>T°MemberExpressionÍ.Í9NªIdentifierÍ.Í3¥tokenNªIdentifierÍ4Í9¥splitÂÂ‘V§LiteralÍ:Í=¡.£'.'Â¥constW«IfStatementÍMÍ^°BinaryExpressionÍQÍcT°MemberExpressionÍQÍ]NªIdentifierÍQÍV¥partsNªIdentifierÍWÍ]¦lengthÂÂ£!==V§LiteralÍbÍc¡3O®BlockStatementÍeÍ“R³ExpressionStatementÍxÍ¦\®CallExpressionÍxÍ¥T°MemberExpressionÍxÍ…NªIdentifierÍxÍ§consoleNªIdentifierÍ€Í…¥errorÂÂ‘V§LiteralÍ†Í¤Ù2JwtManager: JWT æ ¼å¼æ— æ•ˆï¼Œåº”è¯¥åŒ…å«3éƒ¨åˆ†Ù4'JwtManager: JWT æ ¼å¼æ— æ•ˆï¼Œåº”è¯¥åŒ…å«3éƒ¨åˆ†'Â_³VariableDeclarationÍ¸ÍĞ‘`²VariableDeclaratorÍ¾ÍÏNªIdentifierÍ¾ÍÊ¬emptyPayloadÔra”¤type¥start£endªproperties°ObjectExpressionÍÍÍÏ¥constZ¯ReturnStatementÍâÍöNªIdentifierÍéÍõ¬emptyPayloadÀ_³VariableDeclarationÍ7ÍV‘`²VariableDeclaratorÍ=ÍUNªIdentifierÍ=ÍJ­payloadBase64T°MemberExpressionÍMÍUNªIdentifierÍMÍR¥partsV§LiteralÍSÍT¡1ÃÂ¥const_³VariableDeclarationÍ~Íµ‘`²VariableDeclaratorÍ„Í´NªIdentifierÍ„ÍªpayloadStr\®CallExpressionÍ‘Í´T°MemberExpressionÍ‘Í¥U®ThisExpressionÍ‘Í•NªIdentifierÍ–Í¥¯base64UrlDecodeÂÂ‘NªIdentifierÍ¦Í³­payloadBase64Â¥const_³VariableDeclarationÍÛÍ‘`²VariableDeclaratorÍáÍNªIdentifierÍáÍè§payload\®CallExpressionÍëÍT°MemberExpressionÍëÍõNªIdentifierÍëÍï¤JSONNªIdentifierÍğÍõ¥parseÂÂ‘NªIdentifierÍöÍ ªpayloadStrÂ¥constR³ExpressionStatementÍÍF\®CallExpressionÍÍET°MemberExpressionÍÍNªIdentifierÍÍ§consoleNªIdentifierÍÍ£logÂÂ’V§LiteralÍÍ;Ù%JwtManager: JWT Payload è§£ææˆåŠŸ:Ù''JwtManager: JWT Payload è§£ææˆåŠŸ:'NªIdentifierÍ=ÍD§payloadÂZ¯ReturnStatementÍTÍcNªIdentifierÍ[Íb§payload]«CatchClauseÍxÍNªIdentifierÍÍ‚£errO®BlockStatementÍ„Í“R³ExpressionStatementÍ“ÍÈ\®CallExpressionÍ“ÍÇT°MemberExpressionÍ“Í NªIdentifierÍ“Íš§consoleNªIdentifierÍ›Í ¥errorÂÂ’V§LiteralÍ¡ÍÁÙ&JwtManager: è§£æ JWT Payload å¤±è´¥:Ù('JwtManager: è§£æ JWT Payload å¤±è´¥:'NªIdentifierÍÃÍÆ£errÂ_³VariableDeclarationÍÖÍî‘`²VariableDeclaratorÍÜÍíNªIdentifierÍÜÍè¬emptyPayloada°ObjectExpressionÍëÍí¥constZ¯ReturnStatementÍüÍNªIdentifierÍÍ¬emptyPayloadÀP°MethodDefinitionÍ”Í„ÂÂNªIdentifierÍ”Í£¯base64UrlDecode¦methodQ²FunctionExpressionÍ£Í„ÀÂÂÂ‘NªIdentifierÍ¤Í­©base64UrlO®BlockStatementÍ¯Í„‘[¬TryStatementÍºÍ}O®BlockStatementÍ¾Í†˜_³VariableDeclarationÍûÍ8‘`²VariableDeclaratorÍÿÍ7NªIdentifierÍÿÍ¦base64\®CallExpressionÍÍ7T°MemberExpressionÍÍ,\®CallExpressionÍÍ$T°MemberExpressionÍÍNªIdentifierÍÍ©base64UrlNªIdentifierÍÍ§replaceÂÂ’Ôrb–¤type¥start£end¥value£raw¥regex§LiteralÍÍ’¡-¡g¤/-/gÔrc’§pattern¥flags¡-¡gV§LiteralÍ Í#¡+£'+'ÂNªIdentifierÍ%Í,§replaceÂÂ’b§LiteralÍ-Í1’¡_¡g¤/_/gc¡_¡gV§LiteralÍ3Í6¡/£'/'Â£let_³VariableDeclarationÍaÍƒ‘`²VariableDeclaratorÍgÍ‚NªIdentifierÍgÍn§padding^°BinaryExpressionÍqÍ‚T°MemberExpressionÍqÍ~NªIdentifierÍqÍw¦base64NªIdentifierÍxÍ~¦lengthÂÂ¡%V§LiteralÍÍ‚¡4¥constW«IfStatementÍ‘Íæ^°BinaryExpressionÍ•Í NªIdentifierÍ•Íœ§padding¡>V§LiteralÍŸÍ  ¡0O®BlockStatementÍ¢Íæ‘R³ExpressionStatementÍµÍ×S´AssignmentExpressionÍµÍÖ¢+=NªIdentifierÍµÍ»¦base64\®CallExpressionÍ¿ÍÖT°MemberExpressionÍ¿ÍÉV§LiteralÍ¿ÍÂ¡=£'='NªIdentifierÍÃÍÉ¦repeatÂÂ‘^°BinaryExpressionÍÊÍÕV§LiteralÍÊÍË¡4¡-NªIdentifierÍÎÍÕ§paddingÂÀ_³VariableDeclarationÍÍF‘`²VariableDeclaratorÍ$ÍENªIdentifierÍ$Í+§decoderY­NewExpressionÍ.ÍET°MemberExpressionÍ2ÍCNªIdentifierÍ2Í6¤utilNªIdentifierÍ7ÍC¬Base64HelperÂÂ¥const_³VariableDeclarationÍTÍ‚‘`²VariableDeclaratorÍZÍNªIdentifierÍZÍdªuint8Array\®CallExpressionÍgÍT°MemberExpressionÍgÍyNªIdentifierÍgÍn§decoderNªIdentifierÍoÍyªdecodeSyncÂÂ‘NªIdentifierÍzÍ€¦base64Â¥const_³VariableDeclarationÍ´Íş‘`²VariableDeclaratorÍºÍıNªIdentifierÍºÍÅ«textDecoder\®CallExpressionÍÈÍıT°MemberExpressionÍÈÍßT°MemberExpressionÍÈÍØNªIdentifierÍÈÍÌ¤utilNªIdentifierÍÍÍØ«TextDecoderÂÂNªIdentifierÍÙÍß¦createÂÂ’V§LiteralÍàÍç¥utf-8§'utf-8'a°ObjectExpressionÍéÍü‘Ôrd™¤type¥start£end¦method©shorthand¨computed£key¥value¤kind¨PropertyÍëÍúÂÂÂNªIdentifierÍëÍô©ignoreBOMV§LiteralÍöÍúÃ¤true¤initÂ¥const_³VariableDeclarationÍÍ[‘`²VariableDeclaratorÍÍZNªIdentifierÍÍªdecodedStr\®CallExpressionÍÍZT°MemberExpressionÍÍ;NªIdentifierÍÍ*«textDecoderNªIdentifierÍ+Í;°decodeWithStreamÂÂ’NªIdentifierÍ<ÍFªuint8Arraya°ObjectExpressionÍHÍY‘d¨PropertyÍJÍWÂÂÂNªIdentifierÍJÍP¦streamV§LiteralÍRÍWÂ¥false¤initÂ¥constZ¯ReturnStatementÍiÍ{NªIdentifierÍpÍzªdecodedStr]«CatchClauseÍÍ}NªIdentifierÍ—Íš£errO®BlockStatementÍœÍ}“_³VariableDeclarationÍ«Íó‘`²VariableDeclaratorÍ±ÍòNªIdentifierÍ±Í½¬errorMessageWµConditionalExpressionÍÀÍò^°BinaryExpressionÍÀÍÔNªIdentifierÍÀÍÃ£errªinstanceofNªIdentifierÍÏÍÔ¥ErrorT°MemberExpressionÍ×ÍâNªIdentifierÍ×ÍÚ£errNªIdentifierÍÛÍâ§messageÂÂV§LiteralÍåÍò³Base64 è§£ç å¤±è´¥µ'Base64 è§£ç å¤±è´¥'¥constR³ExpressionStatementÍÍ0\®CallExpressionÍÍ/T°MemberExpressionÍÍNªIdentifierÍÍ§consoleNªIdentifierÍ	Í¥errorÂÂ’V§LiteralÍÍ)Ù JwtManager: Base64 è§£ç å¤±è´¥:Ù"'JwtManager: Base64 è§£ç å¤±è´¥:'NªIdentifierÍ+Í.£errÂZ®ThrowStatementÍ>ÍrY­NewExpressionÍDÍqNªIdentifierÍHÍM¥Error‘Ôre•¤type¥start£end«expressions¦quasis¯TemplateLiteralÍNÍp‘NªIdentifierÍbÍn¬errorMessage’Ôrf•¤type¥start£end¥value¤tail¯TemplateElementÍOÍ`Ôrg’£raw¦cooked¹JWT Base64 è§£ç å¤±è´¥: ¹JWT Base64 è§£ç å¤±è´¥: Âf¯TemplateElementÍoÍog  ÃÀP°MethodDefinitionÍçÍ¢ÂÂNªIdentifierÍíÍ÷ªgetPayload¦methodQ²FunctionExpressionÍ÷Í¢ÀÂÂÃO®BlockStatementÍúÍ¢—W«IfStatementÍÍdT°MemberExpressionÍÍ.U®ThisExpressionÍÍ NªIdentifierÍ!Í.­cachedPayloadÂÂO®BlockStatementÍ0Íd‘Z¯ReturnStatementÍ?ÍYT°MemberExpressionÍFÍXU®ThisExpressionÍFÍJNªIdentifierÍKÍX­cachedPayloadÂÂÀ_³VariableDeclarationÍnÍ’‘`²VariableDeclaratorÍtÍ‘NªIdentifierÍtÍy¥tokenZ¯AwaitExpressionÍ|Í‘\®CallExpressionÍ‚Í‘T°MemberExpressionÍ‚ÍU®ThisExpressionÍ‚Í†NªIdentifierÍ‡Í¨getTokenÂÂÂ¥constW«IfStatementÍœÍÎX¯UnaryExpressionÍ Í¦¡!ÃNªIdentifierÍ¡Í¦¥tokenO®BlockStatementÍ¨ÍÎ‘Z¯ReturnStatementÍ·ÍÃV§LiteralÍ¾ÍÂÀ¤nullÀ_³VariableDeclarationÍØÍ‘`²VariableDeclaratorÍŞÍNªIdentifierÍŞÍå§payload\®CallExpressionÍèÍT°MemberExpressionÍèÍüU®ThisExpressionÍèÍìNªIdentifierÍíÍü¯parseJwtPayloadÂÂ‘NªIdentifierÍıÍ¥tokenÂ¥constW«IfStatementÍÍ[^°BinaryExpressionÍÍ3T°MemberExpressionÍÍ-\®CallExpressionÍÍ&T°MemberExpressionÍÍNªIdentifierÍÍ¦ObjectNªIdentifierÍÍ¤keysÂÂ‘NªIdentifierÍÍ%§payloadÂNªIdentifierÍ'Í-¦lengthÂÂ£===V§LiteralÍ2Í3 ¡0O®BlockStatementÍ5Í[‘Z¯ReturnStatementÍDÍPV§LiteralÍKÍOÀ¤nullÀR³ExpressionStatementÍeÍ‚S´AssignmentExpressionÍeÍ¡=T°MemberExpressionÍeÍwU®ThisExpressionÍeÍiNªIdentifierÍjÍw­cachedPayloadÂÂNªIdentifierÍzÍ§payloadZ¯ReturnStatementÍŒÍ›NªIdentifierÍ“Íš§payloadP°MethodDefinitionÍÍöÂÂNªIdentifierÍ
+Í®isTokenExpired¦methodQ²FunctionExpressionÍÍöÀÂÂÃO®BlockStatementÍÍö—_³VariableDeclarationÍ&ÍN‘`²VariableDeclaratorÍ,ÍMNªIdentifierÍ,Í3§payloadZ¯AwaitExpressionÍ6ÍM\®CallExpressionÍ<ÍMT°MemberExpressionÍ<ÍKU®ThisExpressionÍ<Í@NªIdentifierÍAÍKªgetPayloadÂÂÂ¥constW«IfStatementÍXÍÖ^±LogicalExpressionÍ\ÍtX¯UnaryExpressionÍ\Íd¡!ÃNªIdentifierÍ]Íd§payload¢||X¯UnaryExpressionÍhÍt¡!ÃT°MemberExpressionÍiÍtNªIdentifierÍiÍp§payloadNªIdentifierÍqÍt£expÂÂO®BlockStatementÍvÍÖ’R³ExpressionStatementÍ…Í±\®CallExpressionÍ…Í°T°MemberExpressionÍ…Í‘NªIdentifierÍ…ÍŒ§consoleNªIdentifierÍÍ‘¤warnÂÂ‘V§LiteralÍ’Í¯Ù+JwtManager: æ— æ³•è·å– token è¿‡æœŸæ—¶é—´Ù-'JwtManager: æ— æ³•è·å– token è¿‡æœŸæ—¶é—´'ÂZ¯ReturnStatementÍ¿ÍËV§LiteralÍÆÍÊÀ¤nullÀ_³VariableDeclarationÍÿÍ)‘`²VariableDeclaratorÍÍ(NªIdentifierÍÍ®expirationTime^°BinaryExpressionÍÍ(T°MemberExpressionÍÍ!NªIdentifierÍÍ§payloadNªIdentifierÍÍ!£expÂÂ¡*V§LiteralÍ$Í(Íè¤1000¥const_³VariableDeclarationÍ3ÍR‘`²VariableDeclaratorÍ9ÍQNªIdentifierÍ9ÍD«currentTime\®CallExpressionÍGÍQT°MemberExpressionÍGÍONªIdentifierÍGÍK¤DateNªIdentifierÍLÍO£nowÂÂÂ¥const_³VariableDeclarationÍ\ÍŒ‘`²VariableDeclaratorÍbÍ‹NªIdentifierÍbÍk©isExpired^°BinaryExpressionÍnÍ‹NªIdentifierÍnÍy«currentTime¢>=NªIdentifierÍ}Í‹®expirationTime¥constR³ExpressionStatementÍ–ÍÔ\®CallExpressionÍ–ÍÓT°MemberExpressionÍ–Í¡NªIdentifierÍ–Í§consoleNªIdentifierÍÍ¡£logÂÂ‘e¯TemplateLiteralÍ¢ÍÒ‘WµConditionalExpressionÍ·ÍĞNªIdentifierÍ·ÍÀ©isExpiredV§LiteralÍÃÍÈ©å·²è¿‡æœŸ«'å·²è¿‡æœŸ'V§LiteralÍËÍĞ©æœªè¿‡æœŸ«'æœªè¿‡æœŸ'’f¯TemplateElementÍ£Íµg²JwtManager: Token ²JwtManager: Token Âf¯TemplateElementÍÑÍÑg  ÃÂZ¯ReturnStatementÍŞÍïNªIdentifierÍåÍî©isExpiredP°MethodDefinitionÍRÍ nÂÂNªIdentifierÍXÍd¬isTokenValid¦methodQ²FunctionExpressionÍdÍ nÀÂÂÃO®BlockStatementÍgÍ n—_³VariableDeclarationÍrÍ–‘`²VariableDeclaratorÍxÍ•NªIdentifierÍxÍ}¥tokenZ¯AwaitExpressionÍ€Í•\®CallExpressionÍ†Í•T°MemberExpressionÍ†Í“U®ThisExpressionÍ†ÍŠNªIdentifierÍ‹Í“¨getTokenÂÂÂ¥constW«IfStatementÍ ÍX¯UnaryExpressionÍ¤Íª¡!ÃNªIdentifierÍ¥Íª¥tokenO®BlockStatementÍ¬Í’R³ExpressionStatementÍ»Íà\®CallExpressionÍ»ÍßT°MemberExpressionÍ»ÍÆNªIdentifierÍ»ÍÂ§consoleNªIdentifierÍÃÍÆ£logÂÂ‘V§LiteralÍÇÍŞ»JwtManager: Token ä¸å­˜åœ¨½'JwtManager: Token ä¸å­˜åœ¨'ÂZ¯ReturnStatementÍîÍûV§LiteralÍõÍúÂ¥falseÀ_³VariableDeclarationÍÍ>‘`²VariableDeclaratorÍÍ=NªIdentifierÍÍ©isExpiredZ¯AwaitExpressionÍ"Í=\®CallExpressionÍ(Í=T°MemberExpressionÍ(Í;U®ThisExpressionÍ(Í,NªIdentifierÍ-Í;®isTokenExpiredÂÂÂ¥constW«IfStatementÍHÍå^°BinaryExpressionÍLÍ^NªIdentifierÍLÍU©isExpired£===V§LiteralÍZÍ^À¤nullO®BlockStatementÍ`Íå’R³ExpressionStatementÍ”Í¿\®CallExpressionÍ”Í¾T°MemberExpressionÍ”Í NªIdentifierÍ”Í›§consoleNªIdentifierÍœÍ ¤warnÂÂ‘V§LiteralÍ¡Í½Ù(JwtManager: æ— æ³•åˆ¤æ–­ token æœ‰æ•ˆæ€§Ù*'JwtManager: æ— æ³•åˆ¤æ–­ token æœ‰æ•ˆæ€§'ÂZ¯ReturnStatementÍÍÍÚV§LiteralÍÔÍÙÂ¥falseÀ_³VariableDeclarationÍïÍ 
+‘`²VariableDeclaratorÍõÍ 	NªIdentifierÍõÍü§isValidX¯UnaryExpressionÍÿÍ 	¡!ÃNªIdentifierÍ  Í 	©isExpired¥constR³ExpressionStatementÍ Í N\®CallExpressionÍ Í MT°MemberExpressionÍ Í NªIdentifierÍ Í §consoleNªIdentifierÍ Í £logÂÂ‘e¯TemplateLiteralÍ  Í L‘WµConditionalExpressionÍ 5Í JNªIdentifierÍ 5Í <§isValidV§LiteralÍ ?Í C¦æœ‰æ•ˆ¨'æœ‰æ•ˆ'V§LiteralÍ FÍ J¦æ— æ•ˆ¨'æ— æ•ˆ'’f¯TemplateElementÍ !Í 3g²JwtManager: Token ²JwtManager: Token Âf¯TemplateElementÍ KÍ Kg  ÃÂZ¯ReturnStatementÍ XÍ gNªIdentifierÍ _Í f§isValidP°MethodDefinitionÍ ÀÍ!¯ÂÂNªIdentifierÍ ÆÍ ×±getExpirationDate¦methodQ²FunctionExpressionÍ ×Í!¯ÀÂÂÃO®BlockStatementÍ ÚÍ!¯“_³VariableDeclarationÍ åÍ!‘`²VariableDeclaratorÍ ëÍ!NªIdentifierÍ ëÍ ò§payloadZ¯AwaitExpressionÍ õÍ!\®CallExpressionÍ ûÍ!T°MemberExpressionÍ ûÍ!
+U®ThisExpressionÍ ûÍ ÿNªIdentifierÍ! Í!
+ªgetPayloadÂÂÂ¥constW«IfStatementÍ!Í![^±LogicalExpressionÍ!Í!3X¯UnaryExpressionÍ!Í!#¡!ÃNªIdentifierÍ!Í!#§payload¢||X¯UnaryExpressionÍ!'Í!3¡!ÃT°MemberExpressionÍ!(Í!3NªIdentifierÍ!(Í!/§payloadNªIdentifierÍ!0Í!3£expÂÂO®BlockStatementÍ!5Í![‘Z¯ReturnStatementÍ!DÍ!PV§LiteralÍ!KÍ!OÀ¤nullÀZ¯ReturnStatementÍ!„Í!¨Y­NewExpressionÍ!‹Í!§NªIdentifierÍ!Í!“¤Date‘^°BinaryExpressionÍ!”Í!¦T°MemberExpressionÍ!”Í!ŸNªIdentifierÍ!”Í!›§payloadNªIdentifierÍ!œÍ!Ÿ£expÂÂ¡*V§LiteralÍ!¢Í!¦Íè¤1000P°MethodDefinitionÍ"Í#7ÂÂNªIdentifierÍ"Í"*³getTimeToExpiration¦methodQ²FunctionExpressionÍ"*Í#7ÀÂÂÃO®BlockStatementÍ"-Í#7”_³VariableDeclarationÍ"8Í"n‘`²VariableDeclaratorÍ">Í"mNªIdentifierÍ">Í"L®expirationDateZ¯AwaitExpressionÍ"OÍ"m\®CallExpressionÍ"UÍ"mT°MemberExpressionÍ"UÍ"kU®ThisExpressionÍ"UÍ"YNªIdentifierÍ"ZÍ"k±getExpirationDateÂÂÂ¥constW«IfStatementÍ"xÍ"³X¯UnaryExpressionÍ"|Í"‹¡!ÃNªIdentifierÍ"}Í"‹®expirationDateO®BlockStatementÍ"Í"³‘Z¯ReturnStatementÍ"œÍ"¨V§LiteralÍ"£Í"§À¤nullÀ_³VariableDeclarationÍ"½Í"ù‘`²VariableDeclaratorÍ"ÃÍ"øNªIdentifierÍ"ÃÍ"Ğ­remainingTime^°BinaryExpressionÍ"ÓÍ"ø\®CallExpressionÍ"ÓÍ"ëT°MemberExpressionÍ"ÓÍ"éNªIdentifierÍ"ÓÍ"á®expirationDateNªIdentifierÍ"âÍ"é§getTimeÂÂÂ¡-\®CallExpressionÍ"îÍ"øT°MemberExpressionÍ"îÍ"öNªIdentifierÍ"îÍ"ò¤DateNªIdentifierÍ"óÍ"ö£nowÂÂÂ¥constZ¯ReturnStatementÍ#Í#0WµConditionalExpressionÍ#
+Í#/^°BinaryExpressionÍ#
+Í#NªIdentifierÍ#
+Í#­remainingTime¡>V§LiteralÍ#Í# ¡0NªIdentifierÍ#Í#+­remainingTimeV§LiteralÍ#.Í#/ ¡0P°MethodDefinitionÍ#’Í&ÂÂNªIdentifierÍ#˜Í#¤¬getTokenInfo¦methodQ²FunctionExpressionÍ#¤Í&ÀÂÂÃO®BlockStatementÍ#§Í&˜_³VariableDeclarationÍ#²Í#Ö‘`²VariableDeclaratorÍ#¸Í#ÕNªIdentifierÍ#¸Í#½¥tokenZ¯AwaitExpressionÍ#ÀÍ#Õ\®CallExpressionÍ#ÆÍ#ÕT°MemberExpressionÍ#ÆÍ#ÓU®ThisExpressionÍ#ÆÍ#ÊNªIdentifierÍ#ËÍ#Ó¨getTokenÂÂÂ¥constW«IfStatementÍ#àÍ$X¯UnaryExpressionÍ#äÍ#ê¡!ÃNªIdentifierÍ#åÍ#ê¥tokenO®BlockStatementÍ#ìÍ$‘Z¯ReturnStatementÍ#ûÍ$V§LiteralÍ$Í$À¤nullÀ_³VariableDeclarationÍ$Í$D‘`²VariableDeclaratorÍ$"Í$CNªIdentifierÍ$"Í$)§payloadZ¯AwaitExpressionÍ$,Í$C\®CallExpressionÍ$2Í$CT°MemberExpressionÍ$2Í$AU®ThisExpressionÍ$2Í$6NªIdentifierÍ$7Í$AªgetPayloadÂÂÂ¥constW«IfStatementÍ$NÍ$‚X¯UnaryExpressionÍ$RÍ$Z¡!ÃNªIdentifierÍ$SÍ$Z§payloadO®BlockStatementÍ$\Í$‚‘Z¯ReturnStatementÍ$kÍ$wV§LiteralÍ$rÍ$vÀ¤nullÀ_³VariableDeclarationÍ$ŒÍ$º‘`²VariableDeclaratorÍ$’Í$¹NªIdentifierÍ$’Í$›©isExpiredZ¯AwaitExpressionÍ$Í$¹\®CallExpressionÍ$¤Í$¹T°MemberExpressionÍ$¤Í$·U®ThisExpressionÍ$¤Í$¨NªIdentifierÍ$©Í$·®isTokenExpiredÂÂÂ¥const_³VariableDeclarationÍ$ÄÍ$ú‘`²VariableDeclaratorÍ$ÊÍ$ùNªIdentifierÍ$ÊÍ$Ø®expirationDateZ¯AwaitExpressionÍ$ÛÍ$ù\®CallExpressionÍ$áÍ$ùT°MemberExpressionÍ$áÍ$÷U®ThisExpressionÍ$áÍ$åNªIdentifierÍ$æÍ$÷±getExpirationDateÂÂÂ¥const_³VariableDeclarationÍ%Í%à‘`²VariableDeclaratorÍ%
+Í%ßNªIdentifierÍ%
+Í%©tokenInfoa°ObjectExpressionÍ%Í%ß•d¨PropertyÍ%%Í%1ÂÂÂNªIdentifierÍ%%Í%*¥tokenNªIdentifierÍ%,Í%1¥token¤initd¨PropertyÍ%@Í%PÂÂÂNªIdentifierÍ%@Í%G§payloadNªIdentifierÍ%IÍ%P§payload¤initd¨PropertyÍ%_Í%{ÂÂÂNªIdentifierÍ%_Í%f§isValid^°BinaryExpressionÍ%hÍ%{NªIdentifierÍ%hÍ%q©isExpired£===V§LiteralÍ%vÍ%{Â¥false¤initd¨PropertyÍ%ŠÍ%§ÂÂÂNªIdentifierÍ%ŠÍ%“©isExpired^°BinaryExpressionÍ%•Í%§NªIdentifierÍ%•Í%©isExpired£===V§LiteralÍ%£Í%§Ã¤true¤initd¨PropertyÍ%¶Í%ÔÂÂÂNªIdentifierÍ%¶Í%Ä®expirationDateNªIdentifierÍ%ÆÍ%Ô®expirationDate¤init¥constZ¯ReturnStatementÍ%êÍ%ûNªIdentifierÍ%ñÍ%ú©tokenInfoP°MethodDefinitionÍ&SÍ'2ÂÂNªIdentifierÍ&YÍ&g®getAuthHeaders¦methodQ²FunctionExpressionÍ&gÍ'2ÀÂÂÃO®BlockStatementÍ&jÍ'2”_³VariableDeclarationÍ&uÍ&™‘`²VariableDeclaratorÍ&{Í&˜NªIdentifierÍ&{Í&€¥tokenZ¯AwaitExpressionÍ&ƒÍ&˜\®CallExpressionÍ&‰Í&˜T°MemberExpressionÍ&‰Í&–U®ThisExpressionÍ&‰Í&NªIdentifierÍ&Í&–¨getTokenÂÂÂ¥const_³VariableDeclarationÍ&£Í&¶‘`²VariableDeclaratorÍ&©Í&µNªIdentifierÍ&©Í&°§headersa°ObjectExpressionÍ&³Í&µ¥constW«IfStatementÍ&ÀÍ'NªIdentifierÍ&ÄÍ&É¥tokenO®BlockStatementÍ&ËÍ'‘R³ExpressionStatementÍ&ÚÍ'S´AssignmentExpressionÍ&ÚÍ'¡=T°MemberExpressionÍ&ÚÍ&òNªIdentifierÍ&ÚÍ&á§headersV§LiteralÍ&âÍ&ñ­Authorization¯'Authorization'ÃÂe¯TemplateLiteralÍ&õÍ'‘NªIdentifierÍ&ÿÍ'¥token’f¯TemplateElementÍ&öÍ&ıg§Bearer §Bearer Âf¯TemplateElementÍ'Í'g  ÃÀZ¯ReturnStatementÍ'Í'+NªIdentifierÍ'#Í'*§headersP°MethodDefinitionÍ'‡Í(²ÂÂNªIdentifierÍ'Í'¡´getUserInfoFromToken¦methodQ²FunctionExpressionÍ'¡Í(²ÀÂÂÃO®BlockStatementÍ'¤Í(²“_³VariableDeclarationÍ'¯Í'×‘`²VariableDeclaratorÍ'µÍ'ÖNªIdentifierÍ'µÍ'¼§payloadZ¯AwaitExpressionÍ'¿Í'Ö\®CallExpressionÍ'ÅÍ'ÖT°MemberExpressionÍ'ÅÍ'ÔU®ThisExpressionÍ'ÅÍ'ÉNªIdentifierÍ'ÊÍ'ÔªgetPayloadÂÂÂ¥constW«IfStatementÍ'áÍ(X¯UnaryExpressionÍ'åÍ'í¡!ÃNªIdentifierÍ'æÍ'í§payloadO®BlockStatementÍ'ïÍ(‘Z¯ReturnStatementÍ'şÍ(
+V§LiteralÍ(Í(	À¤nullÀZ¯ReturnStatementÍ(Í(«a°ObjectExpressionÍ(&Í(ª“d¨PropertyÍ(5Í(KÂÂÂNªIdentifierÍ(5Í(;¦userIdT°MemberExpressionÍ(=Í(KNªIdentifierÍ(=Í(D§payloadNªIdentifierÍ(EÍ(K¦userIdÂÂ¤initd¨PropertyÍ(ZÍ(vÂÂÂNªIdentifierÍ(ZÍ(c©userPhoneT°MemberExpressionÍ(eÍ(vNªIdentifierÍ(eÍ(l§payloadNªIdentifierÍ(mÍ(v©userPhoneÂÂ¤initd¨PropertyÍ(…Í(ŸÂÂÂNªIdentifierÍ(…Í(¨userNameT°MemberExpressionÍ(Í(ŸNªIdentifierÍ(Í(–§payloadNªIdentifierÍ(—Í(Ÿ¨userNameÂÂ¤initP°MethodDefinitionÍ(ÙÍ)_ÂÂNªIdentifierÍ(ÙÍ(ãªclearCache¦methodQ²FunctionExpressionÍ(ãÍ)_ÀÂÂÂO®BlockStatementÍ(æÍ)_“R³ExpressionStatementÍ(ñÍ)	S´AssignmentExpressionÍ(ñÍ)¡=T°MemberExpressionÍ(ñÍ)U®ThisExpressionÍ(ñÍ(õNªIdentifierÍ(öÍ)«cachedTokenÂÂV§LiteralÍ)Í)À¤nullR³ExpressionStatementÍ)Í)-S´AssignmentExpressionÍ)Í),¡=T°MemberExpressionÍ)Í)%U®ThisExpressionÍ)Í)NªIdentifierÍ)Í)%­cachedPayloadÂÂV§LiteralÍ)(Í),À¤nullR³ExpressionStatementÍ)7Í)X\®CallExpressionÍ)7Í)WT°MemberExpressionÍ)7Í)BNªIdentifierÍ)7Í)>§consoleNªIdentifierÍ)?Í)B£logÂÂ‘V§LiteralÍ)CÍ)V»JwtManager: ç¼“å­˜å·²æ¸…é™¤½'JwtManager: ç¼“å­˜å·²æ¸…é™¤'ÂÀ’Ôrh•¤type¥start£endªspecifiers¦source±ImportDeclarationÍnÍŸ‘Ôri”¤type¥start£end¥local¶ImportDefaultSpecifierÍuÍ€NªIdentifierÍuÍ€«preferencesV§LiteralÍ†Í¶@ohos.data.preferences¸"@ohos.data.preferences"h±ImportDeclarationÍ¡Í¿‘i¶ImportDefaultSpecifierÍ¨Í¬NªIdentifierÍ¨Í¬¤utilV§LiteralÍ²Í¾ª@ohos.util¬"@ohos.util"

@@ -65,8 +65,9 @@ export class AuthHelper {
       await this.userManager.initPreferences();
       console.log('AuthHelper: 初始化成功');
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : '初始化失败';
       console.error('AuthHelper: 初始化失败:', err);
-      throw err;
+      throw new Error(`AuthHelper 初始化失败: ${errorMessage}`);
     }
   }
 
@@ -239,7 +240,21 @@ export class AuthHelper {
     const authHeaders = await this.jwtManager.getAuthHeaders();
     
     if (additionalHeaders) {
-      return { ...authHeaders, ...additionalHeaders };
+      // 手动合并对象，避免使用展开运算符
+      const mergedHeaders: Record<string, string> = {};
+      // 先复制 authHeaders
+      const authKeys = Object.keys(authHeaders);
+      for (let i = 0; i < authKeys.length; i++) {
+        const key = authKeys[i];
+        mergedHeaders[key] = authHeaders[key];
+      }
+      // 再复制 additionalHeaders
+      const additionalKeys = Object.keys(additionalHeaders);
+      for (let i = 0; i < additionalKeys.length; i++) {
+        const key = additionalKeys[i];
+        mergedHeaders[key] = additionalHeaders[key];
+      }
+      return mergedHeaders;
     }
     
     return authHeaders;
@@ -254,8 +269,9 @@ export class AuthHelper {
       await this.userManager.logout();
       console.log('AuthHelper: 退出登录成功');
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : '退出登录失败';
       console.error('AuthHelper: 退出登录失败:', err);
-      throw err;
+      throw new Error(`AuthHelper 退出登录失败: ${errorMessage}`);
     }
   }
 

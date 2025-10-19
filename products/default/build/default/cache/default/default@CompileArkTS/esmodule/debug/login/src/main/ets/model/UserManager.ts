@@ -1,6 +1,7 @@
 import preferences from "@ohos:data.preferences";
 import promptAction from "@ohos:promptAction";
 import { HttpUtils, withBase, type ResultShape } from "@bundle:com.huawei.quickstart/default@utils/Index";
+import { JwtManager } from "@bundle:com.huawei.quickstart/default@login/ets/model/JwtManager";
 export interface UserInfo {
     account: string;
     password: string;
@@ -15,11 +16,13 @@ export interface LoginRequest {
 export class UserManager {
     private static instance: UserManager;
     private dataPreferences: preferences.Preferences | null = null;
-    private readonly PREFERENCES_NAME = 'user_data';
-    private readonly USER_KEY = 'user_info';
-    private readonly CURRENT_USER_KEY = 'current_user';
-    private readonly TOKEN_KEY = 'auth_token';
-    private constructor() { }
+    private readonly PREFERENCES_NAME: string = 'user_data';
+    private readonly USER_KEY: string = 'user_info';
+    private readonly CURRENT_USER_KEY: string = 'current_user';
+    private jwtManager: JwtManager;
+    private constructor() {
+        this.jwtManager = JwtManager.getInstance();
+    }
     public static getInstance(): UserManager {
         if (!UserManager.instance) {
             UserManager.instance = new UserManager();
@@ -30,6 +33,8 @@ export class UserManager {
     public async initPreferences(): Promise<void> {
         try {
             this.dataPreferences = await preferences.getPreferences(getContext(), this.PREFERENCES_NAME);
+            // 同时初始化 JWT 管理器
+            await this.jwtManager.initPreferences();
         }
         catch (err) {
             console.error('Failed to get preferences:', err);
@@ -50,8 +55,9 @@ export class UserManager {
             const resp: ResultShape<string> = JSON.parse(respText) as ResultShape<string>;
             if (resp.code === 200 && resp.data) {
                 const token = resp.data;
+                // 使用 JwtManager 存储 token
+                await this.jwtManager.saveToken(token);
                 const currentUser: UserInfo = { account: account, password: '', username: `用户${account.slice(-4)}` };
-                await this.dataPreferences?.put(this.TOKEN_KEY, token);
                 await this.dataPreferences?.put(this.CURRENT_USER_KEY, JSON.stringify(currentUser));
                 await this.dataPreferences?.flush();
                 promptAction.showToast({ message: { "id": 16777295, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" } });
@@ -126,8 +132,9 @@ export class UserManager {
         }
         try {
             await this.dataPreferences?.delete(this.CURRENT_USER_KEY);
-            await this.dataPreferences?.delete(this.TOKEN_KEY);
             await this.dataPreferences?.flush();
+            // 使用 JwtManager 删除 token
+            await this.jwtManager.removeToken();
         }
         catch (err) {
             console.error('Failed to logout:', err);
@@ -168,28 +175,24 @@ export class UserManager {
     }
     // 获取JWT令牌
     public async getToken(): Promise<string | null> {
-        if (!this.dataPreferences) {
-            await this.initPreferences();
-        }
-        try {
-            const token = await this.dataPreferences?.get(this.TOKEN_KEY, '');
-            if (token && token !== '') {
-                return token as string;
-            }
-            return null;
-        }
-        catch (err) {
-            console.error('Failed to get token:', err);
-            return null;
-        }
+        // 使用 JwtManager 获取 token
+        return await this.jwtManager.getToken();
     }
     // 便捷方法：获取认证请求头
     public async getAuthHeaders(): Promise<Record<string, string>> {
-        const token = await this.getToken();
-        const headers: Record<string, string> = {};
-        if (token) {
-            headers['Authorization'] = `Bearer ${token}`;
-        }
-        return headers;
+        // 使用 JwtManager 获取认证请求头
+        return await this.jwtManager.getAuthHeaders();
+    }
+    // 检查 Token 是否有效
+    public async isTokenValid(): Promise<boolean> {
+        return await this.jwtManager.isTokenValid();
+    }
+    // 获取 Token 信息
+    public async getTokenInfo() {
+        return await this.jwtManager.getTokenInfo();
+    }
+    // 获取 JWT 管理器实例
+    public getJwtManager(): JwtManager {
+        return this.jwtManager;
     }
 }

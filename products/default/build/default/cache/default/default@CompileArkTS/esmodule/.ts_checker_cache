@@ -758,7 +758,8 @@
         "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\alert_dialog.d.ts",
         "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\useregister.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets"
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\AuthHelper.ets"
       ],
       "error": false
     },
@@ -1454,12 +1455,16 @@
       "error": false
     },
     "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets": {
-      "mtimeMs": 1760686852749.121,
+      "mtimeMs": 1760881683475.3794,
       "children": [
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets"
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\JwtManager.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\JwtManager.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\AuthHelper.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\AuthHelper.ets"
       ],
       "parent": [
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets",
@@ -1690,7 +1695,8 @@
       "parent": [
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets"
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\JwtManager.ets"
       ],
       "error": false
     },
@@ -1833,16 +1839,18 @@
       ]
     },
     "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets": {
-      "mtimeMs": 1760869195732.9998,
+      "mtimeMs": 1760881446478.7214,
       "children": [
         "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
         "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets"
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\JwtManager.ets"
       ],
       "parent": [
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\AuthHelper.ets"
       ],
       "error": true,
       "errorCodes": [
@@ -4586,6 +4594,45 @@
       ],
       "parent": [
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets"
+      ],
+      "error": false
+    },
+    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\JwtManager.ets": {
+      "mtimeMs": 1760882258697.9717,
+      "children": [
+        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
+        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.util.d.ts"
+      ],
+      "parent": [
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\AuthHelper.ets"
+      ],
+      "error": true,
+      "errorCodes": [
+        28007
+      ]
+    },
+    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\AuthHelper.ets": {
+      "mtimeMs": 1760882258697.9717,
+      "children": [
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\JwtManager.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
+        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts"
+      ],
+      "parent": [
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets"
+      ],
+      "error": true,
+      "errorCodes": [
+        28007
+      ]
+    },
+    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.util.d.ts": {
+      "mtimeMs": 1750667349000,
+      "children": [],
+      "parent": [
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\JwtManager.ets"
       ],
       "error": false
     }

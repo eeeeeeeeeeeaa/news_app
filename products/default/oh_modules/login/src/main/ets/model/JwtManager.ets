@@ -23,18 +23,25 @@ import { util } from '@kit.ArkTS';
 export interface JwtPayload {
   /** 用户ID */
   userId?: string;
+
   /** 用户手机号 */
   userPhone?: string;
+
   /** 用户名 */
   userName?: string;
+
   /** 签发时间（秒级时间戳） */
   iat?: number;
+
   /** 过期时间（秒级时间戳） */
   exp?: number;
+
   /** 主题 */
   sub?: string;
+
   /** 签发者 */
   iss?: string;
+
   /** 受众 */
   aud?: string;
 }
@@ -45,14 +52,31 @@ export interface JwtPayload {
 export interface JwtTokenInfo {
   /** 原始 token 字符串 */
   token: string;
+
   /** 解析后的载荷信息 */
   payload: JwtPayload;
+
   /** token 是否有效 */
   isValid: boolean;
+
   /** token 是否过期 */
   isExpired: boolean;
+
   /** 过期时间（Date 对象） */
   expirationDate: Date | null;
+}
+
+/**
+ * 用户 Token 信息接口
+ * 从 JWT Token 中提取的用户信息
+ */
+export interface UserTokenInfo {
+  /** 用户ID */
+  userId?: string;
+  /** 用户手机号 */
+  userPhone?: string;
+  /** 用户名 */
+  userName?: string;
 }
 
 /**
@@ -62,20 +86,19 @@ export interface JwtTokenInfo {
 export class JwtManager {
   private static instance: JwtManager | null = null;
   private dataPreferences: preferences.Preferences | null = null;
-  
   /** Preferences 存储名称 */
   private readonly PREFERENCES_NAME: string = 'jwt_storage';
   /** JWT Token 存储键 */
   private readonly JWT_TOKEN_KEY: string = 'jwt_token';
   /** Token 刷新时间存储键（可选） */
   private readonly TOKEN_REFRESH_TIME_KEY: string = 'token_refresh_time';
-  
   /** 缓存的 token */
   private cachedToken: string | null = null;
   /** 缓存的 payload */
   private cachedPayload: JwtPayload | null = null;
 
-  private constructor() {}
+  private constructor() {
+  }
 
   /**
    * 获取单例实例
@@ -124,11 +147,11 @@ export class JwtManager {
       await this.dataPreferences?.put(this.TOKEN_REFRESH_TIME_KEY, Date.now());
       // 持久化
       await this.dataPreferences?.flush();
-      
+
       // 更新缓存
       this.cachedToken = token;
       this.cachedPayload = this.parseJwtPayload(token);
-      
+
       console.log('JwtManager: Token 存储成功');
       return true;
     } catch (err) {
@@ -177,11 +200,11 @@ export class JwtManager {
       await this.dataPreferences?.delete(this.JWT_TOKEN_KEY);
       await this.dataPreferences?.delete(this.TOKEN_REFRESH_TIME_KEY);
       await this.dataPreferences?.flush();
-      
+
       // 清空缓存
       this.cachedToken = null;
       this.cachedPayload = null;
-      
+
       console.log('JwtManager: Token 删除成功');
       return true;
     } catch (err) {
@@ -202,23 +225,25 @@ export class JwtManager {
       const parts = token.split('.');
       if (parts.length !== 3) {
         console.error('JwtManager: JWT 格式无效，应该包含3部分');
-        return {};
+        const emptyPayload: JwtPayload = {};
+        return emptyPayload;
       }
 
       // 获取 payload 部分（第二部分）
       const payloadBase64 = parts[1];
-      
+
       // Base64 解码
       const payloadStr = this.base64UrlDecode(payloadBase64);
-      
+
       // 解析 JSON
       const payload: JwtPayload = JSON.parse(payloadStr) as JwtPayload;
-      
+
       console.log('JwtManager: JWT Payload 解析成功:', payload);
       return payload;
     } catch (err) {
       console.error('JwtManager: 解析 JWT Payload 失败:', err);
-      return {};
+      const emptyPayload: JwtPayload = {};
+      return emptyPayload;
     }
   }
 
@@ -231,7 +256,7 @@ export class JwtManager {
     try {
       // Base64 URL 使用 - 和 _ 替换了 + 和 /
       let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      
+
       // 补齐 padding
       const padding = base64.length % 4;
       if (padding > 0) {
@@ -241,15 +266,16 @@ export class JwtManager {
       // 使用 util.Base64Helper 进行解码
       const decoder = new util.Base64Helper();
       const uint8Array = decoder.decodeSync(base64);
-      
+
       // 将 Uint8Array 转换为字符串
       const textDecoder = util.TextDecoder.create('utf-8', { ignoreBOM: true });
       const decodedStr = textDecoder.decodeWithStream(uint8Array, { stream: false });
-      
+
       return decodedStr;
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Base64 解码失败';
       console.error('JwtManager: Base64 解码失败:', err);
-      throw err;
+      throw new Error(`JWT Base64 解码失败: ${errorMessage}`);
     }
   }
 
@@ -291,10 +317,10 @@ export class JwtManager {
     // exp 是秒级时间戳，需要转换为毫秒
     const expirationTime = payload.exp * 1000;
     const currentTime = Date.now();
-    
+
     const isExpired = currentTime >= expirationTime;
     console.log(`JwtManager: Token ${isExpired ? '已过期' : '未过期'}`);
-    
+
     return isExpired;
   }
 
@@ -385,11 +411,11 @@ export class JwtManager {
   public async getAuthHeaders(): Promise<Record<string, string>> {
     const token = await this.getToken();
     const headers: Record<string, string> = {};
-    
+
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
-    
+
     return headers;
   }
 
@@ -397,7 +423,7 @@ export class JwtManager {
    * 从 Payload 中获取用户信息
    * @returns 用户信息对象，不存在返回 null
    */
-  public async getUserInfoFromToken(): Promise<{ userId?: string; userPhone?: string; userName?: string } | null> {
+  public async getUserInfoFromToken(): Promise<UserTokenInfo | null> {
     const payload = await this.getPayload();
     if (!payload) {
       return null;
