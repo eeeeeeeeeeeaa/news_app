@@ -39,6 +39,10 @@
         "utils": {
           "specifier": "file:commons/utils",
           "version": "file:commons/utils"
+        },
+        "login": {
+          "specifier": "file:features/login",
+          "version": "file:features/login"
         }
       },
       "devDependencies": {},
@@ -198,8 +202,8 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "news@file:features/news": {
-      "storePath": "features/news",
+    "video@file:features/video": {
+      "storePath": "features/video",
       "dependencies": {
         "utils": "commons/utils",
         "uicomponents": "commons/uicomponents"
@@ -209,11 +213,11 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "follow@file:features/follows": {
-      "storePath": "features/follows",
+    "news@file:features/news": {
+      "storePath": "features/news",
       "dependencies": {
-        "uicomponents": "commons/uicomponents",
-        "utils": "commons/utils"
+        "utils": "commons/utils",
+        "uicomponents": "commons/uicomponents"
       },
       "dynamicDependencies": {},
       "dev": false,
@@ -231,9 +235,11 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "mine@file:features/mine": {
-      "storePath": "features/mine",
+    "follow@file:features/follows": {
+      "storePath": "features/follows",
       "dependencies": {
+        "uicomponents": "commons/uicomponents",
+        "utils": "commons/utils",
         "login": "features/login"
       },
       "dynamicDependencies": {},
@@ -241,11 +247,10 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "video@file:features/video": {
-      "storePath": "features/video",
+    "mine@file:features/mine": {
+      "storePath": "features/mine",
       "dependencies": {
-        "utils": "commons/utils",
-        "uicomponents": "commons/uicomponents"
+        "login": "features/login"
       },
       "dynamicDependencies": {},
       "dev": false,

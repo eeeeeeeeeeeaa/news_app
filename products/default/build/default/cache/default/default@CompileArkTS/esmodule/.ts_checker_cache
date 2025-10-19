@@ -1428,7 +1428,8 @@
       "parent": [
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets"
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
       ],
       "error": false
     },
@@ -1462,7 +1463,8 @@
       ],
       "parent": [
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets"
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets"
       ],
       "error": false
     },
@@ -1477,7 +1479,7 @@
       "error": false
     },
     "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets": {
-      "mtimeMs": 1760686852758.3855,
+      "mtimeMs": 1760869195737.576,
       "children": [
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
         "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts"
@@ -1505,7 +1507,8 @@
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\web.d.ts"
+        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\web.d.ts",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
       ],
       "error": false
     },
@@ -1528,24 +1531,21 @@
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\useregister.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets"
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
       ],
       "error": false
     },
     "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets": {
-      "mtimeMs": 1760790914820.3137,
+      "mtimeMs": 1760869195737.576,
       "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\Index.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video\\Index.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\news\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\Index.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets"
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\Index.ets"
       ],
       "parent": [],
       "error": false
@@ -1575,7 +1575,7 @@
       "error": false
     },
     "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonSearchBar.ets": {
-      "mtimeMs": 1760790914815.3083,
+      "mtimeMs": 1760795364449.9868,
       "children": [],
       "parent": [
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\Index.ets"
@@ -1801,7 +1801,7 @@
       "error": false
     },
     "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets": {
-      "mtimeMs": 1760790914780.6707,
+      "mtimeMs": 1760869195736.0645,
       "children": [
         "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
@@ -1833,7 +1833,7 @@
       ]
     },
     "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets": {
-      "mtimeMs": 1760777959827.2744,
+      "mtimeMs": 1760869195732.9998,
       "children": [
         "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
         "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
@@ -1850,9 +1850,10 @@
       ]
     },
     "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets": {
-      "mtimeMs": 1760686852758.3855,
+      "mtimeMs": 1760869195736.5698,
       "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets"
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets"
       ],
       "parent": [
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\Index.ets"
@@ -2235,7 +2236,7 @@
       "error": false
     },
     "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\useregister.ets": {
-      "mtimeMs": 1760778459700.0825,
+      "mtimeMs": 1760869195732.9998,
       "children": [
         "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets"
@@ -2249,7 +2250,7 @@
       ]
     },
     "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets": {
-      "mtimeMs": 1760784963150.4321,
+      "mtimeMs": 1760869195732.9998,
       "children": [
         "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
         "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets",
@@ -4553,6 +4554,38 @@
       ],
       "parent": [
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets"
+      ],
+      "error": false
+    },
+    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\Index.ets": {
+      "mtimeMs": 1760869192877.177,
+      "children": [
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets"
+      ],
+      "parent": [
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets"
+      ],
+      "error": false
+    },
+    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets": {
+      "mtimeMs": 1760686852745.817,
+      "children": [
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
+      ],
+      "parent": [
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\Index.ets"
+      ],
+      "error": false
+    },
+    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets": {
+      "mtimeMs": 1760787659407.1704,
+      "children": [
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\Index.ets",
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets",
+        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
+      ],
+      "parent": [
+        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets"
       ],
       "error": false
     }
