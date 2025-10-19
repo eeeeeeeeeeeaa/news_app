@@ -42,13 +42,12 @@ export class UserManager {
         }
         try {
             const url = withBase('/api/users/login');
-            // 修复第97行：使用具体的接口类型而不是Record<string, string>
             const form: LoginRequest = {
                 userPhone: account,
                 userPassword: password
             };
             const respText = await HttpUtils.postForm(url, form);
-            const resp: ResultShape<string> = JSON.parse(respText);
+            const resp: ResultShape<string> = JSON.parse(respText) as ResultShape<string>;
             if (resp.code === 200 && resp.data) {
                 const token = resp.data;
                 const currentUser: UserInfo = { account: account, password: '', username: `用户${account.slice(-4)}` };
@@ -79,13 +78,13 @@ export class UserManager {
             console.error('Failed to login user:', err);
             // 新增：更详细的错误信息
             let errorMessage = '登录失败，请稍后再试';
-            if (err.message.includes('Network')) {
+            if (err instanceof Error && err.message.includes('Network')) {
                 errorMessage = '网络连接失败，请检查网络设置';
             }
-            else if (err.message.includes('Timeout')) {
+            else if (err instanceof Error && err.message.includes('Timeout')) {
                 errorMessage = '请求超时，请检查网络连接';
             }
-            else if (err.message.includes('JSON')) {
+            else if (err instanceof Error && err.message.includes('JSON')) {
                 errorMessage = '服务器响应格式错误';
             }
             promptAction.showToast({ message: errorMessage });
@@ -98,14 +97,25 @@ export class UserManager {
             await this.initPreferences();
         }
         try {
+            console.log('🔍 UserManager.getCurrentUser - 开始获取用户信息');
+            console.log('🔍 UserManager.getCurrentUser - 存储键:', this.CURRENT_USER_KEY);
             const userStr = await this.dataPreferences?.get(this.CURRENT_USER_KEY, '');
-            if (userStr && userStr !== '') {
-                return JSON.parse(userStr as string);
+            console.log('🔍 UserManager.getCurrentUser - 从存储获取的字符串:', userStr);
+            console.log('🔍 UserManager.getCurrentUser - 字符串类型:', typeof userStr);
+            // 安全地检查字符串长度
+            const userStrLength = typeof userStr === 'string' ? userStr.length : 0;
+            console.log('🔍 UserManager.getCurrentUser - 字符串长度:', userStrLength);
+            if (userStr && typeof userStr === 'string' && userStr !== '') {
+                const userInfo: UserInfo = JSON.parse(userStr as string) as UserInfo;
+                console.log('🔍 UserManager.getCurrentUser - 解析后的用户信息:', userInfo);
+                console.log('🔍 UserManager.getCurrentUser - 用户信息类型:', typeof userInfo);
+                return userInfo;
             }
+            console.log('🔍 UserManager.getCurrentUser - 没有找到用户信息');
             return null;
         }
         catch (err) {
-            console.error('Failed to get current user:', err);
+            console.error('❌ UserManager.getCurrentUser - 获取用户信息失败:', err);
             return null;
         }
     }
@@ -130,7 +140,7 @@ export class UserManager {
         }
         try {
             const allUsers = await this.getAllUsers();
-            const userIndex = allUsers.findIndex(u => u.account === updatedUser.account);
+            const userIndex = allUsers.findIndex((u: UserInfo) => u.account === updatedUser.account);
             if (userIndex !== -1) {
                 allUsers[userIndex] = updatedUser;
                 await this.dataPreferences?.put(this.USER_KEY, JSON.stringify(allUsers));
@@ -149,7 +159,7 @@ export class UserManager {
     private async getAllUsers(): Promise<UserInfo[]> {
         try {
             const usersStr = await this.dataPreferences?.get(this.USER_KEY, '[]');
-            return JSON.parse(usersStr as string);
+            return JSON.parse(usersStr as string) as UserInfo[];
         }
         catch (err) {
             console.error('Failed to get all users:', err);

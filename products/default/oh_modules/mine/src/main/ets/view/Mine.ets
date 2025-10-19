@@ -29,19 +29,44 @@ export default struct Mine {
   @State isLoggedIn: boolean = false;
   private userManager: UserManager = UserManager.getInstance();
   onLogout: () => void = () => {};
+  
+  // 接收外部传入的用户信息（组件参数）
+  userInfo: UserInfo | null = null;
+  loginStatus: boolean = false;
 
   async aboutToAppear() {
-    await this.loadUserInfo();
+    console.log('🔍 Mine.aboutToAppear 开始');
+    console.log('🔍 Mine.aboutToAppear - 传入的用户信息:', this.userInfo, '登录状态:', this.loginStatus);
+    this.updateUserInfo();
+  }
+
+  async aboutToUpdate() {
+    console.log('🔍 Mine.aboutToUpdate 开始');
+    console.log('🔍 Mine.aboutToUpdate - 传入的用户信息:', this.userInfo, '登录状态:', this.loginStatus);
+    this.updateUserInfo();
+  }
+
+  // 更新用户信息（优先使用传入的参数）
+  updateUserInfo() {
+    console.log('🔍 Mine.updateUserInfo 开始');
+    // 使用传入的参数更新内部状态
+    console.log('✅ 使用传入的用户信息:', this.userInfo);
+    this.currentUser = this.userInfo;
+    this.isLoggedIn = this.loginStatus;
+    console.log('🔍 Mine.updateUserInfo 完成 - isLoggedIn:', this.isLoggedIn, 'currentUser:', this.currentUser);
   }
 
   async loadUserInfo() {
     try {
+      console.log('🔍 Mine.loadUserInfo 开始');
       await this.userManager.initPreferences();
       const user = await this.userManager.getCurrentUser();
+      console.log('🔍 Mine.loadUserInfo - 获取到的用户信息:', user);
       this.currentUser = user;
       this.isLoggedIn = user !== null;
+      console.log('🔍 Mine.loadUserInfo 完成 - isLoggedIn:', this.isLoggedIn, 'currentUser:', this.currentUser);
     } catch (err) {
-      console.error('Failed to load user info:', err);
+      console.error('❌ Mine.loadUserInfo 失败:', err);
     }
   }
 

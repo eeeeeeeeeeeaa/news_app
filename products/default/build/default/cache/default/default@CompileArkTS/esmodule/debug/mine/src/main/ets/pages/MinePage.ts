@@ -3,13 +3,16 @@ if (!("finalizeConstruction" in ViewPU.prototype)) {
 }
 interface MinePage_Params {
     onLogout?: () => void;
+    userInfo?: UserInfo | null;
+    loginStatus?: boolean;
 }
 import Mine from "@bundle:com.huawei.quickstart/default@mine/ets/view/Mine";
+import type { UserInfo } from 'login';
 export function MinePageBuilder(parent = null) {
     {
         (parent ? parent : this).observeComponentCreation2((elmtId, isInitialRender) => {
             if (isInitialRender) {
-                let componentCall = new MinePage(parent ? parent : this, {}, undefined, elmtId, () => { }, { page: "features/mine/src/main/ets/pages/MinePage.ets", line: 20, col: 3 });
+                let componentCall = new MinePage(parent ? parent : this, {}, undefined, elmtId, () => { }, { page: "features/mine/src/main/ets/pages/MinePage.ets", line: 21, col: 3 });
                 ViewPU.create(componentCall);
                 let paramsLambda = () => {
                     return {};
@@ -29,12 +32,20 @@ export class MinePage extends ViewPU {
             this.paramsGenerator_ = paramsLambda;
         }
         this.onLogout = () => { };
+        this.userInfo = null;
+        this.loginStatus = false;
         this.setInitiallyProvidedValue(params);
         this.finalizeConstruction();
     }
     setInitiallyProvidedValue(params: MinePage_Params) {
         if (params.onLogout !== undefined) {
             this.onLogout = params.onLogout;
+        }
+        if (params.userInfo !== undefined) {
+            this.userInfo = params.userInfo;
+        }
+        if (params.loginStatus !== undefined) {
+            this.loginStatus = params.loginStatus;
         }
     }
     updateStateVars(params: MinePage_Params) {
@@ -46,6 +57,8 @@ export class MinePage extends ViewPU {
         this.aboutToBeDeletedInternal();
     }
     private onLogout: () => void;
+    private userInfo: UserInfo | null;
+    private loginStatus: boolean;
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
@@ -56,13 +69,17 @@ export class MinePage extends ViewPU {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
                     let componentCall = new Mine(this, {
+                        userInfo: this.userInfo,
+                        loginStatus: this.loginStatus,
                         onLogout: () => {
                             this.onLogout();
                         }
-                    }, undefined, elmtId, () => { }, { page: "features/mine/src/main/ets/pages/MinePage.ets", line: 29, col: 7 });
+                    }, undefined, elmtId, () => { }, { page: "features/mine/src/main/ets/pages/MinePage.ets", line: 32, col: 7 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
+                            userInfo: this.userInfo,
+                            loginStatus: this.loginStatus,
                             onLogout: () => {
                                 this.onLogout();
                             }

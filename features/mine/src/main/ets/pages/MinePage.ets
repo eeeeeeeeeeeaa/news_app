@@ -14,6 +14,7 @@
  */
 
 import Mine from '../view/Mine';
+import { UserInfo } from 'login';
 
 @Builder
 export function MinePageBuilder() {
@@ -23,10 +24,14 @@ export function MinePageBuilder() {
 @Component
 export struct MinePage {
   onLogout: () => void = () => {};
+  userInfo: UserInfo | null = null;
+  loginStatus: boolean = false;
 
   build() {
     Column() {
       Mine({
+        userInfo: this.userInfo,
+        loginStatus: this.loginStatus,
         onLogout: () => {
           this.onLogout();
         }

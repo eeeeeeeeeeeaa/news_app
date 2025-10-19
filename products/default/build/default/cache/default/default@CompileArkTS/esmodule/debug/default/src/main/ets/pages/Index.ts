@@ -5,23 +5,17 @@ interface Index_Params {
     currentUser?: UserInfo | null;
     isLoggedIn?: boolean;
     currentTabIndex?: number;
-    followSearchText?: string;
-    followHotTitles?: string[];
-    followSelectedUrl?: string | null;
-    followWebController?: webview.WebviewController;
+    refreshKey?: number;
     tabsController?: TabsController;
     userManager?: UserManager;
 }
-import { CommonSearchBar } from "@bundle:com.huawei.quickstart/default@uicomponents/Index";
 import { VideoPage } from "@bundle:com.huawei.quickstart/default@video/Index";
 import { NewsPage } from "@bundle:com.huawei.quickstart/default@news/Index";
 import { LoginPage } from "@bundle:com.huawei.quickstart/default@login/Index";
 import { MinePage } from "@bundle:com.huawei.quickstart/default@mine/Index";
 import { UserManager } from "@bundle:com.huawei.quickstart/default@login/Index";
 import type { UserInfo } from "@bundle:com.huawei.quickstart/default@login/Index";
-import webview from "@ohos:web.webview";
-import { BaiduHotSearchParser } from "@bundle:com.huawei.quickstart/default@utils/Index";
-import type { BaiduHotSearchItem } from "@bundle:com.huawei.quickstart/default@utils/Index";
+import { FollowPage } from "@bundle:com.huawei.quickstart/default@follows/Index";
 class Index extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
         super(parent, __localStorage, elmtId, extraInfo);
@@ -31,10 +25,7 @@ class Index extends ViewPU {
         this.__currentUser = new ObservedPropertyObjectPU(null, this, "currentUser");
         this.__isLoggedIn = new ObservedPropertySimplePU(false, this, "isLoggedIn");
         this.__currentTabIndex = new ObservedPropertySimplePU(0, this, "currentTabIndex");
-        this.__followSearchText = new ObservedPropertySimplePU('', this, "followSearchText");
-        this.__followHotTitles = new ObservedPropertyObjectPU([], this, "followHotTitles");
-        this.__followSelectedUrl = new ObservedPropertyObjectPU(null, this, "followSelectedUrl");
-        this.followWebController = new webview.WebviewController();
+        this.__refreshKey = new ObservedPropertySimplePU(0, this, "refreshKey");
         this.tabsController = new TabsController();
         this.userManager = UserManager.getInstance();
         this.setInitiallyProvidedValue(params);
@@ -50,17 +41,8 @@ class Index extends ViewPU {
         if (params.currentTabIndex !== undefined) {
             this.currentTabIndex = params.currentTabIndex;
         }
-        if (params.followSearchText !== undefined) {
-            this.followSearchText = params.followSearchText;
-        }
-        if (params.followHotTitles !== undefined) {
-            this.followHotTitles = params.followHotTitles;
-        }
-        if (params.followSelectedUrl !== undefined) {
-            this.followSelectedUrl = params.followSelectedUrl;
-        }
-        if (params.followWebController !== undefined) {
-            this.followWebController = params.followWebController;
+        if (params.refreshKey !== undefined) {
+            this.refreshKey = params.refreshKey;
         }
         if (params.tabsController !== undefined) {
             this.tabsController = params.tabsController;
@@ -75,17 +57,13 @@ class Index extends ViewPU {
         this.__currentUser.purgeDependencyOnElmtId(rmElmtId);
         this.__isLoggedIn.purgeDependencyOnElmtId(rmElmtId);
         this.__currentTabIndex.purgeDependencyOnElmtId(rmElmtId);
-        this.__followSearchText.purgeDependencyOnElmtId(rmElmtId);
-        this.__followHotTitles.purgeDependencyOnElmtId(rmElmtId);
-        this.__followSelectedUrl.purgeDependencyOnElmtId(rmElmtId);
+        this.__refreshKey.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__currentUser.aboutToBeDeleted();
         this.__isLoggedIn.aboutToBeDeleted();
         this.__currentTabIndex.aboutToBeDeleted();
-        this.__followSearchText.aboutToBeDeleted();
-        this.__followHotTitles.aboutToBeDeleted();
-        this.__followSelectedUrl.aboutToBeDeleted();
+        this.__refreshKey.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
@@ -103,187 +81,39 @@ class Index extends ViewPU {
     set isLoggedIn(newValue: boolean) {
         this.__isLoggedIn.set(newValue);
     }
-    private __currentTabIndex: ObservedPropertySimplePU<number>; // 榛樿閫変腑"鏂伴椈"椤?
+    private __currentTabIndex: ObservedPropertySimplePU<number>;
     get currentTabIndex() {
         return this.__currentTabIndex.get();
     }
     set currentTabIndex(newValue: number) {
         this.__currentTabIndex.set(newValue);
     }
-    private __followSearchText: ObservedPropertySimplePU<string>;
-    get followSearchText() {
-        return this.__followSearchText.get();
+    private __refreshKey: ObservedPropertySimplePU<number>;
+    get refreshKey() {
+        return this.__refreshKey.get();
     }
-    set followSearchText(newValue: string) {
-        this.__followSearchText.set(newValue);
-    }
-    private __followHotTitles: ObservedPropertyObjectPU<string[]>;
-    get followHotTitles() {
-        return this.__followHotTitles.get();
-    }
-    set followHotTitles(newValue: string[]) {
-        this.__followHotTitles.set(newValue);
-    }
-    private __followSelectedUrl: ObservedPropertyObjectPU<string | null>;
-    get followSelectedUrl() {
-        return this.__followSelectedUrl.get();
-    }
-    set followSelectedUrl(newValue: string | null) {
-        this.__followSelectedUrl.set(newValue);
-    }
-    private followWebController: webview.WebviewController;
-    private openFollowBrowser(url: string): void {
-        this.followSelectedUrl = url;
-    }
-    private closeFollowBrowser(): void {
-        this.followSelectedUrl = null;
-    }
-    buildFollowBrowserLayer(url: string, parent = null) {
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Column.create();
-            Column.padding({ top: '48vp' });
-            Column.width('100%');
-            Column.height('100%');
-            Column.backgroundColor('#FFFFFF');
-        }, Column);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Row.create();
-            Row.width('100%');
-            Row.backgroundColor('#FFFFFF');
-        }, Row);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('关闭');
-            Text.fontSize(16);
-            Text.fontColor('#E60012');
-            Text.padding({ left: 16, right: 16, top: 16, bottom: 16 });
-            Text.onClick(() => {
-                this.closeFollowBrowser();
-            });
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Blank.create();
-        }, Blank);
-        Blank.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('搜索结果');
-            Text.fontSize(16);
-            Text.fontWeight(FontWeight.Medium);
-            Text.fontColor('#182431');
-            Text.margin({ right: 24 });
-        }, Text);
-        Text.pop();
-        Row.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Web.create({ src: url, controller: this.followWebController });
-            Web.layoutWeight(1);
-            Web.width('100%');
-        }, Web);
-        Column.pop();
-    }
-    FollowPage(parent = null) {
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Stack.create({ alignContent: Alignment.TopStart });
-            Stack.width('100%');
-            Stack.height('100%');
-        }, Stack);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Column.create();
-            Column.padding({ top: '48vp' });
-            Column.width('100%');
-            Column.height('100%');
-            Column.backgroundColor('#F8F9FA');
-        }, Column);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            __Common__.create();
-            __Common__.padding({ left: '12vp', right: '12vp', top: '8vp', bottom: '8vp' });
-        }, __Common__);
-        {
-            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                if (isInitialRender) {
-                    let componentCall = new 
-                    // 顶部搜索框（公共组件）
-                    CommonSearchBar(this, {
-                        value: this.followSearchText,
-                        placeholder: '搜索新闻',
-                        hotTitles: this.followHotTitles,
-                        onSearch: (url: string) => {
-                            this.openFollowBrowser(url);
-                        }
-                    }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 72, col: 9 });
-                    ViewPU.create(componentCall);
-                    let paramsLambda = () => {
-                        return {
-                            value: this.followSearchText,
-                            placeholder: '搜索新闻',
-                            hotTitles: this.followHotTitles,
-                            onSearch: (url: string) => {
-                                this.openFollowBrowser(url);
-                            }
-                        };
-                    };
-                    componentCall.paramsGenerator_ = paramsLambda;
-                }
-                else {
-                    this.updateStateVarsOfChildByElmtId(elmtId, {
-                        value: this.followSearchText,
-                        hotTitles: this.followHotTitles
-                    });
-                }
-            }, { name: "CommonSearchBar" });
-        }
-        __Common__.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            // 页面内容
-            Text.create('我的关注');
-            // 页面内容
-            Text.fontSize('20fp');
-            // 页面内容
-            Text.fontWeight(FontWeight.Bold);
-            // 页面内容
-            Text.margin({ top: '40vp', bottom: '20vp' });
-        }, Text);
-        // 页面内容
-        Text.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('关注功能开发中...');
-            Text.fontSize('16fp');
-            Text.fontColor('#999999');
-            Text.margin('20vp');
-        }, Text);
-        Text.pop();
-        Column.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            If.create();
-            if (this.followSelectedUrl !== null) {
-                this.ifElseBranchUpdateFunction(0, () => {
-                    this.buildFollowBrowserLayer.bind(this)(this.followSelectedUrl as string);
-                });
-            }
-            else {
-                this.ifElseBranchUpdateFunction(1, () => {
-                });
-            }
-        }, If);
-        If.pop();
-        Stack.pop();
+    set refreshKey(newValue: number) {
+        this.__refreshKey.set(newValue);
     }
     private tabsController: TabsController;
     private userManager: UserManager;
     async aboutToAppear() {
+        console.log('🚀 Index.aboutToAppear 开始');
         try {
             await this.userManager.initPreferences();
-            this.currentUser = await this.userManager.getCurrentUser();
-            this.isLoggedIn = this.currentUser !== null;
-            console.log('Login status initialized:', this.isLoggedIn);
-            // 预取热搜标题供关注页使用
-            const realtime = await BaiduHotSearchParser.getHotSearchData('realtime');
-            this.followHotTitles = realtime.slice(0, 10).map((it: BaiduHotSearchItem) => it.card_title);
+            await this.checkLoginStatus();
+            console.log('🚀 Index.aboutToAppear 完成 - isLoggedIn:', this.isLoggedIn);
         }
         catch (error) {
-            console.error('Failed to initialize login status:', error);
-            this.isLoggedIn = false;
+            console.error('❌ Index.aboutToAppear 失败:', error);
+            this.setLoggedIn(false);
         }
+    }
+    // 统一的登录状态设置方法
+    setLoggedIn(status: boolean) {
+        console.log('🔄 setLoggedIn:', status);
+        this.isLoggedIn = status;
+        this.refreshKey++;
     }
     TabBuilder(title: Resource, index: number, parent = null) {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -306,20 +136,63 @@ class Index extends ViewPU {
         Column.pop();
     }
     async checkLoginStatus() {
-        this.currentUser = await this.userManager.getCurrentUser();
-        this.isLoggedIn = this.currentUser !== null;
+        console.log('🔄 checkLoginStatus 开始');
+        try {
+            this.currentUser = await this.userManager.getCurrentUser();
+            const loggedIn = this.currentUser !== null;
+            console.log('🔄 checkLoginStatus 完成 - 应该登录:', loggedIn, 'currentUser:', this.currentUser);
+            this.setLoggedIn(loggedIn);
+        }
+        catch (error) {
+            console.error('❌ checkLoginStatus 失败:', error);
+            this.setLoggedIn(false);
+        }
+    }
+    // 延迟函数 - 修复泛型问题
+    delay(ms: number): Promise<void> {
+        return new Promise<void>(resolve => setTimeout(resolve, ms));
+    }
+    // 登录成功处理函数
+    async handleLoginSuccess() {
+        console.log('🎉 handleLoginSuccess 被调用');
+        try {
+            // 登录成功后直接设置为已登录状态
+            console.log('✅ 登录成功，直接设置为已登录状态');
+            this.setLoggedIn(true);
+            this.currentTabIndex = 0;
+            // 立即获取用户信息
+            try {
+                this.currentUser = await this.userManager.getCurrentUser();
+                console.log('✅ 登录成功后获取用户信息:', this.currentUser);
+            }
+            catch (error) {
+                console.error('❌ 获取用户信息失败:', error);
+            }
+        }
+        catch (error) {
+            console.error('❌ 登录状态更新失败:', error);
+            this.setLoggedIn(false);
+        }
     }
     initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 使用 refreshKey 强制重新构建
+            Column.create();
+            // 使用 refreshKey 强制重新构建
+            Column.width('100%');
+            // 使用 refreshKey 强制重新构建
+            Column.height('100%');
+        }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             If.create();
             if (this.isLoggedIn) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        // 宸茬櫥褰曪紝鏄剧ずTab椤甸潰
+                        // 用户已登录，显示主页面
                         Navigation.create(new NavPathStack(), { moduleName: "default", pagePath: "products/default/src/main/ets/pages/Index", isUserCreateStack: false });
-                        // 宸茬櫥褰曪紝鏄剧ずTab椤甸潰
+                        // 用户已登录，显示主页面
                         Navigation.width('100%');
-                        // 宸茬櫥褰曪紝鏄剧ずTab椤甸潰
+                        // 用户已登录，显示主页面
                         Navigation.height('100%');
                     }, Navigation);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -347,7 +220,7 @@ class Index extends ViewPU {
                             {
                                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                                     if (isInitialRender) {
-                                        let componentCall = new NewsPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 159, col: 15 });
+                                        let componentCall = new NewsPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 113, col: 17 });
                                         ViewPU.create(componentCall);
                                         let paramsLambda = () => {
                                             return {};
@@ -372,7 +245,7 @@ class Index extends ViewPU {
                             {
                                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                                     if (isInitialRender) {
-                                        let componentCall = new VideoPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 167, col: 15 });
+                                        let componentCall = new VideoPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 121, col: 17 });
                                         ViewPU.create(componentCall);
                                         let paramsLambda = () => {
                                             return {};
@@ -394,7 +267,21 @@ class Index extends ViewPU {
                     TabContent.pop();
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         TabContent.create(() => {
-                            this.FollowPage.bind(this)();
+                            {
+                                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                    if (isInitialRender) {
+                                        let componentCall = new FollowPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 129, col: 17 });
+                                        ViewPU.create(componentCall);
+                                        let paramsLambda = () => {
+                                            return {};
+                                        };
+                                        componentCall.paramsGenerator_ = paramsLambda;
+                                    }
+                                    else {
+                                        this.updateStateVarsOfChildByElmtId(elmtId, {});
+                                    }
+                                }, { name: "FollowPage" });
+                            }
                         });
                         TabContent.padding({ left: 12, right: 12 });
                         TabContent.backgroundColor('#F5F5F5');
@@ -409,14 +296,20 @@ class Index extends ViewPU {
                                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                                     if (isInitialRender) {
                                         let componentCall = new MinePage(this, {
+                                            userInfo: this.currentUser,
+                                            loginStatus: this.isLoggedIn,
                                             onLogout: async () => {
+                                                console.log('🔄 MinePage.onLogout 被调用');
                                                 await this.checkLoginStatus();
                                             }
-                                        }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 183, col: 15 });
+                                        }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 137, col: 18 });
                                         ViewPU.create(componentCall);
                                         let paramsLambda = () => {
                                             return {
+                                                userInfo: this.currentUser,
+                                                loginStatus: this.isLoggedIn,
                                                 onLogout: async () => {
+                                                    console.log('🔄 MinePage.onLogout 被调用');
                                                     await this.checkLoginStatus();
                                                 }
                                             };
@@ -438,27 +331,37 @@ class Index extends ViewPU {
                     TabContent.pop();
                     Tabs.pop();
                     Column.pop();
-                    // 宸茬櫥褰曪紝鏄剧ずTab椤甸潰
+                    // 用户已登录，显示主页面
                     Navigation.pop();
                 });
             }
             else {
                 this.ifElseBranchUpdateFunction(1, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        // 用户未登录，显示登录页面
+                        Column.create();
+                        // 用户未登录，显示登录页面
+                        Column.width('100%');
+                        // 用户未登录，显示登录页面
+                        Column.height('100%');
+                        // 用户未登录，显示登录页面
+                        Column.justifyContent(FlexAlign.Center);
+                    }, Column);
                     {
                         this.observeComponentCreation2((elmtId, isInitialRender) => {
                             if (isInitialRender) {
-                                let componentCall = new 
-                                // 鏈櫥褰曪紝鏄剧ず鐧诲綍椤甸潰
-                                LoginPage(this, {
-                                    onLoginSuccess: async () => {
-                                        await this.checkLoginStatus();
+                                let componentCall = new LoginPage(this, {
+                                    onLoginSuccess: () => {
+                                        console.log('🎉 LoginPage.onLoginSuccess 回调被调用');
+                                        this.handleLoginSuccess();
                                     }
-                                }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 210, col: 7 });
+                                }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 168, col: 11 });
                                 ViewPU.create(componentCall);
                                 let paramsLambda = () => {
                                     return {
-                                        onLoginSuccess: async () => {
-                                            await this.checkLoginStatus();
+                                        onLoginSuccess: () => {
+                                            console.log('🎉 LoginPage.onLoginSuccess 回调被调用');
+                                            this.handleLoginSuccess();
                                         }
                                     };
                                 };
@@ -469,10 +372,61 @@ class Index extends ViewPU {
                             }
                         }, { name: "LoginPage" });
                     }
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        // 调试按钮
+                        Button.createWithLabel('手动检查登录状态');
+                        // 调试按钮
+                        Button.margin({ top: 20 });
+                        // 调试按钮
+                        Button.width('80%');
+                        // 调试按钮
+                        Button.height(40);
+                        // 调试按钮
+                        Button.backgroundColor('#E60012');
+                        // 调试按钮
+                        Button.fontColor('#FFFFFF');
+                        // 调试按钮
+                        Button.onClick(async () => {
+                            console.log('🧪 手动测试检查登录状态');
+                            await this.checkLoginStatus();
+                        });
+                    }, Button);
+                    // 调试按钮
+                    Button.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Button.createWithLabel('强制设置为已登录');
+                        Button.margin({ top: 10 });
+                        Button.width('80%');
+                        Button.height(40);
+                        Button.backgroundColor('#007DFF');
+                        Button.fontColor('#FFFFFF');
+                        Button.onClick(() => {
+                            console.log('🧪 强制设置为已登录');
+                            this.setLoggedIn(true);
+                        });
+                    }, Button);
+                    Button.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Button.createWithLabel('强制设置为未登录');
+                        Button.margin({ top: 10 });
+                        Button.width('80%');
+                        Button.height(40);
+                        Button.backgroundColor('#FF6B35');
+                        Button.fontColor('#FFFFFF');
+                        Button.onClick(() => {
+                            console.log('🧪 强制设置为未登录');
+                            this.setLoggedIn(false);
+                        });
+                    }, Button);
+                    Button.pop();
+                    // 用户未登录，显示登录页面
+                    Column.pop();
                 });
             }
         }, If);
         If.pop();
+        // 使用 refreshKey 强制重新构建
+        Column.pop();
     }
     rerender() {
         this.updateDirtyElements();

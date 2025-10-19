@@ -1,122 +1,39 @@
-﻿import { CommonSearchBar } from 'uicomponents';
-import {VideoPage} from 'video';
-import {NewsPage} from 'news';
-import {LoginPage} from 'login';
-import {RegisterPage} from 'login';
-import {MinePage} from 'mine';
-import {UserManager} from 'login';
-import {UserInfo} from 'login'
-import Mine from 'mine/src/main/ets/view/Mine';
-import webview from '@ohos.web.webview';
-import { BaiduHotSearchParser, BaiduHotSearchItem } from 'utils';
-
+﻿import { VideoPage } from 'video';
+import { NewsPage } from 'news';
+import { LoginPage } from 'login';
+import { MinePage } from 'mine';
+import { UserManager } from 'login';
+import { UserInfo } from 'login';
+import { FollowPage } from 'follow';
 
 @Entry
 @Component
 struct Index {
   @State currentUser: UserInfo | null = null;
   @State isLoggedIn: boolean = false;
-  @State currentTabIndex: number = 0; // 榛樿閫変腑"鏂伴椈"椤?
-  
-  @State followSearchText: string = '';
-  @State followHotTitles: string[] = [];
-  @State followSelectedUrl: string | null = null;
-  private followWebController: webview.WebviewController = new webview.WebviewController();
+  @State currentTabIndex: number = 0;
+  @State refreshKey: number = 0;
 
-  private openFollowBrowser(url: string): void {
-    this.followSelectedUrl = url;
-  }
-
-  private closeFollowBrowser(): void {
-    this.followSelectedUrl = null;
-  }
-
-  @Builder
-  buildFollowBrowserLayer(url: string) {
-    Column() {
-      Row() {
-        Text('关闭')
-          .fontSize(16)
-          .fontColor('#E60012')
-          .padding({ left: 16, right: 16, top: 16, bottom: 16 })
-          .onClick(() => {
-            this.closeFollowBrowser();
-          })
-
-        Blank()
-
-        Text('搜索结果')
-          .fontSize(16)
-          .fontWeight(FontWeight.Medium)
-          .fontColor('#182431')
-          .margin({ right: 24 })
-      }
-      .width('100%')
-      .backgroundColor('#FFFFFF')
-
-      Web({ src: url, controller: this.followWebController })
-        .layoutWeight(1)
-        .width('100%')
-    }
-    .padding({ top: '48vp' })
-    .width('100%')
-    .height('100%')
-    .backgroundColor('#FFFFFF')
-  }
-
-  @Builder
-  FollowPage() {
-    Stack({ alignContent: Alignment.TopStart }) {
-      Column() {
-        // 顶部搜索框（公共组件）
-        CommonSearchBar({
-          value: this.followSearchText,
-          placeholder: '搜索新闻',
-          hotTitles: this.followHotTitles,
-          onSearch: (url: string) => {
-            this.openFollowBrowser(url);
-          }
-        })
-        .padding({ left: '12vp', right: '12vp', top: '8vp', bottom: '8vp' })
-
-        // 页面内容
-        Text('我的关注')
-          .fontSize('20fp')
-          .fontWeight(FontWeight.Bold)
-          .margin({ top: '40vp', bottom: '20vp' })
-        Text('关注功能开发中...')
-          .fontSize('16fp')
-          .fontColor('#999999')
-          .margin('20vp')
-      }
-      .padding({ top: '48vp' })
-      .width('100%')
-      .height('100%')
-      .backgroundColor('#F8F9FA')
-
-      if (this.followSelectedUrl !== null) {
-        this.buildFollowBrowserLayer(this.followSelectedUrl as string);
-      }
-    }
-    .width('100%')
-    .height('100%')
-  }
   private tabsController: TabsController = new TabsController();
   private userManager: UserManager = UserManager.getInstance();
 
   async aboutToAppear() {
+    console.log('🚀 Index.aboutToAppear 开始');
     try {
       await this.userManager.initPreferences();
-      this.currentUser = await this.userManager.getCurrentUser();
-      this.isLoggedIn = this.currentUser !== null;
-      console.log('Login status initialized:', this.isLoggedIn);
-      // 预取热搜标题供关注页使用
-      const realtime = await BaiduHotSearchParser.getHotSearchData('realtime');
-      this.followHotTitles = realtime.slice(0, 10).map((it: BaiduHotSearchItem) => it.card_title);
+      await this.checkLoginStatus();
+      console.log('🚀 Index.aboutToAppear 完成 - isLoggedIn:', this.isLoggedIn);
     } catch (error) {
-      console.error('Failed to initialize login status:', error);
-      this.isLoggedIn = false;
+      console.error('❌ Index.aboutToAppear 失败:', error);
+      this.setLoggedIn(false);
     }
+  }
+
+  // 统一的登录状态设置方法
+  setLoggedIn(status: boolean) {
+    console.log('🔄 setLoggedIn:', status);
+    this.isLoggedIn = status;
+    this.refreshKey++;
   }
 
   @Builder
@@ -140,86 +57,161 @@ struct Index {
   }
 
   async checkLoginStatus() {
-    this.currentUser = await this.userManager.getCurrentUser();
-    this.isLoggedIn = this.currentUser !== null;
+    console.log('🔄 checkLoginStatus 开始');
+    try {
+      this.currentUser = await this.userManager.getCurrentUser();
+      const loggedIn = this.currentUser !== null;
+      console.log('🔄 checkLoginStatus 完成 - 应该登录:', loggedIn, 'currentUser:', this.currentUser);
+      this.setLoggedIn(loggedIn);
+    } catch (error) {
+      console.error('❌ checkLoginStatus 失败:', error);
+      this.setLoggedIn(false);
+    }
+  }
+
+  // 延迟函数 - 修复泛型问题
+  delay(ms: number): Promise<void> {
+    return new Promise<void>(resolve => setTimeout(resolve, ms));
+  }
+
+  // 登录成功处理函数
+  async handleLoginSuccess() {
+    console.log('🎉 handleLoginSuccess 被调用');
+    try {
+      // 登录成功后直接设置为已登录状态
+      console.log('✅ 登录成功，直接设置为已登录状态');
+      this.setLoggedIn(true);
+      this.currentTabIndex = 0;
+
+      // 立即获取用户信息
+      try {
+        this.currentUser = await this.userManager.getCurrentUser();
+        console.log('✅ 登录成功后获取用户信息:', this.currentUser);
+      } catch (error) {
+        console.error('❌ 获取用户信息失败:', error);
+      }
+
+    } catch (error) {
+      console.error('❌ 登录状态更新失败:', error);
+      this.setLoggedIn(false);
+    }
   }
 
   build() {
-    if (this.isLoggedIn) {
-      // 宸茬櫥褰曪紝鏄剧ずTab椤甸潰
+    // 使用 refreshKey 强制重新构建
+    Column() {
+      if (this.isLoggedIn) {
+        // 用户已登录，显示主页面
+        Navigation() {
+          Column() {
+            Tabs({
+              barPosition: BarPosition.End,
+              controller: this.tabsController
+            }) {
+              // 1. 新闻Tab
+              TabContent() {
+                NewsPage()
+              }
+              .padding({ left: 12, right: 12 })
+              .backgroundColor('#F5F5F5')
+              .tabBar(this.TabBuilder($r('app.string.tab_news'), 0))
 
-      Navigation() {
-        Column() {
-          Tabs({
-            barPosition: BarPosition.End, // 搴曢儴瀵艰埅
-            controller: this.tabsController
-          }) {
-            // 1. 鏂伴椈Tab锛堢储寮?锛?
-            TabContent() {
-              NewsPage()
-            }
-            .padding({ left: 12, right: 12 })
-            .backgroundColor('#F5F5F5')
-            .tabBar(this.TabBuilder($r('app.string.tab_news'), 0))
+              // 2. 视频Tab
+              TabContent() {
+                VideoPage()
+              }
+              .padding({ left: 12, right: 12 })
+              .backgroundColor('#F5F5F5')
+              .tabBar(this.TabBuilder($r('app.string.tab_video'), 1))
 
-            // 2. 瑙嗛Tab锛堢储寮?锛?
-            TabContent() {
-              VideoPage()
-            }
-            .padding({ left: 12, right: 12 })
-            .backgroundColor('#F5F5F5')
-            .tabBar(this.TabBuilder($r('app.string.tab_video'), 1))
+              // 3. 关注Tab
+              TabContent() {
+                FollowPage()
+              }
+              .padding({ left: 12, right: 12 })
+              .backgroundColor('#F5F5F5')
+              .tabBar(this.TabBuilder($r('app.string.tab_follow'), 2))
 
-            // 3. 鍏虫敞Tab锛堢储寮?锛?
-            TabContent() {
-              this.FollowPage()
+               // 4. 我的Tab
+               TabContent() {
+                 MinePage({
+                   userInfo: this.currentUser,
+                   loginStatus: this.isLoggedIn,
+                   onLogout: async () => {
+                     console.log('🔄 MinePage.onLogout 被调用');
+                     await this.checkLoginStatus();
+                   }
+                 })
+               }
+              .padding({ left: 12, right: 12 })
+              .backgroundColor('#F5F5F5')
+              .tabBar(this.TabBuilder($r('app.string.tab_mine'), 3))
             }
-            .padding({ left: 12, right: 12 })
-            .backgroundColor('#F5F5F5')
-            .tabBar(this.TabBuilder($r('app.string.tab_follow'), 2))
-
-            // 4. 鎴戠殑Tab锛堢储寮?锛?
-            TabContent() {
-              MinePage({
-                onLogout: async () => {
-                  await this.checkLoginStatus();
-                }
-              })
-            }
-            .padding({ left: 12, right: 12 })
-            .backgroundColor('#F5F5F5')
-            .tabBar(this.TabBuilder($r('app.string.tab_mine'), 3))
+            .margin({ bottom: 64 })
+            .width('100%')
+            .height('100%')
+            .barHeight(80)
+            .barMode(BarMode.Fixed)
+            .onChange((index: number) => {
+              this.currentTabIndex = index;
+            })
           }
-          .margin({ bottom: 64 }) // 閫傞厤搴曢儴绯荤粺鏍?
           .width('100%')
           .height('100%')
-          .barHeight(80)
-          .barMode(BarMode.Fixed)
-          .onChange((index: number) => {
-            this.currentTabIndex = index;
-          })
+          .backgroundColor('#F5F5F5')
         }
         .width('100%')
         .height('100%')
-        .backgroundColor('#F5F5F5')
-      }
-      .width('100%')
-      .height('100%')
-    } else {
-      // 鏈櫥褰曪紝鏄剧ず鐧诲綍椤甸潰
-      LoginPage({
-        onLoginSuccess: async () => {
-          await this.checkLoginStatus();
+      } else {
+        // 用户未登录，显示登录页面
+        Column() {
+          LoginPage({
+            onLoginSuccess: () => {
+              console.log('🎉 LoginPage.onLoginSuccess 回调被调用');
+              this.handleLoginSuccess();
+            }
+          })
+
+          // 调试按钮
+          Button('手动检查登录状态')
+            .margin({ top: 20 })
+            .width('80%')
+            .height(40)
+            .backgroundColor('#E60012')
+            .fontColor('#FFFFFF')
+            .onClick(async () => {
+              console.log('🧪 手动测试检查登录状态');
+              await this.checkLoginStatus();
+            })
+
+          Button('强制设置为已登录')
+            .margin({ top: 10 })
+            .width('80%')
+            .height(40)
+            .backgroundColor('#007DFF')
+            .fontColor('#FFFFFF')
+            .onClick(() => {
+              console.log('🧪 强制设置为已登录');
+              this.setLoggedIn(true);
+            })
+
+          Button('强制设置为未登录')
+            .margin({ top: 10 })
+            .width('80%')
+            .height(40)
+            .backgroundColor('#FF6B35')
+            .fontColor('#FFFFFF')
+            .onClick(() => {
+              console.log('🧪 强制设置为未登录');
+              this.setLoggedIn(false);
+            })
         }
-      })
+        .width('100%')
+        .height('100%')
+        .justifyContent(FlexAlign.Center)
+      }
     }
+    .width('100%')
+    .height('100%')
   }
 }
-
-
-
-
-
-
-
-

@@ -35,6 +35,10 @@
         "uicomponents": {
           "specifier": "file:commons/uicomponents",
           "version": "file:commons/uicomponents"
+        },
+        "utils": {
+          "specifier": "file:commons/utils",
+          "version": "file:commons/utils"
         }
       },
       "devDependencies": {},
@@ -194,8 +198,8 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "video@file:features/video": {
-      "storePath": "features/video",
+    "news@file:features/news": {
+      "storePath": "features/news",
       "dependencies": {
         "utils": "commons/utils",
         "uicomponents": "commons/uicomponents"
@@ -208,7 +212,8 @@
     "follow@file:features/follows": {
       "storePath": "features/follows",
       "dependencies": {
-        "uicomponents": "commons/uicomponents"
+        "uicomponents": "commons/uicomponents",
+        "utils": "commons/utils"
       },
       "dynamicDependencies": {},
       "dev": false,
@@ -236,8 +241,8 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "news@file:features/news": {
-      "storePath": "features/news",
+    "video@file:features/video": {
+      "storePath": "features/video",
       "dependencies": {
         "utils": "commons/utils",
         "uicomponents": "commons/uicomponents"

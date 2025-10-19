@@ -164,13 +164,9 @@ export class LoginPage extends ViewPU {
         try {
             const success: boolean = await this.userService.login(this.account, this.password);
             if (success) {
-                if (this.timeOutId === -1) {
-                    this.timeOutId = setTimeout(() => {
-                        this.isShowProgress = false;
-                        this.timeOutId = -1;
-                        this.onLoginSuccess();
-                    }, 1500);
-                }
+                this.isShowProgress = false;
+                // 立即调用回调，不延迟
+                this.onLoginSuccess();
             }
             else {
                 this.isShowProgress = false;
@@ -203,7 +199,7 @@ export class LoginPage extends ViewPU {
                                     onBack: () => {
                                         this.showRegisterPage = false;
                                     }
-                                }, undefined, elmtId, () => { }, { page: "features/login/src/main/ets/pages/LoginPage.ets", line: 122, col: 9 });
+                                }, undefined, elmtId, () => { }, { page: "features/login/src/main/ets/pages/LoginPage.ets", line: 118, col: 9 });
                                 ViewPU.create(componentCall);
                                 let paramsLambda = () => {
                                     return {

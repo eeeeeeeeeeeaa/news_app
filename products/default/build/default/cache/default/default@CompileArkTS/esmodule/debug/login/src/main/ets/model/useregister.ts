@@ -47,7 +47,7 @@ export class AuthService {
             const respText = await HttpUtils.postForm(url, formData);
             console.log('响应数据:', respText);
             // 解析响应
-            const resp: RegisterResponse = JSON.parse(respText);
+            const resp: RegisterResponse = JSON.parse(respText) as RegisterResponse;
             console.log('解析后的响应:', resp);
             if (resp.code === 200) {
                 promptAction.showToast({ message: '注册成功' });
@@ -62,7 +62,8 @@ export class AuthService {
         }
         catch (err) {
             console.error('注册请求失败:', err);
-            promptAction.showToast({ message: `请求异常: ${err.message}` });
+            const errorMessage = err instanceof Error ? err.message : '未知错误';
+            promptAction.showToast({ message: `请求异常: ${errorMessage}` });
             return false;
         }
     }
