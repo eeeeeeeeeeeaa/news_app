@@ -208,6 +208,9 @@ export default struct Mine {
               Text('▶')
                 .fontSize('14fp')
                 .fontColor('#999999')
+                .onClick(() => {
+                  this.logout();
+                })
             }
             .width('100%')
             .padding({ left: '16vp', right: '16vp' })

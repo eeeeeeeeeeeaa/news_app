@@ -163,16 +163,16 @@
     }
   },
   "packages": {
-    "utils@file:commons/utils": {
-      "storePath": "commons/utils",
+    "uicomponents@file:commons/uicomponents": {
+      "storePath": "commons/uicomponents",
       "dependencies": {},
       "dynamicDependencies": {},
       "dev": false,
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "uicomponents@file:commons/uicomponents": {
-      "storePath": "commons/uicomponents",
+    "utils@file:commons/utils": {
+      "storePath": "commons/utils",
       "dependencies": {},
       "dynamicDependencies": {},
       "dev": false,
@@ -198,8 +198,19 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "news@file:features/news": {
-      "storePath": "features/news",
+    "quickstart@file:features/quickstart": {
+      "storePath": "features/quickstart",
+      "dependencies": {
+        "utils": "commons/utils",
+        "uicomponents": "commons/uicomponents"
+      },
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "video@file:features/video": {
+      "storePath": "features/video",
       "dependencies": {
         "utils": "commons/utils",
         "uicomponents": "commons/uicomponents"
@@ -220,8 +231,8 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "quickstart@file:features/quickstart": {
-      "storePath": "features/quickstart",
+    "news@file:features/news": {
+      "storePath": "features/news",
       "dependencies": {
         "utils": "commons/utils",
         "uicomponents": "commons/uicomponents"
@@ -235,17 +246,6 @@
       "storePath": "features/mine",
       "dependencies": {
         "login": "features/login"
-      },
-      "dynamicDependencies": {},
-      "dev": false,
-      "dynamic": false,
-      "maskedByOverrideDependencyMap": false
-    },
-    "video@file:features/video": {
-      "storePath": "features/video",
-      "dependencies": {
-        "utils": "commons/utils",
-        "uicomponents": "commons/uicomponents"
       },
       "dynamicDependencies": {},
       "dev": false,

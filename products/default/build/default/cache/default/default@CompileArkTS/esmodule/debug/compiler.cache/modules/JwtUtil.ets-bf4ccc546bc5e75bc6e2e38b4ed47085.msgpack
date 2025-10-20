@@ -1,0 +1,536 @@
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ-/**
+ * JWTå·¥å…·ç±» - ç”¨äºè§£æå’ŒéªŒè¯JWTä»¤ç‰Œ
+ */
+export class JwtUtil {
+    /**
+     * Base64è§£ç å‡½æ•°
+     * @param str Base64ç¼–ç çš„å­—ç¬¦ä¸²
+     * @returns è§£ç åçš„å­—ç¬¦ä¸²
+     */
+    static base64UrlToBase64(input) {
+        // å°† Base64Url è½¬æ¢ä¸ºæ ‡å‡† Base64ï¼Œå¹¶è¡¥é½ '='
+        const replaced = input.replace(/-/g, '+').replace(/_/g, '/');
+        const paddingNeeded = (4 - (replaced.length % 4)) % 4;
+        return replaced + '='.repeat(paddingNeeded);
+    }
+    static base64Decode(base64) {
+        // çº¯ ArkTS Base64 è§£ç å®ç°ï¼Œé¿å…ä¾èµ– atob
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+        const output = [];
+        let i = 0;
+        while (i < base64.length) {
+            const enc1 = chars.indexOf(base64.charAt(i++));
+            const enc2 = chars.indexOf(base64.charAt(i++));
+            const enc3 = chars.indexOf(base64.charAt(i++));
+            const enc4 = chars.indexOf(base64.charAt(i++));
+            if (enc1 < 0 || enc2 < 0 || enc3 < 0 || enc4 < 0) {
+                break;
+            }
+            const chr1 = (enc1 << 2) | (enc2 >> 4);
+            const chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+            const chr3 = ((enc3 & 3) << 6) | enc4;
+            output.push(chr1);
+            if (enc3 !== 64) {
+                output.push(chr2);
+            }
+            if (enc4 !== 64) {
+                output.push(chr3);
+            }
+        }
+        return output;
+    }
+    static utf8Decode(bytes) {
+        // ç®€å• UTF-8 è§£ç å™¨ï¼Œæ»¡è¶³è§£æ JWT JSON çš„éœ€è¦
+        let result = '';
+        for (let i = 0; i < bytes.length;) {
+            const b0 = bytes[i++];
+            if ((b0 & 0x80) === 0) {
+                result += String.fromCharCode(b0);
+                continue;
+            }
+            if ((b0 & 0xe0) === 0xc0) {
+                const b1 = bytes[i++];
+                const code = ((b0 & 0x1f) << 6) | (b1 & 0x3f);
+                result += String.fromCharCode(code);
+                continue;
+            }
+            if ((b0 & 0xf0) === 0xe0) {
+                const b1 = bytes[i++];
+                const b2 = bytes[i++];
+                const code = ((b0 & 0x0f) << 12) | ((b1 & 0x3f) << 6) | (b2 & 0x3f);
+                result += String.fromCharCode(code);
+                continue;
+            }
+            // å¤„ç†å››å­—èŠ‚å­—ç¬¦
+            const b1 = bytes[i++];
+            const b2 = bytes[i++];
+            const b3 = bytes[i++];
+            const codePoint = ((b0 & 0x07) << 18) | ((b1 & 0x3f) << 12) | ((b2 & 0x3f) << 6) | (b3 & 0x3f);
+            const offset = codePoint - 0x10000;
+            const lead = 0xd800 + ((offset >> 10) & 0x3ff);
+            const trail = 0xdc00 + (offset & 0x3ff);
+            result += String.fromCharCode(lead, trail);
+        }
+        return result;
+    }
+    /**
+     * è§£æJWTä»¤ç‰Œ
+     * @param token JWTä»¤ç‰Œ
+     * @returns è§£æåçš„è½½è·ä¿¡æ¯
+     */
+    static parseJwt(token) {
+        try {
+            // JWTæ ¼å¼ï¼šheader.payload.signature
+            const parts = token.split('.');
+            if (parts.length !== 3) {
+                throw new Error('Invalid JWT format');
+            }
+            // è§£ç payloadéƒ¨åˆ†
+            const payload = parts[1];
+            const base64 = JwtUtil.base64UrlToBase64(payload);
+            // Base64è§£ç  + UTF-8 è§£ç 
+            const bytes = JwtUtil.base64Decode(base64);
+            const jsonPayload = JwtUtil.utf8Decode(bytes);
+            return JSON.parse(jsonPayload);
+        }
+        catch (error) {
+            console.error('JWTè§£æå¤±è´¥:', error);
+            return null;
+        }
+    }
+    /**
+     * æ£€æŸ¥JWTæ˜¯å¦è¿‡æœŸ
+     * @param token JWTä»¤ç‰Œ
+     * @returns æ˜¯å¦è¿‡æœŸ
+     */
+    static isTokenExpired(token) {
+        try {
+            const payload = JwtUtil.parseJwt(token);
+            if (!payload || !payload.exp) {
+                return true;
+            }
+            const currentTime = Math.floor(Date.now() / 1000);
+            return payload.exp < currentTime;
+        }
+        catch (error) {
+            console.error('JWTè¿‡æœŸæ£€æŸ¥å¤±è´¥:', error);
+            return true;
+        }
+    }
+    /**
+     * ä»JWTä¸­è·å–ç”¨æˆ·ID
+     * @param token JWTä»¤ç‰Œ
+     * @returns ç”¨æˆ·ID
+     */
+    static getUserIdFromToken(token) {
+        try {
+            const payload = JwtUtil.parseJwt(token);
+            return payload && payload.sub ? parseInt(payload.sub) : null;
+        }
+        catch (error) {
+            console.error('è·å–ç”¨æˆ·IDå¤±è´¥:', error);
+            return null;
+        }
+    }
+    /**
+     * è·å–JWTç­¾å‘æ—¶é—´
+     * @param token JWTä»¤ç‰Œ
+     * @returns ç­¾å‘æ—¶é—´ï¼ˆæ—¶é—´æˆ³ï¼‰
+     */
+    static getIssuedAt(token) {
+        try {
+            const payload = JwtUtil.parseJwt(token);
+            return payload ? payload.iat || null : null;
+        }
+        catch (error) {
+            console.error('è·å–ç­¾å‘æ—¶é—´å¤±è´¥:', error);
+            return null;
+        }
+    }
+    /**
+     * è·å–JWTè¿‡æœŸæ—¶é—´
+     * @param token JWTä»¤ç‰Œ
+     * @returns è¿‡æœŸæ—¶é—´ï¼ˆæ—¶é—´æˆ³ï¼‰
+     */
+    static getExpirationTime(token) {
+        try {
+            const payload = JwtUtil.parseJwt(token);
+            return payload ? payload.exp || null : null;
+        }
+        catch (error) {
+            console.error('è·å–è¿‡æœŸæ—¶é—´å¤±è´¥:', error);
+            return null;
+        }
+    }
+    /**
+     * éªŒè¯JWTæ ¼å¼æ˜¯å¦æ­£ç¡®
+     * @param token JWTä»¤ç‰Œ
+     * @returns æ ¼å¼æ˜¯å¦æ­£ç¡®
+     */
+    static isValidFormat(token) {
+        try {
+            const parts = token.split('.');
+            return parts.length === 3 && parts.every(part => part.length > 0);
+        }
+        catch (error) {
+            return false;
+        }
+    }
+    /**
+     * è·å–JWTå‰©ä½™æœ‰æ•ˆæ—¶é—´ï¼ˆç§’ï¼‰
+     * @param token JWTä»¤ç‰Œ
+     * @returns å‰©ä½™æœ‰æ•ˆæ—¶é—´ï¼Œ-1è¡¨ç¤ºå·²è¿‡æœŸæˆ–æ— æ•ˆ
+     */
+    static getRemainingTime(token) {
+        try {
+            const exp = JwtUtil.getExpirationTime(token);
+            if (!exp) {
+                return -1;
+            }
+            const currentTime = Math.floor(Date.now() / 1000);
+            const remaining = exp - currentTime;
+            return remaining > 0 ? remaining : -1;
+        }
+        catch (error) {
+            console.error('è·å–å‰©ä½™æ—¶é—´å¤±è´¥:', error);
+            return -1;
+        }
+    }
+}
+//# sourceMappingURL=JwtUtil.js.mapÂÙ[G:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\commons\utils\src\JwtUtil.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥utilsÃÂÙKG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\commons\utilsÙ=G:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete¥utils¥1.0.0ÔrC’§pkgNameªpkgVersion¥utils¥1.0.0‘ÔrD’²hostDependencyName®hostModuleName­./src/JwtUtil¥utilsÙKG:\HarmonyOsProjects\06_LayerArchitectureDesign\QS06_Complete\commons\utilsÃÃÚÇ/*
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * JWTè½½è·æ¥å£
+ */
+interface JwtPayload {
+  sub?: string;  // ç”¨æˆ·ID
+  iat?: number;  // ç­¾å‘æ—¶é—´
+  exp?: number;  // è¿‡æœŸæ—¶é—´
+}
+
+/**
+ * JWTå·¥å…·ç±» - ç”¨äºè§£æå’ŒéªŒè¯JWTä»¤ç‰Œ
+ */
+export class JwtUtil {
+  /**
+   * Base64è§£ç å‡½æ•°
+   * @param str Base64ç¼–ç çš„å­—ç¬¦ä¸²
+   * @returns è§£ç åçš„å­—ç¬¦ä¸²
+   */
+  private static base64UrlToBase64(input: string): string {
+    // å°† Base64Url è½¬æ¢ä¸ºæ ‡å‡† Base64ï¼Œå¹¶è¡¥é½ '='
+    const replaced: string = input.replace(/-/g, '+').replace(/_/g, '/');
+    const paddingNeeded: number = (4 - (replaced.length % 4)) % 4;
+    return replaced + '='.repeat(paddingNeeded);
+  }
+
+  private static base64Decode(base64: string): number[] {
+    // çº¯ ArkTS Base64 è§£ç å®ç°ï¼Œé¿å…ä¾èµ– atob
+    const chars: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+    const output: number[] = [];
+    let i: number = 0;
+    while (i < base64.length) {
+      const enc1: number = chars.indexOf(base64.charAt(i++));
+      const enc2: number = chars.indexOf(base64.charAt(i++));
+      const enc3: number = chars.indexOf(base64.charAt(i++));
+      const enc4: number = chars.indexOf(base64.charAt(i++));
+
+      if (enc1 < 0 || enc2 < 0 || enc3 < 0 || enc4 < 0) {
+        break;
+      }
+
+      const chr1: number = (enc1 << 2) | (enc2 >> 4);
+      const chr2: number = ((enc2 & 15) << 4) | (enc3 >> 2);
+      const chr3: number = ((enc3 & 3) << 6) | enc4;
+
+      output.push(chr1);
+      if (enc3 !== 64) {
+        output.push(chr2);
+      }
+      if (enc4 !== 64) {
+        output.push(chr3);
+      }
+    }
+    return output;
+  }
+
+  private static utf8Decode(bytes: number[]): string {
+    // ç®€å• UTF-8 è§£ç å™¨ï¼Œæ»¡è¶³è§£æ JWT JSON çš„éœ€è¦
+    let result: string = '';
+    for (let i: number = 0; i < bytes.length;) {
+      const b0: number = bytes[i++];
+      if ((b0 & 0x80) === 0) {
+        result += String.fromCharCode(b0);
+        continue;
+      }
+      if ((b0 & 0xe0) === 0xc0) {
+        const b1: number = bytes[i++];
+        const code: number = ((b0 & 0x1f) << 6) | (b1 & 0x3f);
+        result += String.fromCharCode(code);
+        continue;
+      }
+      if ((b0 & 0xf0) === 0xe0) {
+        const b1: number = bytes[i++];
+        const b2: number = bytes[i++];
+        const code: number = ((b0 & 0x0f) << 12) | ((b1 & 0x3f) << 6) | (b2 & 0x3f);
+        result += String.fromCharCode(code);
+        continue;
+      }
+      // å¤„ç†å››å­—èŠ‚å­—ç¬¦
+      const b1: number = bytes[i++];
+      const b2: number = bytes[i++];
+      const b3: number = bytes[i++];
+      const codePoint: number = ((b0 & 0x07) << 18) | ((b1 & 0x3f) << 12) | ((b2 & 0x3f) << 6) | (b3 & 0x3f);
+      const offset: number = codePoint - 0x10000;
+      const lead: number = 0xd800 + ((offset >> 10) & 0x3ff);
+      const trail: number = 0xdc00 + (offset & 0x3ff);
+      result += String.fromCharCode(lead, trail);
+    }
+    return result;
+  }
+
+  /**
+   * è§£æJWTä»¤ç‰Œ
+   * @param token JWTä»¤ç‰Œ
+   * @returns è§£æåçš„è½½è·ä¿¡æ¯
+   */
+  public static parseJwt(token: string): JwtPayload | null {
+    try {
+      // JWTæ ¼å¼ï¼šheader.payload.signature
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        throw new Error('Invalid JWT format');
+      }
+
+      // è§£ç payloadéƒ¨åˆ†
+      const payload: string = parts[1];
+      const base64: string = JwtUtil.base64UrlToBase64(payload);
+
+      // Base64è§£ç  + UTF-8 è§£ç 
+      const bytes: number[] = JwtUtil.base64Decode(base64);
+      const jsonPayload: string = JwtUtil.utf8Decode(bytes);
+      return JSON.parse(jsonPayload) as JwtPayload;
+    } catch (error) {
+      console.error('JWTè§£æå¤±è´¥:', error);
+      return null;
+    }
+  }
+
+  /**
+   * æ£€æŸ¥JWTæ˜¯å¦è¿‡æœŸ
+   * @param token JWTä»¤ç‰Œ
+   * @returns æ˜¯å¦è¿‡æœŸ
+   */
+  public static isTokenExpired(token: string): boolean {
+    try {
+      const payload = JwtUtil.parseJwt(token);
+      if (!payload || !payload.exp) {
+        return true;
+      }
+
+      const currentTime = Math.floor(Date.now() / 1000);
+      return payload.exp < currentTime;
+    } catch (error) {
+      console.error('JWTè¿‡æœŸæ£€æŸ¥å¤±è´¥:', error);
+      return true;
+    }
+  }
+
+  /**
+   * ä»JWTä¸­è·å–ç”¨æˆ·ID
+   * @param token JWTä»¤ç‰Œ
+   * @returns ç”¨æˆ·ID
+   */
+  public static getUserIdFromToken(token: string): number | null {
+    try {
+      const payload = JwtUtil.parseJwt(token);
+      return payload && payload.sub ? parseInt(payload.sub) : null;
+    } catch (error) {
+      console.error('è·å–ç”¨æˆ·IDå¤±è´¥:', error);
+      return null;
+    }
+  }
+
+  /**
+   * è·å–JWTç­¾å‘æ—¶é—´
+   * @param token JWTä»¤ç‰Œ
+   * @returns ç­¾å‘æ—¶é—´ï¼ˆæ—¶é—´æˆ³ï¼‰
+   */
+  public static getIssuedAt(token: string): number | null {
+    try {
+      const payload = JwtUtil.parseJwt(token);
+      return payload ? payload.iat || null : null;
+    } catch (error) {
+      console.error('è·å–ç­¾å‘æ—¶é—´å¤±è´¥:', error);
+      return null;
+    }
+  }
+
+  /**
+   * è·å–JWTè¿‡æœŸæ—¶é—´
+   * @param token JWTä»¤ç‰Œ
+   * @returns è¿‡æœŸæ—¶é—´ï¼ˆæ—¶é—´æˆ³ï¼‰
+   */
+  public static getExpirationTime(token: string): number | null {
+    try {
+      const payload = JwtUtil.parseJwt(token);
+      return payload ? payload.exp || null : null;
+    } catch (error) {
+      console.error('è·å–è¿‡æœŸæ—¶é—´å¤±è´¥:', error);
+      return null;
+    }
+  }
+
+  /**
+   * éªŒè¯JWTæ ¼å¼æ˜¯å¦æ­£ç¡®
+   * @param token JWTä»¤ç‰Œ
+   * @returns æ ¼å¼æ˜¯å¦æ­£ç¡®
+   */
+  public static isValidFormat(token: string): boolean {
+    try {
+      const parts = token.split('.');
+      return parts.length === 3 && parts.every(part => part.length > 0);
+    } catch (error) {
+      return false;
+    }
+  }
+
+  /**
+   * è·å–JWTå‰©ä½™æœ‰æ•ˆæ—¶é—´ï¼ˆç§’ï¼‰
+   * @param token JWTä»¤ç‰Œ
+   * @returns å‰©ä½™æœ‰æ•ˆæ—¶é—´ï¼Œ-1è¡¨ç¤ºå·²è¿‡æœŸæˆ–æ— æ•ˆ
+   */
+  public static getRemainingTime(token: string): number {
+    try {
+      const exp = JwtUtil.getExpirationTime(token);
+      if (!exp) {
+        return -1;
+      }
+
+      const currentTime = Math.floor(Date.now() / 1000);
+      const remaining = exp - currentTime;
+      return remaining > 0 ? remaining : -1;
+    } catch (error) {
+      console.error('è·å–å‰©ä½™æ—¶é—´å¤±è´¥:', error);
+      return -1;
+    }
+  }
+}
+ÀA“ÔrE–§version¤fileªsourceRoot§sources¥names¨mappingsªJwtUtil.js ‘«JwtUtil.etsÜ Ç‘”   ‘” ””   ” ” ” ‘” ‘”  –” !
+”
+ !” !” !"” !#”" !0’” "”+ "'Ü ” #” #
+” #” #” #"” ##”& #*”' #+”+ #/”- #1”0 #4”1 #5”2 #6”9 #=”: #>”> #ÌB”Ì@ #ÌD”ÌC #ÌG”ÌD #ÌH”ÌE #ÌIÜ ” $” $
+” $” $"” $#”  $$”# $'”$ $(”, $0”- $1”3 $7”6 $:”7 $;”8 $<”9 $=”< $Ì@”= $ÌA”> $ÌB›” %” %” %” %” %” %”$ % ”% %!”2 %.”3 %/”4 %0’” &” &–” (
+”
+ (” (” (” (” (,’” )”( )$–” *” *
+” *” *”ÌY *Ì]”ÌZ *Ì^–” +” +
+” +” +” +” + –” ,” ,” ,	” ,” ,” ,˜” -” -” -” -” -” -”  -”" -Ü ” .” .” .” .” . ” .!”& .(”' .)”- ./”. .0”4 .6”5 .7”6 .8”8 .:”9 .;”: .<”; .=Ü ” /” /” /” /” / ” /!”& /(”' /)”- //”. /0”4 /6”5 /7”6 /8”8 /:”9 /;”: /<”; /=Ü ” 0” 0” 0” 0” 0 ” 0!”& 0(”' 0)”- 0/”. 00”4 06”5 07”6 08”8 0:”9 0;”: 0<”; 0=Ü ” 1” 1” 1” 1” 1 ” 1!”& 1(”' 1)”- 1/”. 10”4 16”5 17”6 18”8 1:”9 1;”: 1<”; 1=Ü ” 3” 3
+” 3” 3” 3” 3”  3”# 3”$ 3”( 3"”, 3&”/ 3)”0 3*”4 3.”8 32”; 35”< 36”> 38’” 4” 4‘” 5Ü ” 7” 7” 7” 7” 7” 7 ”" 7$”# 7%”$ 7&”' 7)”( 7*”, 7.”0 72”1 73”2 74”3 75Ü ” 8” 8” 8” 8” 8” 8” 8!”" 8$”$ 8&”% 8'”) 8+”* 8,”+ 8-”. 80”/ 81”3 85”7 89”8 8:”9 8;”: 8<Ü ” 9” 9” 9” 9” 9” 9” 9!”" 9$”# 9%”$ 9&”( 9*”) 9+”* 9,”- 9/”1 93”2 94˜” ;” ;” ;” ;” ;” ;” ;” ;–” <” <
+” <” <” <” <˜” =” =” =” =” =”  =”! =”" =‘” >–” ?” ?
+” ?” ?” ?” ?˜” Ì@” Ì@” Ì@” Ì@” Ì@”  Ì@”! Ì@”" Ì@‘” ÌA‘”	 ÌB”” ÌC” ÌC” ÌC” ÌC’” ÌD” ÌD–” ÌF
+”
+ ÌF” ÌF” ÌF” ÌF” ÌF+’” ÌG”) ÌG%–” ÌH” ÌH” ÌH” ÌH” ÌH” ÌH” ÌI” ÌI	” ÌI” ÌI” ÌI” ÌI” ÌI” ÌI” ÌI ”! ÌI%”" ÌI&”( ÌI,”+ ÌI/š” ÌJ” ÌJ” ÌJ” ÌJ” ÌJ” ÌJ” ÌJ ”  ÌJ"”! ÌJ#”" ÌJ$š” ÌK” ÌK
+” ÌK” ÌK” ÌK” ÌK” ÌK”  ÌK”! ÌK”# ÌKš” ÌL” ÌL” ÌL”  ÌL”! ÌL”- ÌL%”. ÌL&”0 ÌL(”1 ÌL)”2 ÌL*’” ÌM” ÌM‘” ÌNš” ÌO” ÌO
+” ÌO” ÌO” ÌO” ÌO” ÌO”  ÌO”$ ÌO”& ÌO š” ÌP” ÌP” ÌP” ÌP”  ÌP ”! ÌP!”" ÌP"”$ ÌP$”% ÌP%”& ÌP&Ü ” ÌQ” ÌQ” ÌQ” ÌQ” ÌQ” ÌQ”! ÌQ!”$ ÌQ$”( ÌQ(”) ÌQ)”- ÌQ-”. ÌQ.”/ ÌQ/”2 ÌQ2”3 ÌQ3”5 ÌQ5”8 ÌQ8”< ÌQ<”= ÌQ=”> ÌQ>š” ÌR” ÌR” ÌR”  ÌR”! ÌR”- ÌR%”. ÌR&”2 ÌR*”3 ÌR+”4 ÌR,’” ÌS” ÌS‘” ÌTš” ÌU” ÌU
+” ÌU” ÌU” ÌU” ÌU” ÌU”  ÌU”$ ÌU”& ÌU š” ÌV” ÌV” ÌV” ÌV”  ÌV ”! ÌV!”" ÌV"”$ ÌV$”% ÌV%”& ÌV&š” ÌW” ÌW” ÌW” ÌW”  ÌW ”! ÌW!”" ÌW"”$ ÌW$”% ÌW%”& ÌW&Ü ” ÌX” ÌX” ÌX” ÌX” ÌX” ÌX”! ÌX!”$ ÌX$”( ÌX(”) ÌX)”- ÌX-”/ ÌX/”0 ÌX0”3 ÌX3”4 ÌX4”5 ÌX5”7 ÌX7”: ÌX:”> ÌX>”? ÌX?”ÌC ÌXÌC”ÌD ÌXÌD”ÌE ÌXÌE”ÌH ÌXÌH”ÌI ÌXÌI”ÌK ÌXÌK”ÌN ÌXÌN”ÌR ÌXÌR”ÌS ÌXÌS”ÌT ÌXÌTš” ÌY” ÌY” ÌY”  ÌY”! ÌY”- ÌY%”. ÌY&”2 ÌY*”3 ÌY+”4 ÌY,’” ÌZ” ÌZ‘” Ì[’” Ì\” Ì\š” Ì]” Ì]” Ì]” Ì]” Ì]” Ì]” Ì] ”  Ì]"”! Ì]#”" Ì]$š” Ì^” Ì^” Ì^” Ì^” Ì^” Ì^” Ì^ ”  Ì^"”! Ì^#”" Ì^$š” Ì_” Ì_” Ì_” Ì_” Ì_” Ì_” Ì_ ”  Ì_"”! Ì_#”" Ì_$Ü (” Ì`” Ì`” Ì`” Ì` ” Ì`!”  Ì`"”" Ì`$”% Ì`'”) Ì`+”* Ì`,”. Ì`0”0 Ì`2”1 Ì`3”4 Ì`6”5 Ì`7”6 Ì`8”8 Ì`:”; Ì`=”? Ì`ÌA”Ì@ Ì`ÌB”ÌD Ì`ÌF”ÌF Ì`ÌH”ÌG Ì`ÌI”ÌJ Ì`ÌL”ÌK Ì`ÌM”ÌL Ì`ÌN”ÌN Ì`ÌP”ÌQ Ì`ÌS”ÌU Ì`ÌW”ÌV Ì`ÌX”ÌZ Ì`Ì\”Ì[ Ì`Ì]”Ì\ Ì`Ì^”Ì_ Ì`Ìa”Ì` Ì`Ìb”Ìb Ì`Ìd”Ìe Ì`Ìg”Ìi Ì`Ìk”Ìj Ì`Ìl”Ìk Ì`Ìm˜” Ìa” Ìa” Ìa” Ìa”$ Ìa&”' Ìa)”. Ìa0”/ Ìa1Ü ” Ìb” Ìb” Ìb” Ìb” Ìb!”" Ìb$”# Ìb%”$ Ìb&”* Ìb,”. Ìb0”0 Ìb2”1 Ìb3”4 Ìb6”9 Ìb;”: Ìb<”; Ìb=œ” Ìc” Ìc” Ìc” Ìc”  Ìc"”# Ìc%”$ Ìc&”* Ìc,”- Ìc/”2 Ìc4”3 Ìc5”4 Ìc6œ” Ìd” Ìd” Ìd” Ìd” Ìd”) Ìd#”* Ìd$”. Ìd(”0 Ìd*”5 Ìd/”6 Ìd0”7 Ìd1‘”	 Ìe”” Ìf” Ìf” Ìf” Ìf’” Ìg” Ìg‘” Ìi‘” Ìm–” Ìn	”
+ Ìn” Ìn” Ìn” Ìn” Ìn&’” Ìo” Ìo’” Ìp”- Ìp'›” Ìq” Ìq” Ìq” Ìq” Ìq”  Ìq”% Ìq”& Ìq ”) Ìq#”* Ìq$”+ Ìq%˜” Ìr” Ìr
+” Ìr” Ìr” Ìr”! Ìr”" Ìr”$ Ìr˜” Ìs” Ìs” Ìs” Ìs”  Ìs”4 Ìs,”5 Ìs-”6 Ìs.‘” Ìt’” Ìv” Ìv™” Ìw” Ìw” Ìw” Ìw”! Ìw#”" Ìw$”# Ìw%”$ Ìw&”% Ìw'›” Ìx” Ìx” Ìx” Ìx”" Ìx$”# Ìx%”4 Ìx6”5 Ìx7”< Ìx>”= Ìx?”> ÌxÌ@’” Ìz”" Ìz›” Ì{” Ì{” Ì{” Ì{”! Ì{%”" Ì{&”. Ì{2”/ Ì{3”5 Ì{9”6 Ì{:”7 Ì{;›” Ì|” Ì|” Ì|”  Ì|"”' Ì|)”( Ì|*”2 Ì|4”3 Ì|5”8 Ì|:”9 Ì|;”: Ì|<™” Ì}” Ì}” Ì}” Ì}” Ì}” Ì}”) Ì}#”* Ì}2”+ Ì}3‘”	 Ì~”” Ì~” Ì~” Ì~” Ì~š” Ì” Ì” Ì” Ì” Ì”$ Ì”& Ì ”+ Ì%”, Ì&”- Ì'”” Ì€” Ì€” Ì€” Ì€‘”	 Ì’” Ì‚” Ì‚‘” Ì„‘” Ìˆ–” Ì‰	”
+ Ì‰” Ì‰” Ì‰” Ì‰” Ì‰,’” ÌŠ” ÌŠ›” Ì‹” Ì‹” Ì‹” Ì‹”# Ì‹”$ Ì‹”, Ì‹&”- Ì‹'”2 Ì‹,”3 Ì‹-”4 Ì‹.š” ÌŒ” ÌŒ
+” ÌŒ” ÌŒ” ÌŒ” ÌŒ”$ ÌŒ”% ÌŒ”( ÌŒ"”* ÌŒ$”” Ì” Ì” Ì” Ì‘” ÌÜ ” Ì” Ì” Ì”  Ì”$ Ì”% Ì”* Ì$”+ Ì%”/ Ì)”0 Ì*”3 Ì-”5 Ì/”8 Ì2”< Ì6”= Ì7”> Ì8˜” Ì‘” Ì‘” Ì‘” Ì‘” Ì‘”! Ì‘”, Ì‘&”- Ì‘'‘”	 Ì’”” Ì’” Ì’” Ì’” Ì’š” Ì“” Ì“” Ì“” Ì“” Ì“”& Ì“ ”( Ì“"”- Ì“'”. Ì“(”/ Ì“)”” Ì”” Ì”” Ì”” Ì”‘”	 Ì•’” Ì–” Ì–‘” Ì˜‘” Ìœ–” Ì	”
+ Ì” Ì” Ì"” Ì#”# Ì0’” Ì” Ì›” ÌŸ” ÌŸ” ÌŸ” ÌŸ”# ÌŸ”$ ÌŸ”, ÌŸ&”- ÌŸ'”2 ÌŸ,”3 ÌŸ-”4 ÌŸ.Ü ” Ì ” Ì ” Ì ” Ì ”% Ì ”& Ì  ”) Ì #”* Ì $”+ Ì %”, Ì &”4 Ì .”5 Ì /”< Ì 6”= Ì 7”Ì@ Ì :”ÌA Ì ;”ÌB Ì <”ÌC Ì =”ÌD Ì >”ÌH Ì ÌB”ÌI Ì ÌC‘”	 Ì¡”” Ì¡” Ì¡” Ì¡” Ì¡š” Ì¢” Ì¢” Ì¢” Ì¢” Ì¢”% Ì¢”' Ì¢!”, Ì¢&”- Ì¢'”. Ì¢(”” Ì£” Ì£” Ì£” Ì£‘”	 Ì¤’” Ì¥” Ì¥‘” Ì§‘” Ì«–” Ì¬	”
+ Ì¬” Ì¬” Ì¬” Ì¬” Ì¬)’” Ì­” Ì­›” Ì®” Ì®” Ì®” Ì®”# Ì®”$ Ì®”, Ì®&”- Ì®'”2 Ì®,”3 Ì®-”4 Ì®.Ü ” Ì¯” Ì¯” Ì¯” Ì¯” Ì¯” Ì¯”$ Ì¯”% Ì¯”( Ì¯"”, Ì¯&”0 Ì¯*”1 Ì¯+”2 Ì¯,”3 Ì¯-”7 Ì¯1”8 Ì¯2‘”	 Ì°”” Ì°” Ì°” Ì°” Ì°š” Ì±” Ì±” Ì±” Ì±” Ì±”% Ì±”' Ì±!”, Ì±&”- Ì±'”. Ì±(”” Ì²” Ì²” Ì²” Ì²‘”	 Ì³’” Ì´” Ì´‘” Ì¶‘” Ìº–” Ì»	”
+ Ì»” Ì»” Ì»!” Ì»"”" Ì»/’” Ì¼” Ì¼›” Ì½” Ì½” Ì½” Ì½”# Ì½”$ Ì½”, Ì½&”- Ì½'”2 Ì½,”3 Ì½-”4 Ì½.Ü ” Ì¾” Ì¾” Ì¾” Ì¾” Ì¾” Ì¾”$ Ì¾”% Ì¾”( Ì¾"”, Ì¾&”0 Ì¾*”1 Ì¾+”2 Ì¾,”3 Ì¾-”7 Ì¾1”8 Ì¾2‘”	 Ì¿”” Ì¿” Ì¿” Ì¿” Ì¿š” ÌÀ” ÌÀ” ÌÀ” ÌÀ” ÌÀ”% ÌÀ”' ÌÀ!”, ÌÀ&”- ÌÀ'”. ÌÀ(”” ÌÁ” ÌÁ” ÌÁ” ÌÁ‘”	 ÌÂ’” ÌÃ” ÌÃ‘” ÌÅ‘” ÌÉ–” ÌÊ	”
+ ÌÊ” ÌÊ” ÌÊ” ÌÊ” ÌÊ+’” ÌË” ÌË›” ÌÌ” ÌÌ” ÌÌ” ÌÌ” ÌÌ”  ÌÌ”% ÌÌ”& ÌÌ ”) ÌÌ#”* ÌÌ$”+ ÌÌ%Ü ” ÌÍ” ÌÍ” ÌÍ” ÌÍ” ÌÍ”$ ÌÍ”% ÌÍ”) ÌÍ#”. ÌÍ(”/ ÌÍ)”4 ÌÍ.”5 ÌÍ/”9 ÌÍ3”: ÌÍ4”< ÌÍ6”= ÌÍ7”ÌA ÌÍ;”ÌB ÌÍ<”ÌH ÌÍÌB”ÌK ÌÍÌE”ÌL ÌÍÌF”ÌM ÌÍÌG”ÌN ÌÍÌH‘”	 ÌÎ”” ÌÎ” ÌÎ” ÌÎ” ÌÎ”” ÌÏ” ÌÏ” ÌÏ” ÌÏ‘”	 ÌĞ’” ÌÑ” ÌÑ‘” ÌÓ‘” Ì×–” ÌØ	”
+ ÌØ” ÌØ” ÌØ ” ÌØ!”! ÌØ.’” ÌÙ” ÌÙ›” ÌÚ” ÌÚ” ÌÚ” ÌÚ” ÌÚ”  ÌÚ”1 ÌÚ+”2 ÌÚ,”7 ÌÚ1”8 ÌÚ2”9 ÌÚ3•” ÌÛ” ÌÛ
+” ÌÛ” ÌÛ” ÌÛ•” ÌÜ” ÌÜ” ÌÜ” ÌÜ” ÌÜ‘” ÌİÜ ” Ìß” Ìß” Ìß”  Ìß”$ Ìß”% Ìß”* Ìß$”+ Ìß%”/ Ìß)”0 Ìß*”3 Ìß-”5 Ìß/”8 Ìß2”< Ìß6”= Ìß7”> Ìß8˜” Ìà” Ìà” Ìà” Ìà”! Ìà”$ Ìà”/ Ìà)”0 Ìà*Ÿ” Ìá” Ìá” Ìá” Ìá”  Ìá”! Ìá”" Ìá”# Ìá”, Ìá&”- Ìá'”. Ìá(”/ Ìá)”0 Ìá*”1 Ìá+”2 Ìá,‘”	 Ìâ”” Ìâ” Ìâ” Ìâ” Ìâš” Ìã” Ìã” Ìã” Ìã” Ìã”% Ìã”' Ìã!”, Ìã&”- Ìã'”. Ìã(•” Ìä” Ìä” Ìä” Ìä” Ìä‘”	 Ìå’” Ìæ” Ìæ‘” ÌçÔrF–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜ È‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ÔrG’§missing¦pluginÃ¦genAbcÂÔ  ÔrH”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache‘ÔrI–¤type¥start£end«declarationªspecifiers¦source¶ExportNamedDeclaration$Í4ÔrJ–¤type¥start£end¢idªsuperClass¤body°ClassDeclaration+Í4ÔrK”¤type¥start£end¤nameªIdentifier18§JwtUtilÀÔrL”¤type¥start£end¤body©ClassBody9Í4šÔrM˜¤type¥start£end¦static¨computed£key¤kind¥value°MethodDefinitionÌÍ°ÃÂKªIdentifierÌ¥Ì¶±base64UrlToBase64¦methodÔrN™¤type¥start£end¢idªexpression©generator¥async¦params¤body²FunctionExpressionÌ¶Í°ÀÂÂÂ‘KªIdentifierÌ·Ì¼¥inputL®BlockStatementÌ¾Í°“ÔrO•¤type¥start£end¬declarations¤kind³VariableDeclarationÌöÍ3‘ÔrP•¤type¥start£end¢id¤init²VariableDeclaratorÌüÍ2KªIdentifierÌüÍ¨replacedÔrQ–¤type¥start£end¦callee©arguments¨optional®CallExpressionÍÍ2ÔrR—¤type¥start£end¦object¨property¨computed¨optional°MemberExpressionÍÍ'Q®CallExpressionÍÍR°MemberExpressionÍÍKªIdentifierÍÍ¥inputKªIdentifierÍÍ§replaceÂÂ’ÔrS–¤type¥start£end¥value£raw¥regex§LiteralÍÍ’¡-¡g¤/-/gÔrT’§pattern¥flags¡-¡gÔrU•¤type¥start£end¥value£raw§LiteralÍÍ¡+£'+'ÂKªIdentifierÍ Í'§replaceÂÂ’S§LiteralÍ(Í,’¡_¡g¤/_/gT¡_¡gU§LiteralÍ.Í1¡/£'/'Â¥constO³VariableDeclarationÍ=Ís‘P²VariableDeclaratorÍCÍrKªIdentifierÍCÍP­paddingNeededÔrV–¤type¥start£end¤left¨operator¥right°BinaryExpressionÍSÍrV°BinaryExpressionÍTÍmU§LiteralÍTÍU¡4¡-V°BinaryExpressionÍYÍlR°MemberExpressionÍYÍhKªIdentifierÍYÍa¨replacedKªIdentifierÍbÍh¦lengthÂÂ¡%U§LiteralÍkÍl¡4¡%U§LiteralÍqÍr¡4¥constÔrW”¤type¥start£end¨argument¯ReturnStatementÍ}Í©V°BinaryExpressionÍ„Í¨KªIdentifierÍ„ÍŒ¨replaced¡+Q®CallExpressionÍÍ¨R°MemberExpressionÍÍ™U§LiteralÍÍ’¡=£'='KªIdentifierÍ“Í™¦repeatÂÂ‘KªIdentifierÍšÍ§­paddingNeededÂM°MethodDefinitionÍ¶ÍŸÃÂKªIdentifierÍ½ÍÉ¬base64Decode¦methodN²FunctionExpressionÍÉÍŸÀÂÂÂ‘KªIdentifierÍÊÍĞ¦base64L®BlockStatementÍÒÍŸ•O³VariableDeclarationÍÍY‘P²VariableDeclaratorÍÍXKªIdentifierÍÍ¥charsU§LiteralÍÍXÙAABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=ÙC'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='¥constO³VariableDeclarationÍcÍu‘P²VariableDeclaratorÍiÍtKªIdentifierÍiÍo¦outputÔrX”¤type¥start£end¨elements¯ArrayExpressionÍrÍt¥constO³VariableDeclarationÍÍ‰‘P²VariableDeclaratorÍƒÍˆKªIdentifierÍƒÍ„¡iU§LiteralÍ‡Íˆ ¡0£letÔrY•¤type¥start£end¤test¤body®WhileStatementÍ“Í€V°BinaryExpressionÍšÍ«KªIdentifierÍšÍ›¡i¡<R°MemberExpressionÍÍ«KªIdentifierÍÍ¤¦base64KªIdentifierÍ¥Í«¦lengthÂÂL®BlockStatementÍ­Í€›O³VariableDeclarationÍ¼Íë‘P²VariableDeclaratorÍÂÍêKªIdentifierÍÂÍÆ¤enc1Q®CallExpressionÍÉÍêR°MemberExpressionÍÉÍÖKªIdentifierÍÉÍÎ¥charsKªIdentifierÍÏÍÖ§indexOfÂÂ‘Q®CallExpressionÍ×ÍéR°MemberExpressionÍ×ÍäKªIdentifierÍ×Íİ¦base64KªIdentifierÍŞÍä¦charAtÂÂ‘ÔrZ–¤type¥start£end¨operator¦prefix¨argument°UpdateExpressionÍåÍè¢++ÂKªIdentifierÍåÍæ¡iÂÂ¥constO³VariableDeclarationÍùÍ(‘P²VariableDeclaratorÍÿÍ'KªIdentifierÍÿÍ¤enc2Q®CallExpressionÍÍ'R°MemberExpressionÍÍKªIdentifierÍÍ¥charsKªIdentifierÍÍ§indexOfÂÂ‘Q®CallExpressionÍÍ&R°MemberExpressionÍÍ!KªIdentifierÍÍ¦base64KªIdentifierÍÍ!¦charAtÂÂ‘Z°UpdateExpressionÍ"Í%¢++ÂKªIdentifierÍ"Í#¡iÂÂ¥constO³VariableDeclarationÍ6Íe‘P²VariableDeclaratorÍ<ÍdKªIdentifierÍ<Í@¤enc3Q®CallExpressionÍCÍdR°MemberExpressionÍCÍPKªIdentifierÍCÍH¥charsKªIdentifierÍIÍP§indexOfÂÂ‘Q®CallExpressionÍQÍcR°MemberExpressionÍQÍ^KªIdentifierÍQÍW¦base64KªIdentifierÍXÍ^¦charAtÂÂ‘Z°UpdateExpressionÍ_Íb¢++ÂKªIdentifierÍ_Í`¡iÂÂ¥constO³VariableDeclarationÍsÍ¢‘P²VariableDeclaratorÍyÍ¡KªIdentifierÍyÍ}¤enc4Q®CallExpressionÍ€Í¡R°MemberExpressionÍ€ÍKªIdentifierÍ€Í…¥charsKªIdentifierÍ†Í§indexOfÂÂ‘Q®CallExpressionÍÍ R°MemberExpressionÍÍ›KªIdentifierÍÍ”¦base64KªIdentifierÍ•Í›¦charAtÂÂ‘Z°UpdateExpressionÍœÍŸ¢++ÂKªIdentifierÍœÍ¡iÂÂ¥constÔr[–¤type¥start£end¤testªconsequent©alternate«IfStatementÍ°Í
+V±LogicalExpressionÍ´ÍàV±LogicalExpressionÍ´ÍÔV±LogicalExpressionÍ´ÍÈV°BinaryExpressionÍ´Í¼KªIdentifierÍ´Í¸¤enc1¡<U§LiteralÍ»Í¼ ¡0¢||V°BinaryExpressionÍÀÍÈKªIdentifierÍÀÍÄ¤enc2¡<U§LiteralÍÇÍÈ ¡0¢||V°BinaryExpressionÍÌÍÔKªIdentifierÍÌÍĞ¤enc3¡<U§LiteralÍÓÍÔ ¡0¢||V°BinaryExpressionÍØÍàKªIdentifierÍØÍÜ¤enc4¡<U§LiteralÍßÍà ¡0L®BlockStatementÍâÍ
+‘Ôr\”¤type¥start£end¥label®BreakStatementÍõÍûÀÀO³VariableDeclarationÍÍ?‘P²VariableDeclaratorÍÍ>KªIdentifierÍÍ"¤chr1V°BinaryExpressionÍ%Í>V°BinaryExpressionÍ&Í/KªIdentifierÍ&Í*¤enc1¢<<U§LiteralÍ.Í/¡2¡|V°BinaryExpressionÍ4Í=KªIdentifierÍ4Í8¤enc2¢>>U§LiteralÍ<Í=¡4¥constO³VariableDeclarationÍMÍ{‘P²VariableDeclaratorÍSÍzKªIdentifierÍSÍW¤chr2V°BinaryExpressionÍZÍzV°BinaryExpressionÍ[ÍkV°BinaryExpressionÍ\ÍeKªIdentifierÍ\Í`¤enc2¡&U§LiteralÍcÍe¢15¢<<U§LiteralÍjÍk¡4¡|V°BinaryExpressionÍpÍyKªIdentifierÍpÍt¤enc3¢>>U§LiteralÍxÍy¡2¥constO³VariableDeclarationÍ‰Í¯‘P²VariableDeclaratorÍÍ®KªIdentifierÍÍ“¤chr3V°BinaryExpressionÍ–Í®V°BinaryExpressionÍ—Í¦V°BinaryExpressionÍ˜Í KªIdentifierÍ˜Íœ¤enc3¡&U§LiteralÍŸÍ ¡3¢<<U§LiteralÍ¥Í¦¡6¡|KªIdentifierÍªÍ®¤enc4¥constÔr]”¤type¥start£endªexpression³ExpressionStatementÍ½ÍÏQ®CallExpressionÍ½ÍÎR°MemberExpressionÍ½ÍÈKªIdentifierÍ½ÍÃ¦outputKªIdentifierÍÄÍÈ¤pushÂÂ‘KªIdentifierÍÉÍÍ¤chr1Â[«IfStatementÍİÍ"V°BinaryExpressionÍáÍìKªIdentifierÍáÍå¤enc3£!==U§LiteralÍêÍìÌ@¢64L®BlockStatementÍîÍ"‘]³ExpressionStatementÍÍQ®CallExpressionÍÍR°MemberExpressionÍÍKªIdentifierÍÍ¦outputKªIdentifierÍÍ¤pushÂÂ‘KªIdentifierÍÍ¤chr2ÂÀ[«IfStatementÍ0ÍuV°BinaryExpressionÍ4Í?KªIdentifierÍ4Í8¤enc4£!==U§LiteralÍ=Í?Ì@¢64L®BlockStatementÍAÍu‘]³ExpressionStatementÍTÍfQ®CallExpressionÍTÍeR°MemberExpressionÍTÍ_KªIdentifierÍTÍZ¦outputKªIdentifierÍ[Í_¤pushÂÂ‘KªIdentifierÍ`Íd¤chr3ÂÀW¯ReturnStatementÍŠÍ˜KªIdentifierÍ‘Í—¦outputM°MethodDefinitionÍ¥Í
+òÃÂKªIdentifierÍ¬Í¶ªutf8Decode¦methodN²FunctionExpressionÍ¶Í
+òÀÂÂÂ‘KªIdentifierÍ·Í¼¥bytesL®BlockStatementÍ¾Í
+ò“O³VariableDeclarationÍôÍ‘P²VariableDeclaratorÍøÍKªIdentifierÍøÍş¦resultU§LiteralÍÍ ¢''£letÔr^—¤type¥start£end¤init¤test¦update¤body¬ForStatementÍÍ
+ÓO³VariableDeclarationÍÍ‘P²VariableDeclaratorÍÍKªIdentifierÍÍ¡iU§LiteralÍÍ ¡0£letV°BinaryExpressionÍÍ.KªIdentifierÍÍ¡i¡<R°MemberExpressionÍ"Í.KªIdentifierÍ"Í'¥bytesKªIdentifierÍ(Í.¦lengthÂÂÀL®BlockStatementÍ1Í
+ÓœO³VariableDeclarationÍ@ÍV‘P²VariableDeclaratorÍFÍUKªIdentifierÍFÍH¢b0R°MemberExpressionÍKÍUKªIdentifierÍKÍP¥bytesZ°UpdateExpressionÍQÍT¢++ÂKªIdentifierÍQÍR¡iÃÂ¥const[«IfStatementÍdÍÚV°BinaryExpressionÍhÍyV°BinaryExpressionÍiÍrKªIdentifierÍiÍk¢b0¡&U§LiteralÍnÍrÌ€¤0x80£===U§LiteralÍxÍy ¡0L®BlockStatementÍ{ÍÚ’]³ExpressionStatementÍÍ°Ôr_–¤type¥start£end¨operator¤left¥right´AssignmentExpressionÍÍ¯¢+=KªIdentifierÍÍ”¦resultQ®CallExpressionÍ˜Í¯R°MemberExpressionÍ˜Í«KªIdentifierÍ˜Í¦StringKªIdentifierÍŸÍ«¬fromCharCodeÂÂ‘KªIdentifierÍ¬Í®¢b0Â\±ContinueStatementÍÂÍËÀÀ[«IfStatementÍèÍËV°BinaryExpressionÍìÍ V°BinaryExpressionÍíÍöKªIdentifierÍíÍï¢b0¡&U§LiteralÍòÍöÌà¤0xe0£===U§LiteralÍüÍ ÌÀ¤0xc0L®BlockStatementÍÍË”O³VariableDeclarationÍÍ+‘P²VariableDeclaratorÍÍ*KªIdentifierÍÍ¢b1R°MemberExpressionÍ Í*KªIdentifierÍ Í%¥bytesZ°UpdateExpressionÍ&Í)¢++ÂKªIdentifierÍ&Í'¡iÃÂ¥constO³VariableDeclarationÍ=Ík‘P²VariableDeclaratorÍCÍjKªIdentifierÍCÍG¤codeV°BinaryExpressionÍJÍjV°BinaryExpressionÍKÍ[V°BinaryExpressionÍLÍUKªIdentifierÍLÍN¢b0¡&U§LiteralÍQÍU¤0x1f¢<<U§LiteralÍZÍ[¡6¡|V°BinaryExpressionÍ`ÍiKªIdentifierÍ`Íb¢b1¡&U§LiteralÍeÍi?¤0x3f¥const]³ExpressionStatementÍ}Í¡_´AssignmentExpressionÍ}Í ¢+=KªIdentifierÍ}Íƒ¦resultQ®CallExpressionÍ‡Í R°MemberExpressionÍ‡ÍšKªIdentifierÍ‡Í¦StringKªIdentifierÍÍš¬fromCharCodeÂÂ‘KªIdentifierÍ›ÍŸ¤codeÂ\±ContinueStatementÍ³Í¼ÀÀ[«IfStatementÍÙÍúV°BinaryExpressionÍİÍñV°BinaryExpressionÍŞÍçKªIdentifierÍŞÍà¢b0¡&U§LiteralÍãÍçÌğ¤0xf0£===U§LiteralÍíÍñÌà¤0xe0L®BlockStatementÍóÍú•O³VariableDeclarationÍÍ‘P²VariableDeclaratorÍÍKªIdentifierÍÍ¢b1R°MemberExpressionÍÍKªIdentifierÍÍ¥bytesZ°UpdateExpressionÍÍ¢++ÂKªIdentifierÍÍ¡iÃÂ¥constO³VariableDeclarationÍ.ÍD‘P²VariableDeclaratorÍ4ÍCKªIdentifierÍ4Í6¢b2R°MemberExpressionÍ9ÍCKªIdentifierÍ9Í>¥bytesZ°UpdateExpressionÍ?ÍB¢++ÂKªIdentifierÍ?Í@¡iÃÂ¥constO³VariableDeclarationÍVÍš‘P²VariableDeclaratorÍ\Í™KªIdentifierÍ\Í`¤codeV°BinaryExpressionÍcÍ™V°BinaryExpressionÍcÍ‹V°BinaryExpressionÍdÍuV°BinaryExpressionÍeÍnKªIdentifierÍeÍg¢b0¡&U§LiteralÍjÍn¤0x0f¢<<U§LiteralÍsÍu¢12¡|V°BinaryExpressionÍzÍŠV°BinaryExpressionÍ{Í„KªIdentifierÍ{Í}¢b1¡&U§LiteralÍ€Í„?¤0x3f¢<<U§LiteralÍ‰ÍŠ¡6¡|V°BinaryExpressionÍÍ˜KªIdentifierÍÍ‘¢b2¡&U§LiteralÍ”Í˜?¤0x3f¥const]³ExpressionStatementÍ¬ÍĞ_´AssignmentExpressionÍ¬ÍÏ¢+=KªIdentifierÍ¬Í²¦resultQ®CallExpressionÍ¶ÍÏR°MemberExpressionÍ¶ÍÉKªIdentifierÍ¶Í¼¦StringKªIdentifierÍ½ÍÉ¬fromCharCodeÂÂ‘KªIdentifierÍÊÍÎ¤codeÂ\±ContinueStatementÍâÍëÀÀO³VariableDeclarationÍ	 Í	6‘P²VariableDeclaratorÍ	&Í	5KªIdentifierÍ	&Í	(¢b1R°MemberExpressionÍ	+Í	5KªIdentifierÍ	+Í	0¥bytesZ°UpdateExpressionÍ	1Í	4¢++ÂKªIdentifierÍ	1Í	2¡iÃÂ¥constO³VariableDeclarationÍ	DÍ	Z‘P²VariableDeclaratorÍ	JÍ	YKªIdentifierÍ	JÍ	L¢b2R°MemberExpressionÍ	OÍ	YKªIdentifierÍ	OÍ	T¥bytesZ°UpdateExpressionÍ	UÍ	X¢++ÂKªIdentifierÍ	UÍ	V¡iÃÂ¥constO³VariableDeclarationÍ	hÍ	~‘P²VariableDeclaratorÍ	nÍ	}KªIdentifierÍ	nÍ	p¢b3R°MemberExpressionÍ	sÍ	}KªIdentifierÍ	sÍ	x¥bytesZ°UpdateExpressionÍ	yÍ	|¢++ÂKªIdentifierÍ	yÍ	z¡iÃÂ¥constO³VariableDeclarationÍ	ŒÍ	ë‘P²VariableDeclaratorÍ	’Í	êKªIdentifierÍ	’Í	›©codePointV°BinaryExpressionÍ	Í	êV°BinaryExpressionÍ	Í	ÜV°BinaryExpressionÍ	Í	ÇV°BinaryExpressionÍ	ŸÍ	°V°BinaryExpressionÍ	 Í	©KªIdentifierÍ	 Í	¢¢b0¡&U§LiteralÍ	¥Í	©¤0x07¢<<U§LiteralÍ	®Í	°¢18¡|V°BinaryExpressionÍ	µÍ	ÆV°BinaryExpressionÍ	¶Í	¿KªIdentifierÍ	¶Í	¸¢b1¡&U§LiteralÍ	»Í	¿?¤0x3f¢<<U§LiteralÍ	ÄÍ	Æ¢12¡|V°BinaryExpressionÍ	ËÍ	ÛV°BinaryExpressionÍ	ÌÍ	ÕKªIdentifierÍ	ÌÍ	Î¢b2¡&U§LiteralÍ	ÑÍ	Õ?¤0x3f¢<<U§LiteralÍ	ÚÍ	Û¡6¡|V°BinaryExpressionÍ	àÍ	éKªIdentifierÍ	àÍ	â¢b3¡&U§LiteralÍ	åÍ	é?¤0x3f¥constO³VariableDeclarationÍ	ùÍ
+‘P²VariableDeclaratorÍ	ÿÍ
+KªIdentifierÍ	ÿÍ
+¦offsetV°BinaryExpressionÍ
+Í
+KªIdentifierÍ
+Í
+©codePoint¡-U§LiteralÍ
+Í
+Î   §0x10000¥constO³VariableDeclarationÍ
+*Í
+Y‘P²VariableDeclaratorÍ
+0Í
+XKªIdentifierÍ
+0Í
+4¤leadV°BinaryExpressionÍ
+7Í
+XU§LiteralÍ
+7Í
+=ÍØ ¦0xd800¡+V°BinaryExpressionÍ
+AÍ
+WV°BinaryExpressionÍ
+BÍ
+NKªIdentifierÍ
+BÍ
+H¦offset¢>>U§LiteralÍ
+LÍ
+N
+¢10¡&U§LiteralÍ
+RÍ
+WÍÿ¥0x3ff¥constO³VariableDeclarationÍ
+gÍ
+‘P²VariableDeclaratorÍ
+mÍ
+KªIdentifierÍ
+mÍ
+r¥trailV°BinaryExpressionÍ
+uÍ
+U§LiteralÍ
+uÍ
+{ÍÜ ¦0xdc00¡+V°BinaryExpressionÍ
+Í
+KªIdentifierÍ
+Í
+…¦offset¡&U§LiteralÍ
+ˆÍ
+Íÿ¥0x3ff¥const]³ExpressionStatementÍ
+Í
+È_´AssignmentExpressionÍ
+Í
+Ç¢+=KªIdentifierÍ
+Í
+£¦resultQ®CallExpressionÍ
+§Í
+ÇR°MemberExpressionÍ
+§Í
+ºKªIdentifierÍ
+§Í
+­¦StringKªIdentifierÍ
+®Í
+º¬fromCharCodeÂÂ’KªIdentifierÍ
+»Í
+¿¤leadKªIdentifierÍ
+ÁÍ
+Æ¥trailÂW¯ReturnStatementÍ
+İÍ
+ëKªIdentifierÍ
+äÍ
+ê¦resultM°MethodDefinitionÍOÍÃÂKªIdentifierÍVÍ^¨parseJwt¦methodN²FunctionExpressionÍ^ÍÀÂÂÂ‘KªIdentifierÍ_Íd¥tokenL®BlockStatementÍfÍ‘Ôr`–¤type¥start£end¥block§handler©finalizer¬TryStatementÍqÍL®BlockStatementÍuÍ”—O³VariableDeclarationÍ³ÍÒ‘P²VariableDeclaratorÍ¹ÍÑKªIdentifierÍ¹Í¾¥partsQ®CallExpressionÍÁÍÑR°MemberExpressionÍÁÍÌKªIdentifierÍÁÍÆ¥tokenKªIdentifierÍÇÍÌ¥splitÂÂ‘U§LiteralÍÍÍĞ¡.£'.'Â¥const[«IfStatementÍàÍ@V°BinaryExpressionÍäÍöR°MemberExpressionÍäÍğKªIdentifierÍäÍé¥partsKªIdentifierÍêÍğ¦lengthÂÂ£!==U§LiteralÍõÍö¡3L®BlockStatementÍøÍ@‘W®ThrowStatementÍÍ1Ôra•¤type¥start£end¦callee©arguments­NewExpressionÍÍ0KªIdentifierÍÍ¥Error‘U§LiteralÍÍ/²Invalid JWT format´'Invalid JWT format'ÀO³VariableDeclarationÍjÍƒ‘P²VariableDeclaratorÍpÍ‚KªIdentifierÍpÍw§payloadR°MemberExpressionÍzÍ‚KªIdentifierÍzÍ¥partsU§LiteralÍ€Í¡1ÃÂ¥constO³VariableDeclarationÍ‘ÍÃ‘P²VariableDeclaratorÍ—ÍÂKªIdentifierÍ—Í¦base64Q®CallExpressionÍ ÍÂR°MemberExpressionÍ Í¹KªIdentifierÍ Í§§JwtUtilKªIdentifierÍ¨Í¹±base64UrlToBase64ÂÂ‘KªIdentifierÍºÍÁ§payloadÂ¥constO³VariableDeclarationÍõÍ ‘P²VariableDeclaratorÍûÍKªIdentifierÍûÍ ¥bytesQ®CallExpressionÍÍR°MemberExpressionÍÍKªIdentifierÍÍ
+§JwtUtilKªIdentifierÍÍ¬base64DecodeÂÂ‘KªIdentifierÍÍ¦base64Â¥constO³VariableDeclarationÍ.Í\‘P²VariableDeclaratorÍ4Í[KªIdentifierÍ4Í?«jsonPayloadQ®CallExpressionÍBÍ[R°MemberExpressionÍBÍTKªIdentifierÍBÍI§JwtUtilKªIdentifierÍJÍTªutf8DecodeÂÂ‘KªIdentifierÍUÍZ¥bytesÂ¥constW¯ReturnStatementÍjÍ‰Q®CallExpressionÍqÍˆR°MemberExpressionÍqÍ{KªIdentifierÍqÍu¤JSONKªIdentifierÍvÍ{¥parseÂÂ‘KªIdentifierÍ|Í‡«jsonPayloadÂÔrb•¤type¥start£end¥param¤body«CatchClauseÍÍKªIdentifierÍ¥Íª¥errorL®BlockStatementÍ¬Í’]³ExpressionStatementÍ»ÍÜQ®CallExpressionÍ»ÍÛR°MemberExpressionÍ»ÍÈKªIdentifierÍ»ÍÂ§consoleKªIdentifierÍÃÍÈ¥errorÂÂ’U§LiteralÍÉÍÓ°JWTè§£æå¤±è´¥:²'JWTè§£æå¤±è´¥:'KªIdentifierÍÕÍÚ¥errorÂW¯ReturnStatementÍêÍöU§LiteralÍñÍõÀ¤nullÀM°MethodDefinitionÍcÍÃÂKªIdentifierÍjÍx®isTokenExpired¦methodN²FunctionExpressionÍxÍÀÂÂÂ‘KªIdentifierÍyÍ~¥tokenL®BlockStatementÍ€Í‘`¬TryStatementÍ‹Í	L®BlockStatementÍÍš”O³VariableDeclarationÍÍÆ‘P²VariableDeclaratorÍ¤ÍÅKªIdentifierÍ¤Í«§payloadQ®CallExpressionÍ®ÍÅR°MemberExpressionÍ®Í¾KªIdentifierÍ®Íµ§JwtUtilKªIdentifierÍ¶Í¾¨parseJwtÂÂ‘KªIdentifierÍ¿ÍÄ¥tokenÂ¥const[«IfStatementÍÔÍ V±LogicalExpressionÍØÍğZ¯UnaryExpressionÍØÍà¡!ÃKªIdentifierÍÙÍà§payload¢||Z¯UnaryExpressionÍäÍğ¡!ÃR°MemberExpressionÍåÍğKªIdentifierÍåÍì§payloadKªIdentifierÍíÍğ£expÂÂL®BlockStatementÍòÍ ‘W¯ReturnStatementÍÍU§LiteralÍÍÃ¤trueÀO³VariableDeclarationÍ.Í`‘P²VariableDeclaratorÍ4Í_KªIdentifierÍ4Í?«currentTimeQ®CallExpressionÍBÍ_R°MemberExpressionÍBÍLKªIdentifierÍBÍF¤MathKªIdentifierÍGÍL¥floorÂÂ‘V°BinaryExpressionÍMÍ^Q®CallExpressionÍMÍWR°MemberExpressionÍMÍUKªIdentifierÍMÍQ¤DateKªIdentifierÍRÍU£nowÂÂÂ¡/U§LiteralÍZÍ^Íè¤1000Â¥constW¯ReturnStatementÍnÍV°BinaryExpressionÍuÍR°MemberExpressionÍuÍ€KªIdentifierÍuÍ|§payloadKªIdentifierÍ}Í€£expÂÂ¡<KªIdentifierÍƒÍ«currentTimeb«CatchClauseÍ¤Í	KªIdentifierÍ«Í°¥errorL®BlockStatementÍ²Í	’]³ExpressionStatementÍÁÍäQ®CallExpressionÍÁÍãR°MemberExpressionÍÁÍÎKªIdentifierÍÁÍÈ§consoleKªIdentifierÍÉÍÎ¥errorÂÂ’U§LiteralÍÏÍÛ¶JWTè¿‡æœŸæ£€æŸ¥å¤±è´¥:¸'JWTè¿‡æœŸæ£€æŸ¥å¤±è´¥:'KªIdentifierÍİÍâ¥errorÂW¯ReturnStatementÍòÍşU§LiteralÍùÍıÃ¤trueÀM°MethodDefinitionÍmÍŸÃÂKªIdentifierÍtÍ†²getUserIdFromToken¦methodN²FunctionExpressionÍ†ÍŸÀÂÂÂ‘KªIdentifierÍ‡ÍŒ¥tokenL®BlockStatementÍÍŸ‘`¬TryStatementÍ™Í˜L®BlockStatementÍÍ*’O³VariableDeclarationÍ¬ÍÔ‘P²VariableDeclaratorÍ²ÍÓKªIdentifierÍ²Í¹§payloadQ®CallExpressionÍ¼ÍÓR°MemberExpressionÍ¼ÍÌKªIdentifierÍ¼ÍÃ§JwtUtilKªIdentifierÍÄÍÌ¨parseJwtÂÂ‘KªIdentifierÍÍÍÒ¥tokenÂ¥constW¯ReturnStatementÍâÍ[µConditionalExpressionÍéÍV±LogicalExpressionÍéÍÿKªIdentifierÍéÍğ§payload¢&&R°MemberExpressionÍôÍÿKªIdentifierÍôÍû§payloadKªIdentifierÍüÍÿ£subÂÂQ®CallExpressionÍÍKªIdentifierÍÍ
+¨parseInt‘R°MemberExpressionÍÍKªIdentifierÍÍ§payloadKªIdentifierÍÍ£subÂÂÂU§LiteralÍÍÀ¤nullb«CatchClauseÍ4Í˜KªIdentifierÍ;Í@¥errorL®BlockStatementÍBÍ˜’]³ExpressionStatementÍQÍsQ®CallExpressionÍQÍrR°MemberExpressionÍQÍ^KªIdentifierÍQÍX§consoleKªIdentifierÍYÍ^¥errorÂÂ’U§LiteralÍ_Íjµè·å–ç”¨æˆ·IDå¤±è´¥:·'è·å–ç”¨æˆ·IDå¤±è´¥:'KªIdentifierÍlÍq¥errorÂW¯ReturnStatementÍÍU§LiteralÍˆÍŒÀ¤nullÀM°MethodDefinitionÍÿÍÃÂKªIdentifierÍÍ«getIssuedAt¦methodN²FunctionExpressionÍÍÀÂÂÂ‘KªIdentifierÍÍ¥tokenL®BlockStatementÍÍ‘`¬TryStatementÍ$ÍL®BlockStatementÍ(Í¤’O³VariableDeclarationÍ7Í_‘P²VariableDeclaratorÍ=Í^KªIdentifierÍ=ÍD§payloadQ®CallExpressionÍGÍ^R°MemberExpressionÍGÍWKªIdentifierÍGÍN§JwtUtilKªIdentifierÍOÍW¨parseJwtÂÂ‘KªIdentifierÍXÍ]¥tokenÂ¥constW¯ReturnStatementÍmÍ™[µConditionalExpressionÍtÍ˜KªIdentifierÍtÍ{§payloadV±LogicalExpressionÍ~Í‘R°MemberExpressionÍ~Í‰KªIdentifierÍ~Í…§payloadKªIdentifierÍ†Í‰£iatÂÂ¢||U§LiteralÍÍ‘À¤nullU§LiteralÍ”Í˜À¤nullb«CatchClauseÍ®ÍKªIdentifierÍµÍº¥errorL®BlockStatementÍ¼Í’]³ExpressionStatementÍËÍíQ®CallExpressionÍËÍìR°MemberExpressionÍËÍØKªIdentifierÍËÍÒ§consoleKªIdentifierÍÓÍØ¥errorÂÂ’U§LiteralÍÙÍä¹è·å–ç­¾å‘æ—¶é—´å¤±è´¥:»'è·å–ç­¾å‘æ—¶é—´å¤±è´¥:'KªIdentifierÍæÍë¥errorÂW¯ReturnStatementÍûÍU§LiteralÍÍÀ¤nullÀM°MethodDefinitionÍyÍ™ÃÂKªIdentifierÍ€Í‘±getExpirationTime¦methodN²FunctionExpressionÍ‘Í™ÀÂÂÂ‘KªIdentifierÍ’Í—¥tokenL®BlockStatementÍ™Í™‘`¬TryStatementÍ¤Í’L®BlockStatementÍ¨Í$’O³VariableDeclarationÍ·Íß‘P²VariableDeclaratorÍ½ÍŞKªIdentifierÍ½ÍÄ§payloadQ®CallExpressionÍÇÍŞR°MemberExpressionÍÇÍ×KªIdentifierÍÇÍÎ§JwtUtilKªIdentifierÍÏÍ×¨parseJwtÂÂ‘KªIdentifierÍØÍİ¥tokenÂ¥constW¯ReturnStatementÍíÍ[µConditionalExpressionÍôÍKªIdentifierÍôÍû§payloadV±LogicalExpressionÍşÍR°MemberExpressionÍşÍ	KªIdentifierÍşÍ§payloadKªIdentifierÍÍ	£expÂÂ¢||U§LiteralÍÍÀ¤nullU§LiteralÍÍÀ¤nullb«CatchClauseÍ.Í’KªIdentifierÍ5Í:¥errorL®BlockStatementÍ<Í’’]³ExpressionStatementÍKÍmQ®CallExpressionÍKÍlR°MemberExpressionÍKÍXKªIdentifierÍKÍR§consoleKªIdentifierÍSÍX¥errorÂÂ’U§LiteralÍYÍd¹è·å–è¿‡æœŸæ—¶é—´å¤±è´¥:»'è·å–è¿‡æœŸæ—¶é—´å¤±è´¥:'KªIdentifierÍfÍk¥errorÂW¯ReturnStatementÍ{Í‡U§LiteralÍ‚Í†À¤nullÀM°MethodDefinitionÍøÍòÃÂKªIdentifierÍÿÍ­isValidFormat¦methodN²FunctionExpressionÍÍòÀÂÂÂ‘KªIdentifierÍÍ¥tokenL®BlockStatementÍÍò‘`¬TryStatementÍÍëL®BlockStatementÍ#Í¬’O³VariableDeclarationÍ2ÍQ‘P²VariableDeclaratorÍ8ÍPKªIdentifierÍ8Í=¥partsQ®CallExpressionÍ@ÍPR°MemberExpressionÍ@ÍKKªIdentifierÍ@ÍE¥tokenKªIdentifierÍFÍK¥splitÂÂ‘U§LiteralÍLÍO¡.£'.'Â¥constW¯ReturnStatementÍ_Í¡V±LogicalExpressionÍfÍ V°BinaryExpressionÍfÍxR°MemberExpressionÍfÍrKªIdentifierÍfÍk¥partsKªIdentifierÍlÍr¦lengthÂÂ£===U§LiteralÍwÍx¡3¢&&Q®CallExpressionÍ|Í R°MemberExpressionÍ|Í‡KªIdentifierÍ|Í¥partsKªIdentifierÍ‚Í‡¥everyÂÂ‘N·ArrowFunctionExpressionÍˆÍŸÀÃÂÂ‘KªIdentifierÍˆÍŒ¤partV°BinaryExpressionÍÍŸR°MemberExpressionÍÍ›KªIdentifierÍÍ”¤partKªIdentifierÍ•Í›¦lengthÂÂ¡>U§LiteralÍÍŸ ¡0Âb«CatchClauseÍ¶ÍëKªIdentifierÍ½ÍÂ¥errorL®BlockStatementÍÄÍë‘W¯ReturnStatementÍÓÍàU§LiteralÍÚÍßÂ¥falseÀM°MethodDefinitionÍ_Í1ÃÂKªIdentifierÍfÍv°getRemainingTime¦methodN²FunctionExpressionÍvÍ1ÀÂÂÂ‘KªIdentifierÍwÍ|¥tokenL®BlockStatementÍ~Í1‘`¬TryStatementÍ‰Í*L®BlockStatementÍÍ¾•O³VariableDeclarationÍœÍÉ‘P²VariableDeclaratorÍ¢ÍÈKªIdentifierÍ¢Í¥£expQ®CallExpressionÍ¨ÍÈR°MemberExpressionÍ¨ÍÁKªIdentifierÍ¨Í¯§JwtUtilKªIdentifierÍ°ÍÁ±getExpirationTimeÂÂ‘KªIdentifierÍÂÍÇ¥tokenÂ¥const[«IfStatementÍ×ÍZ¯UnaryExpressionÍÛÍß¡!ÃKªIdentifierÍÜÍß£expL®BlockStatementÍáÍ‘W¯ReturnStatementÍôÍşZ¯UnaryExpressionÍûÍı¡-ÃU§LiteralÍüÍı¡1ÀO³VariableDeclarationÍÍM‘P²VariableDeclaratorÍ!ÍLKªIdentifierÍ!Í,«currentTimeQ®CallExpressionÍ/ÍLR°MemberExpressionÍ/Í9KªIdentifierÍ/Í3¤MathKªIdentifierÍ4Í9¥floorÂÂ‘V°BinaryExpressionÍ:ÍKQ®CallExpressionÍ:ÍDR°MemberExpressionÍ:ÍBKªIdentifierÍ:Í>¤DateKªIdentifierÍ?ÍB£nowÂÂÂ¡/U§LiteralÍGÍKÍè¤1000Â¥constO³VariableDeclarationÍ[Í‘P²VariableDeclaratorÍaÍ~KªIdentifierÍaÍj©remainingV°BinaryExpressionÍmÍ~KªIdentifierÍmÍp£exp¡-KªIdentifierÍsÍ~«currentTime¥constW¯ReturnStatementÍÍ³[µConditionalExpressionÍ”Í²V°BinaryExpressionÍ”Í¡KªIdentifierÍ”Í©remaining¡>U§LiteralÍ Í¡ ¡0KªIdentifierÍ¤Í­©remainingZ¯UnaryExpressionÍ°Í²¡-ÃU§LiteralÍ±Í²¡1b«CatchClauseÍÈÍ*KªIdentifierÍÏÍÔ¥errorL®BlockStatementÍÖÍ*’]³ExpressionStatementÍåÍQ®CallExpressionÍåÍR°MemberExpressionÍåÍòKªIdentifierÍåÍì§consoleKªIdentifierÍíÍò¥errorÂÂ’U§LiteralÍóÍş¹è·å–å‰©ä½™æ—¶é—´å¤±è´¥:»'è·å–å‰©ä½™æ—¶é—´å¤±è´¥:'KªIdentifierÍ Í¥errorÂW¯ReturnStatementÍÍZ¯UnaryExpressionÍÍ¡-ÃU§LiteralÍÍ¡1ÀÀ

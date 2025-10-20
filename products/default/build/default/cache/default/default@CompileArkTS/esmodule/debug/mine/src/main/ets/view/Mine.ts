@@ -363,6 +363,9 @@ export default class Mine extends ViewPU {
                         Text.create('▶');
                         Text.fontSize('14fp');
                         Text.fontColor('#999999');
+                        Text.onClick(() => {
+                            this.logout();
+                        });
                     }, Text);
                     Text.pop();
                     // 用户头像和基本信息

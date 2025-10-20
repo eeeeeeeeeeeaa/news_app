@@ -21,6 +21,24 @@
       <excludeFolder url="file://$MODULE_DIR$/../../commons/utils/build" />
       <excludeFolder url="file://$MODULE_DIR$/../../commons/utils/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/../../commons/utils/oh_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/follows/.cxx" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/follows/.preview" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/follows/.test" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/follows/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/follows/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/follows/oh_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/login/.cxx" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/login/.preview" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/login/.test" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/login/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/login/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/login/oh_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/mine/.cxx" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/mine/.preview" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/mine/.test" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/mine/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/mine/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/../../features/mine/oh_modules" />
       <excludeFolder url="file://$MODULE_DIR$/../../features/news/.cxx" />
       <excludeFolder url="file://$MODULE_DIR$/../../features/news/.preview" />
       <excludeFolder url="file://$MODULE_DIR$/../../features/news/.test" />
@@ -47,30 +65,6 @@
       <excludeFolder url="file://$MODULE_DIR$/../../products/default/build" />
       <excludeFolder url="file://$MODULE_DIR$/../../products/default/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/../../products/default/oh_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/follow/.cxx" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/follow/.preview" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/follow/.test" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/follow/build" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/follow/node_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/follow/oh_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/follows/.cxx" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/follows/.preview" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/follows/.test" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/follows/build" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/follows/node_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/follows/oh_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/login/.cxx" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/login/.preview" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/login/.test" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/login/build" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/login/node_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/login/oh_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/mine/.cxx" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/mine/.preview" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/mine/.test" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/mine/build" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/mine/node_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/../../features/mine/oh_modules" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library" exported="" scope="PROVIDED">

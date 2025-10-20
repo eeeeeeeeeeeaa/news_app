@@ -3740,7 +3740,7 @@
       "error": false
     },
     "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\main\\ets\\view\\Mine.ets": {
-      "mtimeMs": 1760868778279.3315,
+      "mtimeMs": 1760961206299.255,
       "children": [
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\Index.ets",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts"
@@ -3774,7 +3774,7 @@
       "error": false
     },
     "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets": {
-      "mtimeMs": 1760847440437.866,
+      "mtimeMs": 1760950210974.0977,
       "children": [
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\main\\ets\\components\\CommonUtils.ets",
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets",
@@ -3783,7 +3783,8 @@
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\BaiduHotSearchParser.ets",
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\NewsHeadlineService.ets",
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\NewsApiConfig.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\BackendConfig.ets"
+        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\BackendConfig.ets",
+        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\JwtUtil.ets"
       ],
       "parent": [
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\pages\\Index.ets",
@@ -3797,7 +3798,7 @@
       "error": false
     },
     "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\pages\\Index.ets": {
-      "mtimeMs": 1760868578241.5393,
+      "mtimeMs": 1760960308061.6636,
       "children": [
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\Index.ets",
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\Index.ets",
@@ -4069,7 +4070,7 @@
       "error": false
     },
     "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets": {
-      "mtimeMs": 1760867384670.644,
+      "mtimeMs": 1760960307998.5732,
       "children": [
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
@@ -4084,7 +4085,7 @@
       ]
     },
     "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets": {
-      "mtimeMs": 1760847440430.8657,
+      "mtimeMs": 1760958944144.5325,
       "children": [
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
@@ -4101,10 +4102,11 @@
       ]
     },
     "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\UserManager.ets": {
-      "mtimeMs": 1760866946793.0305,
+      "mtimeMs": 1760960663950.8394,
       "children": [
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
+        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets",
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets"
       ],
       "parent": [
@@ -4117,7 +4119,7 @@
       ]
     },
     "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\UserService.ets": {
-      "mtimeMs": 1760866094196.7317,
+      "mtimeMs": 1760960810580.6025,
       "children": [
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets",
@@ -4147,7 +4149,7 @@
       ]
     },
     "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets": {
-      "mtimeMs": 1760868871081.1565,
+      "mtimeMs": 1760948523661.03,
       "children": [
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\Index.ets"
@@ -4555,6 +4557,19 @@
         "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets"
       ],
       "error": false
+    },
+    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\JwtUtil.ets": {
+      "mtimeMs": 1760957467216.5444,
+      "children": [],
+      "parent": [
+        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets"
+      ],
+      "error": false,
+      "errorCodes": [
+        8,
+        93,
+        2304
+      ]
     }
   }
 }

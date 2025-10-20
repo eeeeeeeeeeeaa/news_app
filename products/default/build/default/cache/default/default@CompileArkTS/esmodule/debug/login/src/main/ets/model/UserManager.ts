@@ -1,6 +1,7 @@
 import preferences from "@ohos:data.preferences";
 import promptAction from "@ohos:promptAction";
 import { HttpUtils, withBase, type ResultShape } from "@bundle:com.huawei.quickstart/default@utils/Index";
+import { JwtUtil } from "@bundle:com.huawei.quickstart/default@utils/Index";
 export interface UserInfo {
     account: string;
     password: string;
@@ -91,31 +92,65 @@ export class UserManager {
             return false;
         }
     }
-    // 获取当前登录用户
+    // 获取当前登录用户（从JWT中解析）
     public async getCurrentUser(): Promise<UserInfo | null> {
         if (!this.dataPreferences) {
             await this.initPreferences();
         }
         try {
-            console.log('🔍 UserManager.getCurrentUser - 开始获取用户信息');
-            console.log('🔍 UserManager.getCurrentUser - 存储键:', this.CURRENT_USER_KEY);
-            const userStr = await this.dataPreferences?.get(this.CURRENT_USER_KEY, '');
-            console.log('🔍 UserManager.getCurrentUser - 从存储获取的字符串:', userStr);
-            console.log('🔍 UserManager.getCurrentUser - 字符串类型:', typeof userStr);
-            // 安全地检查字符串长度
-            const userStrLength = typeof userStr === 'string' ? userStr.length : 0;
-            console.log('🔍 UserManager.getCurrentUser - 字符串长度:', userStrLength);
-            if (userStr && typeof userStr === 'string' && userStr !== '') {
-                const userInfo: UserInfo = JSON.parse(userStr as string) as UserInfo;
-                console.log('🔍 UserManager.getCurrentUser - 解析后的用户信息:', userInfo);
-                console.log('🔍 UserManager.getCurrentUser - 用户信息类型:', typeof userInfo);
-                return userInfo;
+            console.log('🔍 UserManager.getCurrentUser - 开始从JWT获取用户信息');
+            // 1. 获取JWT令牌
+            const token = await this.getToken();
+            if (!token) {
+                console.log('🔍 未找到JWT令牌');
+                return null;
             }
-            console.log('🔍 UserManager.getCurrentUser - 没有找到用户信息');
-            return null;
+            console.log('🔍 找到JWT令牌，开始验证');
+            // 2. 检查JWT格式
+            if (!JwtUtil.isValidFormat(token)) {
+                console.log('🔍 JWT格式无效');
+                await this.logout();
+                return null;
+            }
+            // 3. 检查JWT是否过期
+            if (JwtUtil.isTokenExpired(token)) {
+                console.log('🔍 JWT已过期，清除本地存储');
+                await this.logout();
+                return null;
+            }
+            // 4. 从JWT中解析用户ID
+            const userId = JwtUtil.getUserIdFromToken(token);
+            if (!userId) {
+                console.log('🔍 无法从JWT中解析用户ID');
+                await this.logout();
+                return null;
+            }
+            console.log('🔍 从JWT中解析到用户ID:', userId);
+            // 5. 尝试从本地存储获取用户账号（用于显示）
+            let account = '';
+            try {
+                const userStr = await this.dataPreferences?.get(this.CURRENT_USER_KEY, '');
+                if (userStr && typeof userStr === 'string' && userStr !== '') {
+                    const cachedUserInfo: UserInfo = JSON.parse(userStr as string) as UserInfo;
+                    account = cachedUserInfo.account;
+                }
+            }
+            catch (err) {
+                console.log('🔍 无法从缓存获取账号信息，使用默认值');
+            }
+            // 6. 构建用户信息
+            const userInfo: UserInfo = {
+                account: account || `user_${userId}`,
+                password: '',
+                username: `用户${userId}` // 基于用户ID生成用户名
+            };
+            console.log('✅ 从JWT中获取用户信息成功:', userInfo);
+            return userInfo;
         }
         catch (err) {
-            console.error('❌ UserManager.getCurrentUser - 获取用户信息失败:', err);
+            console.error('❌ UserManager.getCurrentUser - 从JWT获取用户信息失败:', err);
+            // 发生错误时清除可能损坏的存储
+            await this.logout();
             return null;
         }
     }
@@ -173,8 +208,12 @@ export class UserManager {
         }
         try {
             const token = await this.dataPreferences?.get(this.TOKEN_KEY, '');
+            console.log('🧪 调试: UserManager.getToken 读取到 token 是否为空:', !(token && token !== ''));
             if (token && token !== '') {
-                return token as string;
+                // 打印token长度，避免泄露
+                const t = token as string;
+                console.log('🧪 调试: UserManager.getToken token 长度:', t.length);
+                return t;
             }
             return null;
         }
@@ -191,5 +230,34 @@ export class UserManager {
             headers['Authorization'] = `Bearer ${token}`;
         }
         return headers;
+    }
+    // 验证JWT有效性
+    public async validateToken(): Promise<boolean> {
+        try {
+            const token = await this.getToken();
+            if (!token) {
+                return false;
+            }
+            // 检查格式和过期时间
+            return JwtUtil.isValidFormat(token) && !JwtUtil.isTokenExpired(token);
+        }
+        catch (error) {
+            console.error('JWT验证失败:', error);
+            return false;
+        }
+    }
+    // 获取JWT剩余有效时间（秒）
+    public async getTokenRemainingTime(): Promise<number> {
+        try {
+            const token = await this.getToken();
+            if (!token) {
+                return -1;
+            }
+            return JwtUtil.getRemainingTime(token);
+        }
+        catch (error) {
+            console.error('获取JWT剩余时间失败:', error);
+            return -1;
+        }
     }
 }

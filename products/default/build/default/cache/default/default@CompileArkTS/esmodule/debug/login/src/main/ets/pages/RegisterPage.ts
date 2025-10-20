@@ -220,10 +220,12 @@ export class RegisterPage extends ViewPU {
             });
         }, Button);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777259, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
-            Image.width('24vp');
-            Image.height('24vp');
-        }, Image);
+            Text.create('←');
+            Text.fontSize('24fp');
+            Text.width('24vp');
+            Text.height('24vp');
+        }, Text);
+        Text.pop();
         Button.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Blank.create();

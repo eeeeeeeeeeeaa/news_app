@@ -9,3 +9,4 @@ export type { NewsHeadlineItem } from "@bundle:com.huawei.quickstart/default@uti
 export { NewsApiConfig, buildNewsApiUrl, maskApiKey } from "@bundle:com.huawei.quickstart/default@utils/src/NewsApiConfig";
 export type { NewsApiRequestParams } from "@bundle:com.huawei.quickstart/default@utils/src/NewsApiConfig";
 export { BackendConfig, withBase, type BackendConfigShape, type ResultShape, type LoginParams, type RegisterParams } from "@bundle:com.huawei.quickstart/default@utils/src/BackendConfig";
+export { JwtUtil } from "@bundle:com.huawei.quickstart/default@utils/src/JwtUtil";
