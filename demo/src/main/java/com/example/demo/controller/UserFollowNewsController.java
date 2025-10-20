@@ -27,7 +27,7 @@ public class UserFollowNewsController {
     public Result<Void> followNews(
             HttpServletRequest request,  // 用于获取请求头中的令牌
             @RequestParam String newsTitle,  // 新闻标题必填
-            @RequestParam(required = false) String newsUniquekey,  // 新闻唯一标识可选
+            @RequestParam String newsUniquekey,  // 新闻唯一标识必填
             @RequestParam(required = false) String newsAuthor,  // 新闻发布者可选
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime newsTime) {  // 新闻发布时间可选
 

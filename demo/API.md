@@ -110,7 +110,7 @@ curl -X POST "http://localhost:8080/api/users/login" \
 
 #### 请求参数
 - newsTitle (string, 必填)：新闻标题
-- newsUniquekey (string, 可选)：新闻唯一标识（如不提供，系统自动生成）
+- newsUniquekey (string, 必填)：新闻唯一标识
 - newsAuthor (string, 可选)：新闻发布者
 - newsTime (datetime, 可选)：新闻发布时间（ISO 8601格式，如：2025-10-20T15:30:00）
 
@@ -153,11 +153,12 @@ curl -X POST "http://localhost:8080/api/news/follow" \
   -d "newsAuthor=新华社" \
   -d "newsTime=2025-10-20T15:30:00"
 
-# 最简参数示例（仅必填参数，newsUniquekey将自动生成）
+# 最简参数示例（仅必填参数）
 curl -X POST "http://localhost:8080/api/news/follow" \
   -H "Authorization: Bearer <jwt-token>" \
   -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "newsTitle=示例新闻标题"
+  -d "newsTitle=示例新闻标题" \
+  -d "newsUniquekey=abc123"
 ```
 
 ---

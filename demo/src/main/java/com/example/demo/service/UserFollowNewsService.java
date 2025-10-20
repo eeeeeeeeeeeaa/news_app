@@ -28,6 +28,9 @@ public class UserFollowNewsService {
         if (newsTitle == null || newsTitle.trim().isEmpty()) {
             return Result.error("新闻标题不能为空");
         }
+        if (newsUniquekey == null || newsUniquekey.trim().isEmpty()) {
+            return Result.error("新闻唯一标识不能为空");
+        }
 
         // 2. 检查用户是否存在
         Optional<User> userOptional = userRepository.findById(userId);
@@ -35,17 +38,12 @@ public class UserFollowNewsService {
             return Result.error("用户不存在");
         }
 
-        // 3. 如果未提供newsUniquekey，自动生成一个唯一ID
-        if (newsUniquekey == null || newsUniquekey.trim().isEmpty()) {
-            newsUniquekey = UUID.randomUUID().toString();
-        }
-
-        // 4. 检查是否已关注该新闻
+        // 3. 检查是否已关注该新闻
         if (followNewsRepository.existsByUserIdAndNewsUniquekey(userId, newsUniquekey)) {
             return Result.error("已关注该新闻");
         }
 
-        // 5. 保存关注记录
+        // 4. 保存关注记录
         UserFollowNews followNews = new UserFollowNews();
         followNews.setUserId(userId);
         followNews.setNewsUniquekey(newsUniquekey);
