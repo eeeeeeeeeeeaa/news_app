@@ -2,6 +2,8 @@ import preferences from "@ohos:data.preferences";
 import promptAction from "@ohos:promptAction";
 import { HttpUtils, withBase, type ResultShape } from "@bundle:com.huawei.quickstart/default@utils/Index";
 import { JwtManager } from "@bundle:com.huawei.quickstart/default@login/ets/model/JwtManager";
+// 全局 Token 缓存键
+const GLOBAL_TOKEN_KEY = 'app_jwt_token';
 export interface UserInfo {
     account: string;
     password: string;
@@ -55,11 +57,38 @@ export class UserManager {
             const resp: ResultShape<string> = JSON.parse(respText) as ResultShape<string>;
             if (resp.code === 200 && resp.data) {
                 const token = resp.data;
+                console.log('✅ [UserManager.loginUser] 登录成功，开始保存 Token');
+                console.log('🔍 [UserManager.loginUser] Token 长度:', token.length);
+                console.log('🔍 [UserManager.loginUser] Token 前30字符:', token.substring(0, 30) + '...');
                 // 使用 JwtManager 存储 token
-                await this.jwtManager.saveToken(token);
+                console.log('🔍 [UserManager.loginUser] 调用 jwtManager.saveToken...');
+                const saveResult = await this.jwtManager.saveToken(token);
+                console.log('🔍 [UserManager.loginUser] Token 保存结果:', saveResult);
+                // 同时保存到 AppStorage（全局共享存储，解决跨模块访问问题）
+                try {
+                    AppStorage.setOrCreate(GLOBAL_TOKEN_KEY, token);
+                    console.log('✅ [UserManager.loginUser] Token 已保存到 AppStorage');
+                    // 验证 AppStorage
+                    const appToken = AppStorage.get<string>(GLOBAL_TOKEN_KEY);
+                    console.log('🔍 [UserManager.loginUser] 从 AppStorage 读取 Token:', appToken ? '成功' : '失败');
+                }
+                catch (err) {
+                    console.error('❌ [UserManager.loginUser] 保存到 AppStorage 失败:', err);
+                }
+                // 验证保存是否成功
+                const savedToken = await this.jwtManager.getToken();
+                console.log('🔍 [UserManager.loginUser] 验证读取 Token:', savedToken ? '成功' : '失败');
+                if (savedToken) {
+                    console.log('🔍 [UserManager.loginUser] 读取的 Token 长度:', savedToken.length);
+                }
                 const currentUser: UserInfo = { account: account, password: '', username: `用户${account.slice(-4)}` };
+                console.log('🔍 [UserManager.loginUser] 准备保存用户信息:', currentUser);
                 await this.dataPreferences?.put(this.CURRENT_USER_KEY, JSON.stringify(currentUser));
                 await this.dataPreferences?.flush();
+                console.log('✅ [UserManager.loginUser] 用户信息已保存并flush');
+                // 验证用户信息保存
+                const savedUser = await this.dataPreferences?.get(this.CURRENT_USER_KEY, '');
+                console.log('🔍 [UserManager.loginUser] 验证读取用户信息:', savedUser);
                 promptAction.showToast({ message: { "id": 16777295, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" } });
                 return true;
             }
@@ -135,6 +164,9 @@ export class UserManager {
             await this.dataPreferences?.flush();
             // 使用 JwtManager 删除 token
             await this.jwtManager.removeToken();
+            // 同时清除 AppStorage 中的 Token
+            AppStorage.delete(GLOBAL_TOKEN_KEY);
+            console.log('✅ [UserManager.logout] AppStorage Token 已清除');
         }
         catch (err) {
             console.error('Failed to logout:', err);
@@ -175,7 +207,21 @@ export class UserManager {
     }
     // 获取JWT令牌
     public async getToken(): Promise<string | null> {
+        console.log('🔍 [UserManager.getToken] 开始获取 Token...');
+        // 先尝试从 AppStorage 获取（最快且可靠）
+        try {
+            const appToken = AppStorage.get<string>(GLOBAL_TOKEN_KEY);
+            if (appToken && typeof appToken === 'string' && appToken !== '') {
+                console.log('✅ [UserManager.getToken] 从 AppStorage 获取 Token 成功');
+                return appToken;
+            }
+            console.log('⚠️ [UserManager.getToken] AppStorage 中没有 Token');
+        }
+        catch (err) {
+            console.error('❌ [UserManager.getToken] 从 AppStorage 获取失败:', err);
+        }
         // 使用 JwtManager 获取 token
+        console.log('🔍 [UserManager.getToken] 尝试从 JwtManager 获取...');
         return await this.jwtManager.getToken();
     }
     // 便捷方法：获取认证请求头

@@ -3,6 +3,10 @@ import { promptAction } from '@kit.ArkUI';
 import { HttpUtils } from 'utils';
 import preferences from '@ohos.data.preferences';
 
+// 全局 Token 缓存键（与 UserManager 共用）
+const GLOBAL_TOKEN_KEY = 'app_jwt_token';
+const GLOBAL_USER_KEY = 'app_current_user';
+
 // 定义API响应类型
 interface ApiResult<T> {
   code: number;
@@ -78,8 +82,15 @@ export class AuthService {
 
       if (resp.code === 200 && resp.data) {
         // 登录成功，保存JWT和用户信息
+        console.log('✅ 登录成功，Token:', resp.data.substring(0, 30) + '...');
+        
+        // 使用 AppStorage 保存（不需要 Context，跨模块可访问）
+        this.saveToAppStorage(phone, resp.data);
+        
+        // 尝试保存到 Preferences（如果失败也不影响）
         await this.saveJWT(resp.data);
         await this.saveUserInfo(phone, resp.data);
+        
         promptAction.showToast({ message: '登录成功' });
         console.log('✅ 登录成功！');
         return true;
@@ -97,18 +108,53 @@ export class AuthService {
   }
 
   /**
-   * 保存JWT到本地存储
+   * 保存到 AppStorage（全局内存存储，不需要 Context）
+   * @param phone 手机号
+   * @param token JWT令牌
+   */
+  private saveToAppStorage(phone: string, token: string): void {
+    try {
+      console.log('🔍 [AuthService] 开始保存到 AppStorage...');
+      
+      // 保存 Token
+      AppStorage.setOrCreate(GLOBAL_TOKEN_KEY, token);
+      console.log('✅ [AuthService] Token 已保存到 AppStorage');
+      
+      // 保存用户信息
+      const userInfo: UserInfo = {
+        account: phone,
+        password: '',
+        username: `用户${phone.slice(-4)}`
+      };
+      AppStorage.setOrCreate(GLOBAL_USER_KEY, JSON.stringify(userInfo));
+      console.log('✅ [AuthService] 用户信息已保存到 AppStorage');
+      
+      // 验证保存
+      const savedToken = AppStorage.get<string>(GLOBAL_TOKEN_KEY);
+      console.log('🔍 [AuthService] 验证 Token:', savedToken ? '成功' : '失败');
+      
+      const savedUser = AppStorage.get<string>(GLOBAL_USER_KEY);
+      console.log('🔍 [AuthService] 验证用户信息:', savedUser ? '成功' : '失败');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '未知错误';
+      console.error('❌ [AuthService] 保存到 AppStorage 失败:', errorMessage);
+    }
+  }
+
+  /**
+   * 保存JWT到本地存储（Preferences，可能因为 Context 问题失败）
    * @param token JWT令牌
    */
   private async saveJWT(token: string): Promise<void> {
     try {
+      console.log('🔍 [AuthService] 尝试保存到 Preferences...');
       const pref = await preferences.getPreferences(globalThis.abilityContext, 'user_prefs');
       await pref.put('jwt_token', token);
       await pref.flush();
-      console.log('JWT保存成功');
+      console.log('✅ [AuthService] JWT 保存到 Preferences 成功');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : '未知错误';
-      console.error('保存JWT失败:', errorMessage);
+      console.warn('⚠️ [AuthService] 保存JWT到 Preferences 失败（已保存到 AppStorage）:', errorMessage);
     }
   }
 
@@ -144,12 +190,29 @@ export class AuthService {
    */
   async getJWT(): Promise<string | null> {
     try {
+      console.log('🔍 [AuthService.getJWT] 开始获取 Token...');
+      
+      // 先从 AppStorage 获取（最可靠）
+      const appToken = AppStorage.get<string>(GLOBAL_TOKEN_KEY);
+      if (appToken && typeof appToken === 'string' && appToken !== '') {
+        console.log('✅ [AuthService.getJWT] 从 AppStorage 获取成功');
+        return appToken;
+      }
+      console.log('⚠️ [AuthService.getJWT] AppStorage 中没有 Token');
+      
+      // 尝试从 Preferences 获取
       const pref = await preferences.getPreferences(globalThis.abilityContext, 'user_prefs');
       const token = await pref.get('jwt_token', '');
-      return token ? token.toString() : null;
+      if (token && token !== '') {
+        console.log('✅ [AuthService.getJWT] 从 Preferences 获取成功');
+        return token.toString();
+      }
+      
+      console.log('⚠️ [AuthService.getJWT] 未找到 Token');
+      return null;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : '未知错误';
-      console.error('获取JWT失败:', errorMessage);
+      console.error('❌ [AuthService.getJWT] 获取JWT失败:', errorMessage);
       return null;
     }
   }
@@ -159,21 +222,33 @@ export class AuthService {
    */
   async clearJWT(): Promise<void> {
     try {
-      // 清除 user_prefs 中的 JWT
-      const pref1 = await preferences.getPreferences(globalThis.abilityContext, 'user_prefs');
-      await pref1.delete('jwt_token');
-      await pref1.flush();
+      console.log('🔍 [AuthService] 开始清除登录信息...');
       
-      // 清除 user_data 中的用户信息
-      const pref2 = await preferences.getPreferences(globalThis.abilityContext, 'user_data');
-      await pref2.delete('current_user');
-      await pref2.delete('auth_token');
-      await pref2.flush();
+      // 清除 AppStorage
+      AppStorage.delete(GLOBAL_TOKEN_KEY);
+      AppStorage.delete(GLOBAL_USER_KEY);
+      console.log('✅ [AuthService] AppStorage 已清除');
       
-      console.log('JWT和用户信息清除成功');
+      // 尝试清除 Preferences
+      try {
+        const pref1 = await preferences.getPreferences(globalThis.abilityContext, 'user_prefs');
+        await pref1.delete('jwt_token');
+        await pref1.flush();
+        
+        const pref2 = await preferences.getPreferences(globalThis.abilityContext, 'user_data');
+        await pref2.delete('current_user');
+        await pref2.delete('auth_token');
+        await pref2.flush();
+        
+        console.log('✅ [AuthService] Preferences 已清除');
+      } catch (err) {
+        console.warn('⚠️ [AuthService] 清除 Preferences 失败（已清除 AppStorage）');
+      }
+      
+      console.log('✅ [AuthService] JWT和用户信息清除成功');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : '未知错误';
-      console.error('清除JWT和用户信息失败:', errorMessage);
+      console.error('❌ [AuthService] 清除JWT和用户信息失败:', errorMessage);
     }
   }
 }

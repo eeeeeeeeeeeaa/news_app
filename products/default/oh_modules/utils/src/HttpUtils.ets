@@ -165,5 +165,31 @@ export class HttpUtils {
       });
     });
   }
+
+  static async delete(url: string, headers?: Record<string, string>): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const httpRequest: http.HttpRequest = http.createHttp();
+      const mergedHeaders: Record<string, string> = HttpUtils.mergeHeaders(HttpUtils.getDefaultHeaders(), headers);
+
+      const options: http.HttpRequestOptions = {
+        method: http.RequestMethod.DELETE,
+        header: mergedHeaders,
+        connectTimeout: 15000,
+        readTimeout: 15000
+      };
+
+      httpRequest.request(url, options).then((response: http.HttpResponse) => {
+        if (response.responseCode === 200) {
+          resolve(HttpUtils.toText(response.result as string));
+        } else {
+          reject(new Error('HTTP request failed: ' + response.responseCode));
+        }
+      }).catch((error: BusinessError) => {
+        reject(new Error('HTTP exception: ' + error.message));
+      }).finally(() => {
+        httpRequest.destroy();
+      });
+    });
+  }
 }
 

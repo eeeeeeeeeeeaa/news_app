@@ -115,12 +115,27 @@ export class JwtManager {
    */
   public async initPreferences(): Promise<void> {
     try {
+      console.log('🔍 [JwtManager.initPreferences] 开始初始化...');
+      console.log('🔍 [JwtManager.initPreferences] 当前 dataPreferences:', this.dataPreferences);
+      
       if (!this.dataPreferences) {
-        this.dataPreferences = await preferences.getPreferences(getContext(), this.PREFERENCES_NAME);
-        console.log('JwtManager: Preferences 初始化成功');
+        console.log('🔍 [JwtManager.initPreferences] 获取 context...');
+        const context = getContext();
+        console.log('🔍 [JwtManager.initPreferences] Context:', context);
+        console.log('🔍 [JwtManager.initPreferences] Preferences 名称:', this.PREFERENCES_NAME);
+        
+        this.dataPreferences = await preferences.getPreferences(context, this.PREFERENCES_NAME);
+        console.log('✅ [JwtManager.initPreferences] Preferences 初始化成功');
+        console.log('🔍 [JwtManager.initPreferences] dataPreferences:', this.dataPreferences);
+      } else {
+        console.log('✅ [JwtManager.initPreferences] Preferences 已经初始化过');
       }
     } catch (err) {
-      console.error('JwtManager: 初始化 Preferences 失败:', err);
+      console.error('❌ [JwtManager.initPreferences] 初始化 Preferences 失败:', err);
+      if (err instanceof Error) {
+        console.error('❌ [JwtManager.initPreferences] 错误消息:', err.message);
+        console.error('❌ [JwtManager.initPreferences] 错误堆栈:', err.stack);
+      }
       throw new Error('JWT 存储初始化失败');
     }
   }
@@ -131,31 +146,52 @@ export class JwtManager {
    * @returns 是否存储成功
    */
   public async saveToken(token: string): Promise<boolean> {
+    console.log('🔍 [JwtManager.saveToken] 开始保存 Token...');
+    console.log('🔍 [JwtManager.saveToken] Token 类型:', typeof token);
+    console.log('🔍 [JwtManager.saveToken] Token 是否为空:', !token);
+    
     if (!token || typeof token !== 'string' || token.trim() === '') {
-      console.error('JwtManager: 无效的 token');
+      console.error('❌ [JwtManager.saveToken] 无效的 token');
       return false;
     }
+    
+    console.log('🔍 [JwtManager.saveToken] Token 长度:', token.length);
+    console.log('🔍 [JwtManager.saveToken] dataPreferences 存在:', !!this.dataPreferences);
 
     if (!this.dataPreferences) {
+      console.log('🔍 [JwtManager.saveToken] Preferences 未初始化，开始初始化...');
       await this.initPreferences();
     }
 
     try {
+      console.log('🔍 [JwtManager.saveToken] 开始写入 Token 到 Preferences...');
+      console.log('🔍 [JwtManager.saveToken] 存储键:', this.JWT_TOKEN_KEY);
+      
       // 存储 token
       await this.dataPreferences?.put(this.JWT_TOKEN_KEY, token);
+      console.log('✅ [JwtManager.saveToken] Token 已写入');
+      
       // 存储刷新时间
       await this.dataPreferences?.put(this.TOKEN_REFRESH_TIME_KEY, Date.now());
+      console.log('✅ [JwtManager.saveToken] 刷新时间已写入');
+      
       // 持久化
       await this.dataPreferences?.flush();
+      console.log('✅ [JwtManager.saveToken] flush 完成');
 
       // 更新缓存
       this.cachedToken = token;
       this.cachedPayload = this.parseJwtPayload(token);
+      console.log('✅ [JwtManager.saveToken] 缓存已更新');
 
-      console.log('JwtManager: Token 存储成功');
+      console.log('✅ [JwtManager.saveToken] Token 存储成功');
       return true;
     } catch (err) {
-      console.error('JwtManager: 存储 token 失败:', err);
+      console.error('❌ [JwtManager.saveToken] 存储 token 失败:', err);
+      if (err instanceof Error) {
+        console.error('❌ [JwtManager.saveToken] 错误消息:', err.message);
+        console.error('❌ [JwtManager.saveToken] 错误堆栈:', err.stack);
+      }
       return false;
     }
   }
@@ -165,24 +201,43 @@ export class JwtManager {
    * @returns JWT Token 字符串，不存在则返回 null
    */
   public async getToken(): Promise<string | null> {
+    console.log('🔍 [JwtManager.getToken] 开始获取 Token...');
+    console.log('🔍 [JwtManager.getToken] 缓存的 Token:', this.cachedToken ? '存在' : 'null');
+    
     // 优先返回缓存
     if (this.cachedToken) {
+      console.log('✅ [JwtManager.getToken] 从缓存返回 Token，长度:', this.cachedToken.length);
       return this.cachedToken;
     }
 
+    console.log('🔍 [JwtManager.getToken] dataPreferences 存在:', !!this.dataPreferences);
     if (!this.dataPreferences) {
+      console.log('🔍 [JwtManager.getToken] Preferences 未初始化，开始初始化...');
       await this.initPreferences();
     }
 
     try {
+      console.log('🔍 [JwtManager.getToken] 从 Preferences 读取 Token...');
+      console.log('🔍 [JwtManager.getToken] 存储键:', this.JWT_TOKEN_KEY);
+      
       const token = await this.dataPreferences?.get(this.JWT_TOKEN_KEY, '');
+      console.log('🔍 [JwtManager.getToken] 读取结果类型:', typeof token);
+      console.log('🔍 [JwtManager.getToken] 读取结果长度:', typeof token === 'string' ? token.length : 0);
+      
       if (token && typeof token === 'string' && token !== '') {
         this.cachedToken = token;
+        console.log('✅ [JwtManager.getToken] Token 获取成功并更新缓存');
         return token;
       }
+      
+      console.warn('⚠️ [JwtManager.getToken] Token 不存在或为空');
       return null;
     } catch (err) {
-      console.error('JwtManager: 获取 token 失败:', err);
+      console.error('❌ [JwtManager.getToken] 获取 token 失败:', err);
+      if (err instanceof Error) {
+        console.error('❌ [JwtManager.getToken] 错误消息:', err.message);
+        console.error('❌ [JwtManager.getToken] 错误堆栈:', err.stack);
+      }
       return null;
     }
   }
