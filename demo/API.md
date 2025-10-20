@@ -110,9 +110,9 @@ curl -X POST "http://localhost:8080/api/users/login" \
 
 #### 请求参数
 - newsTitle (string, 必填)：新闻标题
-- newsContent (string, 必填)：新闻正文
-- newsId (string, 可选)：新闻唯一标识（如不提供，系统自动生成）
-- imageUrl (string, 可选)：图片链接
+- newsUniquekey (string, 可选)：新闻唯一标识（如不提供，系统自动生成）
+- newsAuthor (string, 可选)：新闻发布者
+- newsTime (datetime, 可选)：新闻发布时间（ISO 8601格式，如：2025-10-20T15:30:00）
 
 #### 成功响应
 ```json
@@ -144,21 +144,20 @@ curl -X POST "http://localhost:8080/api/users/login" \
 
 #### curl 示例
 ```bash
-# 完整参数示例（包含可选的newsId和imageUrl）
+# 完整参数示例（包含所有可选参数）
 curl -X POST "http://localhost:8080/api/news/follow" \
   -H "Authorization: Bearer <jwt-token>" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "newsTitle=示例新闻标题" \
-  -d "newsContent=这是新闻的正文内容..." \
-  -d "newsId=abc123" \
-  -d "imageUrl=https://example.com/images/news123.jpg"
+  -d "newsUniquekey=abc123" \
+  -d "newsAuthor=新华社" \
+  -d "newsTime=2025-10-20T15:30:00"
 
-# 最简参数示例（仅必填参数，newsId将自动生成）
+# 最简参数示例（仅必填参数，newsUniquekey将自动生成）
 curl -X POST "http://localhost:8080/api/news/follow" \
   -H "Authorization: Bearer <jwt-token>" \
   -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "newsTitle=示例新闻标题" \
-  -d "newsContent=这是新闻的正文内容..."
+  -d "newsTitle=示例新闻标题"
 ```
 
 ---
@@ -172,28 +171,30 @@ curl -X POST "http://localhost:8080/api/news/follow" \
 无
 
 #### 成功响应
+> **注意**：返回的新闻列表按关注时间倒序排序，即关注时间越靠后的新闻越靠前。
+
 ```json
 {
   "code": 200,
   "message": "成功",
   "data": [
     {
-      "followId": 1,
-      "userId": 1,
-      "newsId": "abc123",
-      "newsTitle": "示例新闻标题",
-      "imageUrl": "https://example.com/images/news123.jpg",
-      "newsContent": "这是新闻的正文内容...",
-      "followTime": "2025-10-18T21:30:00"
-    },
-    {
       "followId": 2,
       "userId": 1,
-      "newsId": "xyz789",
+      "newsUniquekey": "xyz789",
       "newsTitle": "另一条新闻",
-      "imageUrl": null,
-      "newsContent": "另一条新闻的正文...",
-      "followTime": "2025-10-18T20:15:00"
+      "newsTime": "2025-10-20T10:00:00",
+      "newsAuthor": "人民日报",
+      "followTime": "2025-10-20T21:30:00"
+    },
+    {
+      "followId": 1,
+      "userId": 1,
+      "newsUniquekey": "abc123",
+      "newsTitle": "示例新闻标题",
+      "newsTime": "2025-10-19T15:30:00",
+      "newsAuthor": "新华社",
+      "followTime": "2025-10-20T20:15:00"
     }
   ]
 }
@@ -224,7 +225,7 @@ curl -X GET "http://localhost:8080/api/news/followed" \
 - **Auth**: 需要；请求头 `Authorization: Bearer <jwt-token>`
 
 #### 请求参数
-- newsId (string, 必填)：新闻唯一标识
+- newsUniquekey (string, 必填)：新闻唯一标识
 
 #### 成功响应
 ```json
@@ -256,7 +257,7 @@ curl -X GET "http://localhost:8080/api/news/followed" \
 
 #### curl 示例
 ```bash
-curl -X DELETE "http://localhost:8080/api/news/unfollow?newsId=abc123" \
+curl -X DELETE "http://localhost:8080/api/news/unfollow?newsUniquekey=abc123" \
   -H "Authorization: Bearer <jwt-token>"
 ```
 
