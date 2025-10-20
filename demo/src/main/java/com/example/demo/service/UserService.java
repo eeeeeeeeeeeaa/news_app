@@ -2,10 +2,12 @@ package com.example.demo.service;
 
 import com.example.demo.common.Result;
 import com.example.demo.entity.User;
+import com.example.demo.entity.UserInfo;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import io.jsonwebtoken.Claims;
 
 import java.util.Optional;
 
@@ -57,8 +59,30 @@ public class UserService {
             return Result.error("手机号或密码错误");
         }
 
-        // 3. 生成JWT令牌（包含用户ID）
-        String token = jwtUtil.generateToken(user.getUserId());
+        // 3. 生成JWT令牌（包含用户详细信息）
+        String token = jwtUtil.generateTokenWithUserInfo(user.getUserId(), user.getUserPhone(), user.getUserName());
         return Result.success(token);
+    }
+
+    // 根据JWT令牌获取用户信息
+    public Result<UserInfo> getUserInfoFromToken(String token) {
+        try {
+            // 验证令牌
+            if (!jwtUtil.validateToken(token)) {
+                return Result.error("令牌无效");
+            }
+
+            // 解析令牌获取用户信息
+            Claims claims = jwtUtil.getClaimsFromToken(token);
+            Integer userId = Integer.parseInt(claims.getSubject());
+            String userPhone = claims.get("userPhone", String.class);
+            String userName = claims.get("userName", String.class);
+
+            // 创建用户信息对象
+            UserInfo userInfo = new UserInfo(userId, userPhone, userName);
+            return Result.success(userInfo);
+        } catch (Exception e) {
+            return Result.error("令牌解析失败");
+        }
     }
 }

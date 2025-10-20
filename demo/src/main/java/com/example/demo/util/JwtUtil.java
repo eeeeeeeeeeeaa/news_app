@@ -38,10 +38,30 @@ public class JwtUtil {
                 .compact();
     }
 
+    // 生成令牌（包含用户详细信息）
+    public String generateTokenWithUserInfo(Integer userId, String userPhone, String userName) {
+        Date now = new Date();
+        Date expirationDate = new Date(now.getTime() + expiration);
+
+        return Jwts.builder()
+                .setSubject(String.valueOf(userId))  // 存储用户ID
+                .claim("userPhone", userPhone)  // 存储手机号
+                .claim("userName", userName)     // 存储用户名
+                .setIssuedAt(now)
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS256, secret.getBytes())  // 签名算法
+                .compact();
+    }
+
     // 从令牌中解析用户ID
     public Integer getUserIdFromToken(String token) {
         Claims claims = parser.parseClaimsJws(token).getBody();
         return Integer.parseInt(claims.getSubject());
+    }
+
+    // 从令牌中解析所有Claims
+    public Claims getClaimsFromToken(String token) {
+        return parser.parseClaimsJws(token).getBody();
     }
 
     // 从请求头中获取令牌（请求头格式：Authorization: Bearer <token>）

@@ -1,19 +1,21 @@
 package com.example.demo.controller;
 
 import com.example.demo.common.Result;
+import com.example.demo.entity.UserInfo;
 import com.example.demo.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.util.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
     // 注册接口
@@ -40,5 +42,17 @@ public class UserController {
         }
         
         return userService.login(userPhone, userPassword);
+    }
+
+    // 获取用户信息接口
+    @GetMapping("/info")
+    public Result<UserInfo> getUserInfo(HttpServletRequest request) {
+        // 从请求头获取JWT令牌
+        String token = jwtUtil.getTokenFromRequest(request);
+        if (token == null) {
+            return Result.error("请先登录");
+        }
+
+        return userService.getUserInfoFromToken(token);
     }
 }

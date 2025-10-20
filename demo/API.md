@@ -100,6 +100,54 @@ curl -X POST "http://localhost:8080/api/users/login" \
 
 ---
 
+### 3) 获取用户信息
+- **URL**: `/api/users/info`
+- **Method**: GET
+- **Auth**: 需要；请求头 `Authorization: Bearer <jwt-token>`
+
+#### 请求参数
+无
+
+#### 成功响应
+```json
+{
+  "code": 200,
+  "message": "成功",
+  "data": {
+    "userId": 1,
+    "userPhone": "13800138000",
+    "userName": "Tom"
+  }
+}
+```
+
+#### 失败响应（示例）
+- 未登录或令牌无效：
+```json
+{
+  "code": 400,
+  "message": "请先登录",
+  "data": null
+}
+```
+
+- 令牌解析失败：
+```json
+{
+  "code": 400,
+  "message": "令牌解析失败",
+  "data": null
+}
+```
+
+#### curl 示例
+```bash
+curl -X GET "http://localhost:8080/api/users/info" \
+  -H "Authorization: Bearer <jwt-token>"
+```
+
+---
+
 ## 新闻关注模块
 
 ### 1) 关注新闻
