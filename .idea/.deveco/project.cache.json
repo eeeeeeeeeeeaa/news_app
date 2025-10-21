@@ -1,0 +1,16 @@
+{
+	"CommonInfo":{
+		"project.ide.version":"5.1.0.828",
+		"current.select.product":"default",
+		"current.select.buildMode":"",
+		"crossplatform.projectType":""
+	},
+	"BuildOptions":{
+		"SELECT_BUILD_PRODUCT":"default",
+		"BUNDLE_NAME":"com.huawei.quickstart",
+		"BUILD_PATH":{
+			"OUTPUT_PATH":"G:\\HarmonyOsProjects\\news_app-3a12a9aaec8f982bbbef9569988265dcb99f73e0\\build\\outputs\\default"
+		},
+		"SELECT_BUILD_MODE":""
+	}
+}

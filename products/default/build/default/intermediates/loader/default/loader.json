@@ -1,0 +1,33 @@
+{
+  "modulePathMap": {
+    "default": "G:\\HarmonyOsProjects\\news_app-3a12a9aaec8f982bbbef9569988265dcb99f73e0\\products\\default",
+    "news": "G:\\HarmonyOsProjects\\news_app-3a12a9aaec8f982bbbef9569988265dcb99f73e0\\features\\news",
+    "video": "G:\\HarmonyOsProjects\\news_app-3a12a9aaec8f982bbbef9569988265dcb99f73e0\\features\\video",
+    "quickstart": "G:\\HarmonyOsProjects\\news_app-3a12a9aaec8f982bbbef9569988265dcb99f73e0\\features\\quickstart",
+    "utils": "G:\\HarmonyOsProjects\\news_app-3a12a9aaec8f982bbbef9569988265dcb99f73e0\\commons\\utils",
+    "uicomponents": "G:\\HarmonyOsProjects\\news_app-3a12a9aaec8f982bbbef9569988265dcb99f73e0\\commons\\uicomponents",
+    "mine": "G:\\HarmonyOsProjects\\news_app-3a12a9aaec8f982bbbef9569988265dcb99f73e0\\features\\mine",
+    "login": "G:\\HarmonyOsProjects\\news_app-3a12a9aaec8f982bbbef9569988265dcb99f73e0\\features\\login",
+    "follows": "G:\\HarmonyOsProjects\\news_app-3a12a9aaec8f982bbbef9569988265dcb99f73e0\\features\\follows"
+  },
+  "compileMode": "esmodule",
+  "projectRootPath": "G:\\HarmonyOsProjects\\news_app-3a12a9aaec8f982bbbef9569988265dcb99f73e0",
+  "nodeModulesPath": "G:\\HarmonyOsProjects\\news_app-3a12a9aaec8f982bbbef9569988265dcb99f73e0\\products\\default\\build\\default\\intermediates\\loader_out\\default\\node_modules",
+  "byteCodeHarInfo": {},
+  "declarationEntry": [],
+  "moduleName": "default",
+  "hspNameOhmMap": {},
+  "harNameOhmMap": {},
+  "packageManagerType": "ohpm",
+  "compileEntry": [],
+  "otherCompileFiles": [],
+  "dynamicImportLibInfo": {},
+  "routerMap": [],
+  "hspResourcesMap": {},
+  "updateVersionInfo": {},
+  "anBuildOutPut": "G:\\HarmonyOsProjects\\news_app-3a12a9aaec8f982bbbef9569988265dcb99f73e0\\products\\default\\build\\default\\intermediates\\loader_out\\default\\an\\arm64-v8a",
+  "anBuildMode": "type",
+  "patchConfig": {
+    "changedFileList": "G:\\HarmonyOsProjects\\news_app-3a12a9aaec8f982bbbef9569988265dcb99f73e0\\products\\default\\build\\default\\intermediates\\patch\\default\\changedFileList.json"
+  }
+}
