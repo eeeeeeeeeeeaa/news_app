@@ -3,10 +3,7 @@
     "MODULES": [
       {
         "MODULE_NAME": "c21f969b5f03d33d43e04f8f136e7682",
-        "API_TYPE": "stageMode",
-        "INCREMENTAL_TASKS": {
-          "COMPILE_ARKTS": true
-        }
+        "API_TYPE": "stageMode"
       },
       {
         "MODULE_NAME": "508c75c8507a2ae5223dfd2faeb98122",
@@ -48,6 +45,7 @@
     "IS_DAEMON": true,
     "IS_PARALLEL": true,
     "IS_HVIGORFILE_TYPE_CHECK": false,
+<<<<<<< HEAD
     "TASK_TIME": {
       "c21f969b5f03d33d43e04f8f136e7682": {
         "PreBuild": 43597400,
@@ -152,12 +150,26 @@
         "ProcessLibs": 7312400
       }
     },
+=======
+    "TASK_TIME": {},
+>>>>>>> d3599bdeae63cbd35ebb056dba2f4912bfb81004
     "CONFIG_PROPERTIES": {
       "enableSignTask": true,
       "skipNativeIncremental": false,
       "hvigor_keepDependency": true
     },
+<<<<<<< HEAD
     "TOTAL_TIME": 3462220500,
     "BUILD_ID": "202510221531171180"
+=======
+    "TOTAL_TIME": 472200600,
+    "BUILD_ID": "202510221525333130",
+    "ERROR_MESSAGE": [
+      {
+        "CODE": "00000000",
+        "TIMESTAMP": "1761117933777"
+      }
+    ]
+>>>>>>> d3599bdeae63cbd35ebb056dba2f4912bfb81004
   }
 }

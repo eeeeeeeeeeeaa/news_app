@@ -1,5 +1,6 @@
 {
   "modulePathMap": {
+<<<<<<< HEAD
     "default": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default",
     "news": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news",
     "video": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video",
@@ -13,6 +14,21 @@
   "compileMode": "esmodule",
   "projectRootPath": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app",
   "nodeModulesPath": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\build\\default\\intermediates\\loader_out\\default\\node_modules",
+=======
+    "default": "F:\\newg\\news_app\\news_app\\products\\default",
+    "news": "F:\\newg\\news_app\\news_app\\features\\news",
+    "video": "F:\\newg\\news_app\\news_app\\features\\video",
+    "quickstart": "F:\\newg\\news_app\\news_app\\features\\quickstart",
+    "utils": "F:\\newg\\news_app\\news_app\\commons\\utils",
+    "uicomponents": "F:\\newg\\news_app\\news_app\\commons\\uicomponents",
+    "mine": "F:\\newg\\news_app\\news_app\\features\\mine",
+    "login": "F:\\newg\\news_app\\news_app\\features\\login",
+    "follows": "F:\\newg\\news_app\\news_app\\features\\follows"
+  },
+  "compileMode": "esmodule",
+  "projectRootPath": "F:\\newg\\news_app\\news_app",
+  "nodeModulesPath": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\loader_out\\default\\node_modules",
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
   "byteCodeHarInfo": {},
   "declarationEntry": [],
   "moduleName": "default",
@@ -25,9 +41,16 @@
   "routerMap": [],
   "hspResourcesMap": {},
   "updateVersionInfo": {},
+<<<<<<< HEAD
   "anBuildOutPut": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\build\\default\\intermediates\\loader_out\\default\\an\\arm64-v8a",
   "anBuildMode": "type",
   "patchConfig": {
     "changedFileList": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\build\\default\\intermediates\\patch\\default\\changedFileList.json"
+=======
+  "anBuildOutPut": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\loader_out\\default\\an\\arm64-v8a",
+  "anBuildMode": "type",
+  "patchConfig": {
+    "changedFileList": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\patch\\default\\changedFileList.json"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
   }
 }

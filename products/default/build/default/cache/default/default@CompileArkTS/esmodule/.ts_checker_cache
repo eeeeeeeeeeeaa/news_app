@@ -6,7 +6,11 @@
       "mtimeMs": 1751363562000,
       "children": [],
       "parent": [
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+=======
+        "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Ability.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
@@ -25,7 +29,11 @@
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts"
       ],
       "parent": [
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+=======
+        "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityLifecycleCallback.d.ts"
       ],
@@ -35,7 +43,11 @@
       "mtimeMs": 1751363562000,
       "children": [],
       "parent": [
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+=======
+        "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
@@ -55,8 +67,13 @@
       "mtimeMs": 1751363562000,
       "children": [],
       "parent": [
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets"
+=======
+        "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+        "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "error": false
     },
@@ -72,7 +89,11 @@
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts"
       ],
       "parent": [
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+=======
+        "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityLifecycleCallback.d.ts",
@@ -86,7 +107,11 @@
       "mtimeMs": 1751363562000,
       "children": [],
       "parent": [
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+=======
+        "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.rpc.d.ts",
@@ -112,7 +137,11 @@
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimodalInput.pointer.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.appManager.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\HttpUtils.ets",
+=======
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\HttpUtils.ets",
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.http.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.connection.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.socket.d.ts",
@@ -128,7 +157,11 @@
       ],
       "error": false
     },
+<<<<<<< HEAD
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets": {
+=======
+    "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets": {
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       "mtimeMs": 1761107205233.8733,
       "children": [
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityConstant.d.ts",
@@ -750,6 +783,7 @@
       ],
       "parent": [
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
@@ -757,6 +791,15 @@
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets",
+=======
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\useregister.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets",
+        "F:\\newg\\news_app\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
+        "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets",
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\action_sheet.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\alert_dialog.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
@@ -770,7 +813,11 @@
       ],
       "parent": [
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
+=======
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "error": false
     },
@@ -1393,11 +1440,19 @@
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.file.BackupExtensionContext.d.ts"
       ],
       "parent": [
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets"
       ],
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets": {
+=======
+        "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets": {
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       "mtimeMs": 1761107205233.8733,
       "children": [
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.hilog.d.ts",
@@ -1417,6 +1472,7 @@
       ],
       "error": false
     },
+<<<<<<< HEAD
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\Index.ets": {
       "mtimeMs": 1761117869089.2104,
       "children": [
@@ -1500,10 +1556,96 @@
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\Index.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\Index.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
+=======
+    "F:\\newg\\news_app\\news_app\\features\\video\\Index.ets": {
+      "mtimeMs": 1761107204391.5327,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\features\\news\\Index.ets": {
+      "mtimeMs": 1761107204241.6604,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\features\\login\\Index.ets": {
+      "mtimeMs": 1761109006240.8042,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets",
+        "F:\\newg\\news_app\\news_app\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets",
+        "F:\\newg\\news_app\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
+        "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\features\\mine\\Index.ets": {
+      "mtimeMs": 1761107204223.66,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\features\\follows\\Index.ets": {
+      "mtimeMs": 1761109006190.8042,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets",
+        "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets": {
+      "mtimeMs": 1761109006196.803,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets",
+        "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts",
+        "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets": {
+      "mtimeMs": 1761109007092.898,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\features\\video\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\news\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\mine\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\follows\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "parent": [],
       "error": false
     },
+<<<<<<< HEAD
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets": {
       "mtimeMs": 1761107204434.3264,
       "children": [
@@ -1579,18 +1721,104 @@
       ],
       "parent": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets"
+=======
+    "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets": {
+      "mtimeMs": 1761107204434.3264,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\video\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets": {
+      "mtimeMs": 1761109006334.8037,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\service\\FavoriteNewsService.ets",
+        "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\model\\FavoriteNews.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\Index.ets",
+        "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\Index.ets": {
+      "mtimeMs": 1761107204136.6433,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonButton.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonInput.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonLoading.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonSearchBar.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets",
+        "F:\\newg\\news_app\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
+        "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets": {
+      "mtimeMs": 1761109006152.8025,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\main\\ets\\components\\CommonUtils.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\MainViewModel.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\HttpUtils.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\BaiduHotSearchParser.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\NewsHeadlineService.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\NewsApiConfig.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\BackendConfig.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\JwtUtil.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets",
+        "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\service\\FavoriteNewsService.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\useregister.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets",
+        "F:\\newg\\news_app\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
+        "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets",
+        "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\service\\FavoriteNewsService.ets": {
+      "mtimeMs": 1761109006333.804,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\model\\FavoriteNews.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "error": true,
       "errorCodes": [
         149
       ]
     },
+<<<<<<< HEAD
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\src\\main\\ets\\model\\FavoriteNews.ets": {
       "mtimeMs": 1761109006332.8032,
       "children": [],
       "parent": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\src\\main\\ets\\service\\FavoriteNewsService.ets"
+=======
+    "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\model\\FavoriteNews.ets": {
+      "mtimeMs": 1761109006332.8032,
+      "children": [],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets",
+        "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\service\\FavoriteNewsService.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "error": false
     },
@@ -1605,13 +1833,20 @@
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.netErrorList.d.ts"
       ],
       "parent": [
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets",
+=======
+        "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets",
+        "F:\\newg\\news_app\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
+        "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets",
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\web.d.ts"
       ],
       "error": false
     },
+<<<<<<< HEAD
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonButton.ets": {
       "mtimeMs": 1761107204140.6404,
       "children": [],
@@ -1653,18 +1888,66 @@
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets": {
+=======
+    "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonButton.ets": {
+      "mtimeMs": 1761107204140.6404,
+      "children": [],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonInput.ets": {
+      "mtimeMs": 1761107204140.6404,
+      "children": [],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonLoading.ets": {
+      "mtimeMs": 1761107204141.64,
+      "children": [],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonSearchBar.ets": {
+      "mtimeMs": 1761107204141.64,
+      "children": [],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\main\\ets\\components\\CommonUtils.ets": {
+      "mtimeMs": 1761107204158.6433,
+      "children": [],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets": {
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       "mtimeMs": 1761107204159.6401,
       "children": [
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts"
       ],
       "parent": [
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\Index.ets"
+=======
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "error": true,
       "errorCodes": [
         28007
       ]
     },
+<<<<<<< HEAD
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\MainViewModel.ets": {
       "mtimeMs": 1761107204155.6401,
       "children": [
@@ -1678,12 +1961,28 @@
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\HttpUtils.ets": {
+=======
+    "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\MainViewModel.ets": {
+      "mtimeMs": 1761107204155.6401,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\ItemData.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\NewsData.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\BaiduHotSearchParser.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\HttpUtils.ets": {
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       "mtimeMs": 1761109006154.8064,
       "children": [
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.http.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
       ],
       "parent": [
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\Index.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\BaiduHotSearchParser.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\NewsHeadlineService.ets"
@@ -1734,6 +2033,58 @@
       "children": [],
       "parent": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\Index.ets"
+=======
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\BaiduHotSearchParser.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\NewsHeadlineService.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\BaiduHotSearchParser.ets": {
+      "mtimeMs": 1761107204153.6401,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\HttpUtils.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\MainViewModel.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\NewsHeadlineService.ets": {
+      "mtimeMs": 1761109006158.8042,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\HttpUtils.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\NewsApiConfig.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\NewsApiConfig.ets": {
+      "mtimeMs": 1761109006157.8047,
+      "children": [],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\NewsHeadlineService.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\BackendConfig.ets": {
+      "mtimeMs": 1761107204153.6401,
+      "children": [],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\JwtUtil.ets": {
+      "mtimeMs": 1761109006155.8047,
+      "children": [],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "error": false
     },
@@ -1744,6 +2095,7 @@
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\application\\BaseContext.d.ts"
       ],
       "parent": [
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets"
@@ -1763,6 +2115,27 @@
       "children": [],
       "parent": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\MainViewModel.ets"
+=======
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\ItemData.ets": {
+      "mtimeMs": 1761107204155.6401,
+      "children": [],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\MainViewModel.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\NewsData.ets": {
+      "mtimeMs": 1761107204156.6396,
+      "children": [],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\MainViewModel.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "error": false
     },
@@ -1773,7 +2146,11 @@
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.connection.d.ts"
       ],
       "parent": [
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\HttpUtils.ets",
+=======
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\HttpUtils.ets",
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.connection.d.ts"
       ],
       "error": false
@@ -1825,6 +2202,7 @@
       ],
       "error": false
     },
+<<<<<<< HEAD
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets": {
       "mtimeMs": 1761118272487.7107,
       "children": [
@@ -1834,12 +2212,24 @@
       ],
       "parent": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\Index.ets"
+=======
+    "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets": {
+      "mtimeMs": 1761107204212.6565,
+      "children": [
+        "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\login\\Index.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "error": true,
       "errorCodes": [
         28007
       ]
     },
+<<<<<<< HEAD
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets": {
       "mtimeMs": 1761118272489.7097,
       "children": [
@@ -1851,29 +2241,60 @@
       "parent": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\Index.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets"
+=======
+    "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets": {
+      "mtimeMs": 1761109006243.8022,
+      "children": [
+        "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
+        "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\useregister.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\login\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "error": true,
       "errorCodes": [
         28007
       ]
     },
+<<<<<<< HEAD
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets": {
+<<<<<<< HEAD
       "mtimeMs": 1761117868924.9214,
+=======
+=======
+    "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets": {
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
+      "mtimeMs": 1761109006241.8025,
+>>>>>>> d3599bdeae63cbd35ebb056dba2f4912bfb81004
       "children": [
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
+<<<<<<< HEAD
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\Index.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\Index.ets"
       ],
       "parent": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\Index.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
+=======
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\login\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "error": true,
       "errorCodes": [
         28007
       ]
     },
+<<<<<<< HEAD
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets": {
       "mtimeMs": 1761117868925.9329,
       "children": [
@@ -1883,6 +2304,17 @@
       ],
       "parent": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets"
+=======
+    "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets": {
+      "mtimeMs": 1761109006242.8025,
+      "children": [
+        "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets",
+        "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "error": true,
       "errorCodes": [
@@ -1890,6 +2322,7 @@
         28007
       ]
     },
+<<<<<<< HEAD
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\model\\useregister.ets": {
       "mtimeMs": 1761117868926.9294,
       "children": [
@@ -1898,6 +2331,16 @@
       ],
       "parent": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
+=======
+    "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\model\\useregister.ets": {
+      "mtimeMs": 1761107204211.6577,
+      "children": [
+        "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "error": true,
       "errorCodes": [
@@ -1923,6 +2366,7 @@
       ],
       "error": false
     },
+<<<<<<< HEAD
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets": {
       "mtimeMs": 1761107204292.6594,
       "children": [
@@ -1954,12 +2398,46 @@
       ],
       "parent": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets"
+=======
+    "F:\\newg\\news_app\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets": {
+      "mtimeMs": 1761107204292.6594,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\Index.ets",
+        "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\news\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets": {
+      "mtimeMs": 1761107204228.6562,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\Index.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\mine\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets": {
+      "mtimeMs": 1761109006244.8022,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\features\\login\\Index.ets",
+        "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "error": true,
       "errorCodes": [
         28007
       ]
     },
+<<<<<<< HEAD
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets": {
       "mtimeMs": 1761109006195.803,
       "children": [
@@ -1980,6 +2458,28 @@
       "parent": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\Index.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
+=======
+    "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets": {
+      "mtimeMs": 1761109006195.803,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\follows\\Index.ets"
+      ],
+      "error": false
+    },
+    "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets": {
+      "mtimeMs": 1761109006197.8037,
+      "children": [
+        "F:\\newg\\news_app\\news_app\\commons\\utils\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\login\\Index.ets",
+        "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts"
+      ],
+      "parent": [
+        "F:\\newg\\news_app\\news_app\\features\\follows\\Index.ets",
+        "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       ],
       "error": true,
       "errorCodes": [

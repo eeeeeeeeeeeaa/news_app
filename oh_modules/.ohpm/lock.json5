@@ -171,16 +171,16 @@
     }
   },
   "packages": {
-    "utils@file:commons/utils": {
-      "storePath": "commons/utils",
+    "uicomponents@file:commons/uicomponents": {
+      "storePath": "commons/uicomponents",
       "dependencies": {},
       "dynamicDependencies": {},
       "dev": false,
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "uicomponents@file:commons/uicomponents": {
-      "storePath": "commons/uicomponents",
+    "utils@file:commons/utils": {
+      "storePath": "commons/utils",
       "dependencies": {},
       "dynamicDependencies": {},
       "dev": false,
@@ -207,8 +207,8 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "news@file:features/news": {
-      "storePath": "features/news",
+    "quickstart@file:features/quickstart": {
+      "storePath": "features/quickstart",
       "dependencies": {
         "utils": "commons/utils",
         "uicomponents": "commons/uicomponents"
@@ -223,6 +223,21 @@
       "dependencies": {
         "utils": "commons/utils",
         "uicomponents": "commons/uicomponents"
+      },
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+<<<<<<< HEAD
+    "mine@file:features/mine": {
+      "storePath": "features/mine",
+=======
+    "news@file:features/news": {
+      "storePath": "features/news",
+>>>>>>> d3599bdeae63cbd35ebb056dba2f4912bfb81004
+      "dependencies": {
+        "login": "features/login"
       },
       "dynamicDependencies": {},
       "dev": false,
@@ -249,6 +264,7 @@
       "dev": false,
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
+<<<<<<< HEAD
     },
     "follow@file:features/follows": {
       "storePath": "features/follows",
@@ -261,6 +277,8 @@
       "dev": false,
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
+=======
+>>>>>>> d3599bdeae63cbd35ebb056dba2f4912bfb81004
     }
   }
 }
