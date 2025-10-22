@@ -1418,7 +1418,7 @@
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\Index.ets": {
-      "mtimeMs": 1761107204391.5327,
+      "mtimeMs": 1761117869089.2104,
       "children": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets"
       ],
@@ -1428,7 +1428,7 @@
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\Index.ets": {
-      "mtimeMs": 1761107204241.6604,
+      "mtimeMs": 1761117868958.952,
       "children": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets"
       ],
@@ -1438,7 +1438,7 @@
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\Index.ets": {
-      "mtimeMs": 1761109006240.8042,
+      "mtimeMs": 1761117868918.922,
       "children": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
@@ -1455,7 +1455,7 @@
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\Index.ets": {
-      "mtimeMs": 1761107204223.66,
+      "mtimeMs": 1761117868942.9414,
       "children": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets"
       ],
@@ -1465,7 +1465,7 @@
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\Index.ets": {
-      "mtimeMs": 1761109006190.8042,
+      "mtimeMs": 1761117868903.673,
       "children": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets"
@@ -1476,7 +1476,7 @@
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets": {
-      "mtimeMs": 1761109006196.803,
+      "mtimeMs": 1761117868909.6736,
       "children": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\Index.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\Index.ets",
@@ -1490,7 +1490,7 @@
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets": {
-      "mtimeMs": 1761111506019.191,
+      "mtimeMs": 1761118272502.7102,
       "children": [
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\Index.ets",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\Index.ets",
@@ -1826,7 +1826,7 @@
       "error": false
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets": {
-      "mtimeMs": 1761111237708.7417,
+      "mtimeMs": 1761118272487.7107,
       "children": [
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
@@ -1841,7 +1841,7 @@
       ]
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets": {
-      "mtimeMs": 1761111237713.741,
+      "mtimeMs": 1761118272489.7097,
       "children": [
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
@@ -1858,7 +1858,7 @@
       ]
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets": {
-      "mtimeMs": 1761109006241.8025,
+      "mtimeMs": 1761117868924.9214,
       "children": [
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
@@ -1875,7 +1875,7 @@
       ]
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets": {
-      "mtimeMs": 1761109006242.8025,
+      "mtimeMs": 1761117868925.9329,
       "children": [
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\Index.ets",
@@ -1891,7 +1891,7 @@
       ]
     },
     "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\main\\ets\\model\\useregister.ets": {
-      "mtimeMs": 1761107204211.6577,
+      "mtimeMs": 1761117868926.9294,
       "children": [
         "F:\\huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
         "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\Index.ets"
