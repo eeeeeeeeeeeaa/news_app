@@ -1,0 +1,1502 @@
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ Íif (!("finalizeConstruction" in ViewPU.prototype)) {
+    Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
+}
+// ets/view/Video.ets
+import { CommonSearchBar } from 'uicomponents';
+import { BaiduHotSearchParser, NewsHeadlineService, buildNewsApiUrl, maskApiKey } from 'utils';
+import { FavoriteNewsService } from '../service/FavoriteNewsService';
+import { UserManager } from 'login';
+import webview from '@ohos.web.webview';
+export default class VideoPage extends ViewPU {
+    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
+        super(parent, __localStorage, elmtId, extraInfo);
+        if (typeof paramsLambda === "function") {
+            this.paramsGenerator_ = paramsLambda;
+        }
+        this.__searchText = new ObservedPropertySimplePU('', this, "searchText");
+        this.__hotTitles = new ObservedPropertyObjectPU([], this, "hotTitles");
+        this.__selectedUrl = new ObservedPropertyObjectPU(null, this, "selectedUrl");
+        this.__selectedNewsItem = new ObservedPropertyObjectPU(null, this, "selectedNewsItem");
+        this.webController = new webview.WebviewController();
+        this.__categories = new ObservedPropertyObjectPU(['æŽ¨è', 'å›½å†…', 'å›½é™…', 'å¨±ä¹', 'ä½“è‚²', 'å†›äº‹', 'ç§‘æŠ€', 'è´¢ç»', 'æ¸¸æˆ', 'æ±½è½¦', 'å¥åº·'], this, "categories");
+        this.__currentCategory = new ObservedPropertySimplePU('æŽ¨è', this, "currentCategory");
+        this.__newsList = new ObservedPropertyObjectPU([], this, "newsList");
+        this.__isLoading = new ObservedPropertySimplePU(false, this, "isLoading");
+        this.__debugRequestUrl = new ObservedPropertySimplePU('', this, "debugRequestUrl");
+        this.__refreshing = new ObservedPropertySimplePU(false, this, "refreshing");
+        this.__loadingMore = new ObservedPropertySimplePU(false, this, "loadingMore");
+        this.__page = new ObservedPropertySimplePU(1, this, "page");
+        this.__pageSize = new ObservedPropertySimplePU(20, this, "pageSize");
+        this.__hasMore = new ObservedPropertySimplePU(true, this, "hasMore");
+        this.__favoriteNewsKeys = new ObservedPropertyObjectPU(new Set(), this, "favoriteNewsKeys");
+        this.__isLoggedIn = new ObservedPropertySimplePU(false, this, "isLoggedIn");
+        this.__forceUpdate = new ObservedPropertySimplePU(0, this, "forceUpdate");
+        this.userManager = UserManager.getInstance();
+        this.setInitiallyProvidedValue(params);
+        this.finalizeConstruction();
+    }
+    setInitiallyProvidedValue(params) {
+        if (params.searchText !== undefined) {
+            this.searchText = params.searchText;
+        }
+        if (params.hotTitles !== undefined) {
+            this.hotTitles = params.hotTitles;
+        }
+        if (params.selectedUrl !== undefined) {
+            this.selectedUrl = params.selectedUrl;
+        }
+        if (params.selectedNewsItem !== undefined) {
+            this.selectedNewsItem = params.selectedNewsItem;
+        }
+        if (params.webController !== undefined) {
+            this.webController = params.webController;
+        }
+        if (params.categories !== undefined) {
+            this.categories = params.categories;
+        }
+        if (params.currentCategory !== undefined) {
+            this.currentCategory = params.currentCategory;
+        }
+        if (params.newsList !== undefined) {
+            this.newsList = params.newsList;
+        }
+        if (params.isLoading !== undefined) {
+            this.isLoading = params.isLoading;
+        }
+        if (params.debugRequestUrl !== undefined) {
+            this.debugRequestUrl = params.debugRequestUrl;
+        }
+        if (params.refreshing !== undefined) {
+            this.refreshing = params.refreshing;
+        }
+        if (params.loadingMore !== undefined) {
+            this.loadingMore = params.loadingMore;
+        }
+        if (params.page !== undefined) {
+            this.page = params.page;
+        }
+        if (params.pageSize !== undefined) {
+            this.pageSize = params.pageSize;
+        }
+        if (params.hasMore !== undefined) {
+            this.hasMore = params.hasMore;
+        }
+        if (params.favoriteNewsKeys !== undefined) {
+            this.favoriteNewsKeys = params.favoriteNewsKeys;
+        }
+        if (params.isLoggedIn !== undefined) {
+            this.isLoggedIn = params.isLoggedIn;
+        }
+        if (params.forceUpdate !== undefined) {
+            this.forceUpdate = params.forceUpdate;
+        }
+        if (params.userManager !== undefined) {
+            this.userManager = params.userManager;
+        }
+    }
+    updateStateVars(params) {
+    }
+    purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__searchText.purgeDependencyOnElmtId(rmElmtId);
+        this.__hotTitles.purgeDependencyOnElmtId(rmElmtId);
+        this.__selectedUrl.purgeDependencyOnElmtId(rmElmtId);
+        this.__selectedNewsItem.purgeDependencyOnElmtId(rmElmtId);
+        this.__categories.purgeDependencyOnElmtId(rmElmtId);
+        this.__currentCategory.purgeDependencyOnElmtId(rmElmtId);
+        this.__newsList.purgeDependencyOnElmtId(rmElmtId);
+        this.__isLoading.purgeDependencyOnElmtId(rmElmtId);
+        this.__debugRequestUrl.purgeDependencyOnElmtId(rmElmtId);
+        this.__refreshing.purgeDependencyOnElmtId(rmElmtId);
+        this.__loadingMore.purgeDependencyOnElmtId(rmElmtId);
+        this.__page.purgeDependencyOnElmtId(rmElmtId);
+        this.__pageSize.purgeDependencyOnElmtId(rmElmtId);
+        this.__hasMore.purgeDependencyOnElmtId(rmElmtId);
+        this.__favoriteNewsKeys.purgeDependencyOnElmtId(rmElmtId);
+        this.__isLoggedIn.purgeDependencyOnElmtId(rmElmtId);
+        this.__forceUpdate.purgeDependencyOnElmtId(rmElmtId);
+    }
+    aboutToBeDeleted() {
+        this.__searchText.aboutToBeDeleted();
+        this.__hotTitles.aboutToBeDeleted();
+        this.__selectedUrl.aboutToBeDeleted();
+        this.__selectedNewsItem.aboutToBeDeleted();
+        this.__categories.aboutToBeDeleted();
+        this.__currentCategory.aboutToBeDeleted();
+        this.__newsList.aboutToBeDeleted();
+        this.__isLoading.aboutToBeDeleted();
+        this.__debugRequestUrl.aboutToBeDeleted();
+        this.__refreshing.aboutToBeDeleted();
+        this.__loadingMore.aboutToBeDeleted();
+        this.__page.aboutToBeDeleted();
+        this.__pageSize.aboutToBeDeleted();
+        this.__hasMore.aboutToBeDeleted();
+        this.__favoriteNewsKeys.aboutToBeDeleted();
+        this.__isLoggedIn.aboutToBeDeleted();
+        this.__forceUpdate.aboutToBeDeleted();
+        SubscriberManager.Get().delete(this.id__());
+        this.aboutToBeDeletedInternal();
+    }
+    get searchText() {
+        return this.__searchText.get();
+    }
+    set searchText(newValue) {
+        this.__searchText.set(newValue);
+    }
+    get hotTitles() {
+        return this.__hotTitles.get();
+    }
+    set hotTitles(newValue) {
+        this.__hotTitles.set(newValue);
+    }
+    get selectedUrl() {
+        return this.__selectedUrl.get();
+    }
+    set selectedUrl(newValue) {
+        this.__selectedUrl.set(newValue);
+    }
+    get selectedNewsItem() {
+        return this.__selectedNewsItem.get();
+    }
+    set selectedNewsItem(newValue) {
+        this.__selectedNewsItem.set(newValue);
+    }
+    get categories() {
+        return this.__categories.get();
+    }
+    set categories(newValue) {
+        this.__categories.set(newValue);
+    }
+    get currentCategory() {
+        return this.__currentCategory.get();
+    }
+    set currentCategory(newValue) {
+        this.__currentCategory.set(newValue);
+    }
+    get newsList() {
+        return this.__newsList.get();
+    }
+    set newsList(newValue) {
+        this.__newsList.set(newValue);
+    }
+    get isLoading() {
+        return this.__isLoading.get();
+    }
+    set isLoading(newValue) {
+        this.__isLoading.set(newValue);
+    }
+    get debugRequestUrl() {
+        return this.__debugRequestUrl.get();
+    }
+    set debugRequestUrl(newValue) {
+        this.__debugRequestUrl.set(newValue);
+    }
+    get refreshing() {
+        return this.__refreshing.get();
+    }
+    set refreshing(newValue) {
+        this.__refreshing.set(newValue);
+    }
+    get loadingMore() {
+        return this.__loadingMore.get();
+    }
+    set loadingMore(newValue) {
+        this.__loadingMore.set(newValue);
+    }
+    get page() {
+        return this.__page.get();
+    }
+    set page(newValue) {
+        this.__page.set(newValue);
+    }
+    get pageSize() {
+        return this.__pageSize.get();
+    }
+    set pageSize(newValue) {
+        this.__pageSize.set(newValue);
+    }
+    get hasMore() {
+        return this.__hasMore.get();
+    }
+    set hasMore(newValue) {
+        this.__hasMore.set(newValue);
+    }
+    get favoriteNewsKeys() {
+        return this.__favoriteNewsKeys.get();
+    }
+    set favoriteNewsKeys(newValue) {
+        this.__favoriteNewsKeys.set(newValue);
+    }
+    get isLoggedIn() {
+        return this.__isLoggedIn.get();
+    }
+    set isLoggedIn(newValue) {
+        this.__isLoggedIn.set(newValue);
+    }
+    get forceUpdate() {
+        return this.__forceUpdate.get();
+    }
+    set forceUpdate(newValue) {
+        this.__forceUpdate.set(newValue);
+    }
+    async aboutToAppear() {
+        // preload hot titles for search bar placeholder (reuse existing behavior)
+        try {
+            const realtime = await BaiduHotSearchParser.getHotSearchData('realtime');
+            this.hotTitles = realtime.slice(0, 10).map((it) => it.card_title);
+        }
+        catch (_) {
+            this.hotTitles = [];
+        }
+        // æ£€æŸ¥ç™»å½•çŠ¶æ€å¹¶åŠ è½½æ”¶è—åˆ—è¡¨
+        await this.checkLoginStatus();
+        await this.reloadCurrentCategory();
+    }
+    getTypeForCategory(category) {
+        switch (category) {
+            case 'æŽ¨è':
+                return 'top';
+            case 'å›½å†…':
+                return 'guonei';
+            case 'å›½é™…':
+                return 'guoji';
+            case 'å¨±ä¹':
+                return 'yule';
+            case 'ä½“è‚²':
+                return 'tiyu';
+            case 'å†›äº‹':
+                return 'junshi';
+            case 'ç§‘æŠ€':
+                return 'keji';
+            case 'è´¢ç»':
+                return 'caijing';
+            case 'æ¸¸æˆ':
+                return 'youxi';
+            case 'æ±½è½¦':
+                return 'qiche';
+            case 'å¥åº·':
+                return 'jiankang';
+            default:
+                return 'top';
+        }
+    }
+    async reloadCurrentCategory() {
+        this.page = 1;
+        this.hasMore = true;
+        await this.loadNewsByCategory(this.currentCategory, true);
+    }
+    async loadNewsByCategory(category, replace = false) {
+        this.isLoading = replace && !this.refreshing;
+        try {
+            const type = this.getTypeForCategory(category);
+            const params = { type: type, is_filter: 0, page: this.page, size: this.pageSize };
+            // Debug: print and keep masked url
+            const url = buildNewsApiUrl(params);
+            this.debugRequestUrl = maskApiKey(url);
+            const list = await NewsHeadlineService.fetch(params);
+            this.currentCategory = category;
+            this.hasMore = list.length >= this.pageSize;
+            if (replace) {
+                this.newsList = list;
+            }
+            else {
+                this.newsList = [...this.newsList, ...list];
+            }
+        }
+        catch (e) {
+            if (replace) {
+                this.newsList = [];
+            }
+            // no error code handling as requested
+        }
+        finally {
+            this.isLoading = false;
+            this.refreshing = false;
+            this.loadingMore = false;
+        }
+    }
+    onTabClick(category) {
+        if (this.currentCategory === category)
+            return;
+        this.page = 1;
+        this.hasMore = true;
+        this.loadNewsByCategory(category, true).catch(() => { });
+    }
+    async onPullToRefresh() {
+        if (this.refreshing)
+            return;
+        this.refreshing = true;
+        this.page = 1;
+        this.hasMore = true;
+        await this.loadNewsByCategory(this.currentCategory, true);
+    }
+    async onLoadMore() {
+        if (this.loadingMore || !this.hasMore)
+            return;
+        this.loadingMore = true;
+        this.page += 1;
+        await this.loadNewsByCategory(this.currentCategory, false);
+    }
+    openBrowser(url, newsItem) {
+        this.selectedUrl = url;
+        this.selectedNewsItem = newsItem || null;
+    }
+    closeBrowser() {
+        this.selectedUrl = null;
+        this.selectedNewsItem = null;
+    }
+    // æ£€æŸ¥ç™»å½•çŠ¶æ€
+    async checkLoginStatus() {
+        try {
+            const currentUser = await this.userManager.getCurrentUser();
+            this.isLoggedIn = currentUser !== null;
+            if (this.isLoggedIn) {
+                await this.loadFavoriteNews();
+            }
+        }
+        catch (error) {
+            console.error('âŒ æ£€æŸ¥ç™»å½•çŠ¶æ€å¤±è´¥:', error);
+            this.isLoggedIn = false;
+        }
+    }
+    // åŠ è½½æ”¶è—çš„æ–°é—»åˆ—è¡¨
+    async loadFavoriteNews() {
+        try {
+            const token = await this.userManager.getToken();
+            if (!token) {
+                console.log('ðŸ” æœªæ‰¾åˆ°ç™»å½•ä»¤ç‰Œ');
+                return;
+            }
+            const favoriteNews = await FavoriteNewsService.getFollowedNews(token);
+            const favoriteKeys = new Set(favoriteNews.map(news => news.newsUniquekey));
+            this.favoriteNewsKeys = favoriteKeys;
+            console.log('ðŸ” åŠ è½½æ”¶è—æ–°é—»æˆåŠŸï¼Œæ•°é‡:', favoriteNews.length);
+        }
+        catch (error) {
+            console.error('âŒ åŠ è½½æ”¶è—æ–°é—»å¤±è´¥:', error);
+        }
+    }
+    // æ”¶è—/å–æ¶ˆæ”¶è—æ–°é—»
+    async toggleFavorite(newsItem) {
+        console.log('ðŸ” [toggleFavorite] å¼€å§‹æ”¶è—æ“ä½œ');
+        console.log('ðŸ” [toggleFavorite] æ–°é—»é¡¹:', JSON.stringify(newsItem));
+        if (!this.isLoggedIn) {
+            console.log('ðŸ” ç”¨æˆ·æœªç™»å½•ï¼Œæ— æ³•æ”¶è—');
+            return;
+        }
+        try {
+            const token = await this.userManager.getToken();
+            if (!token) {
+                console.log('ðŸ” æœªæ‰¾åˆ°ç™»å½•ä»¤ç‰Œ');
+                return;
+            }
+            const isCurrentlyFavorited = this.favoriteNewsKeys.has(newsItem.url);
+            console.log('ðŸ” [toggleFavorite] å½“å‰æ”¶è—çŠ¶æ€:', isCurrentlyFavorited);
+            console.log('ðŸ” [toggleFavorite] æ–°é—»å”¯ä¸€æ ‡è¯†:', newsItem.url);
+            if (isCurrentlyFavorited) {
+                // å–æ¶ˆæ”¶è—
+                console.log('ðŸ” [toggleFavorite] æ‰§è¡Œå–æ¶ˆæ”¶è—æ“ä½œ');
+                const success = await FavoriteNewsService.unfollowNews(token, newsItem.url);
+                console.log('ðŸ” [toggleFavorite] å–æ¶ˆæ”¶è—ç»“æžœ:', success);
+                if (success) {
+                    this.favoriteNewsKeys.delete(newsItem.url);
+                    this.forceUpdate++; // å¼ºåˆ¶UIæ›´æ–°
+                    console.log('âœ… å–æ¶ˆæ”¶è—æˆåŠŸï¼Œæ›´æ–°æœ¬åœ°çŠ¶æ€');
+                    console.log('ðŸ” [toggleFavorite] æ›´æ–°åŽçš„æ”¶è—åˆ—è¡¨:', Array.from(this.favoriteNewsKeys));
+                }
+                else {
+                    console.log('âŒ å–æ¶ˆæ”¶è—å¤±è´¥');
+                }
+            }
+            else {
+                // æ·»åŠ æ”¶è—
+                console.log('ðŸ” [toggleFavorite] æ‰§è¡Œæ·»åŠ æ”¶è—æ“ä½œ');
+                const request = {
+                    newsTitle: newsItem.title,
+                    newsUniquekey: newsItem.url,
+                    newsAuthor: newsItem.source || '',
+                    newsTime: newsItem.time || ''
+                };
+                console.log('ðŸ” [toggleFavorite] æ”¶è—è¯·æ±‚å‚æ•°:', JSON.stringify(request));
+                const success = await FavoriteNewsService.followNews(token, request);
+                console.log('ðŸ” [toggleFavorite] æ·»åŠ æ”¶è—ç»“æžœ:', success);
+                if (success) {
+                    this.favoriteNewsKeys.add(newsItem.url);
+                    this.forceUpdate++; // å¼ºåˆ¶UIæ›´æ–°
+                    console.log('âœ… æ”¶è—æˆåŠŸï¼Œæ›´æ–°æœ¬åœ°çŠ¶æ€');
+                    console.log('ðŸ” [toggleFavorite] æ›´æ–°åŽçš„æ”¶è—åˆ—è¡¨:', Array.from(this.favoriteNewsKeys));
+                }
+                else {
+                    console.log('âŒ æ·»åŠ æ”¶è—å¤±è´¥');
+                }
+            }
+        }
+        catch (error) {
+            console.error('âŒ æ”¶è—æ“ä½œå¤±è´¥:', error);
+        }
+    }
+    buildBrowserLayer(url, parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.padding({ top: '48vp' });
+            Column.width('100%');
+            Column.height('100%');
+            Column.backgroundColor('#FFFFFF');
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.backgroundColor('#FFFFFF');
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('å…³é—­');
+            Text.fontSize(16);
+            Text.fontColor('#E60012');
+            Text.padding({ left: 16, right: 16, top: 16, bottom: 16 });
+            Text.onClick(() => {
+                this.closeBrowser();
+            });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            // æ”¶è—æŒ‰é’®
+            if (this.isLoggedIn && this.selectedNewsItem) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create(this.favoriteNewsKeys.has(this.selectedNewsItem.url) ? 'â­ï¸' : 'â˜†');
+                        Text.fontSize(20);
+                        Text.padding({ left: 8, right: 8, top: 16, bottom: 16 });
+                        Text.onClick(() => {
+                            if (this.selectedNewsItem) {
+                                console.log('ðŸ” [â­ï¸æŒ‰é’®ç‚¹å‡»] å¼€å§‹æ”¶è—æ“ä½œ');
+                                this.toggleFavorite(ObservedObject.GetRawObject(this.selectedNewsItem));
+                            }
+                        });
+                    }, Text);
+                    Text.pop();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Blank.create();
+        }, Blank);
+        Blank.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('ç½‘é¡µæµè§ˆ');
+            Text.fontSize(16);
+            Text.fontWeight(FontWeight.Medium);
+            Text.fontColor('#182431');
+            Text.margin({ right: 24 });
+        }, Text);
+        Text.pop();
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Web.create({ src: url, controller: this.webController });
+            Web.layoutWeight(1);
+            Web.width('100%');
+        }, Web);
+        Column.pop();
+    }
+    buildCategoryTabs(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.backgroundColor(Color.White);
+            Column.shadow({ radius: 4, color: '#0A000000', offsetX: 0, offsetY: 1 });
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Scroll.create();
+            Scroll.scrollable(ScrollDirection.Horizontal);
+            Scroll.scrollBar(BarState.Off);
+            Scroll.height('48vp');
+        }, Scroll);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create({ space: 8 });
+            Row.padding({ left: '12vp', right: '12vp' });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            ForEach.create();
+            const forEachItemGenFunction = _item => {
+                const c = _item;
+                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                    Text.create(c);
+                    Text.fontSize(16);
+                    Text.fontWeight(this.currentCategory === c ? FontWeight.Bold : FontWeight.Regular);
+                    Text.fontColor(this.currentCategory === c ? '#182431' : '#666666');
+                    Text.backgroundColor(this.currentCategory === c ? '#E6F3FF' : Color.Transparent);
+                    Text.padding({ left: 12, right: 12, top: 6, bottom: 6 });
+                    Text.borderRadius(14);
+                    Text.onClick(() => this.onTabClick(c));
+                }, Text);
+                Text.pop();
+            };
+            this.forEachUpdateFunction(elmtId, this.categories, forEachItemGenFunction);
+        }, ForEach);
+        ForEach.pop();
+        Row.pop();
+        Scroll.pop();
+        Column.pop();
+    }
+    buildTextNewsItem(item, index, parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.alignItems(HorizontalAlign.Start);
+            Column.padding({ top: '8vp', bottom: '8vp' });
+            Column.onClick(() => this.openBrowser(item.url, item));
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.alignItems(VerticalAlign.Top);
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.layoutWeight(1);
+            Column.alignItems(HorizontalAlign.Start);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(item.title);
+            Text.fontSize('16fp');
+            Text.fontWeight(FontWeight.Medium);
+            Text.fontColor('#182431');
+            Text.maxLines(3);
+            Text.textOverflow({ overflow: TextOverflow.Ellipsis });
+            Text.lineHeight('21fp');
+            Text.margin({ bottom: '6vp' });
+            Text.textAlign(TextAlign.Start);
+            Text.width('100%');
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.alignItems(VerticalAlign.Center);
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (item.source) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create(String(item.source));
+                        Text.fontSize('12fp');
+                        Text.fontColor('#999999');
+                    }, Text);
+                    Text.pop();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (item.source && item.time) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('Â·');
+                        Text.fontSize('12fp');
+                        Text.fontColor('#999999');
+                        Text.margin({ left: 6, right: 6 });
+                    }, Text);
+                    Text.pop();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (item.time) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create(String(item.time));
+                        Text.fontSize('12fp');
+                        Text.fontColor('#999999');
+                    }, Text);
+                    Text.pop();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        Row.pop();
+        Column.pop();
+        Row.pop();
+        Column.pop();
+    }
+    initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Stack.create({ alignContent: Alignment.TopStart });
+            Stack.width('100%');
+            Stack.height('100%');
+        }, Stack);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.padding({ top: '48vp' });
+            Column.width('100%');
+            Column.height('100%');
+            Column.backgroundColor('#F8F9FA');
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            __Common__.create();
+            __Common__.padding({ left: '12vp', right: '12vp', top: '8vp', bottom: '8vp' });
+        }, __Common__);
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new 
+                    // Top search bar (keep consistent with other pages)
+                    CommonSearchBar(this, {
+                        value: this.searchText,
+                        placeholder: 'æœæ–°ï¿½?çƒ­è¯',
+                        hotTitles: this.hotTitles,
+                        onSearch: (url) => this.openBrowser(url)
+                    }, undefined, elmtId, () => { }, { page: "features/video/src/main/ets/view/Video.ets", line: 370, col: 9 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            value: this.searchText,
+                            placeholder: 'æœæ–°ï¿½?çƒ­è¯',
+                            hotTitles: this.hotTitles,
+                            onSearch: (url) => this.openBrowser(url)
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        value: this.searchText,
+                        hotTitles: this.hotTitles
+                    });
+                }
+            }, { name: "CommonSearchBar" });
+        }
+        __Common__.pop();
+        this.buildCategoryTabs.bind(this)();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // Content list (text-only) with pull-to-refresh and load-more
+            Refresh.create({ refreshing: this.refreshing });
+            // Content list (text-only) with pull-to-refresh and load-more
+            Refresh.onStateChange((s) => {
+                if (s === RefreshStatus.Refresh) {
+                    this.onPullToRefresh();
+                }
+            });
+            // Content list (text-only) with pull-to-refresh and load-more
+            Refresh.layoutWeight(1);
+        }, Refresh);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            List.create({ space: 0 });
+            List.edgeEffect(EdgeEffect.Spring);
+            List.onReachEnd(() => this.onLoadMore());
+        }, List);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (!this.isLoading && !this.refreshing && this.newsList.length === 0) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    {
+                        const itemCreation = (elmtId, isInitialRender) => {
+                            ViewStackProcessor.StartGetAccessRecordingFor(elmtId);
+                            itemCreation2(elmtId, isInitialRender);
+                            if (!isInitialRender) {
+                                ListItem.pop();
+                            }
+                            ViewStackProcessor.StopGetAccessRecording();
+                        };
+                        const itemCreation2 = (elmtId, isInitialRender) => {
+                            ListItem.create(deepRenderFunction, true);
+                        };
+                        const deepRenderFunction = (elmtId, isInitialRender) => {
+                            itemCreation(elmtId, isInitialRender);
+                            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                Column.create();
+                                Column.padding(24);
+                                Column.width('100%');
+                                Column.justifyContent(FlexAlign.Center);
+                            }, Column);
+                            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                Text.create('æš‚æ— æ•°æ®');
+                                Text.fontSize('14fp');
+                                Text.fontColor('#999999');
+                                Text.margin({ bottom: 8 });
+                            }, Text);
+                            Text.pop();
+                            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                If.create();
+                                if (this.debugRequestUrl && this.debugRequestUrl.length > 0) {
+                                    this.ifElseBranchUpdateFunction(0, () => {
+                                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                            Text.create(this.debugRequestUrl);
+                                            Text.fontSize('12fp');
+                                            Text.fontColor('#666666');
+                                            Text.lineHeight('16fp');
+                                            Text.maxLines(3);
+                                            Text.textOverflow({ overflow: TextOverflow.Ellipsis });
+                                            Text.textAlign(TextAlign.Center);
+                                        }, Text);
+                                        Text.pop();
+                                    });
+                                }
+                                else {
+                                    this.ifElseBranchUpdateFunction(1, () => {
+                                    });
+                                }
+                            }, If);
+                            If.pop();
+                            Column.pop();
+                            ListItem.pop();
+                        };
+                        this.observeComponentCreation2(itemCreation2, ListItem);
+                        ListItem.pop();
+                    }
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        ForEach.create();
+                        const forEachItemGenFunction = (_item, i) => {
+                            const n = _item;
+                            {
+                                const itemCreation = (elmtId, isInitialRender) => {
+                                    ViewStackProcessor.StartGetAccessRecordingFor(elmtId);
+                                    itemCreation2(elmtId, isInitialRender);
+                                    if (!isInitialRender) {
+                                        ListItem.pop();
+                                    }
+                                    ViewStackProcessor.StopGetAccessRecording();
+                                };
+                                const itemCreation2 = (elmtId, isInitialRender) => {
+                                    ListItem.create(deepRenderFunction, true);
+                                };
+                                const deepRenderFunction = (elmtId, isInitialRender) => {
+                                    itemCreation(elmtId, isInitialRender);
+                                    this.buildTextNewsItem.bind(this)(n, i);
+                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                        If.create();
+                                        if (i < this.newsList.length - 1) {
+                                            this.ifElseBranchUpdateFunction(0, () => {
+                                                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                                    Divider.create();
+                                                    Divider.strokeWidth('0.5vp');
+                                                    Divider.color('#F0F0F0');
+                                                }, Divider);
+                                            });
+                                        }
+                                        else {
+                                            this.ifElseBranchUpdateFunction(1, () => {
+                                            });
+                                        }
+                                    }, If);
+                                    If.pop();
+                                    ListItem.pop();
+                                };
+                                this.observeComponentCreation2(itemCreation2, ListItem);
+                                ListItem.pop();
+                            }
+                        };
+                        this.forEachUpdateFunction(elmtId, this.newsList, forEachItemGenFunction, undefined, true, false);
+                    }, ForEach);
+                    ForEach.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        If.create();
+                        if (this.loadingMore) {
+                            this.ifElseBranchUpdateFunction(0, () => {
+                                {
+                                    const itemCreation = (elmtId, isInitialRender) => {
+                                        ViewStackProcessor.StartGetAccessRecordingFor(elmtId);
+                                        itemCreation2(elmtId, isInitialRender);
+                                        if (!isInitialRender) {
+                                            ListItem.pop();
+                                        }
+                                        ViewStackProcessor.StopGetAccessRecording();
+                                    };
+                                    const itemCreation2 = (elmtId, isInitialRender) => {
+                                        ListItem.create(deepRenderFunction, true);
+                                    };
+                                    const deepRenderFunction = (elmtId, isInitialRender) => {
+                                        itemCreation(elmtId, isInitialRender);
+                                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                            Row.create();
+                                            Row.width('100%');
+                                            Row.padding(12);
+                                            Row.justifyContent(FlexAlign.Center);
+                                        }, Row);
+                                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                            LoadingProgress.create();
+                                            LoadingProgress.width('16vp');
+                                            LoadingProgress.height('16vp');
+                                            LoadingProgress.margin({ right: '6vp' });
+                                        }, LoadingProgress);
+                                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                            Text.create('åŠ è½½');
+                                            Text.fontSize('12fp');
+                                            Text.fontColor('#999999');
+                                        }, Text);
+                                        Text.pop();
+                                        Row.pop();
+                                        ListItem.pop();
+                                    };
+                                    this.observeComponentCreation2(itemCreation2, ListItem);
+                                    ListItem.pop();
+                                }
+                            });
+                        }
+                        else if (!this.hasMore && this.newsList.length > 0) {
+                            this.ifElseBranchUpdateFunction(1, () => {
+                                {
+                                    const itemCreation = (elmtId, isInitialRender) => {
+                                        ViewStackProcessor.StartGetAccessRecordingFor(elmtId);
+                                        itemCreation2(elmtId, isInitialRender);
+                                        if (!isInitialRender) {
+                                            ListItem.pop();
+                                        }
+                                        ViewStackProcessor.StopGetAccessRecording();
+                                    };
+                                    const itemCreation2 = (elmtId, isInitialRender) => {
+                                        ListItem.create(deepRenderFunction, true);
+                                    };
+                                    const deepRenderFunction = (elmtId, isInitialRender) => {
+                                        itemCreation(elmtId, isInitialRender);
+                                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                            Text.create('æ²¡æœ‰æ›´å¤š');
+                                            Text.fontSize('12fp');
+                                            Text.fontColor('#999999');
+                                            Text.padding(12);
+                                            Text.width('100%');
+                                            Text.textAlign(TextAlign.Center);
+                                        }, Text);
+                                        Text.pop();
+                                        ListItem.pop();
+                                    };
+                                    this.observeComponentCreation2(itemCreation2, ListItem);
+                                    ListItem.pop();
+                                }
+                            });
+                        }
+                        else {
+                            this.ifElseBranchUpdateFunction(2, () => {
+                            });
+                        }
+                    }, If);
+                    If.pop();
+                });
+            }
+        }, If);
+        If.pop();
+        List.pop();
+        // Content list (text-only) with pull-to-refresh and load-more
+        Refresh.pop();
+        Column.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.selectedUrl !== null) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.buildBrowserLayer.bind(this)(this.selectedUrl);
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        Stack.pop();
+    }
+    rerender() {
+        this.updateDirtyElements();
+    }
+}
+//# sourceMappingURL=Video.js.mapÂ•Ù8F:\newg\news_app\news_app\commons\uicomponents\Index.etsÙ1F:\newg\news_app\news_app\commons\utils\Index.etsÙUF:\newg\news_app\news_app\features\video\src\main\ets\service\FavoriteNewsService.etsÙ2F:\newg\news_app\news_app\features\login\Index.etsÙ] hvigor_ignore_F:_huawei_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.web.webview.d.tsÙDF:\newg\news_app\news_app\features\video\src\main\ets\view\Video.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥videoÃÂÙ(F:\newg\news_app\news_app\features\video¹F:\newg\news_app\news_app¥video¥1.0.0ÔrC’§pkgNameªpkgVersion¥video¥1.0.0‘ÔrD’²hostDependencyName®hostModuleName­../view/Video¥videoÙ(F:\newg\news_app\news_app\features\videoÃÃÚ;/// ets/view/Video.ets
+import { CommonSearchBar } from 'uicomponents';
+import { BaiduHotSearchParser, NewsHeadlineService, NewsHeadlineItem, buildNewsApiUrl, maskApiKey, NewsApiRequestParams } from 'utils';
+import { FavoriteNewsService } from '../service/FavoriteNewsService';
+import { FavoriteNewsRequest } from '../model/FavoriteNews';
+import { UserManager } from 'login';
+import webview from '@ohos.web.webview';
+
+@Component
+export default struct VideoPage {
+  @State searchText: string = '';
+  @State hotTitles: string[] = [];
+  @State selectedUrl: string | null = null;
+  @State selectedNewsItem: NewsHeadlineItem | null = null;
+  private webController: webview.WebviewController = new webview.WebviewController();
+
+  // Text-only news for video page
+  @State categories: string[] = ['æŽ¨è', 'å›½å†…', 'å›½é™…', 'å¨±ä¹', 'ä½“è‚²', 'å†›äº‹', 'ç§‘æŠ€', 'è´¢ç»', 'æ¸¸æˆ', 'æ±½è½¦', 'å¥åº·'];
+  @State currentCategory: string = 'æŽ¨è';
+  @State newsList: NewsHeadlineItem[] = [];
+  @State isLoading: boolean = false;
+  @State debugRequestUrl: string = '';
+
+  // Refresh & pagination
+  @State refreshing: boolean = false;
+  @State loadingMore: boolean = false;
+  @State page: number = 1;
+  @State pageSize: number = 20;
+  @State hasMore: boolean = true;
+
+  // Favorite functionality
+  @State favoriteNewsKeys: Set<string> = new Set();
+  @State isLoggedIn: boolean = false;
+  @State forceUpdate: number = 0; // ç”¨äºŽå¼ºåˆ¶UIæ›´æ–°
+  private userManager: UserManager = UserManager.getInstance();
+
+  async aboutToAppear() {
+    // preload hot titles for search bar placeholder (reuse existing behavior)
+    try {
+      const realtime = await BaiduHotSearchParser.getHotSearchData('realtime');
+      this.hotTitles = realtime.slice(0, 10).map((it) => it.card_title);
+    } catch (_) {
+      this.hotTitles = [];
+    }
+    
+    // æ£€æŸ¥ç™»å½•çŠ¶æ€å¹¶åŠ è½½æ”¶è—åˆ—è¡¨
+    await this.checkLoginStatus();
+    await this.reloadCurrentCategory();
+  }
+
+  private getTypeForCategory(category: string): string {
+    switch (category) {
+      case 'æŽ¨è':
+        return 'top';
+      case 'å›½å†…':
+        return 'guonei';
+      case 'å›½é™…':
+        return 'guoji';
+      case 'å¨±ä¹':
+        return 'yule';
+      case 'ä½“è‚²':
+        return 'tiyu';
+      case 'å†›äº‹':
+        return 'junshi';
+      case 'ç§‘æŠ€':
+        return 'keji';
+      case 'è´¢ç»':
+        return 'caijing';
+      case 'æ¸¸æˆ':
+        return 'youxi';
+      case 'æ±½è½¦':
+        return 'qiche';
+      case 'å¥åº·':
+        return 'jiankang';
+      default:
+        return 'top';
+    }
+  }
+
+  private async reloadCurrentCategory() {
+    this.page = 1;
+    this.hasMore = true;
+    await this.loadNewsByCategory(this.currentCategory, true);
+  }
+
+  private async loadNewsByCategory(category: string, replace: boolean = false) {
+    this.isLoading = replace && !this.refreshing;
+    try {
+      const type = this.getTypeForCategory(category);
+      const params: NewsApiRequestParams = { type: type, is_filter: 0, page: this.page, size: this.pageSize };
+      // Debug: print and keep masked url
+      const url = buildNewsApiUrl(params);
+      this.debugRequestUrl = maskApiKey(url);
+      const list = await NewsHeadlineService.fetch(params);
+      this.currentCategory = category;
+      this.hasMore = list.length >= this.pageSize;
+      if (replace) {
+        this.newsList = list;
+      } else {
+        this.newsList = [...this.newsList, ...list];
+      }
+    } catch (e) {
+      if (replace) {
+        this.newsList = [];
+      }
+      // no error code handling as requested
+    } finally {
+      this.isLoading = false;
+      this.refreshing = false;
+      this.loadingMore = false;
+    }
+  }
+
+  private onTabClick(category: string) {
+    if (this.currentCategory === category) return;
+    this.page = 1;
+    this.hasMore = true;
+    this.loadNewsByCategory(category, true).catch(() => {});
+  }
+
+  private async onPullToRefresh() {
+    if (this.refreshing) return;
+    this.refreshing = true;
+    this.page = 1;
+    this.hasMore = true;
+    await this.loadNewsByCategory(this.currentCategory, true);
+  }
+
+  private async onLoadMore() {
+    if (this.loadingMore || !this.hasMore) return;
+    this.loadingMore = true;
+    this.page += 1;
+    await this.loadNewsByCategory(this.currentCategory, false);
+  }
+
+  private openBrowser(url: string, newsItem?: NewsHeadlineItem): void {
+    this.selectedUrl = url;
+    this.selectedNewsItem = newsItem || null;
+  }
+
+  private closeBrowser(): void {
+    this.selectedUrl = null;
+    this.selectedNewsItem = null;
+  }
+
+  // æ£€æŸ¥ç™»å½•çŠ¶æ€
+  private async checkLoginStatus() {
+    try {
+      const currentUser = await this.userManager.getCurrentUser();
+      this.isLoggedIn = currentUser !== null;
+      
+      if (this.isLoggedIn) {
+        await this.loadFavoriteNews();
+      }
+    } catch (error) {
+      console.error('âŒ æ£€æŸ¥ç™»å½•çŠ¶æ€å¤±è´¥:', error);
+      this.isLoggedIn = false;
+    }
+  }
+
+  // åŠ è½½æ”¶è—çš„æ–°é—»åˆ—è¡¨
+  private async loadFavoriteNews() {
+    try {
+      const token = await this.userManager.getToken();
+      if (!token) {
+        console.log('ðŸ” æœªæ‰¾åˆ°ç™»å½•ä»¤ç‰Œ');
+        return;
+      }
+
+      const favoriteNews = await FavoriteNewsService.getFollowedNews(token);
+      const favoriteKeys = new Set(favoriteNews.map(news => news.newsUniquekey));
+      this.favoriteNewsKeys = favoriteKeys;
+      
+      console.log('ðŸ” åŠ è½½æ”¶è—æ–°é—»æˆåŠŸï¼Œæ•°é‡:', favoriteNews.length);
+    } catch (error) {
+      console.error('âŒ åŠ è½½æ”¶è—æ–°é—»å¤±è´¥:', error);
+    }
+  }
+
+  // æ”¶è—/å–æ¶ˆæ”¶è—æ–°é—»
+  private async toggleFavorite(newsItem: NewsHeadlineItem) {
+    console.log('ðŸ” [toggleFavorite] å¼€å§‹æ”¶è—æ“ä½œ');
+    console.log('ðŸ” [toggleFavorite] æ–°é—»é¡¹:', JSON.stringify(newsItem));
+    
+    if (!this.isLoggedIn) {
+      console.log('ðŸ” ç”¨æˆ·æœªç™»å½•ï¼Œæ— æ³•æ”¶è—');
+      return;
+    }
+
+    try {
+      const token = await this.userManager.getToken();
+      if (!token) {
+        console.log('ðŸ” æœªæ‰¾åˆ°ç™»å½•ä»¤ç‰Œ');
+        return;
+      }
+
+      const isCurrentlyFavorited = this.favoriteNewsKeys.has(newsItem.url);
+      console.log('ðŸ” [toggleFavorite] å½“å‰æ”¶è—çŠ¶æ€:', isCurrentlyFavorited);
+      console.log('ðŸ” [toggleFavorite] æ–°é—»å”¯ä¸€æ ‡è¯†:', newsItem.url);
+      
+      if (isCurrentlyFavorited) {
+        // å–æ¶ˆæ”¶è—
+        console.log('ðŸ” [toggleFavorite] æ‰§è¡Œå–æ¶ˆæ”¶è—æ“ä½œ');
+        const success = await FavoriteNewsService.unfollowNews(token, newsItem.url);
+        console.log('ðŸ” [toggleFavorite] å–æ¶ˆæ”¶è—ç»“æžœ:', success);
+        
+        if (success) {
+          this.favoriteNewsKeys.delete(newsItem.url);
+          this.forceUpdate++; // å¼ºåˆ¶UIæ›´æ–°
+          console.log('âœ… å–æ¶ˆæ”¶è—æˆåŠŸï¼Œæ›´æ–°æœ¬åœ°çŠ¶æ€');
+          console.log('ðŸ” [toggleFavorite] æ›´æ–°åŽçš„æ”¶è—åˆ—è¡¨:', Array.from(this.favoriteNewsKeys));
+        } else {
+          console.log('âŒ å–æ¶ˆæ”¶è—å¤±è´¥');
+        }
+      } else {
+        // æ·»åŠ æ”¶è—
+        console.log('ðŸ” [toggleFavorite] æ‰§è¡Œæ·»åŠ æ”¶è—æ“ä½œ');
+        const request: FavoriteNewsRequest = {
+          newsTitle: newsItem.title,
+          newsUniquekey: newsItem.url,  // ä½¿ç”¨URLä½œä¸ºå”¯ä¸€æ ‡è¯†
+          newsAuthor: newsItem.source || '',
+          newsTime: newsItem.time || ''
+        };
+        
+        console.log('ðŸ” [toggleFavorite] æ”¶è—è¯·æ±‚å‚æ•°:', JSON.stringify(request));
+        const success = await FavoriteNewsService.followNews(token, request);
+        console.log('ðŸ” [toggleFavorite] æ·»åŠ æ”¶è—ç»“æžœ:', success);
+        
+        if (success) {
+          this.favoriteNewsKeys.add(newsItem.url);
+          this.forceUpdate++; // å¼ºåˆ¶UIæ›´æ–°
+          console.log('âœ… æ”¶è—æˆåŠŸï¼Œæ›´æ–°æœ¬åœ°çŠ¶æ€');
+          console.log('ðŸ” [toggleFavorite] æ›´æ–°åŽçš„æ”¶è—åˆ—è¡¨:', Array.from(this.favoriteNewsKeys));
+        } else {
+          console.log('âŒ æ·»åŠ æ”¶è—å¤±è´¥');
+        }
+      }
+    } catch (error) {
+      console.error('âŒ æ”¶è—æ“ä½œå¤±è´¥:', error);
+    }
+  }
+
+  @Builder
+  buildBrowserLayer(url: string) {
+    Column() {
+      Row() {
+        Text('å…³é—­')
+          .fontSize(16)
+          .fontColor('#E60012')
+          .padding({ left: 16, right: 16, top: 16, bottom: 16 })
+          .onClick(() => {
+            this.closeBrowser();
+          })
+
+        // æ”¶è—æŒ‰é’®
+        if (this.isLoggedIn && this.selectedNewsItem) {
+          Text(this.favoriteNewsKeys.has(this.selectedNewsItem.url) ? 'â­ï¸' : 'â˜†')
+            .fontSize(20)
+            .padding({ left: 8, right: 8, top: 16, bottom: 16 })
+            .onClick(() => {
+              if (this.selectedNewsItem) {
+                console.log('ðŸ” [â­ï¸æŒ‰é’®ç‚¹å‡»] å¼€å§‹æ”¶è—æ“ä½œ');
+                this.toggleFavorite(this.selectedNewsItem);
+              }
+            })
+        }
+
+        Blank()
+
+        Text('ç½‘é¡µæµè§ˆ')
+          .fontSize(16)
+          .fontWeight(FontWeight.Medium)
+          .fontColor('#182431')
+          .margin({ right: 24 })
+      }
+      .width('100%')
+      .backgroundColor('#FFFFFF')
+
+      Web({ src: url, controller: this.webController })
+        .layoutWeight(1)
+        .width('100%')
+    }
+    .padding({ top: '48vp' })
+    .width('100%')
+    .height('100%')
+    .backgroundColor('#FFFFFF')
+  }
+
+  @Builder
+  buildCategoryTabs() {
+    Column() {
+      Scroll() {
+        Row({ space: 8 }) {
+          ForEach(this.categories, (c: string) => {
+            Text(c)
+              .fontSize(16)
+              .fontWeight(this.currentCategory === c ? FontWeight.Bold : FontWeight.Regular)
+              .fontColor(this.currentCategory === c ? '#182431' : '#666666')
+              .backgroundColor(this.currentCategory === c ? '#E6F3FF' : Color.Transparent)
+              .padding({ left: 12, right: 12, top: 6, bottom: 6 })
+              .borderRadius(14)
+              .onClick(() => this.onTabClick(c))
+          })
+        }
+        .padding({ left: '12vp', right: '12vp' })
+      }
+      .scrollable(ScrollDirection.Horizontal)
+      .scrollBar(BarState.Off)
+      .height('48vp')
+    }
+    .width('100%')
+    .backgroundColor(Color.White)
+    .shadow({ radius: 4, color: '#0A000000', offsetX: 0, offsetY: 1 })
+  }
+
+  @Builder
+  buildTextNewsItem(item: NewsHeadlineItem, index: number) {
+    Column() {
+      Row() {
+        Column() {
+          Text(item.title)
+            .fontSize('16fp')
+            .fontWeight(FontWeight.Medium)
+            .fontColor('#182431')
+            .maxLines(3)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .lineHeight('21fp')
+            .margin({ bottom: '6vp' })
+            .textAlign(TextAlign.Start)
+            .width('100%')
+
+          Row() {
+            if (item.source) {
+              Text(String(item.source))
+                .fontSize('12fp')
+                .fontColor('#999999')
+            }
+            if (item.source && item.time) {
+              Text('Â·')
+                .fontSize('12fp')
+                .fontColor('#999999')
+                .margin({ left: 6, right: 6 })
+            }
+            if (item.time) {
+              Text(String(item.time))
+                .fontSize('12fp')
+                .fontColor('#999999')
+            }
+          }
+          .width('100%')
+          .alignItems(VerticalAlign.Center)
+        }
+        .layoutWeight(1)
+        .alignItems(HorizontalAlign.Start)
+
+      }
+      .width('100%')
+      .alignItems(VerticalAlign.Top)
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+    .padding({ top: '8vp', bottom: '8vp' })
+    .onClick(() => this.openBrowser(item.url, item))
+  }
+
+  build() {
+    Stack({ alignContent: Alignment.TopStart }) {
+      Column() {
+        // Top search bar (keep consistent with other pages)
+        CommonSearchBar({
+          value: this.searchText,
+          placeholder: 'æœæ–°ï¿½?çƒ­è¯',
+          hotTitles: this.hotTitles,
+          onSearch: (url: string) => this.openBrowser(url)
+        })
+        .padding({ left: '12vp', right: '12vp', top: '8vp', bottom: '8vp' })
+
+        this.buildCategoryTabs();
+
+        // Content list (text-only) with pull-to-refresh and load-more
+        Refresh({ refreshing: this.refreshing }) {
+          List({ space: 0 }) {
+            if (!this.isLoading && !this.refreshing && this.newsList.length === 0) {
+              ListItem() {
+                Column() {
+                  Text('æš‚æ— æ•°æ®')
+                    .fontSize('14fp')
+                    .fontColor('#999999')
+                    .margin({ bottom: 8 })
+                  if (this.debugRequestUrl && this.debugRequestUrl.length > 0) {
+                    Text(this.debugRequestUrl)
+                      .fontSize('12fp')
+                      .fontColor('#666666')
+                      .lineHeight('16fp')
+                      .maxLines(3)
+                      .textOverflow({ overflow: TextOverflow.Ellipsis })
+                      .textAlign(TextAlign.Center)
+                  }
+                }
+                .padding(24)
+                .width('100%')
+                .justifyContent(FlexAlign.Center)
+              }
+            } else {
+              ForEach(this.newsList, (n: NewsHeadlineItem, i: number) => {
+                ListItem() {
+                  this.buildTextNewsItem(n, i)
+                  if (i < this.newsList.length - 1) {
+                    Divider().strokeWidth('0.5vp').color('#F0F0F0')
+                  }
+                }
+              })
+
+              if (this.loadingMore) {
+                ListItem() {
+                  Row() {
+                    LoadingProgress().width('16vp').height('16vp').margin({ right: '6vp' })
+                    Text('åŠ è½½').fontSize('12fp').fontColor('#999999')
+                  }.width('100%').padding(12).justifyContent(FlexAlign.Center)
+                }
+              } else if (!this.hasMore && this.newsList.length > 0) {
+                ListItem() {
+                  Text('æ²¡æœ‰æ›´å¤š').fontSize('12fp').fontColor('#999999').padding(12).width('100%').textAlign(TextAlign.Center)
+                }
+              }
+            }
+          }
+          .edgeEffect(EdgeEffect.Spring)
+          .onReachEnd(() => this.onLoadMore())
+        }
+        .onStateChange((s: RefreshStatus) => {
+          if (s === RefreshStatus.Refresh) {
+            this.onPullToRefresh();
+          }
+        })
+        .layoutWeight(1)
+      }
+      .padding({ top: '48vp' })
+      .width('100%')
+      .height('100%')
+      .backgroundColor('#F8F9FA')
+
+      if (this.selectedUrl !== null) {
+        this.buildBrowserLayer(this.selectedUrl as string);
+      }
+    }
+    .width('100%')
+    .height('100%')
+  }
+}
+ÀÔrE•±@ohos.web.webview¾../service/FavoriteNewsService¥login¥utils¬uicomponentsÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙ] hvigor_ignore_F:_huawei_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.web.webview.d.tsAÃªoh-resolveÂFAÂÙUF:\newg\news_app\news_app\features\video\src\main\ets\service\FavoriteNewsService.etsAÃªoh-resolveÂFAÂÙ2F:\newg\news_app\news_app\features\login\Index.etsAÃªoh-resolveÂFAÂÙ1F:\newg\news_app\news_app\commons\utils\Index.etsAÃªoh-resolveÂFAÂÙ8F:\newg\news_app\news_app\commons\uicomponents\Index.etsAÃªoh-resolveÂ“ÔrG–§version¤fileªsourceRoot§sources¥names¨mappings¨Video.js ‘©Video.etsÜ—’”    ”  ˜”   ” ”	 	” ” ”   ”. .”/ /ž”   ” ”	 	” ” ”2 2”4 ÌF”ÌC ÌU”ÌE ÌW”ÌO Ìa”ÌQ Ìy”ÌW Ì”Ì^ Ì†”Ì_ Ì‡˜”   ” ”	 	” ” ”$ $”ÌD ÌD”ÌE ÌE˜”   ” ”	 	” ” ” ”# #”$ $–”   ” ” ” ”' '”( (–”  	 ” 	” 	” 	” 	” 	‘”  ’”9 
+”; 
+ ’”8 ”: !’”: &”> *’”? 5”ÌC 9–” 5”! 9”( Ì@”) ÌA”: ÌR”< ÌTÜ ”9  ”: !”> %”Ì@ '”ÌD +”ÌF -”ÌJ 1”ÌL 3”ÌP 7”ÌR 9”ÌV =”ÌX ?”Ì\ ÌC”Ì^ ÌE”Ìb ÌI”Ìd ÌK”Ìh ÌO”Ìj ÌQ”Ìn ÌU”Ìp ÌW”Ìt Ì[”Ìv Ì]”Ìz Ìa”Ì{ Ìb’”> #”ÌB '’”7 (”9 *’”8 ”= #’”> #”Ì@ %’”9 ”> $’”:  ”? %’”3 ”4 ’”7 ”9 ’”6 ”:  ””? )”ÌC -”ÌF 0”ÌH 2’”9  ”>  $’”: !”; ! •” "%”& "0”' "1”2 "<”4 ">‘” (’” 
+	” 
+’” 
+	” 
+’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’”  	”  ’”  	”  ’” !	” !’” !	” !”” $”	 $”
+ $” $’” %”ÌR %ÌN’” &” &œ” '” '” '” '”# '”7 '1”8 '2”ÌH 'ÌB”ÌI 'ÌC”ÌS 'ÌM”ÌT 'ÌN”ÌU 'ÌOÜ ” (” (
+” (” (” (”% (”& ( ”+ (%”, (&”- ('”/ ()”1 (+”2 (,”3 (-”6 (0”7 (1”8 (2”: (4”< (6”> (8”? (9”ÌA (;”ÌB (<”ÌL (ÌF”ÌM (ÌG”ÌN (ÌH‘”	 )”” )” )” )” )—” *” *
+” *” *” *” *”  *‘”	 +’” -” -—” .” .
+” .” .”# .”% .!”& ."—” /” /
+” /” /”( /$”* /&”+ /'’” 0” 0”” 2
+” 2” 2” 2-”” 3” 3” 3” 3“” 4” 4” 4”” 5” 5” 5” 5“” 6” 6” 6”” 7” 7” 7”  7“” 8” 8” 8”” 9” 9” 9” 9“” :” :” :”” ;” ;” ;” ;“” <” <” <”” =” =” =” =“” >” >” >”” ?” ?” ?”  ?“” Ì@” Ì@” Ì@”” ÌA” ÌA” ÌA” ÌA“” ÌB” ÌB” ÌB”” ÌC” ÌC”  ÌC”! ÌC“” ÌD” ÌD” ÌD”” ÌE” ÌE” ÌE” ÌE“” ÌF” ÌF” ÌF”” ÌG” ÌG” ÌG” ÌG“” ÌH” ÌH” ÌH”” ÌI” ÌI”! ÌI”" ÌI‘” ÌJ”” ÌK” ÌK” ÌK” ÌK‘”	 ÌL’” ÌM” ÌM”” ÌO
+”	 ÌO”
+ ÌO” ÌO%—” ÌP” ÌP” ÌP	” ÌP” ÌP” ÌP” ÌP—” ÌQ” ÌQ” ÌQ	” ÌQ” ÌQ” ÌQ” ÌQ” ÌR” ÌR
+” ÌR” ÌR”% ÌR!”& ÌR"”* ÌR&”+ ÌR'”: ÌR6”< ÌR8”Ì@ ÌR<”ÌA ÌR=”ÌB ÌR>’” ÌS” ÌS™” ÌU
+”	 ÌU”
+ ÌU” ÌU"” ÌU#”% ÌU3”' ÌU5”1 ÌUÌH”6 ÌUÌMœ” ÌV” ÌV” ÌV	” ÌV” ÌV”  ÌV”$ ÌV ”% ÌV!”) ÌV%”* ÌV&”4 ÌV0”5 ÌV1’” ÌW” ÌW›” ÌX” ÌX” ÌX” ÌX” ÌX” ÌX”0 ÌX*”1 ÌX+”9 ÌX3”: ÌX4”; ÌX5Ü ” ÌY” ÌY” ÌY” ÌY+” ÌY-”! ÌY1”# ÌY3”' ÌY7”) ÌY9”2 ÌYÌB”4 ÌYÌD”5 ÌYÌE”7 ÌYÌG”; ÌYÌK”= ÌYÌM”ÌA ÌYÌQ”ÌB ÌYÌR”ÌF ÌYÌV”ÌH ÌYÌX”ÌL ÌYÌ\”ÌN ÌYÌ^”ÌR ÌYÌb”ÌS ÌYÌc”Ì[ ÌYÌk”Ì] ÌYÌm”Ì^ ÌYÌn’” ÌZ”/ ÌZ)™” Ì[” Ì[” Ì[” Ì[”' Ì[!”( Ì["”. Ì[(”/ Ì[)”0 Ì[*š” Ì\” Ì\
+” Ì\”  Ì\”# Ì\”- Ì\'”. Ì\(”1 Ì\+”2 Ì\,”3 Ì\-œ” Ì]” Ì]” Ì]” Ì]” Ì]”2 Ì],”3 Ì]-”8 Ì]2”9 Ì]3”? Ì]9”Ì@ Ì]:”ÌA Ì];—” Ì^” Ì^
+” Ì^”  Ì^”# Ì^”+ Ì^%”, Ì^&” Ì_” Ì_
+” Ì_” Ì_” Ì_” Ì_”  Ì_”& Ì_ ”* Ì_$”. Ì_(”/ Ì_)”7 Ì_1”8 Ì_2”” Ì`” Ì`
+” Ì`” Ì`—” Ìa” Ìa” Ìa” Ìa”  Ìa”$ Ìa”% Ìa‘” Ìb‘” ÌbŸ” Ìc” Ìc” Ìc” Ìc”  Ìc”! Ìc”$ Ìc”( Ìc ”) Ìc!”1 Ìc)”3 Ìc+”6 Ìc.”: Ìc2”; Ìc3”< Ìc4‘” Ìd‘”	 Ìe”” Ìe” Ìe” Ìe” Ìe”” Ìf” Ìf
+” Ìf” Ìf—” Ìg” Ìg” Ìg” Ìg”  Ìg”" Ìg”# Ìg‘” Ìh’” Ìi”2 Ìi,‘”	 Ìj‘” Ìj—” Ìk” Ìk
+” Ìk” Ìk” Ìk”" Ìk”# Ìk—” Ìl” Ìl
+” Ìl” Ìl” Ìl”# Ìl”$ Ìl—” Ìm” Ìm
+” Ìm” Ìm” Ìm”$ Ìm”% Ìm‘”	 Ìn’” Ìo” Ìo”” Ìq
+” Ìq” Ìq” Ìq%—” Ìr” Ìr” Ìr” Ìr”  Ìr”% Ìr!”- Ìr)’” Ìr+” Ìr2—” Ìs” Ìs” Ìs	” Ìs” Ìs” Ìs” Ìs—” Ìt” Ìt” Ìt	” Ìt” Ìt” Ìt” ÌtÜ ” Ìu” Ìu” Ìu	” Ìu”  Ìu”( Ìu$”* Ìu&”. Ìu*”/ Ìu+”0 Ìu,”5 Ìu1”6 Ìu2”9 Ìu5”; Ìu7”> Ìu9”? Ìu:”Ì@ Ìu;”ÌA Ìu<’” Ìv” Ìv”” Ìx
+”	 Ìx”
+ Ìx” Ìx•” Ìy” Ìy” Ìy” Ìy” Ìy’” Ìy” Ìy —” Ìz” Ìz” Ìz	” Ìz” Ìz” Ìz” Ìz—” Ì{” Ì{” Ì{	” Ì{” Ì{” Ì{” Ì{—” Ì|” Ì|” Ì|	” Ì|” Ì|” Ì|” Ì|” Ì}” Ì}
+” Ì}” Ì}”% Ì}!”& Ì}"”* Ì}&”+ Ì}'”: Ì}6”< Ì}8”Ì@ Ì}<”ÌA Ì}=”ÌB Ì}>’” Ì~” Ì~”” Ì€
+”	 Ì€”
+ Ì€” Ì€š” Ì” Ì” Ì” Ì” Ì”  Ì”! Ì”% Ì!”& Ì"”- Ì)’” Ì+” Ì2—” Ì‚” Ì‚” Ì‚	” Ì‚” Ì‚” Ì‚”  Ì‚—” Ìƒ” Ìƒ” Ìƒ	” Ìƒ” Ìƒ” Ìƒ” Ìƒ” Ì„” Ì„
+” Ì„” Ì„”% Ì„!”& Ì„"”* Ì„&”+ Ì„'”: Ì„6”< Ì„8”ÌA Ì„=”ÌB Ì„>”ÌC Ì„?’” Ì…” Ì…–” Ì‡
+” Ì‡” Ì‡” Ì‡!” Ì‡#” Ì‡>—” Ìˆ” Ìˆ” Ìˆ	” Ìˆ” Ìˆ” Ìˆ” Ìˆ™” Ì‰” Ì‰” Ì‰	” Ì‰”  Ì‰”( Ì‰$”, Ì‰(”0 Ì‰,”1 Ì‰-’” ÌŠ” ÌŠ’” ÌŒ
+” ÌŒ—” Ì” Ì” Ì	” Ì” Ì” Ì”  Ì—” ÌŽ” ÌŽ” ÌŽ	” ÌŽ”  ÌŽ”$ ÌŽ ”% ÌŽ!’” Ì” Ì’” Ì‘” Ì‘”” Ì’
+”	 Ì’”
+ Ì’” Ì’ ’” Ì“” Ì“œ” Ì”” Ì”” Ì””  Ì””& Ì” ”* Ì”$”+ Ì”%”6 Ì”0”7 Ì”1”ÌE Ì”?”ÌG Ì”ÌA”ÌH Ì”ÌB™” Ì•” Ì•
+” Ì•” Ì•” Ì•”) Ì•#”. Ì•(”2 Ì•,”3 Ì•-–” Ì—” Ì—
+” Ì—” Ì—” Ì—”! Ì——” Ì˜” Ì˜” Ì˜” Ì˜”+ Ì˜#”- Ì˜%”. Ì˜&‘” Ì™‘”	 Ìš”” Ìš” Ìš” Ìš” Ìšš” Ì›” Ì›” Ì›” Ì›” Ì›”' Ì›!”) Ì›#”. Ì›(”/ Ì›)”0 Ì›*—” Ìœ” Ìœ
+” Ìœ” Ìœ” Ìœ”# Ìœ”$ Ìœ‘”	 Ì’” Ìž” Ìž’” Ì ” Ì ”” Ì¡
+”	 Ì¡”
+ Ì¡” Ì¡ ’” Ì¢” Ì¢œ” Ì£” Ì£” Ì£” Ì£”  Ì£”$ Ì£”% Ì£”0 Ì£*”1 Ì£+”9 Ì£3”; Ì£5”< Ì£6•” Ì¤” Ì¤
+” Ì¤” Ì¤” Ì¤˜” Ì¥” Ì¥” Ì¥” Ì¥” Ì¥”( Ì¥ ”) Ì¥!”* Ì¥"’” Ì¦” Ì¦‘” Ì§œ” Ì©” Ì©” Ì©”! Ì©”' Ì©!”: Ì©4”; Ì©5”ÌJ Ì©ÌD”ÌK Ì©ÌE”ÌP Ì©ÌJ”ÌQ Ì©ÌK”ÌR Ì©ÌLÜ ” Ìª” Ìª” Ìª”! Ìª”% Ìª”( Ìª"”) Ìª#”5 Ìª/”6 Ìª0”9 Ìª3”: Ìª4”> Ìª8”? Ìª9”ÌA Ìª;”ÌB Ìª<”ÌF ÌªÌ@”ÌG ÌªÌA”ÌT ÌªÌN”ÌU ÌªÌO”ÌV ÌªÌP”ÌW ÌªÌQ—” Ì«” Ì«
+” Ì«”! Ì«”$ Ì«”0 Ì«*”1 Ì«+œ” Ì­” Ì­” Ì­” Ì­” Ì­”) Ì­#”+ Ì­%”7 Ì­1”8 Ì­2”> Ì­8”? Ì­9”Ì@ Ì­:‘”	 Ì®”” Ì®” Ì®” Ì®” Ì®š” Ì¯” Ì¯” Ì¯” Ì¯” Ì¯”' Ì¯!”) Ì¯#”. Ì¯(”/ Ì¯)”0 Ì¯*‘”	 Ì°’” Ì±” Ì±’” Ì³” Ì³–” Ì´
+”	 Ì´”
+ Ì´” Ì´” Ì´”! Ì´9˜” Ìµ” Ìµ” Ìµ” Ìµ” Ìµ”0 Ìµ,”1 Ìµ-”2 Ìµ.Ÿ” Ì¶” Ì¶” Ì¶” Ì¶” Ì¶”. Ì¶*”0 Ì¶,”4 Ì¶0”5 Ì¶1”> Ì¶:”? Ì¶;”ÌG Ì¶ÌC”ÌH Ì¶ÌD”ÌI Ì¶ÌE”ÌJ Ì¶ÌF—” Ì¸” Ì¸” Ì¸	” Ì¸” Ì¸” Ì¸” Ì¸˜” Ì¹” Ì¹” Ì¹” Ì¹” Ì¹”' Ì¹!”( Ì¹"”) Ì¹#’” Ìº” Ìº‘”	 Ì»’” Ì½” Ì½œ” Ì¾” Ì¾” Ì¾” Ì¾”  Ì¾”$ Ì¾”% Ì¾”0 Ì¾*”1 Ì¾+”9 Ì¾3”; Ì¾5”< Ì¾6•” Ì¿” Ì¿
+” Ì¿” Ì¿” Ì¿˜” ÌÀ” ÌÀ” ÌÀ” ÌÀ” ÌÀ”( ÌÀ ”) ÌÀ!”* ÌÀ"’” ÌÁ” ÌÁ‘” ÌÂŸ” ÌÄ” ÌÄ”& ÌÄ ”) ÌÄ#”- ÌÄ'”. ÌÄ(”> ÌÄ8”? ÌÄ9”ÌB ÌÄ<”ÌC ÌÄ=”ÌK ÌÄÌE”ÌL ÌÄÌF”ÌO ÌÄÌI”ÌP ÌÄÌJ”ÌQ ÌÄÌKš” ÌÅ” ÌÅ” ÌÅ” ÌÅ” ÌÅ”5 ÌÅ/”7 ÌÅ1”ÌK ÌÅÌE”ÌL ÌÅÌF”ÌM ÌÅÌGœ” ÌÆ” ÌÆ” ÌÆ” ÌÆ” ÌÆ”5 ÌÆ/”7 ÌÆ1”? ÌÆ9”Ì@ ÌÆ:”ÌC ÌÆ=”ÌD ÌÆ>”ÌE ÌÆ?”” ÌÈ” ÌÈ
+”$ ÌÈ”& ÌÈ ’” ÌÉ” ÌÉ˜” ÌÊ” ÌÊ” ÌÊ” ÌÊ” ÌÊ”: ÌÊ2”; ÌÊ3”< ÌÊ4Ü ” ÌË” ÌË” ÌË”  ÌË”& ÌË”9 ÌË1”: ÌË2”ÌF ÌË>”ÌG ÌË?”ÌL ÌËÌD”ÌN ÌËÌF”ÌV ÌËÌN”ÌW ÌËÌO”ÌZ ÌËÌR”Ì[ ÌËÌS”Ì\ ÌËÌTš” ÌÌ” ÌÌ” ÌÌ” ÌÌ” ÌÌ”9 ÌÌ1”; ÌÌ3”ÌB ÌÌ:”ÌC ÌÌ;”ÌD ÌÌ<”” ÌÎ” ÌÎ” ÌÎ” ÌÎœ” ÌÏ
+” ÌÏ” ÌÏ”) ÌÏ”* ÌÏ ”0 ÌÏ&”1 ÌÏ'”9 ÌÏ/”: ÌÏ0”= ÌÏ3”> ÌÏ4”? ÌÏ5˜” ÌÐ
+” ÌÐ” ÌÐ”$ ÌÐ”& ÌÐ”' ÌÐ”( ÌÐ”1 ÌÐ'˜” ÌÑ
+” ÌÑ” ÌÑ” ÌÑ”  ÌÑ”1 ÌÑ'”2 ÌÑ(”3 ÌÑ)Ü ” ÌÒ
+” ÌÒ” ÌÒ” ÌÒ”  ÌÒ”? ÌÒ5”ÌA ÌÒ7”ÌF ÌÒ<”ÌG ÌÒ=”ÌK ÌÒÌA”ÌL ÌÒÌB”ÌP ÌÒÌF”ÌQ ÌÒÌG”Ìa ÌÒÌW”Ìb ÌÒÌX”Ìc ÌÒÌY”Ìd ÌÒÌZ‘” ÌÓ	‘” ÌÓ˜” ÌÔ
+” ÌÔ” ÌÔ” ÌÔ”  ÌÔ”* ÌÔ ”+ ÌÔ!”, ÌÔ"‘” ÌÕ	‘” ÌÖ‘” ÌÖ’” Ì×” Ì×˜” ÌØ” ÌØ” ÌØ” ÌØ” ÌØ”: ÌØ2”; ÌØ3”< ÌØ4”” ÌÙ” ÌÙ” ÌÙ”  ÌÙ-–” ÌÚ
+” ÌÚ” ÌÚ”' ÌÚ”( ÌÚ”- ÌÚ#–” ÌÛ
+”! ÌÛ”# ÌÛ”+ ÌÛ!”, ÌÛ"”/ ÌÛ%˜” ÌÜ
+” ÌÜ”  ÌÜ”( ÌÜ”) ÌÜ”/ ÌÜ%”3 ÌÜ)”5 ÌÜ+˜” ÌÝ
+” ÌÝ” ÌÝ”& ÌÝ”' ÌÝ”+ ÌÝ!”/ ÌÝ%”1 ÌÝ'’” ÌÞ	” ÌÞ
+Ÿ” Ìà” Ìà” Ìà” Ìà” Ìà”9 Ìà1”; Ìà3”? Ìà7”Ì@ Ìà8”ÌI ÌàÌA”ÌJ ÌàÌB”ÌQ ÌàÌI”ÌR ÌàÌJ”ÌS ÌàÌK”ÌT ÌàÌLž” Ìá” Ìá” Ìá”  Ìá”& Ìá”9 Ìá1”: Ìá2”ÌD Ìá<”ÌE Ìá=”ÌJ ÌáÌB”ÌL ÌáÌD”ÌS ÌáÌK”ÌT ÌáÌL”ÌU ÌáÌMš” Ìâ” Ìâ” Ìâ” Ìâ” Ìâ”9 Ìâ1”; Ìâ3”ÌB Ìâ:”ÌC Ìâ;”ÌD Ìâ<”” Ìä” Ìä” Ìä” Ìäœ” Ìå
+” Ìå” Ìå”) Ìå”* Ìå ”- Ìå#”. Ìå$”6 Ìå,”7 Ìå-”: Ìå0”; Ìå1”< Ìå2˜” Ìæ
+” Ìæ” Ìæ”$ Ìæ”& Ìæ”' Ìæ”( Ìæ”1 Ìæ'˜” Ìç
+” Ìç” Ìç” Ìç”  Ìç”/ Ìç%”0 Ìç&”1 Ìç'Ü ” Ìè
+” Ìè” Ìè” Ìè”  Ìè”? Ìè5”ÌA Ìè7”ÌF Ìè<”ÌG Ìè=”ÌK ÌèÌA”ÌL ÌèÌB”ÌP ÌèÌF”ÌQ ÌèÌG”Ìa ÌèÌW”Ìb ÌèÌX”Ìc ÌèÌY”Ìd ÌèÌZ‘” Ìé	‘” Ìé˜” Ìê
+” Ìê” Ìê” Ìê”  Ìê”* Ìê ”+ Ìê!”, Ìê"‘” Ìë	‘” Ìì‘”	 Ìí”” Ìí” Ìí” Ìí” Ìíš” Ìî” Ìî” Ìî” Ìî” Ìî”% Ìî”' Ìî!”, Ìî&”- Ìî'”. Ìî(‘”	 Ìï’” Ìð” Ìð”” Ìó” Ìó” Ìó” Ìó’” Ìô” Ìô
+š” Ìô” Ìô
+” Í” Í” Í” Í”  Í”" Í”( Í”* Í–” Ìô” Ìô
+” Í” Í
+” Í” Í–” Ìô” Ìô
+” Í” Í” Í”  Í–” Ìô” Ìô
+” Í”" Í”# Í”, Í’” Ìõ” Ìõ	–” Ìõ” Ìõ	” Í” Í” Í” Í–” Ìõ” Ìõ	” Í” Í”  Í”) Í ”” Ìö” Ìö” Ìö” Ìö–” Ìö” Ìö” Ì÷” Ì÷” Ì÷” Ì÷–” Ìö” Ìö” Ìø” Ìø” Ìø”$ ÌøÜ ” Ìö” Ìö” Ìù” Ìù” Ìù” Ìù” Ìù”! Ìù”# Ìù”% Ìù”* Ìù$”, Ìù&”. Ìù(”0 Ìù*”3 Ìù-”5 Ìù/”7 Ìù1”9 Ìù3”? Ìù9”ÌA Ìù;”ÌC Ìù=”ÌE Ìù?—” Ìö” Ìö” Ìú” Ìú” Ìú” Ìú” Ìú–” Ìû” Ìû” Ìû”! Ìû”# Ìû”$ Ìû ’” Ìü
+” Ìü’” Ìö” Ìö’” Ìþ” Ìþš” Ìÿ” Ìÿ” Ìÿ” Ìÿ” Ìÿ”# Ìÿ”' Ìÿ#”( Ìÿ$”8 Ìÿ4”: Ìÿ6Ü ” Í 
+” Í ”$ Í ”( Í ”) Í ”9 Í $”: Í %”= Í (”> Í )”ÌB Í -”ÌC Í .”ÌS Í >”ÌT Í ?”ÌW Í ÌB”ÌX Í ÌC”ÌY Í ÌD”ÌZ Í ÌE”Ì[ Í ÌF”Ì_ Í ÌJ”Ì` Í ÌK”Ìa Í ÌL”Ìb Í ÌM”Ìe Í ÌP–” Í 
+” Í ” Í”% Í”& Í”( ÍÜ ” Í 
+” Í ” Í”$ Í”% Í”' Í”+ Í”- Í”. Í”0 Í ”5 Í%”7 Í'”8 Í(”: Í*”= Í-”? Í/”ÌA Í1”ÌC Í3”ÌI Í9”ÌK Í;”ÌM Í=”ÌO Í?—” Í 
+” Í ” Í”$ Í”% Í”( Í”* Í–” Í”  Í”$ Í”% Í”5 Í'”7 Í)˜”  Í”' Í”( Í”+ Í”, Í”Ì@ Í0”ÌA Í1”ÌB Í2š”  Í”$ Í”% Í”3 Í#”ÌP Í$”ÌT Í(”ÌU Í)”Ìe Í9”Ìg Í:”Ìh Í;‘” Í’” Í” Í’” Í 
+” Í ‘” Í		‘” Í		’” Í” Í’” Í” Í”” Í” Í” Í” Í–” Í” Í” Í” Í” Í” Í˜” Í” Í” Í” Í” Í”& Í ”' Í!”- Í'–” Í” Í” Í” Í” Í”$ Íš” Í” Í” Í” Í” Í” Í” Í”! Í”# Í”% Í’” Í” Í’” Ìõ” Ìõ	ž” Í” Í	” Í
+” Í” Í” Í”! Í”# Í”- Í ”/ Í"”3 Í&”4 Í'”ÌA Í4”ÌC Í6–” Í” Í	” Í	” Í” Í” Í–” Í” Í	” Í	” Í” Í” Í’” Ìô” Ìô
+‘” Í’” Í!” Í!’” Í"” Í"
+–” Í"” Í"
+” Í6” Í6
+” Í6” Í6˜” Í"” Í"
+” Í7”" Í7”# Í7”( Í7”) Í7”. Í7 Ü ” Í"” Í"
+” Í8” Í8” Í8” Í8”" Í8”$ Í8”% Í8”' Í8”, Í8”. Í8 ”9 Í8+”; Í8-”ÌB Í84”ÌD Í86”ÌE Í87”ÌG Í89”ÌN Í8Ì@”ÌP Í8ÌB”ÌQ Í8ÌC”ÌS Í8ÌE’” Í#” Í#˜” Í#” Í#” Í2” Í2” Í2”- Í2!”. Í2"”8 Í2,˜” Í#” Í#” Í3” Í3” Í3”% Í3”& Í3”) Í3–” Í#” Í#” Í4” Í4” Í4”  Í4˜” Í$” Í$” Í$” Í$” Í$”  Í$”! Í$”# Í$ž” Í$” Í$” Í0	” Í0” Í0” Í0” Í0”  Í0”& Í0”( Í0!”- Í0&”/ Í0(”5 Í0.”7 Í00’” Í%
+” Í%”” Í&” Í&”  Í&”! Í&–” Í&” Í&” Í'”! Í'”" Í'”$ Í'Ü ” Í&” Í&” Í(”# Í(”$ Í(”( Í(”) Í(”8 Í(.”= Í(3”> Í(4”? Í(5”Ì@ Í(6”ÌA Í(7”ÌK Í(ÌA”ÌL Í(ÌB”ÌP Í(ÌF”ÌQ Í(ÌG”ÌR Í(ÌH”ÌS Í(ÌI”Ì] Í(ÌS”Ì^ Í(ÌT”Ìe Í(Ì[Ü ” Í&” Í&” Í)”" Í)”# Í)”' Í)”( Í)”7 Í)-”< Í)2”= Í)3”> Í)4”? Í)5”Ì@ Í)6”ÌI Í)?”ÌJ Í)Ì@”ÌK Í)ÌA”ÌL Í)ÌB”ÌU Í)ÌKÜ ” Í&” Í&” Í*”( Í*”) Í*”- Í*#”. Í*$”= Í*3”ÌB Í*8”ÌC Í*9”ÌD Í*:”ÌE Í*;”ÌF Í*<”ÌO Í*ÌE”ÌP Í*ÌF”ÌQ Í*ÌG”ÌR Í*ÌH”ÌW Í*ÌM”ÌX Í*ÌN”Ìc Í*ÌYÜ ” Í&” Í&” Í+”  Í+”! Í+”# Í+”' Í+”) Í+”+ Í+!”- Í+#”2 Í+(”4 Í+*”6 Í+,”8 Í+.”; Í+1”= Í+3”> Í+4”Ì@ Í+6”ÌF Í+<”ÌH Í+>”ÌI Í+?”ÌK Í+ÌA–” Í&” Í&” Í,”% Í,”& Í,”( Í,ž” Í&” Í&” Í-”  Í-”! Í-”$ Í-”& Í-”' Í-”+ Í-!”, Í-"”6 Í-,”7 Í--”8 Í-.”9 Í-/’” Í&” Í&””/ Í%”3 Í%”4 Í%”> Í%!’” Í%
+” Í%’” Í$” Í$’” Í#” Í#’” Í"” Í"
+‘” Í9–” Í<” Í<” Í<” Í<*” Í<,”! Í<9’” Í=” Í=
+–” Í=” Í=
+” Íg” Íg
+” Íg” Íg˜” Í=” Í=
+” Íh” Íh” Íh”- Íh”. Íh ”3 Íh%ž” Í=” Í=
+” Íi” Íi” Íi” Íi”  Íi”" Íi”' Íi”) Íi”/ Íi!”1 Íi#”6 Íi(”8 Íi*Ü ” Í=” Í=
+” Íj” Íj” Íj” Íj”  Íj”! Íj”% Íj”& Íj”1 Íj#”2 Íj$”6 Íj(”7 Íj)”: Íj,”< Íj.”Ì@ Íj2”ÌA Íj3’” Í>” Í>	–” Í>” Í>	” Íd” Íd” Íd” Íd˜” Í>” Í>	” Íe” Íe” Íe”( Íe”) Íe ”, Íe#’” Í?” Í?–” Í?” Í?” Í`	” Í`”  Í`”! Í`˜” Í?” Í?” Ía	” Ía” Ía”- Ía#”. Ía$”3 Ía)–” Í@
+” Í@” Í@” Í@” Í@”" Í@–” Í@
+” Í@” ÍA” ÍA” ÍA”  ÍA˜” Í@
+” Í@” ÍB” ÍB” ÍB”& ÍB"”' ÍB#”- ÍB)–” Í@
+” Í@” ÍC” ÍC” ÍC”$ ÍC –” Í@
+” Í@” ÍD” ÍD” ÍD” ÍDœ” Í@
+” Í@” ÍE” ÍE” ÍE”  ÍE”( ÍE$”* ÍE&”6 ÍE2”7 ÍE3”? ÍE;”ÌA ÍE=–” Í@
+” Í@” ÍF” ÍF” ÍF”" ÍFš” Í@
+” Í@” ÍG” ÍG” ÍG” ÍG”  ÍG”" ÍG”' ÍG#”) ÍG%˜” Í@
+” Í@” ÍH” ÍH” ÍH”$ ÍH ”% ÍH!”* ÍH&–” Í@
+” Í@” ÍI” ÍI” ÍI” ÍI’” Í@
+” Í@’” ÍK
+” ÍK–” ÍK
+” ÍK” Í]” Í]” Í]” Í]˜” ÍK
+” ÍK” Í^” Í^” Í^”( Í^#”) Í^$”/ Í^*–” ÍL” ÍL” ÍL” ÍL” ÍL” ÍL™” ÍM” ÍM”$ ÍM”* ÍM”+ ÍM”/ ÍM”0 ÍM”6 ÍM%”7 ÍM&–” ÍM” ÍM” ÍN”% ÍN”& ÍN”, ÍN –” ÍM” ÍM” ÍO”& ÍO”' ÍO”0 ÍO$’” ÍM” ÍM‘” ÍP‘” ÍPš” ÍQ” ÍQ” ÍQ” ÍQ” ÍQ” ÍQ”# ÍQ#”$ ÍQ$”( ÍQ(”* ÍQ*”” ÍR” ÍR”$ ÍR”' ÍR–” ÍR” ÍR” ÍS”% ÍS”& ÍS”, ÍS –” ÍR” ÍR” ÍT”& ÍT”' ÍT”0 ÍT$ž” ÍR” ÍR” ÍU”# ÍU”$ ÍU”& ÍU”* ÍU”, ÍU ”- ÍU!”/ ÍU#”4 ÍU(”6 ÍU*”7 ÍU+”9 ÍU-’” ÍR” ÍR‘” ÍV‘” ÍV–” ÍW” ÍW” ÍW” ÍW” ÍW” ÍW™” ÍX” ÍX”$ ÍX”* ÍX”+ ÍX”/ ÍX”0 ÍX”4 ÍX#”5 ÍX$–” ÍX” ÍX” ÍY”% ÍY”& ÍY”, ÍY –” ÍX” ÍX” ÍZ”& ÍZ”' ÍZ”0 ÍZ$’” ÍX” ÍX‘” Í[‘” Í[’” ÍK
+” ÍK’” Í?” Í?’” Í>” Í>	’” Í=” Í=
+‘” Ík‘” Ímš” Ín” Ín	” Ín
+” Ín”' Ín”) Ín”2 Ín#”3 Ín$”; Ín,”= Ín.–” Ín” Ín	” Í¾” Í¾
+” Í¾” Í¾–” Ín” Ín	” Í¿” Í¿” Í¿” Í¿’” Ío” Íoš” Ío” Ío” Íµ” Íµ” Íµ” Íµ”  Íµ”" Íµ”( Íµ”* Íµ–” Ío” Ío” Í¶” Í¶” Í¶” Í¶–” Ío” Ío” Í·” Í·” Í·”  Í·–” Ío” Ío” Í¸”" Í¸”# Í¸”, Í¸ Ü ” Íw	” Íw” Íw”! Íw”% Íw”' Íw”- Íw”/ Íw!”4 Íw&”6 Íw(”< Íw.”> Íw0”ÌA Íw3”ÌC Íw5”ÌH Íw:”ÌJ Íw<”ÌP ÍwÌB”ÌR ÍwÌD”ÌW ÍwÌI”ÌY ÍwÌK’” Íp”ÌH Íp<“” Íq”# Íq”* Íq–” Ír
+” Ír” Ír”# Ír”$ Ír”. Ír ”” Ís
+”# Ís”% Ís”- Ís–” Ít
+”! Ít”# Ít”' Ít”( Ít”1 Ít#ž” Íu
+”  Íu”" Íu”# Íu”& Íu ”( Íu"”* Íu$”+ Íu%”/ Íu)”0 Íu*”; Íu5”< Íu6”? Íu9”Ì@ Íu:‘” Ív	–” Ír
+”! Ír”# Ír”' Ír”( Ír”2 Ír ”” Ís
+”' Ís”) Ís”1 Ís–” Ít
+”% Ít”' Ít”+ Ít”, Ít”5 Ít#ž” Íu
+”$ Íu”& Íu”' Íu”* Íu ”, Íu"”. Íu$”/ Íu%”3 Íu)”4 Íu*”? Íu5”Ì@ Íu6”ÌC Íu9”ÌD Íu:–” Ír
+” Ír” Ír”# Ír”$ Ír”. Ír –” Ít
+”! Ít”# Ít”' Ít”( Ít”1 Ít#•” Íy” Íy” Íy” Íy”+ Íy ’” Í{”ÌJ Í{ÌFš” Í|” Í|” Í|” Í|”' Í|”) Í|”- Í|"”. Í|#”8 Í|-”: Í|/’” Í{”ÌJ Í{ÌF™” Í|” Í|” Í®	”! Í®”" Í®”# Í®”$ Í®(”& Í®*”( Í®,˜” Í¯
+” Í¯” Í¯” Í¯”' Í¯!”( Í¯"”/ Í¯)”1 Í¯+–” Í°” Í°” Í°”( Í° ”* Í°"”+ Í°#‘” Í±’” Í²” Í²	’” Í{”ÌJ Í{ÌF–” Í|” Í|” Í³	”  Í³”! Í³”" Í³˜” Í}
+” Í}” Í}” Í}” Í}”! Í}”" Í}”$ Í}˜” Í}
+” Í}” Í«” Í«” Í«”& Í« ”' Í«!”- Í«'œ” Í}
+” Í}” Í¬” Í¬” Í¬” Í¬”! Í¬”" Í¬”& Í¬ ”' Í¬!”1 Í¬+”3 Í¬-Ü ” Í~” Í~” Í~” Í~” Í~” Í~”# Í~#”$ Í~$”( Í~(”) Í~)”3 Í~3”7 Í~7”; Í~;”< Í~<”ÌD Í~ÌD”ÌE Í~ÌE”ÌK Í~ÌK”ÌP Í~ÌP”ÌQ Í~ÌQ”ÌS Í~ÌS’”  Í”( Í’”  Í€”& Í€–”  Í€”& Í€”' Í”. Í”/ Í”1 Í–”  Í€”& Í€”' Í”, Í”- Í”3 Í˜”  Í€”& Í€”' Í‘”5 Í‘”6 Í‘ ”? Í‘)”Ì@ Í‘*”ÌF Í‘0””  Í”$ Í”, Í”2 Í–”  Í”$ Í”% Í‚”- Í‚”. Í‚”4 Í‚$–”  Í”$ Í”% Íƒ”. Íƒ”/ Íƒ”8 Íƒ(š”  Í”$ Í”% Í„”+ Í„”, Í„”. Í„”4 Í„$”6 Í„&”7 Í„'”9 Í„)’” Í”  Íž”  Í…”$ Í…”( Í…”) Í…”8 Í…*”< Í….”Ì@ Í…2”ÌA Í…3”ÌP Í…ÌB”ÌQ Í…ÌC”ÌW Í…ÌI”ÌZ Í…ÌL”Ì[ Í…ÌM”Ì] Í…ÌO–”, Í†”0 Í†”8 Í†”< Í†”= Í†”ÌL Í†-–”, Í†”0 Í†”1 Í‡”9 Í‡”: Í‡ ”Ì@ Í‡&–”, Í†”0 Í†”1 Íˆ”: Íˆ ”; Íˆ!”ÌD Íˆ*–”, Í†”0 Í†”1 Í‰”; Í‰!”< Í‰"”ÌB Í‰(–”, Í†”0 Í†”1 ÍŠ”9 ÍŠ”: ÍŠ ”; ÍŠ!œ”, Í†”0 Í†”1 Í‹”= Í‹#”> Í‹$”Ì@ Í‹&”ÌH Í‹.”ÌJ Í‹0”ÌV Í‹<”ÌW Í‹=”Ì_ Í‹ÌE”Ìa Í‹ÌG˜”, Í†”0 Í†”1 ÍŒ”: ÍŒ ”; ÍŒ!”ÌD ÍŒ*”ÌE ÍŒ+”ÌK ÍŒ1’”( Í†”, Í†‘”! Í‘”! Í’” Í€”" Í€’” Í”$ Í’” Í”  Í‘” Í“‘” Í“’” Í”” Í”’”? Í”;”Ì@ Í”ÌD’”( Í•”0 Í•™”$ Í–”( Í–”) Í–”: Í–(”ÌF Í–)”ÌG Í–*”ÌI Í–,”ÌJ Í–-”ÌK Í–.œ”( Í—”, Í—”- Í—”0 Í—”4 Í—”5 Í—”= Í—'”> Í—(”ÌD Í—.”ÌG Í—1”ÌH Í—2”ÌJ Í—4’”4 Í˜”; Í˜–”4 Í˜”; Í˜”< Í˜”ÌG Í˜)”ÌH Í˜*”ÌO Í˜1–”4 Í˜”; Í˜”< Í˜3”ÌA Í˜8”ÌB Í˜9”ÌK Í˜ÌB‘”) Í™‘”) Í™’”$ Í•”, Í•’”  Í•”( Í•””; Í””? Í””Ì@ Í””ÌH Í”#’” Í”” Í”–” Í” Í”  Í”! Í”, Í"”. Í$’”, Íž”4 Íž’”, ÍŸ”/ ÍŸ–”, ÍŸ”/ ÍŸ”0 Í¢”5 Í¢”6 Í¢”< Í¢ –”, ÍŸ”/ ÍŸ”0 Í¢"”7 Í¢)”8 Í¢*”: Í¢,˜”, ÍŸ”/ ÍŸ”0 Í¢.”> Í¢<”? Í¢=”ÌH Í¢ÌF”ÌI Í¢ÌG”ÌO Í¢ÌM’”, Í ”; Í #–”, Í ”; Í #”< Í &”ÌA Í +”ÌB Í ,”ÌH Í 2–”, Í ”; Í #”< Í 4”ÌB Í :”ÌC Í ;”ÌI Í ÌAš”, Í ”; Í #”< Í ÌC”ÌB Í ÌI”ÌC Í ÌJ”ÌE Í ÌL”ÌJ Í ÌQ”ÌL Í ÌS”ÌQ Í ÌX”ÌS Í ÌZ””, Í¡”0 Í¡”8 Í¡”< Í¡–”, Í¡”0 Í¡”1 Í¡”9 Í¡'”: Í¡(”Ì@ Í¡.–”, Í¡”0 Í¡”1 Í¡0”: Í¡9”; Í¡:”ÌD Í¡ÌC’”( Í¡”, Í¡’”( ÍŸ”+ ÍŸ’”( Íž”0 Íž’”$ Íž”, Íž‘” Í¤Ÿ” Í¤”! Í¤”" Í¤”& Í¤”' Í¤”. Í¤&”2 Í¤*”6 Í¤.”7 Í¤/”? Í¤7”Ì@ Í¤8”ÌF Í¤>”ÌI Í¤ÌA”ÌJ Í¤ÌB”ÌL Í¤ÌD’”, Í¥”4 Í¥””, Í¦”0 Í¦”8 Í¦”> Í¦–”, Í¦”0 Í¦”1 Í¦”9 Í¦'”: Í¦(”Ì@ Í¦.–”, Í¦”0 Í¦”1 Í¦0”: Í¦9”; Í¦:”ÌD Í¦ÌC–”, Í¦”0 Í¦”1 Í¦ÌE”8 Í¦ÌL”9 Í¦ÌM”; Í¦ÌO–”, Í¦”0 Í¦”1 Í¦ÌQ”6 Í¦ÌV”7 Í¦ÌW”= Í¦Ì]˜”, Í¦”0 Í¦”1 Í¦Ì_”: Í¦Ìh”; Í¦Ìi”ÌD Í¦Ìr”ÌE Í¦Ìs”ÌK Í¦Ìy’”( Í¦”, Í¦’”( Í¥”0 Í¥’”$ Í¥”, Í¥‘” Í¨‘” Í¨‘” Í©’” Í}
+” Í}’” Í{”ÌF Í{ÌF’” Í|” Í|’” Ío” Ío˜” Íº” Íº
+” Íº” Íº”  Íº”% Íº”) Íº#”+ Íº%™” Í»” Í»” Í»”* Í»”6 Í»”: Í»#”; Í»$”ÌF Í»9”ÌG Í»:‘” Í¼‘” Í¼’” Ín” Ín	‘” ÍÀÔrH–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜœ‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  ÌŽ ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ìž ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌÐ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  ÌÝ ‘”  ÌÞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìð ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìý ‘”  Ìþ ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ‘”  ÍN ‘”  ÍO ‘”  ÍP ‘”  ÍQ ‘”  ÍR ‘”  ÍS ‘”  ÍT ‘”  ÍU ‘”  ÍV ‘”  ÍW ‘”  ÍX ‘”  ÍY ‘”  ÍZ ‘”  Í[ ‘”  Í\ ‘”  Í] ‘”  Í^ ‘”  Í_ ‘”  Í` ‘”  Ía ‘”  Íb ‘”  Íc ‘”  Íd ‘”  Íe ‘”  Íf ‘”  Íg ‘”  Íh ‘”  Íi ‘”  Íj ‘”  Ík ‘”  Íl ‘”  Ím ‘”  Ín ‘”  Ío ‘”  Íp ‘”  Íq ‘”  Ír ‘”  Ís ‘”  Ít ‘”  Íu ‘”  Ív ‘”  Íw ‘”  Íx ‘”  Íy ‘”  Íz ‘”  Í{ ‘”  Í| ‘”  Í} ‘”  Í~ ‘”  Í ‘”  Í€ ‘”  Í ‘”  Í‚ ‘”  Íƒ ‘”  Í„ ‘”  Í… ‘”  Í† ‘”  Í‡ ‘”  Íˆ ‘”  Í‰ ‘”  ÍŠ ‘”  Í‹ ‘”  ÍŒ ‘”  Í ‘”  ÍŽ ‘”  Í ‘”  Í ‘”  Í‘ ‘”  Í’ ‘”  Í“ ‘”  Í” ‘”  Í• ‘”  Í– ‘”  Í— ‘”  Í˜ ‘”  Í™ ‘”  Íš ‘”  Í› ‘”  Íœ ‘”  Í ‘”  Íž ‘”  ÍŸ ‘”  Í  ‘”  Í¡ ‘”  Í¢ ‘”  Í£ ‘”  Í¤ ‘”  Í¥ ‘”  Í¦ ‘”  Í§ ‘”  Í¨ ‘”  Í© ‘”  Íª ‘”  Í« ‘”  Í¬ ‘”  Í­ ‘”  Í® ‘”  Í¯ ‘”  Í° ‘”  Í± ‘”  Í² ‘”  Í³ ‘”  Í´ ‘”  Íµ ‘”  Í¶ ‘”  Í· ‘”  Í¸ ‘”  Í¹ ‘”  Íº ‘”  Í» ‘”  Í¼ ‘”  Í½ ‘”  Í¾ ‘”  Í¿ ‘”  ÍÀ ‘”  ÍÁ ‘”  ÍÂ ‘”  ÍÃ ‘”  ÍÄ ‘”  ÍÅ ‘”  ÍÆ ‘”  ÍÇ ‘”  ÍÈ ‘”  ÍÉ ‘”  ÍÊ ‘”  ÍË ‘”  ÍÌ ‘”  ÍÍ ‘”  ÍÎ ‘”  ÍÏ ‘”  ÍÐ ‘”  ÍÑ ‘”  ÍÒ ‘”  ÍÓ ‘”  ÍÔ ‘”  ÍÕ ‘”  ÍÖ ‘”  Í× ‘”  ÍØ ‘”  ÍÙ ‘”  ÍÚ ‘”  ÍÛ ‘”  ÍÜ ‘”  ÍÝ ‘”  ÍÞ ‘”  Íß ‘”  Íà ‘”  Íá ‘”  Íâ ‘”  Íã ‘”  Íä ‘”  Íå ‘”  Íæ ‘”  Íç ‘”  Íè ‘”  Íé ‘”  Íê ‘”  Íë ‘”  Íì ‘”  Íí ‘”  Íî ‘”  Íï ‘”  Íð ‘”  Íñ ‘”  Íò ‘”  Íó ‘”  Íô ‘”  Íõ ‘”  Íö ‘”  Í÷ ‘”  Íø ‘”  Íù ‘”  Íú ‘”  Íû ‘”  Íü ‘”  Íý ‘”  Íþ ‘”  Íÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ‘”  ÍN ‘”  ÍO ‘”  ÍP ‘”  ÍQ ‘”  ÍR ‘”  ÍS ‘”  ÍT ‘”  ÍU ‘”  ÍV ‘”  ÍW ‘”  ÍX ‘”  ÍY ‘”  ÍZ ‘”  Í[ ‘”  Í\ ‘”  Í] ‘”  Í^ ‘”  Í_ ‘”  Í` ‘”  Ía ‘”  Íb ‘”  Íc ‘”  Íd ‘”  Íe ‘”  Íf ‘”  Íg ‘”  Íh ‘”  Íi ‘”  Íj ‘”  Ík ‘”  Íl ‘”  Ím ‘”  Ín ‘”  Ío ‘”  Íp ‘”  Íq ‘”  Ír ‘”  Ís ‘”  Ít ‘”  Íu ‘”  Ív ‘”  Íw ‘”  Íx ‘”  Íy ‘”  Íz ‘”  Í{ ‘”  Í| ‘”  Í} ‘”  Í~ ‘”  Í ‘”  Í€ ‘”  Í ‘”  Í‚ ‘”  Íƒ ‘”  Í„ ‘”  Í… ‘”  Í† ‘”  Í‡ ‘”  Íˆ ‘”  Í‰ ‘”  ÍŠ ‘”  Í‹ ‘”  ÍŒ ‘”  Í ‘”  ÍŽ ‘”  Í ‘”  Í ‘”  Í‘ ‘”  Í’ ‘”  Í“ ‘”  Í” ‘”  Í• ‘”  Í– ‘”  Í— ‘”  Í˜ ‘”  Í™ ‘”  Íš ‘”  Í› ‘”  Íœ ‘”  Í ‘”  Íž ‘”  ÍŸ ‘”  Í  ‘”  Í¡ ‘”  Í¢ ‘”  Í£ ‘”  Í¤ ‘”  Í¥ ‘”  Í¦ ‘”  Í§ ‘”  Í¨ ‘”  Í© ‘”  Íª ‘”  Í« ‘”  Í¬ ‘”  Í­ ‘”  Í® ‘”  Í¯ ‘”  Í° ‘”  Í± ‘”  Í² ‘”  Í³ ‘”  Í´ ‘”  Íµ ‘”  Í¶ ‘”  Í· ‘”  Í¸ ‘”  Í¹ ‘”  Íº ‘”  Í» ‘”  Í¼ ‘”  Í½ ‘”  Í¾ ‘”  Í¿ ‘”  ÍÀ ‘”  ÍÁ ‘”  ÍÂ ‘”  ÍÃ ‘”  ÍÄ ‘”  ÍÅ ‘”  ÍÆ ‘”  ÍÇ ‘”  ÍÈ ‘”  ÍÉ ‘”  ÍÊ ‘”  ÍË ‘”  ÍÌ ‘”  ÍÍ ‘”  ÍÎ ‘”  ÍÏ ‘”  ÍÐ ‘”  ÍÑ ‘”  ÍÒ ‘”  ÍÓ ‘”  ÍÔ ‘”  ÍÕ ‘”  ÍÖ ‘”  Í× ‘”  ÍØ ‘”  ÍÙ ‘”  ÍÚ ‘”  ÍÛ ‘”  ÍÜ ‘”  ÍÝ ‘”  ÍÞ ‘”  Íß ‘”  Íà ‘”  Íá ‘”  Íâ ‘”  Íã ‘”  Íä ‘”  Íå ‘”  Íæ ‘”  Íç ‘”  Íè ‘”  Íé ‘”  Íê ‘”  Íë ‘”  Íì ‘”  Íí ‘”  Íî ‘”  Íï ‘”  Íð ‘”  Íñ ‘”  Íò ‘”  Íó ‘”  Íô ‘”  Íõ ‘”  Íö ‘”  Í÷ ‘”  Íø ‘”  Íù ‘”  Íú ‘”  Íû ‘”  Íü ‘”  Íý ‘”  Íþ ‘”  Íÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ‘”  ÍN ‘”  ÍO ‘”  ÍP ‘”  ÍQ ‘”  ÍR ‘”  ÍS ‘”  ÍT ‘”  ÍU ‘”  ÍV ‘”  ÍW ‘”  ÍX ‘”  ÍY ‘”  ÍZ ‘”  Í[ ‘”  Í\ ‘”  Í] ‘”  Í^ ‘”  Í_ ‘”  Í` ‘”  Ía ‘”  Íb ‘”  Íc ‘”  Íd ‘”  Íe ‘”  Íf ‘”  Íg ‘”  Íh ‘”  Íi ‘”  Íj ‘”  Ík ‘”  Íl ‘”  Ím ‘”  Ín ‘”  Ío ‘”  Íp ‘”  Íq ‘”  Ír ‘”  Ís ‘”  Ít ‘”  Íu ‘”  Ív ‘”  Íw ‘”  Íx ‘”  Íy ‘”  Íz ‘”  Í{ ‘”  Í| ‘”  Í} ‘”  Í~ ‘”  Í ‘”  Í€ ‘”  Í ‘”  Í‚ ‘”  Íƒ ‘”  Í„ ‘”  Í… ‘”  Í† ‘”  Í‡ ‘”  Íˆ ‘”  Í‰ ‘”  ÍŠ ‘”  Í‹ ‘”  ÍŒ ‘”  Í ‘”  ÍŽ ‘”  Í ‘”  Í ‘”  Í‘ ‘”  Í’ ‘”  Í“ ‘”  Í” ‘”  Í• ‘”  Í– ‘”  Í— ‘”  Í˜ ‘”  Í™ ‘”  Íš ‘”  Í› ÔrI’§missing¦pluginÃ¦genAbcÂÔ  ÔrJ”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache•ÔrK•¤type¥start£endªspecifiers¦source±ImportDeclarationÌ—ÌÆ‘ÔrL•¤type¥start£end¨imported¥local¯ImportSpecifierÌ Ì¯ÔrM”¤type¥start£end¤nameªIdentifierÌ Ì¯¯CommonSearchBarMªIdentifierÌ Ì¯¯CommonSearchBarÔrN•¤type¥start£end¥value£raw§LiteralÌ·ÌÅ¬uicomponents®'uicomponents'K±ImportDeclarationÌÈÍ'”L¯ImportSpecifierÌÑÌåMªIdentifierÌÑÌå´BaiduHotSearchParserMªIdentifierÌÑÌå´BaiduHotSearchParserL¯ImportSpecifierÌçÌúMªIdentifierÌçÌú³NewsHeadlineServiceMªIdentifierÌçÌú³NewsHeadlineServiceL¯ImportSpecifierÌüÍMªIdentifierÌüÍ¯buildNewsApiUrlMªIdentifierÌüÍ¯buildNewsApiUrlL¯ImportSpecifierÍÍMªIdentifierÍÍªmaskApiKeyMªIdentifierÍÍªmaskApiKeyN§LiteralÍÍ&¥utils§'utils'K±ImportDeclarationÍ)Ín‘L¯ImportSpecifierÍ2ÍEMªIdentifierÍ2ÍE³FavoriteNewsServiceMªIdentifierÍ2ÍE³FavoriteNewsServiceN§LiteralÍMÍm¾../service/FavoriteNewsServiceÙ '../service/FavoriteNewsService'K±ImportDeclarationÍpÍ”‘L¯ImportSpecifierÍyÍ„MªIdentifierÍyÍ„«UserManagerMªIdentifierÍyÍ„«UserManagerN§LiteralÍŒÍ“¥login§'login'K±ImportDeclarationÍ–Í¾‘ÔrO”¤type¥start£end¥local¶ImportDefaultSpecifierÍÍ¤MªIdentifierÍÍ¤§webviewN§LiteralÍªÍ½±@ohos.web.webview³'@ohos.web.webview'

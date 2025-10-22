@@ -1,320 +1,0 @@
-Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ«export function maskApiKey(url) {
-    try {
-        return url.replace(/(key=)([^&]*)/i, (m, p1, p2) => {
-            if (!p2) {
-                return m;
-            }
-            const keepStart = Math.min(3, p2.length);
-            const keepEnd = Math.min(2, p2.length - keepStart);
-            let maskedMid = '';
-            for (let i = 0; i < Math.max(0, p2.length - keepStart - keepEnd); i++) {
-                maskedMid += '*';
-            }
-            return p1 + p2.substring(0, keepStart) + maskedMid + p2.substring(p2.length - keepEnd);
-        });
-    }
-    catch (_) {
-        return url;
-    }
-}
-// Placeholder config. Please fill endpoint and apiKey according to PDF.
-export const NewsApiConfig = {
-    endpoint: 'https://v.juhe.cn/toutiao/index',
-    apiKey: '71833a97a51ccfad8563af5ecae4839b',
-    //71833a97a51ccfad8563af5ecae4839b  
-    //12e0eb5bd4665092a712a3a8ae9cad4d
-    //4099c9e9c05734ec979982f21a13a99c
-    apiKeyParam: 'key',
-    typeParam: 'type',
-    pageParam: 'page',
-    sizeParam: 'page_size',
-    isFilterParam: 'is_filter',
-    isFilerParam: 'is_filer',
-    defaultSize: 30
-};
-export function buildNewsApiUrl(params = {}) {
-    const cfg = NewsApiConfig;
-    const kv = [];
-    // api key
-    kv.push(`${encodeURIComponent(cfg.apiKeyParam)}=${encodeURIComponent(cfg.apiKey)}`);
-    // type
-    if (params.type !== undefined) {
-        kv.push(`${encodeURIComponent(cfg.typeParam)}=${encodeURIComponent(String(params.type))}`);
-    }
-    // is_filter/is_filer (default 1 if neither provided)
-    const isFilterKey = cfg.isFilterParam ? cfg.isFilterParam : 'is_filter';
-    const isFilerKey = cfg.isFilerParam ? cfg.isFilerParam : 'is_filer';
-    const hasFilter = (params.is_filter !== undefined) || (params.is_filer !== undefined);
-    if (hasFilter) {
-        if (params.is_filter !== undefined) {
-            kv.push(`${encodeURIComponent(isFilterKey)}=${encodeURIComponent(String(params.is_filter))}`);
-        }
-        if (params.is_filer !== undefined) {
-            kv.push(`${encodeURIComponent(isFilerKey)}=${encodeURIComponent(String(params.is_filer))}`);
-        }
-    }
-    else {
-        // default per request: is_filter=0
-        kv.push(`${encodeURIComponent(isFilterKey)}=0`);
-    }
-    // pagination
-    const page = (params.page !== undefined) ? params.page : 1;
-    const size = (params.size !== undefined) ? params.size : cfg.defaultSize;
-    kv.push(`${encodeURIComponent(cfg.pageParam)}=${encodeURIComponent(String(page))}`);
-    kv.push(`${encodeURIComponent(cfg.sizeParam)}=${encodeURIComponent(String(size))}`);
-    // extra pairs
-    if (params.extra && params.extra.length > 0) {
-        for (let i = 0; i < params.extra.length; i++) {
-            const pair = params.extra[i];
-            if (!pair || !pair.key)
-                continue;
-            kv.push(`${encodeURIComponent(pair.key)}=${encodeURIComponent(String(pair.value))}`);
-        }
-    }
-    const qs = kv.length > 0 ? `?${kv.join('&')}` : '';
-    const full = `${cfg.endpoint}${qs}`;
-    const masked = maskApiKey(full);
-    console.info('buildNewsApiUrl ->', masked);
-    return full;
-}
-//# sourceMappingURL=NewsApiConfig.js.mapÂÙ[G:\HarmonyOsProjects\news_app_final\news_app-develop_dd\commons\utils\src\NewsApiConfig.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥utilsÃÂÙEG:\HarmonyOsProjects\news_app_final\news_app-develop_dd\commons\utilsÙ7G:\HarmonyOsProjects\news_app_final\news_app-develop_dd¥utils¥1.0.0ÔrC’§pkgNameªpkgVersion¥utils¥1.0.0’ÔrD’²hostDependencyName®hostModuleName³./src/NewsApiConfig¥utilsD¯./NewsApiConfig¥utilsÙEG:\HarmonyOsProjects\news_app_final\news_app-develop_dd\commons\utilsÃÃÚkexport interface ExtraParamPair {
-  key: string;
-  value: string | number;
-}
-
-export interface NewsApiRequestParams {
-  type?: string; // e.g. 'guonei' | 'guoji'
-  is_filter?: number | string; // API may require number/string
-  is_filer?: number | string; // some docs typo; keep for compatibility
-  page?: number;
-  size?: number;
-  // extra query pairs if needed
-  extra?: ExtraParamPair[];
-}
-
-export interface NewsApiConfigShape {
-  endpoint: string; // Base endpoint, e.g. https://example.com/news
-  apiKey: string; // Fill by user
-  apiKeyParam: string; // e.g. 'apikey' or 'key'
-  typeParam: string; // e.g. 'type'
-  pageParam: string; // e.g. 'page'
-  sizeParam: string; // e.g. 'page_size' | 'num'
-  isFilterParam?: string; // default 'is_filter'
-  isFilerParam?: string; // typo compatibility
-  defaultSize: number; // default page size
-}
-
-export function maskApiKey(url: string): string {
-  try {
-    return url.replace(/(key=)([^&]*)/i, (m: string, p1: string, p2: string): string => {
-      if (!p2) {
-        return m;
-      }
-      const keepStart: number = Math.min(3, p2.length);
-      const keepEnd: number = Math.min(2, p2.length - keepStart);
-      let maskedMid: string = '';
-      for (let i = 0; i < Math.max(0, p2.length - keepStart - keepEnd); i++) {
-        maskedMid += '*';
-      }
-      return p1 + p2.substring(0, keepStart) + maskedMid + p2.substring(p2.length - keepEnd);
-    });
-  } catch (_) {
-    return url;
-  }
-}
-
-// Placeholder config. Please fill endpoint and apiKey according to PDF.
-export const NewsApiConfig: NewsApiConfigShape = {
-  endpoint: 'https://v.juhe.cn/toutiao/index',
-  apiKey: '71833a97a51ccfad8563af5ecae4839b',
-  //71833a97a51ccfad8563af5ecae4839b  
-  //12e0eb5bd4665092a712a3a8ae9cad4d
-  //4099c9e9c05734ec979982f21a13a99c
-  apiKeyParam: 'key',
-  typeParam: 'type',
-  pageParam: 'page',
-  sizeParam: 'page_size',
-  isFilterParam: 'is_filter',
-  isFilerParam: 'is_filer',
-  defaultSize: 30
-};
-
-export function buildNewsApiUrl(params: NewsApiRequestParams = {}): string {
-  const cfg = NewsApiConfig;
-  const kv: string[] = [];
-
-  // api key
-  kv.push(`${encodeURIComponent(cfg.apiKeyParam)}=${encodeURIComponent(cfg.apiKey)}`);
-
-  // type
-  if (params.type !== undefined) {
-    kv.push(`${encodeURIComponent(cfg.typeParam)}=${encodeURIComponent(String(params.type))}`);
-  }
-
-  // is_filter/is_filer (default 1 if neither provided)
-  const isFilterKey: string = cfg.isFilterParam ? cfg.isFilterParam : 'is_filter';
-  const isFilerKey: string = cfg.isFilerParam ? cfg.isFilerParam : 'is_filer';
-  const hasFilter: boolean = (params.is_filter !== undefined) || (params.is_filer !== undefined);
-  if (hasFilter) {
-    if (params.is_filter !== undefined) {
-      kv.push(`${encodeURIComponent(isFilterKey)}=${encodeURIComponent(String(params.is_filter))}`);
-    }
-    if (params.is_filer !== undefined) {
-      kv.push(`${encodeURIComponent(isFilerKey)}=${encodeURIComponent(String(params.is_filer))}`);
-    }
-  } else {
-    // default per request: is_filter=0
-    kv.push(`${encodeURIComponent(isFilterKey)}=0`);
-  }
-
-  // pagination
-  const page: number = (params.page !== undefined) ? params.page as number : 1;
-  const size: number = (params.size !== undefined) ? params.size as number : cfg.defaultSize;
-  kv.push(`${encodeURIComponent(cfg.pageParam)}=${encodeURIComponent(String(page))}`);
-  kv.push(`${encodeURIComponent(cfg.sizeParam)}=${encodeURIComponent(String(size))}`);
-
-  // extra pairs
-  if (params.extra && params.extra.length > 0) {
-    for (let i = 0; i < params.extra.length; i++) {
-      const pair = params.extra[i];
-      if (!pair || !pair.key) continue;
-      kv.push(`${encodeURIComponent(pair.key)}=${encodeURIComponent(String(pair.value))}`);
-    }
-  }
-
-  const qs: string = kv.length > 0 ? `?${kv.join('&')}` : '';
-  const full: string = `${cfg.endpoint}${qs}`;
-  const masked: string = maskApiKey(full);
-  console.info('buildNewsApiUrl ->', masked);
-  return full;
-}
-ÀA“ÔrE–§version¤fileªsourceRoot§sources¥names¨mappings°NewsApiConfig.js ‘±NewsApiConfig.etsÜ O–”   ” ” ” ” ” &’” ” Ü ” ” ” ” ” ” ”+ '”- )”. *”/ 3”1 5”3 ?”5 ÌA”7 ÌK”9 ÌU”; ÌW•” ” 
-” ” ” ”” ” ” ” ‘”  Ÿ” !” !” !” ! ”" !$”# !%”& !(”' !)”( !*”* !,”, !.”- !/”3 !5”4 !6”5 !7Ü ” "” "” "” "”  ""”! "#”$ "&”% "'”& "(”( "*”* ",”+ "-”1 "3”4 "6”= "?”> "Ì@”? "ÌA–” #” #
-” #” #” # ” #!Ü ” $” $” $” $” $” $” $” $”  $”$ $”% $”( $"”) $#”* $$”, $&”. $(”/ $)”5 $/”8 $2”ÌA $;”ÌD $>”ÌK $ÌE”ÌL $ÌF”ÌN $ÌH”ÌO $ÌI”ÌQ $ÌK”ÌS $ÌM•” %” %” %”  %”! %‘” &Ü ” '” '” '” '” '” '”$ '”% '”& ' ”( '"”1 '+”2 ',”5 '/”> '8”ÌA ';”ÌC '=”ÌD '>”ÌM 'ÌG”ÌN 'ÌH”ÌP 'ÌJ”ÌQ 'ÌK”ÌW 'ÌQ”ÌZ 'ÌT”Ìa 'Ì[”Ìb 'Ì\”Ìc 'Ì]”” (”	 (”
- (” (‘” )”” )” )” )” )”” *” *” *” *‘” +’”  , ” ,’”  . ”ÌH .ÌH–”  / ” /” /” /” /” /1”” 0” 0
-” 0”/ 0-”” 1”
- 1” 1
-”. 1,’” 2”( 2&’” 3”& 3$’” 4”& 4$”” 5” 5” 5” 5”” 6” 6” 6” 6”” 7” 7” 7” 7”” 8” 8” 8” 8”” 9” 9” 9” 9”” :” :” :” :”” ;” ;” ;” ;’” <” <—”  > ” >” >” >”  > ”) >?”+ >ÌA–” ?”
- ?” ?” ?” ?” ?–” Ì@”
- Ì@” Ì@
-” Ì@” Ì@” Ì@’” ÌB” ÌBÜ ” ÌC” ÌC” ÌC” ÌC	” ÌC
-” ÌC”! ÌC”" ÌC ”% ÌC#”& ÌC$”1 ÌC/”2 ÌC0”6 ÌC4”ÌH ÌCÌF”ÌI ÌCÌG”ÌL ÌCÌJ”ÌM ÌCÌK”ÌS ÌCÌQ”ÌT ÌCÌR”ÌV ÌCÌT”ÌW ÌCÌU”ÌX ÌCÌV’” ÌE” ÌE	˜” ÌF” ÌF” ÌF” ÌF” ÌF” ÌF”! ÌF”# ÌF!Ü ” ÌG”
- ÌG” ÌG” ÌG” ÌG” ÌG”% ÌG!”& ÌG"”) ÌG%”* ÌG&”3 ÌG/”4 ÌG0”8 ÌG4”ÌJ ÌGÌF”ÌK ÌGÌG”ÌQ ÌGÌM”ÌR ÌGÌN”ÌX ÌGÌT”ÌY ÌGÌU”Ì] ÌGÌY”Ì^ ÌGÌZ”Ì_ ÌGÌ[”Ìa ÌGÌ]”Ìb ÌGÌ^”Ìc ÌGÌ_‘” ÌH’” ÌJ”9 ÌJ7Ü ” ÌK”
- ÌK” ÌK” ÌK” ÌK!” ÌK"”) ÌK/”* ÌK0”+ ÌK1”, ÌK2”/ ÌK5”0 ÌK6”= ÌKÌC”> ÌKÌD”? ÌKÌE”Ì@ ÌKÌF”ÌK ÌKÌQ”ÌL ÌKÌRÜ ” ÌL”
- ÌL” ÌL” ÌL” ÌL ” ÌL!”' ÌL-”( ÌL.”) ÌL/”* ÌL0”- ÌL3”. ÌL4”: ÌLÌ@”; ÌLÌA”< ÌLÌB”= ÌLÌC”ÌG ÌLÌM”ÌH ÌLÌNÜ ” ÌM”
- ÌM” ÌM” ÌM” ÌM” ÌM$” ÌM%”' ÌM.”, ÌM3”5 ÌM<”6 ÌM=”: ÌMÌA”; ÌMÌB”ÌA ÌMÌH”ÌB ÌMÌI”ÌJ ÌMÌQ”ÌO ÌMÌV”ÌX ÌMÌ_”ÌY ÌMÌ`”ÌZ ÌMÌa”” ÌN” ÌN” ÌN” ÌN˜” ÌO” ÌO” ÌO” ÌO” ÌO”! ÌO”* ÌO&”, ÌO(Ü ” ÌP” ÌP” ÌP	” ÌP” ÌP” ÌP”) ÌP#”* ÌP$”5 ÌP/”6 ÌP0”: ÌP4”ÌL ÌPÌF”ÌM ÌPÌG”ÌS ÌPÌM”ÌT ÌPÌN”ÌZ ÌPÌT”Ì[ ÌPÌU”Ìd ÌPÌ^”Ìe ÌPÌ_”Ìf ÌPÌ`”Ìh ÌPÌb”Ìi ÌPÌc”Ìj ÌPÌd‘”	 ÌQ˜” ÌR” ÌR” ÌR” ÌR” ÌR”  ÌR”) ÌR%”+ ÌR'Ü ” ÌS” ÌS” ÌS	” ÌS” ÌS” ÌS”) ÌS#”* ÌS$”4 ÌS.”5 ÌS/”9 ÌS3”ÌK ÌSÌE”ÌL ÌSÌF”ÌR ÌSÌL”ÌS ÌSÌM”ÌY ÌSÌS”ÌZ ÌSÌT”Ìb ÌSÌ\”Ìc ÌSÌ]”Ìd ÌSÌ^”Ìf ÌSÌ`”Ìg ÌSÌa”Ìh ÌSÌb‘”	 ÌT‘” ÌU‘”	 ÌU	’” ÌV”+ ÌV'” ÌW”
- ÌW” ÌW” ÌW” ÌW” ÌW”% ÌW!”& ÌW"”1 ÌW-”2 ÌW.”6 ÌW2”7 ÌW3”8 ÌW4‘” ÌX’” ÌZ” ÌZÜ ” Ì[”
- Ì[” Ì[” Ì[” Ì[” Ì[” Ì[” Ì[#”" Ì[(”+ Ì[1”, Ì[2”- Ì[3”. Ì[4”/ Ì[5”5 Ì[;”6 Ì[<”: Ì[ÌJ”; Ì[ÌK”< Ì[ÌL”= Ì[ÌM”> Ì[ÌN”? Ì[ÌOÜ ” Ì\”
- Ì\” Ì\” Ì\” Ì\” Ì\” Ì\” Ì\#”" Ì\(”+ Ì\1”, Ì\2”- Ì\3”. Ì\4”/ Ì\5”5 Ì\;”6 Ì\<”: Ì\ÌJ”; Ì\ÌK”< Ì\ÌL”= Ì\ÌM”Ì@ Ì\ÌP”ÌA Ì\ÌQ”ÌL Ì\Ì\”ÌM Ì\Ì]Ü ” Ì]” Ì]” Ì]” Ì]	” Ì]
-” Ì]”! Ì]”" Ì] ”% Ì]#”& Ì]$”/ Ì]-”0 Ì].”4 Ì]2”ÌF Ì]ÌD”ÌG Ì]ÌE”ÌM Ì]ÌK”ÌN Ì]ÌL”ÌR Ì]ÌP”ÌS Ì]ÌQ”ÌT Ì]ÌR”ÌV Ì]ÌT”ÌW Ì]ÌU”ÌX Ì]ÌVÜ ” Ì^” Ì^” Ì^” Ì^	” Ì^
-” Ì^”! Ì^”" Ì^ ”% Ì^#”& Ì^$”/ Ì^-”0 Ì^.”4 Ì^2”ÌF Ì^ÌD”ÌG Ì^ÌE”ÌM Ì^ÌK”ÌN Ì^ÌL”ÌR Ì^ÌP”ÌS Ì^ÌQ”ÌT Ì^ÌR”ÌV Ì^ÌT”ÌW Ì^ÌU”ÌX Ì^ÌV’” Ì`” Ì`” Ìa” Ìa” Ìa” Ìa” Ìa” Ìa” Ìa” Ìa”$ Ìa"”% Ìa#”+ Ìa)”. Ìa,”/ Ìa-”1 Ìa/Ü ” Ìb” Ìb	” Ìb” Ìb” Ìb” Ìb” Ìb” Ìb” Ìb”" Ìb”# Ìb”( Ìb$”) Ìb%”/ Ìb+”1 Ìb-”2 Ìb.”4 Ìb0”6 Ìb2›” Ìc” Ìc” Ìc” Ìc” Ìc”  Ìc”% Ìc”& Ìc ”' Ìc!”( Ìc"”) Ìc#™” Ìd” Ìd
-” Ìd” Ìd” Ìd” Ìd” Ìd” Ìd”" Ìd’” Ìd” Ìd'Ü ” Ìe” Ìe” Ìe	” Ìe” Ìe” Ìe”) Ìe#”* Ìe$”. Ìe(”/ Ìe)”2 Ìe,”3 Ìe-”7 Ìe1”ÌI ÌeÌC”ÌJ ÌeÌD”ÌP ÌeÌJ”ÌQ ÌeÌK”ÌU ÌeÌO”ÌV ÌeÌP”Ì[ ÌeÌU”Ì\ ÌeÌV”Ì] ÌeÌW”Ì_ ÌeÌY”Ì` ÌeÌZ”Ìa ÌeÌ[‘”	 Ìf‘” ÌgÜ ” Ìi”
- Ìi” Ìi
-” Ìi” Ìi” Ìi” Ìi” Ìi!” Ìi"” Ìi#” Ìi$” Ìi%”# Ìi)”% Ìi+”& Ìi,”* Ìi0”+ Ìi1”. Ìi4”/ Ìi5”1 Ìi7”2 Ìi8”3 Ìi9”4 Ìi:”6 Ìi<”7 Ìi=œ” Ìj”
- Ìj” Ìj” Ìj” Ìj” Ìj” Ìj”  Ìj&”# Ìj)”% Ìj+”' Ìj-”( Ìj.™” Ìk”
- Ìk” Ìk” Ìk” Ìk#” Ìk$”" Ìk(”# Ìk)”$ Ìk*š” Ìl” Ìl	” Ìl
-” Ìl” Ìl”% Ìl#”' Ìl%”- Ìl+”. Ìl,”/ Ìl-”” Ìm” Ìm	” Ìm” Ìm’”  Ìn ” ÌnÔrF–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜ P‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
- ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ÔrG’§missing¦pluginÃ¦genAbcÂÔ  ÔrH”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache“ÔrI–¤type¥start£end«declarationªspecifiers¦source¶ExportNamedDeclaration ÍwÔrJ™¤type¥start£end¢idªexpression©generator¥async¦params¤body³FunctionDeclarationÍwÔrK”¤type¥start£end¤nameªIdentifierªmaskApiKeyÂÂÂ‘KªIdentifier£urlÔrL”¤type¥start£end¤body®BlockStatement Íw‘ÔrM–¤type¥start£end¥block§handler©finalizer¬TryStatement'ÍtL®BlockStatement+ÍG‘ÔrN”¤type¥start£end¨argument¯ReturnStatement6Í@ÔrO–¤type¥start£end¦callee©arguments¨optional®CallExpression=Í?ÔrP—¤type¥start£end¦object¨property¨computed¨optional°MemberExpression=ÌHKªIdentifier=Ì@£urlKªIdentifierÌAÌH§replaceÂÂ’ÔrQ–¤type¥start£end¥value£raw¥regex§LiteralÌIÌY’­(key=)([^&]*)¡i°/(key=)([^&]*)/iÔrR’§pattern¥flags­(key=)([^&]*)¡iJ·ArrowFunctionExpressionÌ[Í>ÀÂÂÂ“KªIdentifierÌ\Ì]¡mKªIdentifierÌ_Ìa¢p1KªIdentifierÌcÌe¢p2L®BlockStatementÌjÍ>–ÔrS–¤type¥start£end¤testªconsequent©alternate«IfStatementÌyÌ­ÔrT–¤type¥start£end¨operator¦prefix¨argument¯UnaryExpressionÌ}Ì€¡!ÃKªIdentifierÌ~Ì€¢p2L®BlockStatementÌ‚Ì­‘N¯ReturnStatementÌ•ÌKªIdentifierÌœÌ¡mÀÔrU•¤type¥start£end¬declarations¤kind³VariableDeclarationÌ»Ìä‘ÔrV•¤type¥start£end¢id¤init²VariableDeclaratorÌÁÌãKªIdentifierÌÁÌÊ©keepStartO®CallExpressionÌÍÌãP°MemberExpressionÌÍÌÕKªIdentifierÌÍÌÑ¤MathKªIdentifierÌÒÌÕ£minÂÂ’ÔrW•¤type¥start£end¥value£raw§LiteralÌÖÌ×¡3P°MemberExpressionÌÙÌâKªIdentifierÌÙÌÛ¢p2KªIdentifierÌÜÌâ¦lengthÂÂÂ¥constU³VariableDeclarationÌòÍ%‘V²VariableDeclaratorÌøÍ$KªIdentifierÌøÌÿ§keepEndO®CallExpressionÍÍ$P°MemberExpressionÍÍ
-KªIdentifierÍÍ¤MathKªIdentifierÍÍ
-£minÂÂ’W§LiteralÍÍ¡2ÔrX–¤type¥start£end¤left¨operator¥right°BinaryExpressionÍÍ#P°MemberExpressionÍÍKªIdentifierÍÍ¢p2KªIdentifierÍÍ¦lengthÂÂ¡-KªIdentifierÍÍ#©keepStartÂ¥constU³VariableDeclarationÍ3ÍF‘V²VariableDeclaratorÍ7ÍEKªIdentifierÍ7Í@©maskedMidW§LiteralÍCÍE ¢''£letÔrY—¤type¥start£end¤init¤test¦update¤body¬ForStatementÍTÍÎU³VariableDeclarationÍYÍb‘V²VariableDeclaratorÍ]ÍbKªIdentifierÍ]Í^¡iW§LiteralÍaÍb ¡0£letX°BinaryExpressionÍdÍ”KªIdentifierÍdÍe¡i¡<O®CallExpressionÍhÍ”P°MemberExpressionÍhÍpKªIdentifierÍhÍl¤MathKªIdentifierÍmÍp£maxÂÂ’W§LiteralÍqÍr ¡0X°BinaryExpressionÍtÍ“X°BinaryExpressionÍtÍ‰P°MemberExpressionÍtÍ}KªIdentifierÍtÍv¢p2KªIdentifierÍwÍ}¦lengthÂÂ¡-KªIdentifierÍ€Í‰©keepStart¡-KªIdentifierÍŒÍ“§keepEndÂT°UpdateExpressionÍ–Í™¢++ÂKªIdentifierÍ–Í—¡iL®BlockStatementÍ›ÍÎ‘ÔrZ”¤type¥start£endªexpression³ExpressionStatementÍ®Í¿Ôr[–¤type¥start£end¨operator¤left¥right´AssignmentExpressionÍ®Í¾¢+=KªIdentifierÍ®Í·©maskedMidW§LiteralÍ»Í¾¡*£'*'N¯ReturnStatementÍÜÍ3X°BinaryExpressionÍãÍ2X°BinaryExpressionÍãÍX°BinaryExpressionÍãÍKªIdentifierÍãÍå¢p1¡+O®CallExpressionÍèÍP°MemberExpressionÍèÍôKªIdentifierÍèÍê¢p2KªIdentifierÍëÍô©substringÂÂ’W§LiteralÍõÍö ¡0KªIdentifierÍøÍ©keepStartÂ¡+KªIdentifierÍÍ©maskedMid¡+O®CallExpressionÍÍ2P°MemberExpressionÍÍKªIdentifierÍÍ¢p2KªIdentifierÍÍ©substringÂÂ‘X°BinaryExpressionÍÍ1P°MemberExpressionÍÍ'KªIdentifierÍÍ ¢p2KªIdentifierÍ!Í'¦lengthÂÂ¡-KªIdentifierÍ*Í1§keepEndÂÂÔr\•¤type¥start£end¥param¤body«CatchClauseÍMÍtKªIdentifierÍTÍU¡_L®BlockStatementÍWÍt‘N¯ReturnStatementÍbÍmKªIdentifierÍiÍl£urlÀÀI¶ExportNamedDeclarationÍÃÍ}U³VariableDeclarationÍÊÍ}‘V²VariableDeclaratorÍĞÍ|KªIdentifierÍĞÍİ­NewsApiConfigÔr]”¤type¥start£endªproperties°ObjectExpressionÍàÍ|™Ôr^™¤type¥start£end¦method©shorthand¨computed£key¥value¤kind¨PropertyÍçÍÂÂÂKªIdentifierÍçÍï¨endpointW§LiteralÍñÍ¿https://v.juhe.cn/toutiao/indexÙ!'https://v.juhe.cn/toutiao/index'¤init^¨PropertyÍÍCÂÂÂKªIdentifierÍÍ¦apiKeyW§LiteralÍ!ÍCÙ 71833a97a51ccfad8563af5ecae4839bÙ"'71833a97a51ccfad8563af5ecae4839b'¤init^¨PropertyÍÄÍÖÂÂÂKªIdentifierÍÄÍÏ«apiKeyParamW§LiteralÍÑÍÖ£key¥'key'¤init^¨PropertyÍİÍîÂÂÂKªIdentifierÍİÍæ©typeParamW§LiteralÍèÍî¤type¦'type'¤init^¨PropertyÍõÍÂÂÂKªIdentifierÍõÍş©pageParamW§LiteralÍ Í¤page¦'page'¤init^¨PropertyÍÍ#ÂÂÂKªIdentifierÍÍ©sizeParamW§LiteralÍÍ#©page_size«'page_size'¤init^¨PropertyÍ*ÍDÂÂÂKªIdentifierÍ*Í7­isFilterParamW§LiteralÍ9ÍD©is_filter«'is_filter'¤init^¨PropertyÍKÍcÂÂÂKªIdentifierÍKÍW¬isFilerParamW§LiteralÍYÍc¨is_filerª'is_filer'¤init^¨PropertyÍjÍyÂÂÂKªIdentifierÍjÍu«defaultSizeW§LiteralÍwÍy¢30¤init¥constÀI¶ExportNamedDeclarationÍÍ€J³FunctionDeclarationÍ†Í€KªIdentifierÍÍ¯buildNewsApiUrlÂÂÂ‘Ôr_•¤type¥start£end¤left¥right±AssignmentPatternÍŸÍªKªIdentifierÍŸÍ¥¦params]°ObjectExpressionÍ¨ÍªL®BlockStatementÍ¬Í€Ü U³VariableDeclarationÍ³ÍÍ‘V²VariableDeclaratorÍ¹ÍÌKªIdentifierÍ¹Í¼£cfgKªIdentifierÍ¿ÍÌ­NewsApiConfig¥constU³VariableDeclarationÍÓÍá‘V²VariableDeclaratorÍÙÍàKªIdentifierÍÙÍÛ¢kvÔr`”¤type¥start£end¨elements¯ArrayExpressionÍŞÍà¥constZ³ExpressionStatementÍ÷ÍKO®CallExpressionÍ÷ÍJP°MemberExpressionÍ÷ÍşKªIdentifierÍ÷Íù¢kvKªIdentifierÍúÍş¤pushÂÂ‘Ôra•¤type¥start£end«expressions¦quasis¯TemplateLiteralÍÿÍI’O®CallExpressionÍÍ%KªIdentifierÍÍ²encodeURIComponent‘P°MemberExpressionÍÍ$KªIdentifierÍÍ£cfgKªIdentifierÍÍ$«apiKeyParamÂÂÂO®CallExpressionÍ)ÍGKªIdentifierÍ)Í;²encodeURIComponent‘P°MemberExpressionÍ<ÍFKªIdentifierÍ<Í?£cfgKªIdentifierÍ@ÍF¦apiKeyÂÂÂ“Ôrb•¤type¥start£end¥value¤tail¯TemplateElementÍ Í Ôrc’£raw¦cooked  Âb¯TemplateElementÍ&Í'c¡=¡=Âb¯TemplateElementÍHÍHc  ÃÂS«IfStatementÍ^ÍêX°BinaryExpressionÍbÍ{P°MemberExpressionÍbÍmKªIdentifierÍbÍh¦paramsKªIdentifierÍiÍm¤typeÂÂ£!==KªIdentifierÍrÍ{©undefinedL®BlockStatementÍ}Íê‘Z³ExpressionStatementÍˆÍãO®CallExpressionÍˆÍâP°MemberExpressionÍˆÍKªIdentifierÍˆÍŠ¢kvKªIdentifierÍ‹Í¤pushÂÂ‘a¯TemplateLiteralÍÍá’O®CallExpressionÍ“Í´KªIdentifierÍ“Í¥²encodeURIComponent‘P°MemberExpressionÍ¦Í³KªIdentifierÍ¦Í©£cfgKªIdentifierÍªÍ³©typeParamÂÂÂO®CallExpressionÍ¸ÍßKªIdentifierÍ¸ÍÊ²encodeURIComponent‘O®CallExpressionÍËÍŞKªIdentifierÍËÍÑ¦String‘P°MemberExpressionÍÒÍİKªIdentifierÍÒÍØ¦paramsKªIdentifierÍÙÍİ¤typeÂÂÂÂ“b¯TemplateElementÍ‘Í‘c  Âb¯TemplateElementÍµÍ¶c¡=¡=Âb¯TemplateElementÍàÍàc  ÃÂÀU³VariableDeclarationÍ+Ís‘V²VariableDeclaratorÍ1ÍrKªIdentifierÍ1Í<«isFilterKeySµConditionalExpressionÍ?ÍrP°MemberExpressionÍ?ÍPKªIdentifierÍ?ÍB£cfgKªIdentifierÍCÍP­isFilterParamÂÂP°MemberExpressionÍSÍdKªIdentifierÍSÍV£cfgKªIdentifierÍWÍd­isFilterParamÂÂW§LiteralÍgÍr©is_filter«'is_filter'¥constU³VariableDeclarationÍyÍ½‘V²VariableDeclaratorÍÍ¼KªIdentifierÍÍ‰ªisFilerKeySµConditionalExpressionÍŒÍ¼P°MemberExpressionÍŒÍœKªIdentifierÍŒÍ£cfgKªIdentifierÍÍœ¬isFilerParamÂÂP°MemberExpressionÍŸÍ¯KªIdentifierÍŸÍ¢£cfgKªIdentifierÍ£Í¯¬isFilerParamÂÂW§LiteralÍ²Í¼¨is_filerª'is_filer'¥constU³VariableDeclarationÍÃÍ‘V²VariableDeclaratorÍÉÍKªIdentifierÍÉÍÒ©hasFilterX±LogicalExpressionÍÕÍX°BinaryExpressionÍÖÍôP°MemberExpressionÍÖÍæKªIdentifierÍÖÍÜ¦paramsKªIdentifierÍİÍæ©is_filterÂÂ£!==KªIdentifierÍëÍô©undefined¢||X°BinaryExpressionÍúÍP°MemberExpressionÍúÍ	KªIdentifierÍúÍ ¦paramsKªIdentifierÍÍ	¨is_filerÂÂ£!==KªIdentifierÍÍ©undefined¥constS«IfStatementÍÍùKªIdentifierÍ#Í,©hasFilterL®BlockStatementÍ.Í’S«IfStatementÍ9ÍÕX°BinaryExpressionÍ=Í[P°MemberExpressionÍ=ÍMKªIdentifierÍ=ÍC¦paramsKªIdentifierÍDÍM©is_filterÂÂ£!==KªIdentifierÍRÍ[©undefinedL®BlockStatementÍ]ÍÕ‘Z³ExpressionStatementÍlÍÊO®CallExpressionÍlÍÉP°MemberExpressionÍlÍsKªIdentifierÍlÍn¢kvKªIdentifierÍoÍs¤pushÂÂ‘a¯TemplateLiteralÍtÍÈ’O®CallExpressionÍwÍ–KªIdentifierÍwÍ‰²encodeURIComponent‘KªIdentifierÍŠÍ•«isFilterKeyÂO®CallExpressionÍšÍÆKªIdentifierÍšÍ¬²encodeURIComponent‘O®CallExpressionÍ­ÍÅKªIdentifierÍ­Í³¦String‘P°MemberExpressionÍ´ÍÄKªIdentifierÍ´Íº¦paramsKªIdentifierÍ»ÍÄ©is_filterÂÂÂÂ“b¯TemplateElementÍuÍuc  Âb¯TemplateElementÍ—Í˜c¡=¡=Âb¯TemplateElementÍÇÍÇc  ÃÂÀS«IfStatementÍßÍxX°BinaryExpressionÍãÍ P°MemberExpressionÍãÍòKªIdentifierÍãÍé¦paramsKªIdentifierÍêÍò¨is_filerÂÂ£!==KªIdentifierÍ÷Í ©undefinedL®BlockStatementÍÍx‘Z³ExpressionStatementÍÍmO®CallExpressionÍÍlP°MemberExpressionÍÍKªIdentifierÍÍ¢kvKªIdentifierÍÍ¤pushÂÂ‘a¯TemplateLiteralÍÍk’O®CallExpressionÍÍ:KªIdentifierÍÍ.²encodeURIComponent‘KªIdentifierÍ/Í9ªisFilerKeyÂO®CallExpressionÍ>ÍiKªIdentifierÍ>ÍP²encodeURIComponent‘O®CallExpressionÍQÍhKªIdentifierÍQÍW¦String‘P°MemberExpressionÍXÍgKªIdentifierÍXÍ^¦paramsKªIdentifierÍ_Íg¨is_filerÂÂÂÂ“b¯TemplateElementÍÍc  Âb¯TemplateElementÍ;Í<c¡=¡=Âb¯TemplateElementÍjÍjc  ÃÂÀL®BlockStatementÍŠÍù‘Z³ExpressionStatementÍÂÍòO®CallExpressionÍÂÍñP°MemberExpressionÍÂÍÉKªIdentifierÍÂÍÄ¢kvKªIdentifierÍÅÍÉ¤pushÂÂ‘a¯TemplateLiteralÍÊÍğ‘O®CallExpressionÍÍÍìKªIdentifierÍÍÍß²encodeURIComponent‘KªIdentifierÍàÍë«isFilterKeyÂ’b¯TemplateElementÍËÍËc  Âb¯TemplateElementÍíÍïc¢=0¢=0ÃÂU³VariableDeclarationÍ	Í	M‘V²VariableDeclaratorÍ	Í	LKªIdentifierÍ	Í	¤pageSµConditionalExpressionÍ	Í	LX°BinaryExpressionÍ	 Í	9P°MemberExpressionÍ	 Í	+KªIdentifierÍ	 Í	&¦paramsKªIdentifierÍ	'Í	+¤pageÂÂ£!==KªIdentifierÍ	0Í	9©undefinedP°MemberExpressionÍ	=Í	HKªIdentifierÍ	=Í	C¦paramsKªIdentifierÍ	DÍ	H¤pageÂÂW§LiteralÍ	KÍ	L¡1¥constU³VariableDeclarationÍ	SÍ	œ‘V²VariableDeclaratorÍ	YÍ	›KªIdentifierÍ	YÍ	]¤sizeSµConditionalExpressionÍ	`Í	›X°BinaryExpressionÍ	aÍ	zP°MemberExpressionÍ	aÍ	lKªIdentifierÍ	aÍ	g¦paramsKªIdentifierÍ	hÍ	l¤sizeÂÂ£!==KªIdentifierÍ	qÍ	z©undefinedP°MemberExpressionÍ	~Í	‰KªIdentifierÍ	~Í	„¦paramsKªIdentifierÍ	…Í	‰¤sizeÂÂP°MemberExpressionÍ	ŒÍ	›KªIdentifierÍ	ŒÍ	£cfgKªIdentifierÍ	Í	›«defaultSizeÂÂ¥constZ³ExpressionStatementÍ	¢Í	öO®CallExpressionÍ	¢Í	õP°MemberExpressionÍ	¢Í	©KªIdentifierÍ	¢Í	¤¢kvKªIdentifierÍ	¥Í	©¤pushÂÂ‘a¯TemplateLiteralÍ	ªÍ	ô’O®CallExpressionÍ	­Í	ÎKªIdentifierÍ	­Í	¿²encodeURIComponent‘P°MemberExpressionÍ	ÀÍ	ÍKªIdentifierÍ	ÀÍ	Ã£cfgKªIdentifierÍ	ÄÍ	Í©pageParamÂÂÂO®CallExpressionÍ	ÒÍ	òKªIdentifierÍ	ÒÍ	ä²encodeURIComponent‘O®CallExpressionÍ	åÍ	ñKªIdentifierÍ	åÍ	ë¦String‘KªIdentifierÍ	ìÍ	ğ¤pageÂÂ“b¯TemplateElementÍ	«Í	«c  Âb¯TemplateElementÍ	ÏÍ	Ğc¡=¡=Âb¯TemplateElementÍ	óÍ	óc  ÃÂZ³ExpressionStatementÍ	üÍ
-PO®CallExpressionÍ	üÍ
-OP°MemberExpressionÍ	üÍ
-KªIdentifierÍ	üÍ	ş¢kvKªIdentifierÍ	ÿÍ
-¤pushÂÂ‘a¯TemplateLiteralÍ
-Í
-N’O®CallExpressionÍ
-Í
-(KªIdentifierÍ
-Í
-²encodeURIComponent‘P°MemberExpressionÍ
-Í
-'KªIdentifierÍ
-Í
-£cfgKªIdentifierÍ
-Í
-'©sizeParamÂÂÂO®CallExpressionÍ
-,Í
-LKªIdentifierÍ
-,Í
->²encodeURIComponent‘O®CallExpressionÍ
-?Í
-KKªIdentifierÍ
-?Í
-E¦String‘KªIdentifierÍ
-FÍ
-J¤sizeÂÂ“b¯TemplateElementÍ
-Í
-c  Âb¯TemplateElementÍ
-)Í
-*c¡=¡=Âb¯TemplateElementÍ
-MÍ
-Mc  ÃÂS«IfStatementÍ
-jÍ±X±LogicalExpressionÍ
-nÍ
-•P°MemberExpressionÍ
-nÍ
-zKªIdentifierÍ
-nÍ
-t¦paramsKªIdentifierÍ
-uÍ
-z¥extraÂÂ¢&&X°BinaryExpressionÍ
-~Í
-•P°MemberExpressionÍ
-~Í
-‘P°MemberExpressionÍ
-~Í
-ŠKªIdentifierÍ
-~Í
-„¦paramsKªIdentifierÍ
-…Í
-Š¥extraÂÂKªIdentifierÍ
-‹Í
-‘¦lengthÂÂ¡>W§LiteralÍ
-”Í
-• ¡0L®BlockStatementÍ
-—Í±‘Y¬ForStatementÍ
-¢ÍªU³VariableDeclarationÍ
-§Í
-°‘V²VariableDeclaratorÍ
-«Í
-°KªIdentifierÍ
-«Í
-¬¡iW§LiteralÍ
-¯Í
-° ¡0£letX°BinaryExpressionÍ
-²Í
-ÉKªIdentifierÍ
-²Í
-³¡i¡<P°MemberExpressionÍ
-¶Í
-ÉP°MemberExpressionÍ
-¶Í
-ÂKªIdentifierÍ
-¶Í
-¼¦paramsKªIdentifierÍ
-½Í
-Â¥extraÂÂKªIdentifierÍ
-ÃÍ
-É¦lengthÂÂT°UpdateExpressionÍ
-ËÍ
-Î¢++ÂKªIdentifierÍ
-ËÍ
-Ì¡iL®BlockStatementÍ
-ĞÍª“U³VariableDeclarationÍ
-ßÍ
-ü‘V²VariableDeclaratorÍ
-åÍ
-ûKªIdentifierÍ
-åÍ
-é¤pairP°MemberExpressionÍ
-ìÍ
-ûP°MemberExpressionÍ
-ìÍ
-øKªIdentifierÍ
-ìÍ
-ò¦paramsKªIdentifierÍ
-óÍ
-ø¥extraÂÂKªIdentifierÍ
-ùÍ
-ú¡iÃÂ¥constS«IfStatementÍ
-Í<X±LogicalExpressionÍÍ T¯UnaryExpressionÍÍ¡!ÃKªIdentifierÍÍ¤pair¢||T¯UnaryExpressionÍÍ ¡!ÃP°MemberExpressionÍÍ KªIdentifierÍÍ¤pairKªIdentifierÍÍ £keyÂÂÔrd”¤type¥start£end¥label±ContinueStatementÍ3Í<ÀÀZ³ExpressionStatementÍJÍŸO®CallExpressionÍJÍP°MemberExpressionÍJÍQKªIdentifierÍJÍL¢kvKªIdentifierÍMÍQ¤pushÂÂ‘a¯TemplateLiteralÍRÍ’O®CallExpressionÍUÍqKªIdentifierÍUÍg²encodeURIComponent‘P°MemberExpressionÍhÍpKªIdentifierÍhÍl¤pairKªIdentifierÍmÍp£keyÂÂÂO®CallExpressionÍuÍ›KªIdentifierÍuÍ‡²encodeURIComponent‘O®CallExpressionÍˆÍšKªIdentifierÍˆÍ¦String‘P°MemberExpressionÍÍ™KªIdentifierÍÍ“¤pairKªIdentifierÍ”Í™¥valueÂÂÂÂ“b¯TemplateElementÍSÍSc  Âb¯TemplateElementÍrÍsc¡=¡=Âb¯TemplateElementÍœÍœc  ÃÂÀU³VariableDeclarationÍ·Íê‘V²VariableDeclaratorÍ½ÍéKªIdentifierÍ½Í¿¢qsSµConditionalExpressionÍÂÍéX°BinaryExpressionÍÂÍÏP°MemberExpressionÍÂÍËKªIdentifierÍÂÍÄ¢kvKªIdentifierÍÅÍË¦lengthÂÂ¡>W§LiteralÍÎÍÏ ¡0a¯TemplateLiteralÍÒÍä‘O®CallExpressionÍÖÍâP°MemberExpressionÍÖÍİKªIdentifierÍÖÍØ¢kvKªIdentifierÍÙÍİ¤joinÂÂ‘W§LiteralÍŞÍá¡&£'&'Â’b¯TemplateElementÍÓÍÔc¡?¡?Âb¯TemplateElementÍãÍãc  ÃW§LiteralÍçÍé ¢''¥constU³VariableDeclarationÍğÍ‘V²VariableDeclaratorÍöÍKªIdentifierÍöÍú¤fulla¯TemplateLiteralÍıÍ’P°MemberExpressionÍ ÍKªIdentifierÍ Í£cfgKªIdentifierÍÍ¨endpointÂÂKªIdentifierÍÍ¢qs“b¯TemplateElementÍşÍşc  Âb¯TemplateElementÍÍc  Âb¯TemplateElementÍÍc  Ã¥constU³VariableDeclarationÍÍ:‘V²VariableDeclaratorÍ Í9KªIdentifierÍ Í&¦maskedO®CallExpressionÍ)Í9KªIdentifierÍ)Í3ªmaskApiKey‘KªIdentifierÍ4Í8¤fullÂ¥constZ³ExpressionStatementÍ@ÍkO®CallExpressionÍ@ÍjP°MemberExpressionÍ@ÍLKªIdentifierÍ@ÍG§consoleKªIdentifierÍHÍL¤infoÂÂ’W§LiteralÍMÍa²buildNewsApiUrl ->´'buildNewsApiUrl ->'KªIdentifierÍcÍi¦maskedÂN¯ReturnStatementÍqÍ}KªIdentifierÍxÍ|¤fullÀ

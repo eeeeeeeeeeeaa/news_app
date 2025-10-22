@@ -1,699 +1,0 @@
-Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ&d/*
- * Copyright (c) 2024 Huawei Device Co., Ltd.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-import { JwtManager } from './JwtManager';
-import { UserManager } from './UserManager';
-import promptAction from "@ohos.promptAction";
-/**
- * è®¤è¯è¾…åŠ©å·¥å…·ç±»
- * æä¾›ä¾¿æ·çš„è®¤è¯ç›¸å…³åŠŸèƒ½
- */
-export class AuthHelper {
-    constructor() {
-        this.jwtManager = JwtManager.getInstance();
-        this.userManager = UserManager.getInstance();
-    }
-    /**
-     * è·å–å•ä¾‹å®ä¾‹
-     */
-    static getInstance() {
-        if (!AuthHelper.instance) {
-            AuthHelper.instance = new AuthHelper();
-        }
-        return AuthHelper.instance;
-    }
-    /**
-     * åˆå§‹åŒ–è®¤è¯ç®¡ç†å™¨
-     */
-    async init() {
-        try {
-            await this.userManager.initPreferences();
-            console.log('AuthHelper: åˆå§‹åŒ–æˆåŠŸ');
-        }
-        catch (err) {
-            const errorMessage = err instanceof Error ? err.message : 'åˆå§‹åŒ–å¤±è´¥';
-            console.error('AuthHelper: åˆå§‹åŒ–å¤±è´¥:', err);
-            throw new Error(`AuthHelper åˆå§‹åŒ–å¤±è´¥: ${errorMessage}`);
-        }
-    }
-    /**
-     * æ£€æŸ¥ç”¨æˆ·æ˜¯å¦å·²è®¤è¯
-     * @param showToast æ˜¯å¦æ˜¾ç¤ºæç¤ºæ¶ˆæ¯ï¼Œé»˜è®¤ä¸º false
-     * @returns è®¤è¯æ£€æŸ¥ç»“æœ
-     */
-    async checkAuth(showToast = false) {
-        const token = await this.jwtManager.getToken();
-        const hasToken = token !== null;
-        if (!hasToken) {
-            const result = {
-                isAuthenticated: false,
-                message: 'æœªç™»å½•',
-                hasToken: false,
-                isTokenValid: false,
-                isTokenExpired: false
-            };
-            if (showToast) {
-                promptAction.showToast({ message: result.message });
-            }
-            return result;
-        }
-        const isExpired = await this.jwtManager.isTokenExpired();
-        const isValid = await this.jwtManager.isTokenValid();
-        if (isExpired === true) {
-            const result = {
-                isAuthenticated: false,
-                message: 'Token å·²è¿‡æœŸï¼Œè¯·é‡æ–°ç™»å½•',
-                hasToken: true,
-                isTokenValid: false,
-                isTokenExpired: true
-            };
-            if (showToast) {
-                promptAction.showToast({ message: result.message });
-            }
-            return result;
-        }
-        if (!isValid) {
-            const result = {
-                isAuthenticated: false,
-                message: 'Token æ— æ•ˆï¼Œè¯·é‡æ–°ç™»å½•',
-                hasToken: true,
-                isTokenValid: false,
-                isTokenExpired: false
-            };
-            if (showToast) {
-                promptAction.showToast({ message: result.message });
-            }
-            return result;
-        }
-        return {
-            isAuthenticated: true,
-            message: 'å·²ç™»å½•',
-            hasToken: true,
-            isTokenValid: true,
-            isTokenExpired: false
-        };
-    }
-    /**
-     * è¦æ±‚ç”¨æˆ·å¿…é¡»å·²è®¤è¯
-     * å¦‚æœæœªè®¤è¯ï¼Œä¼šæ˜¾ç¤ºæç¤ºæ¶ˆæ¯
-     * @returns æ˜¯å¦å·²è®¤è¯
-     */
-    async requireAuth() {
-        const result = await this.checkAuth(true);
-        return result.isAuthenticated;
-    }
-    /**
-     * æ£€æŸ¥ Token æ˜¯å¦å³å°†è¿‡æœŸ
-     * @param thresholdMinutes é˜ˆå€¼ï¼ˆåˆ†é’Ÿï¼‰ï¼Œé»˜è®¤ä¸º 10 åˆ†é’Ÿ
-     * @returns æ˜¯å¦å³å°†è¿‡æœŸ
-     */
-    async isTokenExpiringSoon(thresholdMinutes = 10) {
-        const remainingTime = await this.jwtManager.getTimeToExpiration();
-        if (remainingTime === null) {
-            return false;
-        }
-        const thresholdMs = thresholdMinutes * 60 * 1000;
-        return remainingTime < thresholdMs && remainingTime > 0;
-    }
-    /**
-     * æé†’ç”¨æˆ· Token å³å°†è¿‡æœŸ
-     * @param thresholdMinutes é˜ˆå€¼ï¼ˆåˆ†é’Ÿï¼‰ï¼Œé»˜è®¤ä¸º 10 åˆ†é’Ÿ
-     */
-    async remindTokenExpiration(thresholdMinutes = 10) {
-        const isExpiringSoon = await this.isTokenExpiringSoon(thresholdMinutes);
-        if (isExpiringSoon) {
-            const remainingTime = await this.jwtManager.getTimeToExpiration();
-            if (remainingTime !== null) {
-                const minutes = Math.floor(remainingTime / (1000 * 60));
-                promptAction.showToast({
-                    message: `ç™»å½•çŠ¶æ€å°†åœ¨ ${minutes} åˆ†é’Ÿåè¿‡æœŸï¼Œè¯·åŠæ—¶ä¿å­˜æ•°æ®`,
-                    duration: 3000
-                });
-            }
-        }
-    }
-    /**
-     * è·å–æ ¼å¼åŒ–çš„ Token è¿‡æœŸæ—¶é—´
-     * @returns æ ¼å¼åŒ–çš„è¿‡æœŸæ—¶é—´å­—ç¬¦ä¸²ï¼Œå¦‚ "2024-10-19 15:30:00"
-     */
-    async getFormattedExpirationTime() {
-        const expirationDate = await this.jwtManager.getExpirationDate();
-        if (!expirationDate) {
-            return null;
-        }
-        const year = expirationDate.getFullYear();
-        const month = String(expirationDate.getMonth() + 1).padStart(2, '0');
-        const day = String(expirationDate.getDate()).padStart(2, '0');
-        const hours = String(expirationDate.getHours()).padStart(2, '0');
-        const minutes = String(expirationDate.getMinutes()).padStart(2, '0');
-        const seconds = String(expirationDate.getSeconds()).padStart(2, '0');
-        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    }
-    /**
-     * è·å– Token å‰©ä½™æ—¶é—´çš„æè¿°
-     * @returns å‰©ä½™æ—¶é—´æè¿°ï¼Œå¦‚ "è¿˜æœ‰ 2 å°æ—¶ 30 åˆ†é’Ÿ"
-     */
-    async getRemainingTimeDescription() {
-        const remainingTime = await this.jwtManager.getTimeToExpiration();
-        if (remainingTime === null) {
-            return null;
-        }
-        if (remainingTime <= 0) {
-            return 'å·²è¿‡æœŸ';
-        }
-        const hours = Math.floor(remainingTime / (1000 * 60 * 60));
-        const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-        if (hours > 0) {
-            return `è¿˜æœ‰ ${hours} å°æ—¶ ${minutes} åˆ†é’Ÿ`;
-        }
-        else {
-            return `è¿˜æœ‰ ${minutes} åˆ†é’Ÿ`;
-        }
-    }
-    /**
-     * è·å–å¸¦è®¤è¯çš„ HTTP è¯·æ±‚å¤´
-     * @param additionalHeaders é¢å¤–çš„è¯·æ±‚å¤´
-     * @returns åŒ…å«è®¤è¯ä¿¡æ¯çš„è¯·æ±‚å¤´å¯¹è±¡
-     */
-    async getAuthHeaders(additionalHeaders) {
-        const authHeaders = await this.jwtManager.getAuthHeaders();
-        if (additionalHeaders) {
-            // æ‰‹åŠ¨åˆå¹¶å¯¹è±¡ï¼Œé¿å…ä½¿ç”¨å±•å¼€è¿ç®—ç¬¦
-            const mergedHeaders = {};
-            // å…ˆå¤åˆ¶ authHeaders
-            const authKeys = Object.keys(authHeaders);
-            for (let i = 0; i < authKeys.length; i++) {
-                const key = authKeys[i];
-                mergedHeaders[key] = authHeaders[key];
-            }
-            // å†å¤åˆ¶ additionalHeaders
-            const additionalKeys = Object.keys(additionalHeaders);
-            for (let i = 0; i < additionalKeys.length; i++) {
-                const key = additionalKeys[i];
-                mergedHeaders[key] = additionalHeaders[key];
-            }
-            return mergedHeaders;
-        }
-        return authHeaders;
-    }
-    /**
-     * å®‰å…¨é€€å‡ºç™»å½•
-     * ä¼šæ¸…é™¤æ‰€æœ‰è®¤è¯ä¿¡æ¯
-     */
-    async logout() {
-        try {
-            await this.userManager.logout();
-            console.log('AuthHelper: é€€å‡ºç™»å½•æˆåŠŸ');
-        }
-        catch (err) {
-            const errorMessage = err instanceof Error ? err.message : 'é€€å‡ºç™»å½•å¤±è´¥';
-            console.error('AuthHelper: é€€å‡ºç™»å½•å¤±è´¥:', err);
-            throw new Error(`AuthHelper é€€å‡ºç™»å½•å¤±è´¥: ${errorMessage}`);
-        }
-    }
-    /**
-     * æ‰“å°å½“å‰è®¤è¯çŠ¶æ€ï¼ˆç”¨äºè°ƒè¯•ï¼‰
-     */
-    async printAuthStatus() {
-        console.log('========== è®¤è¯çŠ¶æ€ ==========');
-        const token = await this.jwtManager.getToken();
-        console.log('Token å­˜åœ¨:', token !== null);
-        if (token) {
-            const tokenInfo = await this.jwtManager.getTokenInfo();
-            if (tokenInfo) {
-                console.log('Token æœ‰æ•ˆ:', tokenInfo.isValid);
-                console.log('Token è¿‡æœŸ:', tokenInfo.isExpired);
-                console.log('è¿‡æœŸæ—¶é—´:', tokenInfo.expirationDate?.toLocaleString());
-                console.log('Payload:', tokenInfo.payload);
-            }
-            const remainingTime = await this.getRemainingTimeDescription();
-            console.log('å‰©ä½™æ—¶é—´:', remainingTime);
-        }
-        const currentUser = await this.userManager.getCurrentUser();
-        console.log('å½“å‰ç”¨æˆ·:', currentUser);
-        console.log('==============================');
-    }
-    /**
-     * æ£€æŸ¥å¹¶è‡ªåŠ¨æ¸…ç†è¿‡æœŸçš„ Token
-     * @returns æ˜¯å¦æ¸…ç†äº†è¿‡æœŸ Token
-     */
-    async cleanupExpiredToken() {
-        const isExpired = await this.jwtManager.isTokenExpired();
-        if (isExpired === true) {
-            await this.jwtManager.removeToken();
-            console.log('AuthHelper: å·²æ¸…ç†è¿‡æœŸ Token');
-            return true;
-        }
-        return false;
-    }
-}
-AuthHelper.instance = null;
-//# sourceMappingURL=AuthHelper.js.mapÂ“ÙXC:\Users\12461\Desktop\hmosbig\news_app\features\login\src\main\ets\model\JwtManager.etsÙYC:\Users\12461\Desktop\hmosbig\news_app\features\login\src\main\ets\model\UserManager.etsÙP hvigor_ignore_D:_Deveco_sdk_default_openharmony_ets_api_@ohos.promptAction.d.tsÙXC:\Users\12461\Desktop\hmosbig\news_app\features\login\src\main\ets\model\AuthHelper.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥loginÃÂÙ6C:\Users\12461\Desktop\hmosbig\news_app\features\loginÙ'C:\Users\12461\Desktop\hmosbig\news_app¥login¥1.0.0ÔrC’§pkgNameªpkgVersion¥login¥1.0.0‘ÔrD’²hostDependencyName®hostModuleName¿./src/main/ets/model/AuthHelper¥loginÙ6C:\Users\12461\Desktop\hmosbig\news_app\features\loginÃÃÚ&J/*
- * Copyright (c) 2024 Huawei Device Co., Ltd.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-import { JwtManager } from './JwtManager';
-import { UserManager } from './UserManager';
-import { promptAction } from '@kit.ArkUI';
-
-/**
- * è®¤è¯æ£€æŸ¥ç»“æœæ¥å£
- */
-export interface AuthCheckResult {
-  /** æ˜¯å¦å·²è®¤è¯ */
-  isAuthenticated: boolean;
-  /** æç¤ºæ¶ˆæ¯ */
-  message: string;
-  /** Token æ˜¯å¦å­˜åœ¨ */
-  hasToken: boolean;
-  /** Token æ˜¯å¦æœ‰æ•ˆ */
-  isTokenValid: boolean;
-  /** Token æ˜¯å¦è¿‡æœŸ */
-  isTokenExpired: boolean;
-}
-
-/**
- * è®¤è¯è¾…åŠ©å·¥å…·ç±»
- * æä¾›ä¾¿æ·çš„è®¤è¯ç›¸å…³åŠŸèƒ½
- */
-export class AuthHelper {
-  private static instance: AuthHelper | null = null;
-  private jwtManager: JwtManager;
-  private userManager: UserManager;
-
-  private constructor() {
-    this.jwtManager = JwtManager.getInstance();
-    this.userManager = UserManager.getInstance();
-  }
-
-  /**
-   * è·å–å•ä¾‹å®ä¾‹
-   */
-  public static getInstance(): AuthHelper {
-    if (!AuthHelper.instance) {
-      AuthHelper.instance = new AuthHelper();
-    }
-    return AuthHelper.instance;
-  }
-
-  /**
-   * åˆå§‹åŒ–è®¤è¯ç®¡ç†å™¨
-   */
-  public async init(): Promise<void> {
-    try {
-      await this.userManager.initPreferences();
-      console.log('AuthHelper: åˆå§‹åŒ–æˆåŠŸ');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'åˆå§‹åŒ–å¤±è´¥';
-      console.error('AuthHelper: åˆå§‹åŒ–å¤±è´¥:', err);
-      throw new Error(`AuthHelper åˆå§‹åŒ–å¤±è´¥: ${errorMessage}`);
-    }
-  }
-
-  /**
-   * æ£€æŸ¥ç”¨æˆ·æ˜¯å¦å·²è®¤è¯
-   * @param showToast æ˜¯å¦æ˜¾ç¤ºæç¤ºæ¶ˆæ¯ï¼Œé»˜è®¤ä¸º false
-   * @returns è®¤è¯æ£€æŸ¥ç»“æœ
-   */
-  public async checkAuth(showToast: boolean = false): Promise<AuthCheckResult> {
-    const token = await this.jwtManager.getToken();
-    const hasToken = token !== null;
-    
-    if (!hasToken) {
-      const result: AuthCheckResult = {
-        isAuthenticated: false,
-        message: 'æœªç™»å½•',
-        hasToken: false,
-        isTokenValid: false,
-        isTokenExpired: false
-      };
-      
-      if (showToast) {
-        promptAction.showToast({ message: result.message });
-      }
-      
-      return result;
-    }
-
-    const isExpired = await this.jwtManager.isTokenExpired();
-    const isValid = await this.jwtManager.isTokenValid();
-
-    if (isExpired === true) {
-      const result: AuthCheckResult = {
-        isAuthenticated: false,
-        message: 'Token å·²è¿‡æœŸï¼Œè¯·é‡æ–°ç™»å½•',
-        hasToken: true,
-        isTokenValid: false,
-        isTokenExpired: true
-      };
-      
-      if (showToast) {
-        promptAction.showToast({ message: result.message });
-      }
-      
-      return result;
-    }
-
-    if (!isValid) {
-      const result: AuthCheckResult = {
-        isAuthenticated: false,
-        message: 'Token æ— æ•ˆï¼Œè¯·é‡æ–°ç™»å½•',
-        hasToken: true,
-        isTokenValid: false,
-        isTokenExpired: false
-      };
-      
-      if (showToast) {
-        promptAction.showToast({ message: result.message });
-      }
-      
-      return result;
-    }
-
-    return {
-      isAuthenticated: true,
-      message: 'å·²ç™»å½•',
-      hasToken: true,
-      isTokenValid: true,
-      isTokenExpired: false
-    };
-  }
-
-  /**
-   * è¦æ±‚ç”¨æˆ·å¿…é¡»å·²è®¤è¯
-   * å¦‚æœæœªè®¤è¯ï¼Œä¼šæ˜¾ç¤ºæç¤ºæ¶ˆæ¯
-   * @returns æ˜¯å¦å·²è®¤è¯
-   */
-  public async requireAuth(): Promise<boolean> {
-    const result = await this.checkAuth(true);
-    return result.isAuthenticated;
-  }
-
-  /**
-   * æ£€æŸ¥ Token æ˜¯å¦å³å°†è¿‡æœŸ
-   * @param thresholdMinutes é˜ˆå€¼ï¼ˆåˆ†é’Ÿï¼‰ï¼Œé»˜è®¤ä¸º 10 åˆ†é’Ÿ
-   * @returns æ˜¯å¦å³å°†è¿‡æœŸ
-   */
-  public async isTokenExpiringSoon(thresholdMinutes: number = 10): Promise<boolean> {
-    const remainingTime = await this.jwtManager.getTimeToExpiration();
-    
-    if (remainingTime === null) {
-      return false;
-    }
-
-    const thresholdMs = thresholdMinutes * 60 * 1000;
-    return remainingTime < thresholdMs && remainingTime > 0;
-  }
-
-  /**
-   * æé†’ç”¨æˆ· Token å³å°†è¿‡æœŸ
-   * @param thresholdMinutes é˜ˆå€¼ï¼ˆåˆ†é’Ÿï¼‰ï¼Œé»˜è®¤ä¸º 10 åˆ†é’Ÿ
-   */
-  public async remindTokenExpiration(thresholdMinutes: number = 10): Promise<void> {
-    const isExpiringSoon = await this.isTokenExpiringSoon(thresholdMinutes);
-    
-    if (isExpiringSoon) {
-      const remainingTime = await this.jwtManager.getTimeToExpiration();
-      if (remainingTime !== null) {
-        const minutes = Math.floor(remainingTime / (1000 * 60));
-        promptAction.showToast({ 
-          message: `ç™»å½•çŠ¶æ€å°†åœ¨ ${minutes} åˆ†é’Ÿåè¿‡æœŸï¼Œè¯·åŠæ—¶ä¿å­˜æ•°æ®`,
-          duration: 3000
-        });
-      }
-    }
-  }
-
-  /**
-   * è·å–æ ¼å¼åŒ–çš„ Token è¿‡æœŸæ—¶é—´
-   * @returns æ ¼å¼åŒ–çš„è¿‡æœŸæ—¶é—´å­—ç¬¦ä¸²ï¼Œå¦‚ "2024-10-19 15:30:00"
-   */
-  public async getFormattedExpirationTime(): Promise<string | null> {
-    const expirationDate = await this.jwtManager.getExpirationDate();
-    
-    if (!expirationDate) {
-      return null;
-    }
-
-    const year = expirationDate.getFullYear();
-    const month = String(expirationDate.getMonth() + 1).padStart(2, '0');
-    const day = String(expirationDate.getDate()).padStart(2, '0');
-    const hours = String(expirationDate.getHours()).padStart(2, '0');
-    const minutes = String(expirationDate.getMinutes()).padStart(2, '0');
-    const seconds = String(expirationDate.getSeconds()).padStart(2, '0');
-
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  }
-
-  /**
-   * è·å– Token å‰©ä½™æ—¶é—´çš„æè¿°
-   * @returns å‰©ä½™æ—¶é—´æè¿°ï¼Œå¦‚ "è¿˜æœ‰ 2 å°æ—¶ 30 åˆ†é’Ÿ"
-   */
-  public async getRemainingTimeDescription(): Promise<string | null> {
-    const remainingTime = await this.jwtManager.getTimeToExpiration();
-    
-    if (remainingTime === null) {
-      return null;
-    }
-
-    if (remainingTime <= 0) {
-      return 'å·²è¿‡æœŸ';
-    }
-
-    const hours = Math.floor(remainingTime / (1000 * 60 * 60));
-    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-
-    if (hours > 0) {
-      return `è¿˜æœ‰ ${hours} å°æ—¶ ${minutes} åˆ†é’Ÿ`;
-    } else {
-      return `è¿˜æœ‰ ${minutes} åˆ†é’Ÿ`;
-    }
-  }
-
-  /**
-   * è·å–å¸¦è®¤è¯çš„ HTTP è¯·æ±‚å¤´
-   * @param additionalHeaders é¢å¤–çš„è¯·æ±‚å¤´
-   * @returns åŒ…å«è®¤è¯ä¿¡æ¯çš„è¯·æ±‚å¤´å¯¹è±¡
-   */
-  public async getAuthHeaders(additionalHeaders?: Record<string, string>): Promise<Record<string, string>> {
-    const authHeaders = await this.jwtManager.getAuthHeaders();
-    
-    if (additionalHeaders) {
-      // æ‰‹åŠ¨åˆå¹¶å¯¹è±¡ï¼Œé¿å…ä½¿ç”¨å±•å¼€è¿ç®—ç¬¦
-      const mergedHeaders: Record<string, string> = {};
-      // å…ˆå¤åˆ¶ authHeaders
-      const authKeys = Object.keys(authHeaders);
-      for (let i = 0; i < authKeys.length; i++) {
-        const key = authKeys[i];
-        mergedHeaders[key] = authHeaders[key];
-      }
-      // å†å¤åˆ¶ additionalHeaders
-      const additionalKeys = Object.keys(additionalHeaders);
-      for (let i = 0; i < additionalKeys.length; i++) {
-        const key = additionalKeys[i];
-        mergedHeaders[key] = additionalHeaders[key];
-      }
-      return mergedHeaders;
-    }
-    
-    return authHeaders;
-  }
-
-  /**
-   * å®‰å…¨é€€å‡ºç™»å½•
-   * ä¼šæ¸…é™¤æ‰€æœ‰è®¤è¯ä¿¡æ¯
-   */
-  public async logout(): Promise<void> {
-    try {
-      await this.userManager.logout();
-      console.log('AuthHelper: é€€å‡ºç™»å½•æˆåŠŸ');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'é€€å‡ºç™»å½•å¤±è´¥';
-      console.error('AuthHelper: é€€å‡ºç™»å½•å¤±è´¥:', err);
-      throw new Error(`AuthHelper é€€å‡ºç™»å½•å¤±è´¥: ${errorMessage}`);
-    }
-  }
-
-  /**
-   * æ‰“å°å½“å‰è®¤è¯çŠ¶æ€ï¼ˆç”¨äºè°ƒè¯•ï¼‰
-   */
-  public async printAuthStatus(): Promise<void> {
-    console.log('========== è®¤è¯çŠ¶æ€ ==========');
-    
-    const token = await this.jwtManager.getToken();
-    console.log('Token å­˜åœ¨:', token !== null);
-    
-    if (token) {
-      const tokenInfo = await this.jwtManager.getTokenInfo();
-      if (tokenInfo) {
-        console.log('Token æœ‰æ•ˆ:', tokenInfo.isValid);
-        console.log('Token è¿‡æœŸ:', tokenInfo.isExpired);
-        console.log('è¿‡æœŸæ—¶é—´:', tokenInfo.expirationDate?.toLocaleString());
-        console.log('Payload:', tokenInfo.payload);
-      }
-      
-      const remainingTime = await this.getRemainingTimeDescription();
-      console.log('å‰©ä½™æ—¶é—´:', remainingTime);
-    }
-    
-    const currentUser = await this.userManager.getCurrentUser();
-    console.log('å½“å‰ç”¨æˆ·:', currentUser);
-    
-    console.log('==============================');
-  }
-
-  /**
-   * æ£€æŸ¥å¹¶è‡ªåŠ¨æ¸…ç†è¿‡æœŸçš„ Token
-   * @returns æ˜¯å¦æ¸…ç†äº†è¿‡æœŸ Token
-   */
-  public async cleanupExpiredToken(): Promise<boolean> {
-    const isExpired = await this.jwtManager.isTokenExpired();
-    
-    if (isExpired === true) {
-      await this.jwtManager.removeToken();
-      console.log('AuthHelper: å·²æ¸…ç†è¿‡æœŸ Token');
-      return true;
-    }
-    
-    return false;
-  }
-}
-
-ÀÔrE“²@ohos.promptAction¬./JwtManager­./UserManagerÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙP hvigor_ignore_D:_Deveco_sdk_default_openharmony_ets_api_@ohos.promptAction.d.tsAÃªoh-resolveÂFAÂÙXC:\Users\12461\Desktop\hmosbig\news_app\features\login\src\main\ets\model\JwtManager.etsAÃªoh-resolveÂFAÂÙYC:\Users\12461\Desktop\hmosbig\news_app\features\login\src\main\ets\model\UserManager.etsAÃªoh-resolveÂ“ÔrG–§version¤fileªsourceRoot§sources¥names¨mappings­AuthHelper.js ‘®AuthHelper.etsÜ‘”    ‘” ˜”   ” ”	 	” ” ” ”) )”* *˜”   ” ”	 	” ” ” ”+ +”, ,–”   ” 	” ” ”- )”. *‘”  # ‘” &””  ' ” '” '” '‘” ,š” -” -” -	” -” -”$ - ”% -!”0 -,”2 -.”3 -/š” .” .” .	” .” .”& ."”' .#”2 ..”4 .0”5 .1’” /” /‘” 1‘” 3”” 4	”
- 4” 4” 4—” 5” 5” 5	” 5” 5”  5”" 5™” 6” 6” 6” 6”" 6”& 6 ”0 6*”2 6,”3 6-‘”	 7–” 8” 8” 8” 8”" 8”# 8’” 9” 9‘” ;‘” =”” >	”	 >”
- >” >’” ?” ?™” Ì@” Ì@” Ì@” Ì@”" Ì@”# Ì@”2 Ì@,”4 Ì@.”5 Ì@/˜” ÌA” ÌA” ÌA” ÌA” ÌA”+ ÌA%”, ÌA&”- ÌA'‘”	 ÌB”” ÌB” ÌB” ÌB” ÌBÜ ” ÌC” ÌC” ÌC”! ÌC”$ ÌC”0 ÌC*”5 ÌC/”6 ÌC0”7 ÌC1”8 ÌC2”; ÌC5”< ÌC6”ÌC ÌC=”ÌD ÌC>”ÌE ÌC?”ÌF ÌCÌ@”ÌM ÌCÌG”ÌN ÌCÌHš” ÌD” ÌD” ÌD” ÌD” ÌD”. ÌD(”0 ÌD*”3 ÌD-”4 ÌD.”5 ÌD/š” ÌE” ÌE” ÌE” ÌE” ÌE”1 ÌE+”= ÌE7”? ÌE9”Ì@ ÌE:”ÌA ÌE;‘”	 ÌF’” ÌG” ÌG‘” ÌI‘” ÌM—” ÌN	”	 ÌN”
- ÌN” ÌN” ÌN”  ÌN.”% ÌN3œ” ÌO” ÌO
-” ÌO” ÌO” ÌO”  ÌO”! ÌO”+ ÌO'”, ÌO(”4 ÌO0”6 ÌO2”7 ÌO3˜” ÌP” ÌP
-” ÌP” ÌP” ÌP”# ÌP”' ÌP#”( ÌP$•” ÌR” ÌR” ÌR	” ÌR” ÌR”” ÌS” ÌS” ÌS” ÌS&”” ÌT” ÌT”! ÌT”& ÌT”” ÌU” ÌU” ÌU” ÌU”” ÌV” ÌV” ÌV” ÌV”” ÌW” ÌW” ÌW”# ÌW”” ÌX” ÌX”  ÌX”% ÌX’” ÌY” ÌY”” Ì[” Ì[
-” Ì[” Ì[” Ì\” Ì\” Ì\”& Ì\”' Ì\”) Ì\!”0 Ì\(”2 Ì\*”8 Ì\0”9 Ì\1”Ì@ Ì\8”ÌB Ì\:”ÌC Ì\;”ÌD Ì\<‘” Ì]”” Ì_” Ì_” Ì_” Ì_‘”	 Ì`œ” Ìb” Ìb
-” Ìb” Ìb”  Ìb”$ Ìb ”% Ìb!”/ Ìb+”0 Ìb,”> Ìb:”Ì@ Ìb<”ÌA Ìb=œ” Ìc” Ìc
-” Ìc” Ìc” Ìc”" Ìc”# Ìc”- Ìc)”. Ìc*”: Ìc6”< Ìc8”= Ìc9–” Ìe” Ìe” Ìe” Ìe” Ìe”  Ìe”” Ìf” Ìf” Ìf” Ìf&”” Ìg” Ìg”! Ìg”& Ìg”” Ìh” Ìh” Ìh”* Ìh"”” Ìi” Ìi” Ìi” Ìi”” Ìj” Ìj” Ìj”# Ìj”” Ìk” Ìk”  Ìk”$ Ìk’” Ìl” Ìl”” Ìn” Ìn
-” Ìn” Ìn” Ìo” Ìo” Ìo”& Ìo”' Ìo”) Ìo!”0 Ìo(”2 Ìo*”8 Ìo0”9 Ìo1”Ì@ Ìo8”ÌB Ìo:”ÌC Ìo;”ÌD Ìo<‘” Ìp”” Ìr” Ìr” Ìr” Ìr‘”	 Ìs•” Ìu” Ìu” Ìu	” Ìu” Ìu”” Ìv” Ìv” Ìv” Ìv&”” Ìw” Ìw”! Ìw”& Ìw”” Ìx” Ìx” Ìx”) Ìx!”” Ìy” Ìy” Ìy” Ìy”” Ìz” Ìz” Ìz”# Ìz”” Ì{” Ì{”  Ì{”% Ì{’” Ì|” Ì|”” Ì~” Ì~
-” Ì~” Ì~” Ì” Ì” Ì”& Ì”' Ì”) Ì!”0 Ì(”2 Ì*”8 Ì0”9 Ì1”Ì@ Ì8”ÌB Ì:”ÌC Ì;”ÌD Ì<‘” Ì€”” Ì‚” Ì‚” Ì‚” Ì‚‘”	 Ìƒ’” Ì…” Ì…”” Ì†” Ì†” Ì†”! Ì†”” Ì‡” Ì‡” Ì‡” Ì‡”” Ìˆ” Ìˆ” Ìˆ” Ìˆ”” Ì‰” Ì‰” Ì‰” Ì‰”” ÌŠ” ÌŠ” ÌŠ”! ÌŠ’”	 Ì‹”
- Ì‹’” ÌŒ” ÌŒ‘” Ì‘” Ì’”” Ì“	”	 Ì“”
- Ì“” Ì“œ” Ì”” Ì”
-” Ì”” Ì”” Ì””! Ì””" Ì””+ Ì”'”, Ì”(”0 Ì”,”1 Ì”-”2 Ì”.–” Ì•” Ì•” Ì•” Ì•”% Ì•!”& Ì•"’” Ì–” Ì–‘” Ì˜‘” Ìœ—” Ì	”	 Ì”
- Ì” Ì"” Ì#”1 Ì>”3 ÌÌ@œ” Ì” Ì
-” Ì” Ì”$ Ì ”( Ì$”) Ì%”3 Ì/”4 Ì0”ÌG ÌÌC”ÌI ÌÌE”ÌJ ÌÌF–” Ì ” Ì ” Ì ” Ì ”" Ì ”$ Ì  ”” Ì¡” Ì¡” Ì¡” Ì¡‘”	 Ì¢š” Ì¤” Ì¤
-” Ì¤” Ì¤”, Ì¤(”/ Ì¤+”1 Ì¤-”4 Ì¤0”8 Ì¤4”9 Ì¤5š” Ì¥” Ì¥” Ì¥” Ì¥”* Ì¥&”. Ì¥*”; Ì¥7”> Ì¥:”? Ì¥;”Ì@ Ì¥<’” Ì¦” Ì¦‘” Ì¨‘” Ì«—” Ì¬	”	 Ì¬”
- Ì¬” Ì¬$”  Ì¬%”3 Ì¬Ì@”5 Ì¬ÌBœ” Ì­” Ì­
-” Ì­” Ì­”% Ì­!”) Ì­%”* Ì­&”= Ì­9”> Ì­:”ÌN Ì­ÌJ”ÌO Ì­ÌK”ÌP Ì­ÌL”” Ì¯” Ì¯” Ì¯” Ì¯œ” Ì°” Ì°” Ì°”" Ì°”( Ì°"”, Ì°&”- Ì°'”7 Ì°1”8 Ì°2”ÌK Ì°ÌE”ÌM Ì°ÌG”ÌN Ì°ÌH–” Ì±” Ì±
-” Ì±”" Ì±”& Ì± ”( Ì±"Ü ” Ì²” Ì²” Ì²”  Ì²”$ Ì²”% Ì²”* Ì²"”+ Ì²#”8 Ì²0”; Ì²3”< Ì²4”Ì@ Ì²8”ÌC Ì²;”ÌE Ì²=”ÌF Ì²>”ÌG Ì²?”ÌH Ì²Ì@•” Ì³” Ì³” Ì³”& Ì³”' Ì³–” Ì´
-” Ì´” Ì´”' Ì´”. Ì´$”> Ì´4”” Ìµ
-” Ìµ” Ìµ”" Ìµ“” Ì¶	” Ì¶
-” Ì¶‘” Ì·‘”	 Ì¸’” Ì¹” Ì¹‘” Ì»‘” Ì¾”” Ì¿	”	 Ì¿”
- Ì¿”$ Ì¿)œ” ÌÀ” ÌÀ
-” ÌÀ” ÌÀ”% ÌÀ!”) ÌÀ%”* ÌÀ&”4 ÌÀ0”5 ÌÀ1”ÌF ÌÀÌB”ÌH ÌÀÌD”ÌI ÌÀÌE•” ÌÂ” ÌÂ” ÌÂ	” ÌÂ” ÌÂ”” ÌÃ” ÌÃ” ÌÃ” ÌÃ‘”	 ÌÄ™” ÌÆ” ÌÆ
-” ÌÆ” ÌÆ”# ÌÆ”$ ÌÆ ”/ ÌÆ+”1 ÌÆ-”2 ÌÆ.Ü ” ÌÇ” ÌÇ
-” ÌÇ” ÌÇ” ÌÇ” ÌÇ”+ ÌÇ'”, ÌÇ(”4 ÌÇ0”6 ÌÇ2”9 ÌÇ5”: ÌÇ6”; ÌÇ7”< ÌÇ8”ÌD ÌÇÌ@”ÌE ÌÇÌA”ÌF ÌÇÌB”ÌH ÌÇÌD”ÌK ÌÇÌG”ÌL ÌÇÌH”ÌM ÌÇÌIÜ ” ÌÈ” ÌÈ
-” ÌÈ” ÌÈ” ÌÈ” ÌÈ”) ÌÈ%”* ÌÈ&”1 ÌÈ-”3 ÌÈ/”4 ÌÈ0”5 ÌÈ1”= ÌÈ9”> ÌÈ:”? ÌÈ;”ÌA ÌÈ=”ÌD ÌÈÌ@”ÌE ÌÈÌA”ÌF ÌÈÌBÜ ” ÌÉ” ÌÉ
-” ÌÉ” ÌÉ” ÌÉ” ÌÉ”+ ÌÉ'”, ÌÉ(”4 ÌÉ0”6 ÌÉ2”7 ÌÉ3”8 ÌÉ4”Ì@ ÌÉ<”ÌA ÌÉ=”ÌB ÌÉ>”ÌD ÌÉÌ@”ÌG ÌÉÌC”ÌH ÌÉÌD”ÌI ÌÉÌEÜ ” ÌÊ” ÌÊ
-” ÌÊ” ÌÊ” ÌÊ” ÌÊ”- ÌÊ)”. ÌÊ*”8 ÌÊ4”: ÌÊ6”; ÌÊ7”< ÌÊ8”ÌD ÌÊÌ@”ÌE ÌÊÌA”ÌF ÌÊÌB”ÌH ÌÊÌD”ÌK ÌÊÌG”ÌL ÌÊÌH”ÌM ÌÊÌIÜ ” ÌË” ÌË
-” ÌË” ÌË” ÌË” ÌË”- ÌË)”. ÌË*”8 ÌË4”: ÌË6”; ÌË7”< ÌË8”ÌD ÌËÌ@”ÌE ÌËÌA”ÌF ÌËÌB”ÌH ÌËÌD”ÌK ÌËÌG”ÌL ÌËÌH”ÌM ÌËÌIÜ ” ÌÍ” ÌÍ” ÌÍ” ÌÍ” ÌÍ” ÌÍ”# ÌÍ”& ÌÍ"”* ÌÍ&”/ ÌÍ+”3 ÌÍ/”: ÌÍ6”> ÌÍ:”ÌE ÌÍÌA”ÌG ÌÍÌC”ÌH ÌÍÌD’” ÌÎ” ÌÎ‘” ÌĞ‘” ÌÓ”” ÌÔ	”	 ÌÔ”
- ÌÔ”% ÌÔ*œ” ÌÕ” ÌÕ
-” ÌÕ” ÌÕ”$ ÌÕ ”( ÌÕ$”) ÌÕ%”3 ÌÕ/”4 ÌÕ0”ÌG ÌÕÌC”ÌI ÌÕÌE”ÌJ ÌÕÌF–” Ì×” Ì×” Ì×” Ì×”" Ì×”$ Ì× ”” ÌØ” ÌØ” ÌØ” ÌØ‘”	 ÌÙ–” ÌÛ” ÌÛ” ÌÛ” ÌÛ” ÌÛ”  ÌÛ”” ÌÜ” ÌÜ” ÌÜ” ÌÜ‘”	 ÌİÜ ” Ìß” Ìß
-” Ìß” Ìß” Ìß” Ìß”  Ìß”! Ìß”. Ìß*”1 Ìß-”2 Ìß.”6 Ìß2”9 Ìß5”; Ìß7”> Ìß:”Ì@ Ìß<”ÌA Ìß=”ÌB Ìß>”ÌC Ìß?Ü ” Ìà” Ìà
-” Ìà” Ìà” Ìà” Ìà”" Ìà”# Ìà”$ Ìà ”1 Ìà-”4 Ìà0”5 Ìà1”9 Ìà5”< Ìà8”> Ìà:”ÌA Ìà=”ÌC Ìà?”ÌD ÌàÌ@”ÌE ÌàÌA”ÌH ÌàÌD”ÌI ÌàÌE”ÌM ÌàÌI”ÌP ÌàÌL”ÌR ÌàÌN”ÌS ÌàÌO”ÌT ÌàÌP”ÌU ÌàÌQ–” Ìâ” Ìâ” Ìâ” Ìâ” Ìâ” Ìâ˜” Ìã” Ìã” Ìã” Ìã”% Ìã”, Ìã&”1 Ìã+”2 Ìã,‘”	 Ìä‘” Ìä–” Ìå” Ìå” Ìå”  Ìå”% Ìå”& Ìå ‘”	 Ìæ’” Ìç” Ìç‘” Ìé‘” Ìí–” Ìî	”	 Ìî”
- Ìî” Ìî” Ìî”* ÌîÌHœ” Ìï” Ìï
-” Ìï” Ìï”" Ìï”& Ìï"”' Ìï#”1 Ìï-”2 Ìï.”Ì@ Ìï<”ÌB Ìï>”ÌC Ìï?”” Ìñ” Ìñ” Ìñ” Ìñ’” Ìò” Ìò–” Ìó” Ìó” Ìó”" Ìó4”$ Ìó6”% Ìó7’” Ìô” Ìô›” Ìõ” Ìõ” Ìõ” Ìõ”# Ìõ”$ Ìõ”( Ìõ"”) Ìõ#”4 Ìõ.”5 Ìõ/”6 Ìõ0Ü ” Ìö” Ìö” Ìö” Ìö” Ìö” Ìö” Ìö” Ìö”  Ìö”( Ìö"”) Ìö#”/ Ìö)”1 Ìö+”2 Ìö,”4 Ìö.”6 Ìö0™” Ì÷” Ì÷” Ì÷” Ì÷”$ Ì÷”% Ì÷”& Ì÷”' Ì÷”( Ì÷ ›” Ìø” Ìø” Ìø”! Ìø”" Ìø”% Ìø”0 Ìø(”1 Ìø)”4 Ìø,”5 Ìø-”6 Ìø.‘” Ìù’” Ìú”$ Ìú›” Ìû” Ìû”  Ìû”# Ìû”) Ìû#”* Ìû$”. Ìû(”/ Ìû)”Ì@ Ìû:”ÌA Ìû;”ÌB Ìû<Ü ” Ìü” Ìü” Ìü” Ìü” Ìü” Ìü” Ìü” Ìü”  Ìü”. Ìü(”/ Ìü)”5 Ìü/”7 Ìü1”8 Ìü2”: Ìü4”< Ìü6™” Ìı” Ìı” Ìı” Ìı”* Ìı"”+ Ìı#”, Ìı$”- Ìı%”. Ìı&›” Ìş” Ìş” Ìş”! Ìş”" Ìş”% Ìş”6 Ìş.”7 Ìş/”: Ìş2”; Ìş3”< Ìş4‘” Ìÿ”” Í ” Í ”  Í ”! Í ‘”	 Í”” Í” Í” Í” Í’” Í” Í‘” Í‘” Í	”” Í
-	”	 Í
-”
- Í
-” Í
-’” Í” Í™” Í” Í” Í” Í”" Í”# Í”) Í#”+ Í%”, Í&˜” Í” Í” Í” Í” Í”, Í&”- Í'”. Í(‘”	 Í”” Í” Í” Í” ÍÜ ” Í” Í” Í”! Í”$ Í”0 Í*”5 Í/”6 Í0”7 Í1”8 Í2”; Í5”< Í6”ÌC Í=”ÌD Í>”ÌE Í?”ÌF ÍÌ@”ÌN ÍÌH”ÌO ÍÌIš” Í” Í” Í” Í” Í”/ Í)”1 Í+”4 Í.”5 Í/”6 Í0š” Í” Í” Í” Í” Í”2 Í,”> Í8”Ì@ Í:”ÌA Í;”ÌB Í<‘”	 Í’” Í” Í‘” Í‘” Í”” Í	”	 Í”
- Í” Í˜” Í” Í” Í” Í” Í”0 Í,”1 Í-”2 Í.œ” Í” Í
-” Í” Í” Í”  Í”! Í”+ Í'”, Í(”4 Í0”6 Í2”7 Í3œ” Í” Í” Í” Í” Í” Í”! Í”& Í"”+ Í'”/ Í+”0 Í,”1 Í-”” Í” Í” Í” Íœ” Í” Í” Í” Í”$ Í”( Í"”) Í#”3 Í-”4 Í.”Ì@ Í:”ÌB Í<”ÌC Í=”” Í ” Í 
-” Í ” Í œ” Í!” Í!” Í!” Í!” Í!”' Í!”) Í!!”2 Í!*”3 Í!+”: Í!2”; Í!3”< Í!4œ” Í"” Í"” Í"” Í"” Í"”' Í"”) Í"!”2 Í"*”3 Í"+”< Í"4”= Í"5”> Í"6Ÿ” Í#” Í#” Í#” Í#” Í#”# Í#”% Í#”. Í#&”/ Í#'”= Í#5”? Í#7”ÌM Í#ÌE”ÌO Í#ÌG”ÌP Í#ÌH”ÌQ Í#ÌIœ” Í$” Í$” Í$” Í$” Í$”& Í$”( Í$ ”1 Í$)”2 Í$*”9 Í$1”: Í$2”; Í$3‘” Í%š” Í'” Í'” Í'”" Í'”( Í'"”, Í'&”- Í''”ÌH Í'ÌB”ÌJ Í'ÌD”ÌK Í'ÌEš” Í(” Í(” Í(” Í(” Í(” Í(”! Í(”. Í((”/ Í()”0 Í(*‘”	 Í)œ” Í+” Í+
-” Í+” Í+”" Í+”& Í+"”' Í+#”2 Í+.”3 Í+/”ÌA Í+=”ÌC Í+?”ÌD Í+Ì@š” Í,” Í,” Í,” Í,” Í,” Í,” Í,”( Í,$”) Í,%”* Í,&˜” Í.” Í.” Í.” Í.” Í.”4 Í.0”5 Í.1”6 Í.2’” Í/” Í/‘” Í1‘” Í4”” Í5	”	 Í5”
- Í5” Í5"œ” Í6” Í6
-” Í6” Í6”  Í6”$ Í6 ”% Í6!”/ Í6+”0 Í6,”> Í6:”Ì@ Í6<”ÌA Í6=–” Í8” Í8” Í8” Í8” Í8”  Í8™” Í9” Í9” Í9” Í9”! Í9”" Í9”- Í9'”/ Í9)”0 Í9*˜” Í:” Í:” Í:” Í:” Í:”1 Í:+”2 Í:,”3 Í:-”” Í;” Í;” Í;” Í;‘”	 Í<”” Í>” Í>” Í>” Í>’” Í?” Í?•”  (” (” (/” (3” (4ÔrH–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜ‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
- ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌĞ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  Ìİ ‘”  ÌŞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìğ ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìı ‘”  Ìş ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ÔrI’§missing¦pluginÃ¦genAbcÂÔ  ÔrJ”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache‘ÔrK–¤type¥start£end«declarationªspecifiers¦source¶ExportNamedDeclarationÍÍ#ÔrL–¤type¥start£end¢idªsuperClass¤body°ClassDeclarationÍ%Í#ÔrM”¤type¥start£end¤nameªIdentifierÍ+Í5ªAuthHelperÀÔrN”¤type¥start£end¤body©ClassBodyÍ6Í#ÔrO˜¤type¥start£end¦static¨computed£key¤kind¥value°MethodDefinitionÍ=Í¿ÂÂMªIdentifierÍ=ÍH«constructor«constructorÔrP™¤type¥start£end¢idªexpression©generator¥async¦params¤body²FunctionExpressionÍHÍ¿ÀÂÂÂN®BlockStatementÍKÍ¿’ÔrQ”¤type¥start£endªexpression³ExpressionStatementÍVÍÔrR–¤type¥start£end¨operator¤left¥right´AssignmentExpressionÍVÍ€¡=ÔrS—¤type¥start£end¦object¨property¨computed¨optional°MemberExpressionÍVÍeÔrT“¤type¥start£end®ThisExpressionÍVÍZMªIdentifierÍ[ÍeªjwtManagerÂÂÔrU–¤type¥start£end¦callee©arguments¨optional®CallExpressionÍhÍ€S°MemberExpressionÍhÍ~MªIdentifierÍhÍrªJwtManagerMªIdentifierÍsÍ~«getInstanceÂÂÂQ³ExpressionStatementÍ‹Í¸R´AssignmentExpressionÍ‹Í·¡=S°MemberExpressionÍ‹Í›T®ThisExpressionÍ‹ÍMªIdentifierÍÍ›«userManagerÂÂU®CallExpressionÍÍ·S°MemberExpressionÍÍµMªIdentifierÍÍ©«UserManagerMªIdentifierÍªÍµ«getInstanceÂÂÂO°MethodDefinitionÍæÍÃÂMªIdentifierÍíÍø«getInstance¦methodP²FunctionExpressionÍøÍÀÂÂÂN®BlockStatementÍûÍ’ÔrV–¤type¥start£end¤testªconsequent©alternate«IfStatementÍÍaÔrW–¤type¥start£end¨operator¦prefix¨argument¯UnaryExpressionÍ
-Í¡!ÃS°MemberExpressionÍÍMªIdentifierÍÍªAuthHelperMªIdentifierÍÍ¨instanceÂÂN®BlockStatementÍ Ía‘Q³ExpressionStatementÍ/ÍVR´AssignmentExpressionÍ/ÍU¡=S°MemberExpressionÍ/ÍBMªIdentifierÍ/Í9ªAuthHelperMªIdentifierÍ:ÍB¨instanceÂÂÔrX•¤type¥start£end¦callee©arguments­NewExpressionÍEÍUMªIdentifierÍIÍSªAuthHelperÀÔrY”¤type¥start£end¨argument¯ReturnStatementÍkÍ†S°MemberExpressionÍrÍ…MªIdentifierÍrÍ|ªAuthHelperMªIdentifierÍ}Í…¨instanceÂÂO°MethodDefinitionÍ¶Í7ÂÂMªIdentifierÍ¼ÍÀ¤init¦methodP²FunctionExpressionÍÀÍ7ÀÂÂÃN®BlockStatementÍÃÍ7‘ÔrZ–¤type¥start£end¥block§handler©finalizer¬TryStatementÍÎÍ0N®BlockStatementÍÒÍD’Q³ExpressionStatementÍáÍ
-Y¯AwaitExpressionÍáÍ	U®CallExpressionÍçÍ	S°MemberExpressionÍçÍS°MemberExpressionÍçÍ÷T®ThisExpressionÍçÍëMªIdentifierÍìÍ÷«userManagerÂÂMªIdentifierÍøÍ¯initPreferencesÂÂÂQ³ExpressionStatementÍÍ9U®CallExpressionÍÍ8S°MemberExpressionÍÍ#MªIdentifierÍÍ§consoleMªIdentifierÍ Í#£logÂÂ‘Ôr[•¤type¥start£end¥value£raw§LiteralÍ$Í7»AuthHelper: åˆå§‹åŒ–æˆåŠŸ½'AuthHelper: åˆå§‹åŒ–æˆåŠŸ'ÂÔr\•¤type¥start£end¥param¤body«CatchClauseÍNÍ0MªIdentifierÍUÍX£errN®BlockStatementÍZÍ0“Ôr]•¤type¥start£end¬declarations¤kind³VariableDeclarationÍiÍ«‘Ôr^•¤type¥start£end¢id¤init²VariableDeclaratorÍoÍªMªIdentifierÍoÍ{¬errorMessageVµConditionalExpressionÍ~ÍªÔr_–¤type¥start£end¤left¨operator¥right°BinaryExpressionÍ~Í’MªIdentifierÍ~Í£errªinstanceofMªIdentifierÍÍ’¥ErrorS°MemberExpressionÍ•Í MªIdentifierÍ•Í˜£errMªIdentifierÍ™Í §messageÂÂ[§LiteralÍ£Íª¯åˆå§‹åŒ–å¤±è´¥±'åˆå§‹åŒ–å¤±è´¥'¥constQ³ExpressionStatementÍ¹ÍâU®CallExpressionÍ¹ÍáS°MemberExpressionÍ¹ÍÆMªIdentifierÍ¹ÍÀ§consoleMªIdentifierÍÁÍÆ¥errorÂÂ’[§LiteralÍÇÍÛ¼AuthHelper: åˆå§‹åŒ–å¤±è´¥:¾'AuthHelper: åˆå§‹åŒ–å¤±è´¥:'MªIdentifierÍİÍà£errÂY®ThrowStatementÍğÍ%X­NewExpressionÍöÍ$MªIdentifierÍúÍÿ¥Error‘Ôr`•¤type¥start£end«expressions¦quasis¯TemplateLiteralÍ Í#‘MªIdentifierÍÍ!¬errorMessage’Ôra•¤type¥start£end¥value¤tail¯TemplateElementÍÍÔrb’£raw¦cooked¼AuthHelper åˆå§‹åŒ–å¤±è´¥: ¼AuthHelper åˆå§‹åŒ–å¤±è´¥: Âa¯TemplateElementÍ"Í"b  ÃÀO°MethodDefinitionÍ¥ÍbÂÂMªIdentifierÍ«Í´©checkAuth¦methodP²FunctionExpressionÍ´ÍbÀÂÂÃ‘Ôrc•¤type¥start£end¤left¥right±AssignmentPatternÍµÍÆMªIdentifierÍµÍ¾©showToast[§LiteralÍÁÍÆÂ¥falseN®BlockStatementÍÈÍb˜]³VariableDeclarationÍÓÍ‘^²VariableDeclaratorÍÙÍMªIdentifierÍÙÍŞ¥tokenY¯AwaitExpressionÍáÍU®CallExpressionÍçÍS°MemberExpressionÍçÍÿS°MemberExpressionÍçÍöT®ThisExpressionÍçÍëMªIdentifierÍìÍöªjwtManagerÂÂMªIdentifierÍ÷Íÿ¨getTokenÂÂÂ¥const]³VariableDeclarationÍÍ,‘^²VariableDeclaratorÍÍ+MªIdentifierÍÍ¨hasToken_°BinaryExpressionÍÍ+MªIdentifierÍÍ"¥token£!==[§LiteralÍ'Í+À¤null¥constV«IfStatementÍ6ÍÇW¯UnaryExpressionÍ:ÍC¡!ÃMªIdentifierÍ;ÍC¨hasTokenN®BlockStatementÍEÍÇ“]³VariableDeclarationÍTÍ-‘^²VariableDeclaratorÍZÍ,MªIdentifierÍZÍ`¦resultÔrd”¤type¥start£endªproperties°ObjectExpressionÍcÍ,•Ôre™¤type¥start£end¦method©shorthand¨computed£key¥value¤kind¨PropertyÍvÍŒÂÂÂMªIdentifierÍvÍ…¯isAuthenticated[§LiteralÍ‡ÍŒÂ¥false¤inite¨PropertyÍŸÍ­ÂÂÂMªIdentifierÍŸÍ¦§message[§LiteralÍ¨Í­©æœªç™»å½•«'æœªç™»å½•'¤inite¨PropertyÍÀÍÏÂÂÂMªIdentifierÍÀÍÈ¨hasToken[§LiteralÍÊÍÏÂ¥false¤inite¨PropertyÍâÍõÂÂÂMªIdentifierÍâÍî¬isTokenValid[§LiteralÍğÍõÂ¥false¤inite¨PropertyÍÍÂÂÂMªIdentifierÍÍ®isTokenExpired[§LiteralÍÍÂ¥false¤init¥constV«IfStatementÍ;Í MªIdentifierÍ?ÍH©showToastN®BlockStatementÍJÍ ‘Q³ExpressionStatementÍ]Í‘U®CallExpressionÍ]ÍS°MemberExpressionÍ]ÍsMªIdentifierÍ]Íi¬promptActionMªIdentifierÍjÍs©showToastÂÂ‘d°ObjectExpressionÍtÍ‘e¨PropertyÍvÍÂÂÂMªIdentifierÍvÍ}§messageS°MemberExpressionÍÍMªIdentifierÍÍ…¦resultMªIdentifierÍ†Í§messageÂÂ¤initÂÀY¯ReturnStatementÍ®Í¼MªIdentifierÍµÍ»¦resultÀ]³VariableDeclarationÍÑÍ	
-‘^²VariableDeclaratorÍ×Í		MªIdentifierÍ×Íà©isExpiredY¯AwaitExpressionÍãÍ		U®CallExpressionÍéÍ		S°MemberExpressionÍéÍ	S°MemberExpressionÍéÍøT®ThisExpressionÍéÍíMªIdentifierÍîÍøªjwtManagerÂÂMªIdentifierÍùÍ	®isTokenExpiredÂÂÂ¥const]³VariableDeclarationÍ	Í	I‘^²VariableDeclaratorÍ	Í	HMªIdentifierÍ	Í	!§isValidY¯AwaitExpressionÍ	$Í	HU®CallExpressionÍ	*Í	HS°MemberExpressionÍ	*Í	FS°MemberExpressionÍ	*Í	9T®ThisExpressionÍ	*Í	.MªIdentifierÍ	/Í	9ªjwtManagerÂÂMªIdentifierÍ	:Í	F¬isTokenValidÂÂÂ¥constV«IfStatementÍ	SÍ
-÷_°BinaryExpressionÍ	WÍ	iMªIdentifierÍ	WÍ	`©isExpired£===[§LiteralÍ	eÍ	iÃ¤trueN®BlockStatementÍ	kÍ
-÷“]³VariableDeclarationÍ	zÍ
-]‘^²VariableDeclaratorÍ	€Í
-\MªIdentifierÍ	€Í	†¦resultd°ObjectExpressionÍ	‰Í
-\•e¨PropertyÍ	œÍ	²ÂÂÂMªIdentifierÍ	œÍ	«¯isAuthenticated[§LiteralÍ	­Í	²Â¥false¤inite¨PropertyÍ	ÅÍ	ßÂÂÂMªIdentifierÍ	ÅÍ	Ì§message[§LiteralÍ	ÎÍ	ßÙ!Token å·²è¿‡æœŸï¼Œè¯·é‡æ–°ç™»å½•Ù#'Token å·²è¿‡æœŸï¼Œè¯·é‡æ–°ç™»å½•'¤inite¨PropertyÍ	òÍ
- ÂÂÂMªIdentifierÍ	òÍ	ú¨hasToken[§LiteralÍ	üÍ
- Ã¤true¤inite¨PropertyÍ
-Í
-&ÂÂÂMªIdentifierÍ
-Í
-¬isTokenValid[§LiteralÍ
-!Í
-&Â¥false¤inite¨PropertyÍ
-9Í
-MÂÂÂMªIdentifierÍ
-9Í
-G®isTokenExpired[§LiteralÍ
-IÍ
-MÃ¤true¤init¥constV«IfStatementÍ
-kÍ
-ĞMªIdentifierÍ
-oÍ
-x©showToastN®BlockStatementÍ
-zÍ
-Ğ‘Q³ExpressionStatementÍ
-Í
-ÁU®CallExpressionÍ
-Í
-ÀS°MemberExpressionÍ
-Í
-£MªIdentifierÍ
-Í
-™¬promptActionMªIdentifierÍ
-šÍ
-£©showToastÂÂ‘d°ObjectExpressionÍ
-¤Í
-¿‘e¨PropertyÍ
-¦Í
-½ÂÂÂMªIdentifierÍ
-¦Í
-­§messageS°MemberExpressionÍ
-¯Í
-½MªIdentifierÍ
-¯Í
-µ¦resultMªIdentifierÍ
-¶Í
-½§messageÂÂ¤initÂÀY¯ReturnStatementÍ
-ŞÍ
-ìMªIdentifierÍ
-åÍ
-ë¦resultÀV«IfStatementÍÍ›W¯UnaryExpressionÍÍ¡!ÃMªIdentifierÍÍ§isValidN®BlockStatementÍÍ›“]³VariableDeclarationÍÍ‘^²VariableDeclaratorÍ$Í MªIdentifierÍ$Í*¦resultd°ObjectExpressionÍ-Í •e¨PropertyÍ@ÍVÂÂÂMªIdentifierÍ@ÍO¯isAuthenticated[§LiteralÍQÍVÂ¥false¤inite¨PropertyÍiÍ‚ÂÂÂMªIdentifierÍiÍp§message[§LiteralÍrÍ‚¾Token æ— æ•ˆï¼Œè¯·é‡æ–°ç™»å½•Ù 'Token æ— æ•ˆï¼Œè¯·é‡æ–°ç™»å½•'¤inite¨PropertyÍ•Í£ÂÂÂMªIdentifierÍ•Í¨hasToken[§LiteralÍŸÍ£Ã¤true¤inite¨PropertyÍ¶ÍÉÂÂÂMªIdentifierÍ¶ÍÂ¬isTokenValid[§LiteralÍÄÍÉÂ¥false¤inite¨PropertyÍÜÍñÂÂÂMªIdentifierÍÜÍê®isTokenExpired[§LiteralÍìÍñÂ¥false¤init¥constV«IfStatementÍÍtMªIdentifierÍÍ©showToastN®BlockStatementÍÍt‘Q³ExpressionStatementÍ1ÍeU®CallExpressionÍ1ÍdS°MemberExpressionÍ1ÍGMªIdentifierÍ1Í=¬promptActionMªIdentifierÍ>ÍG©showToastÂÂ‘d°ObjectExpressionÍHÍc‘e¨PropertyÍJÍaÂÂÂMªIdentifierÍJÍQ§messageS°MemberExpressionÍSÍaMªIdentifierÍSÍY¦resultMªIdentifierÍZÍa§messageÂÂ¤initÂÀY¯ReturnStatementÍ‚ÍMªIdentifierÍ‰Í¦resultÀY¯ReturnStatementÍ¥Í[d°ObjectExpressionÍ¬ÍZ•e¨PropertyÍ»ÍĞÂÂÂMªIdentifierÍ»ÍÊ¯isAuthenticated[§LiteralÍÌÍĞÃ¤true¤inite¨PropertyÍßÍíÂÂÂMªIdentifierÍßÍæ§message[§LiteralÍèÍí©å·²ç™»å½•«'å·²ç™»å½•'¤inite¨PropertyÍüÍ
-ÂÂÂMªIdentifierÍüÍ¨hasToken[§LiteralÍÍ
-Ã¤true¤inite¨PropertyÍÍ+ÂÂÂMªIdentifierÍÍ%¬isTokenValid[§LiteralÍ'Í+Ã¤true¤inite¨PropertyÍ:ÍOÂÂÂMªIdentifierÍ:ÍH®isTokenExpired[§LiteralÍJÍOÂ¥false¤initO°MethodDefinitionÍ¹Í1ÂÂMªIdentifierÍ¿ÍÊ«requireAuth¦methodP²FunctionExpressionÍÊÍ1ÀÂÂÃN®BlockStatementÍÍÍ1’]³VariableDeclarationÍØÍ‘^²VariableDeclaratorÍŞÍMªIdentifierÍŞÍä¦resultY¯AwaitExpressionÍçÍU®CallExpressionÍíÍS°MemberExpressionÍíÍûT®ThisExpressionÍíÍñMªIdentifierÍòÍû©checkAuthÂÂ‘[§LiteralÍüÍ Ã¤trueÂ¥constY¯ReturnStatementÍÍ*S°MemberExpressionÍÍ)MªIdentifierÍÍ¦resultMªIdentifierÍÍ)¯isAuthenticatedÂÂO°MethodDefinitionÍªÍùÂÂMªIdentifierÍ°ÍÃ³isTokenExpiringSoon¦methodP²FunctionExpressionÍÃÍùÀÂÂÃ‘c±AssignmentPatternÍÄÍÙMªIdentifierÍÄÍÔ°thresholdMinutes[§LiteralÍ×ÍÙ
-¢10N®BlockStatementÍÛÍù”]³VariableDeclarationÍæÍ(‘^²VariableDeclaratorÍìÍ'MªIdentifierÍìÍù­remainingTimeY¯AwaitExpressionÍüÍ'U®CallExpressionÍÍ'S°MemberExpressionÍÍ%S°MemberExpressionÍÍT®ThisExpressionÍÍMªIdentifierÍÍªjwtManagerÂÂMªIdentifierÍÍ%³getTimeToExpirationÂÂÂ¥constV«IfStatementÍ2Íu_°BinaryExpressionÍ6ÍLMªIdentifierÍ6ÍC­remainingTime£===[§LiteralÍHÍLÀ¤nullN®BlockStatementÍNÍu‘Y¯ReturnStatementÍ]Íj[§LiteralÍdÍiÂ¥falseÀ]³VariableDeclarationÍÍ°‘^²VariableDeclaratorÍ…Í¯MªIdentifierÍ…Í«thresholdMs_°BinaryExpressionÍ“Í¯_°BinaryExpressionÍ“Í¨MªIdentifierÍ“Í£°thresholdMinutes¡*[§LiteralÍ¦Í¨<¢60¡*[§LiteralÍ«Í¯Íè¤1000¥constY¯ReturnStatementÍºÍò_±LogicalExpressionÍÁÍñ_°BinaryExpressionÍÁÍÜMªIdentifierÍÁÍÎ­remainingTime¡<MªIdentifierÍÑÍÜ«thresholdMs¢&&_°BinaryExpressionÍàÍñMªIdentifierÍàÍí­remainingTime¡>[§LiteralÍğÍñ ¡0O°MethodDefinitionÍZÍ‰ÂÂMªIdentifierÍ`ÍuµremindTokenExpiration¦methodP²FunctionExpressionÍuÍ‰ÀÂÂÃ‘c±AssignmentPatternÍvÍ‹MªIdentifierÍvÍ†°thresholdMinutes[§LiteralÍ‰Í‹
-¢10N®BlockStatementÍÍ‰’]³VariableDeclarationÍ˜Íà‘^²VariableDeclaratorÍÍßMªIdentifierÍÍ¬®isExpiringSoonY¯AwaitExpressionÍ¯ÍßU®CallExpressionÍµÍßS°MemberExpressionÍµÍÍT®ThisExpressionÍµÍ¹MªIdentifierÍºÍÍ³isTokenExpiringSoonÂÂ‘MªIdentifierÍÎÍŞ°thresholdMinutesÂ¥constV«IfStatementÍêÍ‚MªIdentifierÍîÍü®isExpiringSoonN®BlockStatementÍşÍ‚’]³VariableDeclarationÍÍO‘^²VariableDeclaratorÍÍNMªIdentifierÍÍ ­remainingTimeY¯AwaitExpressionÍ#ÍNU®CallExpressionÍ)ÍNS°MemberExpressionÍ)ÍLS°MemberExpressionÍ)Í8T®ThisExpressionÍ)Í-MªIdentifierÍ.Í8ªjwtManagerÂÂMªIdentifierÍ9ÍL³getTimeToExpirationÂÂÂ¥constV«IfStatementÍ]Íw_°BinaryExpressionÍaÍwMªIdentifierÍaÍn­remainingTime£!==[§LiteralÍsÍwÀ¤nullN®BlockStatementÍyÍw’]³VariableDeclarationÍŒÍÄ‘^²VariableDeclaratorÍ’ÍÃMªIdentifierÍ’Í™§minutesU®CallExpressionÍœÍÃS°MemberExpressionÍœÍ¦MªIdentifierÍœÍ ¤MathMªIdentifierÍ¡Í¦¥floorÂÂ‘_°BinaryExpressionÍ§ÍÂMªIdentifierÍ§Í´­remainingTime¡/_°BinaryExpressionÍ¸ÍÁ[§LiteralÍ¸Í¼Íè¤1000¡*[§LiteralÍ¿ÍÁ<¢60Â¥constQ³ExpressionStatementÍÖÍhU®CallExpressionÍÖÍgS°MemberExpressionÍÖÍìMªIdentifierÍÖÍâ¬promptActionMªIdentifierÍãÍì©showToastÂÂ‘d°ObjectExpressionÍíÍf’e¨PropertyÍÍ.ÂÂÂMªIdentifierÍÍ§message`¯TemplateLiteralÍÍ.‘MªIdentifierÍÍ§minutes’a¯TemplateElementÍÍb³ç™»å½•çŠ¶æ€å°†åœ¨ ³ç™»å½•çŠ¶æ€å°†åœ¨ Âa¯TemplateElementÍÍ-bÙ( åˆ†é’Ÿåè¿‡æœŸï¼Œè¯·åŠæ—¶ä¿å­˜æ•°æ®Ù( åˆ†é’Ÿåè¿‡æœŸï¼Œè¯·åŠæ—¶ä¿å­˜æ•°æ®Ã¤inite¨PropertyÍEÍSÂÂÂMªIdentifierÍEÍM¨duration[§LiteralÍOÍSÍ¸¤3000¤initÂÀÀO°MethodDefinitionÍğÍ©ÂÂMªIdentifierÍöÍºgetFormattedExpirationTime¦methodP²FunctionExpressionÍÍ©ÀÂÂÃN®BlockStatementÍÍ©™]³VariableDeclarationÍÍ_‘^²VariableDeclaratorÍ$Í^MªIdentifierÍ$Í2®expirationDateY¯AwaitExpressionÍ5Í^U®CallExpressionÍ;Í^S°MemberExpressionÍ;Í\S°MemberExpressionÍ;ÍJT®ThisExpressionÍ;Í?MªIdentifierÍ@ÍJªjwtManagerÂÂMªIdentifierÍKÍ\±getExpirationDateÂÂÂ¥constV«IfStatementÍiÍ¤W¯UnaryExpressionÍmÍ|¡!ÃMªIdentifierÍnÍ|®expirationDateN®BlockStatementÍ~Í¤‘Y¯ReturnStatementÍÍ™[§LiteralÍ”Í˜À¤nullÀ]³VariableDeclarationÍ®ÍØ‘^²VariableDeclaratorÍ´Í×MªIdentifierÍ´Í¸¤yearU®CallExpressionÍ»Í×S°MemberExpressionÍ»ÍÕMªIdentifierÍ»ÍÉ®expirationDateMªIdentifierÍÊÍÕ«getFullYearÂÂÂ¥const]³VariableDeclarationÍâÍ'‘^²VariableDeclaratorÍèÍ&MªIdentifierÍèÍí¥monthU®CallExpressionÍğÍ&S°MemberExpressionÍğÍU®CallExpressionÍğÍMªIdentifierÍğÍö¦String‘_°BinaryExpressionÍ÷ÍU®CallExpressionÍ÷ÍS°MemberExpressionÍ÷ÍMªIdentifierÍ÷Í®expirationDateMªIdentifierÍÍ¨getMonthÂÂÂ¡+[§LiteralÍÍ¡1ÂMªIdentifierÍÍ¨padStartÂÂ’[§LiteralÍÍ ¡2[§LiteralÍ"Í%¡0£'0'Â¥const]³VariableDeclarationÍ1Ío‘^²VariableDeclaratorÍ7ÍnMªIdentifierÍ7Í:£dayU®CallExpressionÍ=ÍnS°MemberExpressionÍ=ÍfU®CallExpressionÍ=Í]MªIdentifierÍ=ÍC¦String‘U®CallExpressionÍDÍ\S°MemberExpressionÍDÍZMªIdentifierÍDÍR®expirationDateMªIdentifierÍSÍZ§getDateÂÂÂÂMªIdentifierÍ^Íf¨padStartÂÂ’[§LiteralÍgÍh¡2[§LiteralÍjÍm¡0£'0'Â¥const]³VariableDeclarationÍyÍº‘^²VariableDeclaratorÍÍ¹MªIdentifierÍÍ„¥hoursU®CallExpressionÍ‡Í¹S°MemberExpressionÍ‡Í±U®CallExpressionÍ‡Í¨MªIdentifierÍ‡Í¦String‘U®CallExpressionÍÍ§S°MemberExpressionÍÍ¥MªIdentifierÍÍœ®expirationDateMªIdentifierÍÍ¥¨getHoursÂÂÂÂMªIdentifierÍ©Í±¨padStartÂÂ’[§LiteralÍ²Í³¡2[§LiteralÍµÍ¸¡0£'0'Â¥const]³VariableDeclarationÍÄÍ	‘^²VariableDeclaratorÍÊÍMªIdentifierÍÊÍÑ§minutesU®CallExpressionÍÔÍS°MemberExpressionÍÔÍ U®CallExpressionÍÔÍ÷MªIdentifierÍÔÍÚ¦String‘U®CallExpressionÍÛÍöS°MemberExpressionÍÛÍôMªIdentifierÍÛÍé®expirationDateMªIdentifierÍêÍôªgetMinutesÂÂÂÂMªIdentifierÍøÍ ¨padStartÂÂ’[§LiteralÍÍ¡2[§LiteralÍÍ¡0£'0'Â¥const]³VariableDeclarationÍÍX‘^²VariableDeclaratorÍÍWMªIdentifierÍÍ §secondsU®CallExpressionÍ#ÍWS°MemberExpressionÍ#ÍOU®CallExpressionÍ#ÍFMªIdentifierÍ#Í)¦String‘U®CallExpressionÍ*ÍES°MemberExpressionÍ*ÍCMªIdentifierÍ*Í8®expirationDateMªIdentifierÍ9ÍCªgetSecondsÂÂÂÂMªIdentifierÍGÍO¨padStartÂÂ’[§LiteralÍPÍQ¡2[§LiteralÍSÍV¡0£'0'Â¥constY¯ReturnStatementÍbÍ¢`¯TemplateLiteralÍiÍ¡–MªIdentifierÍlÍp¤yearMªIdentifierÍtÍy¥monthMªIdentifierÍ}Í€£dayMªIdentifierÍ„Í‰¥hoursMªIdentifierÍÍ”§minutesMªIdentifierÍ˜ÍŸ§seconds—a¯TemplateElementÍjÍjb  Âa¯TemplateElementÍqÍrb¡-¡-Âa¯TemplateElementÍzÍ{b¡-¡-Âa¯TemplateElementÍÍ‚b¡ ¡ Âa¯TemplateElementÍŠÍ‹b¡:¡:Âa¯TemplateElementÍ•Í–b¡:¡:Âa¯TemplateElementÍ Í b  ÃO°MethodDefinitionÍÍIÂÂMªIdentifierÍ
-Í%»getRemainingTimeDescription¦methodP²FunctionExpressionÍ%ÍIÀÂÂÃN®BlockStatementÍ(ÍI–]³VariableDeclarationÍ3Íu‘^²VariableDeclaratorÍ9ÍtMªIdentifierÍ9ÍF­remainingTimeY¯AwaitExpressionÍIÍtU®CallExpressionÍOÍtS°MemberExpressionÍOÍrS°MemberExpressionÍOÍ^T®ThisExpressionÍOÍSMªIdentifierÍTÍ^ªjwtManagerÂÂMªIdentifierÍ_Ír³getTimeToExpirationÂÂÂ¥constV«IfStatementÍÍÁ_°BinaryExpressionÍƒÍ™MªIdentifierÍƒÍ­remainingTime£===[§LiteralÍ•Í™À¤nullN®BlockStatementÍ›ÍÁ‘Y¯ReturnStatementÍªÍ¶[§LiteralÍ±ÍµÀ¤nullÀV«IfStatementÍËÍ
-_°BinaryExpressionÍÏÍáMªIdentifierÍÏÍÜ­remainingTime¢<=[§LiteralÍàÍá ¡0N®BlockStatementÍãÍ
-‘Y¯ReturnStatementÍòÍÿ[§LiteralÍùÍş©å·²è¿‡æœŸ«'å·²è¿‡æœŸ'À]³VariableDeclarationÍÍO‘^²VariableDeclaratorÍÍNMªIdentifierÍÍ¥hoursU®CallExpressionÍ"ÍNS°MemberExpressionÍ"Í,MªIdentifierÍ"Í&¤MathMªIdentifierÍ'Í,¥floorÂÂ‘_°BinaryExpressionÍ-ÍMMªIdentifierÍ-Í:­remainingTime¡/_°BinaryExpressionÍ>ÍL_°BinaryExpressionÍ>ÍG[§LiteralÍ>ÍBÍè¤1000¡*[§LiteralÍEÍG<¢60¡*[§LiteralÍJÍL<¢60Â¥const]³VariableDeclarationÍYÍ¦‘^²VariableDeclaratorÍ_Í¥MªIdentifierÍ_Íf§minutesU®CallExpressionÍiÍ¥S°MemberExpressionÍiÍsMªIdentifierÍiÍm¤MathMªIdentifierÍnÍs¥floorÂÂ‘_°BinaryExpressionÍtÍ¤_°BinaryExpressionÍuÍ•MªIdentifierÍuÍ‚­remainingTime¡%_°BinaryExpressionÍ†Í”_°BinaryExpressionÍ†Í[§LiteralÍ†ÍŠÍè¤1000¡*[§LiteralÍÍ<¢60¡*[§LiteralÍ’Í”<¢60¡/_°BinaryExpressionÍšÍ£[§LiteralÍšÍÍè¤1000¡*[§LiteralÍ¡Í£<¢60Â¥constV«IfStatementÍ°ÍB_°BinaryExpressionÍ´Í½MªIdentifierÍ´Í¹¥hours¡>[§LiteralÍ¼Í½ ¡0N®BlockStatementÍ¿Íÿ‘Y¯ReturnStatementÍÎÍô`¯TemplateLiteralÍÕÍó’MªIdentifierÍÛÍà¥hoursMªIdentifierÍçÍî§minutes“a¯TemplateElementÍÖÍÙb§è¿˜æœ‰ §è¿˜æœ‰ Âa¯TemplateElementÍáÍåb¨ å°æ—¶ ¨ å°æ—¶ Âa¯TemplateElementÍïÍòb§ åˆ†é’Ÿ§ åˆ†é’ŸÃN®BlockStatementÍÍB‘Y¯ReturnStatementÍÍ7`¯TemplateLiteralÍ$Í6‘MªIdentifierÍ*Í1§minutes’a¯TemplateElementÍ%Í(b§è¿˜æœ‰ §è¿˜æœ‰ Âa¯TemplateElementÍ2Í5b§ åˆ†é’Ÿ§ åˆ†é’ŸÃO°MethodDefinitionÍ¿ÍÂÂMªIdentifierÍÅÍÓ®getAuthHeaders¦methodP²FunctionExpressionÍÓÍÀÂÂÃ‘MªIdentifierÍÔÍå±additionalHeadersN®BlockStatementÍçÍ“]³VariableDeclarationÍòÍ-‘^²VariableDeclaratorÍøÍ,MªIdentifierÍøÍ«authHeadersY¯AwaitExpressionÍÍ,U®CallExpressionÍÍ,S°MemberExpressionÍÍ*S°MemberExpressionÍÍT®ThisExpressionÍÍMªIdentifierÍÍªjwtManagerÂÂMªIdentifierÍÍ*®getAuthHeadersÂÂÂ¥constV«IfStatementÍ7ÍíMªIdentifierÍ;ÍL±additionalHeadersN®BlockStatementÍNÍí–]³VariableDeclarationÍ~Í—‘^²VariableDeclaratorÍ„Í–MªIdentifierÍ„Í‘­mergedHeadersd°ObjectExpressionÍ”Í–¥const]³VariableDeclarationÍÅÍï‘^²VariableDeclaratorÍËÍîMªIdentifierÍËÍÓ¨authKeysU®CallExpressionÍÖÍîS°MemberExpressionÍÖÍáMªIdentifierÍÖÍÜ¦ObjectMªIdentifierÍİÍá¤keysÂÂ‘MªIdentifierÍâÍí«authHeadersÂ¥constÔrf—¤type¥start£end¤init¤test¦update¤body¬ForStatementÍıÍ™]³VariableDeclarationÍÍ‘^²VariableDeclaratorÍÍMªIdentifierÍÍ¡i[§LiteralÍ
-Í ¡0£let_°BinaryExpressionÍÍ MªIdentifierÍÍ¡i¡<S°MemberExpressionÍÍ MªIdentifierÍÍ¨authKeysMªIdentifierÍÍ ¦lengthÂÂW°UpdateExpressionÍ"Í%¢++ÂMªIdentifierÍ"Í#¡iN®BlockStatementÍ'Í™’]³VariableDeclarationÍ:ÍR‘^²VariableDeclaratorÍ@ÍQMªIdentifierÍ@ÍC£keyS°MemberExpressionÍFÍQMªIdentifierÍFÍN¨authKeysMªIdentifierÍOÍP¡iÃÂ¥constQ³ExpressionStatementÍdÍŠR´AssignmentExpressionÍdÍ‰¡=S°MemberExpressionÍdÍvMªIdentifierÍdÍq­mergedHeadersMªIdentifierÍrÍu£keyÃÂS°MemberExpressionÍyÍ‰MªIdentifierÍyÍ„«authHeadersMªIdentifierÍ…Íˆ£keyÃÂ]³VariableDeclarationÍÍÍ‘^²VariableDeclaratorÍÓÍMªIdentifierÍÓÍá®additionalKeysU®CallExpressionÍäÍS°MemberExpressionÍäÍïMªIdentifierÍäÍê¦ObjectMªIdentifierÍëÍï¤keysÂÂ‘MªIdentifierÍğÍ±additionalHeadersÂ¥constf¬ForStatementÍÍ¿]³VariableDeclarationÍÍ‘^²VariableDeclaratorÍÍMªIdentifierÍÍ¡i[§LiteralÍÍ ¡0£let_°BinaryExpressionÍ!Í:MªIdentifierÍ!Í"¡i¡<S°MemberExpressionÍ%Í:MªIdentifierÍ%Í3®additionalKeysMªIdentifierÍ4Í:¦lengthÂÂW°UpdateExpressionÍ<Í?¢++ÂMªIdentifierÍ<Í=¡iN®BlockStatementÍAÍ¿’]³VariableDeclarationÍTÍr‘^²VariableDeclaratorÍZÍqMªIdentifierÍZÍ]£keyS°MemberExpressionÍ`ÍqMªIdentifierÍ`Ín®additionalKeysMªIdentifierÍoÍp¡iÃÂ¥constQ³ExpressionStatementÍ„Í°R´AssignmentExpressionÍ„Í¯¡=S°MemberExpressionÍ„Í–MªIdentifierÍ„Í‘­mergedHeadersMªIdentifierÍ’Í•£keyÃÂS°MemberExpressionÍ™Í¯MªIdentifierÍ™Íª±additionalHeadersMªIdentifierÍ«Í®£keyÃÂY¯ReturnStatementÍÍÍâMªIdentifierÍÔÍá­mergedHeadersÀY¯ReturnStatementÍ÷Í
-MªIdentifierÍşÍ	«authHeadersO°MethodDefinitionÍJÍÈÂÂMªIdentifierÍPÍV¦logout¦methodP²FunctionExpressionÍVÍÈÀÂÂÃN®BlockStatementÍYÍÈ‘Z¬TryStatementÍdÍÁN®BlockStatementÍhÍÒ’Q³ExpressionStatementÍwÍ—Y¯AwaitExpressionÍwÍ–U®CallExpressionÍ}Í–S°MemberExpressionÍ}Í”S°MemberExpressionÍ}ÍT®ThisExpressionÍ}ÍMªIdentifierÍ‚Í«userManagerÂÂMªIdentifierÍÍ”¦logoutÂÂÂQ³ExpressionStatementÍ¥ÍÇU®CallExpressionÍ¥ÍÆS°MemberExpressionÍ¥Í°MªIdentifierÍ¥Í¬§consoleMªIdentifierÍ­Í°£logÂÂ‘[§LiteralÍ±ÍÅ¾AuthHelper: é€€å‡ºç™»å½•æˆåŠŸÙ 'AuthHelper: é€€å‡ºç™»å½•æˆåŠŸ'Â\«CatchClauseÍÜÍÁMªIdentifierÍãÍæ£errN®BlockStatementÍèÍÁ“]³VariableDeclarationÍ÷Í:‘^²VariableDeclaratorÍıÍ9MªIdentifierÍıÍ	¬errorMessageVµConditionalExpressionÍÍ9_°BinaryExpressionÍÍ MªIdentifierÍÍ£errªinstanceofMªIdentifierÍÍ ¥ErrorS°MemberExpressionÍ#Í.MªIdentifierÍ#Í&£errMªIdentifierÍ'Í.§messageÂÂ[§LiteralÍ1Í9²é€€å‡ºç™»å½•å¤±è´¥´'é€€å‡ºç™»å½•å¤±è´¥'¥constQ³ExpressionStatementÍHÍrU®CallExpressionÍHÍqS°MemberExpressionÍHÍUMªIdentifierÍHÍO§consoleMªIdentifierÍPÍU¥errorÂÂ’[§LiteralÍVÍk¿AuthHelper: é€€å‡ºç™»å½•å¤±è´¥:Ù!'AuthHelper: é€€å‡ºç™»å½•å¤±è´¥:'MªIdentifierÍmÍp£errÂY®ThrowStatementÍ€Í¶X­NewExpressionÍ†ÍµMªIdentifierÍŠÍ¥Error‘`¯TemplateLiteralÍÍ´‘MªIdentifierÍ¦Í²¬errorMessage’a¯TemplateElementÍ‘Í¤b¿AuthHelper é€€å‡ºç™»å½•å¤±è´¥: ¿AuthHelper é€€å‡ºç™»å½•å¤±è´¥: Âa¯TemplateElementÍ³Í³b  ÃÀO°MethodDefinitionÍ÷Í!ÂÂMªIdentifierÍıÍ¯printAuthStatus¦methodP²FunctionExpressionÍÍ!ÀÂÂÃN®BlockStatementÍÍ!—Q³ExpressionStatementÍÍDU®CallExpressionÍÍCS°MemberExpressionÍÍ%MªIdentifierÍÍ!§consoleMªIdentifierÍ"Í%£logÂÂ‘[§LiteralÍ&ÍBÙ"========== è®¤è¯çŠ¶æ€ ==========Ù$'========== è®¤è¯çŠ¶æ€ =========='Â]³VariableDeclarationÍNÍ}‘^²VariableDeclaratorÍTÍ|MªIdentifierÍTÍY¥tokenY¯AwaitExpressionÍ\Í|U®CallExpressionÍbÍ|S°MemberExpressionÍbÍzS°MemberExpressionÍbÍqT®ThisExpressionÍbÍfMªIdentifierÍgÍqªjwtManagerÂÂMªIdentifierÍrÍz¨getTokenÂÂÂ¥constQ³ExpressionStatementÍ‡Í°U®CallExpressionÍ‡Í¯S°MemberExpressionÍ‡Í’MªIdentifierÍ‡Í§consoleMªIdentifierÍÍ’£logÂÂ’[§LiteralÍ“Í­Token å­˜åœ¨:¯'Token å­˜åœ¨:'_°BinaryExpressionÍ Í®MªIdentifierÍ Í¥¥token£!==[§LiteralÍªÍ®À¤nullÂV«IfStatementÍºÍ ĞMªIdentifierÍ¾ÍÃ¥tokenN®BlockStatementÍÅÍ Ğ”]³VariableDeclarationÍÔÍ‘^²VariableDeclaratorÍÚÍ
-MªIdentifierÍÚÍã©tokenInfoY¯AwaitExpressionÍæÍ
-U®CallExpressionÍìÍ
-S°MemberExpressionÍìÍS°MemberExpressionÍìÍûT®ThisExpressionÍìÍğMªIdentifierÍñÍûªjwtManagerÂÂMªIdentifierÍüÍ¬getTokenInfoÂÂÂ¥constV«IfStatementÍÍ FMªIdentifierÍÍ&©tokenInfoN®BlockStatementÍ(Í F”Q³ExpressionStatementÍ;ÍgU®CallExpressionÍ;ÍfS°MemberExpressionÍ;ÍFMªIdentifierÍ;ÍB§consoleMªIdentifierÍCÍF£logÂÂ’[§LiteralÍGÍR­Token æœ‰æ•ˆ:¯'Token æœ‰æ•ˆ:'S°MemberExpressionÍTÍeMªIdentifierÍTÍ]©tokenInfoMªIdentifierÍ^Íe§isValidÂÂÂQ³ExpressionStatementÍyÍ§U®CallExpressionÍyÍ¦S°MemberExpressionÍyÍ„MªIdentifierÍyÍ€§consoleMªIdentifierÍÍ„£logÂÂ’[§LiteralÍ…Í­Token è¿‡æœŸ:¯'Token è¿‡æœŸ:'S°MemberExpressionÍ’Í¥MªIdentifierÍ’Í›©tokenInfoMªIdentifierÍœÍ¥©isExpiredÂÂÂQ³ExpressionStatementÍ¹ÍúU®CallExpressionÍ¹ÍùS°MemberExpressionÍ¹ÍÄMªIdentifierÍ¹ÍÀ§consoleMªIdentifierÍÁÍÄ£logÂÂ’[§LiteralÍÅÍÌ­è¿‡æœŸæ—¶é—´:¯'è¿‡æœŸæ—¶é—´:'Q¯ChainExpressionÍÎÍøU®CallExpressionÍÎÍøS°MemberExpressionÍÎÍöS°MemberExpressionÍÎÍæMªIdentifierÍÎÍ×©tokenInfoMªIdentifierÍØÍæ®expirationDateÂÂMªIdentifierÍèÍö®toLocaleStringÂÃÂÂQ³ExpressionStatementÍ Í 7U®CallExpressionÍ Í 6S°MemberExpressionÍ Í MªIdentifierÍ Í §consoleMªIdentifierÍ Í £logÂÂ’[§LiteralÍ Í "¨Payload:ª'Payload:'S°MemberExpressionÍ $Í 5MªIdentifierÍ $Í -©tokenInfoMªIdentifierÍ .Í 5§payloadÂÂÂÀ]³VariableDeclarationÍ TÍ “‘^²VariableDeclaratorÍ ZÍ ’MªIdentifierÍ ZÍ g­remainingTimeY¯AwaitExpressionÍ jÍ ’U®CallExpressionÍ pÍ ’S°MemberExpressionÍ pÍ T®ThisExpressionÍ pÍ tMªIdentifierÍ uÍ »getRemainingTimeDescriptionÂÂÂ¥constQ³ExpressionStatementÍ ¡Í ÅU®CallExpressionÍ ¡Í ÄS°MemberExpressionÍ ¡Í ¬MªIdentifierÍ ¡Í ¨§consoleMªIdentifierÍ ©Í ¬£logÂÂ’[§LiteralÍ ­Í ´­å‰©ä½™æ—¶é—´:¯'å‰©ä½™æ—¶é—´:'MªIdentifierÍ ¶Í Ã­remainingTimeÂÀ]³VariableDeclarationÍ ÚÍ!‘^²VariableDeclaratorÍ àÍ!MªIdentifierÍ àÍ ë«currentUserY¯AwaitExpressionÍ îÍ!U®CallExpressionÍ ôÍ!S°MemberExpressionÍ ôÍ!S°MemberExpressionÍ ôÍ!T®ThisExpressionÍ ôÍ øMªIdentifierÍ ùÍ!«userManagerÂÂMªIdentifierÍ!Í!®getCurrentUserÂÂÂ¥constQ³ExpressionStatementÍ! Í!BU®CallExpressionÍ! Í!AS°MemberExpressionÍ! Í!+MªIdentifierÍ! Í!'§consoleMªIdentifierÍ!(Í!+£logÂÂ’[§LiteralÍ!,Í!3­å½“å‰ç”¨æˆ·:¯'å½“å‰ç”¨æˆ·:'MªIdentifierÍ!5Í!@«currentUserÂQ³ExpressionStatementÍ!LÍ!zU®CallExpressionÍ!LÍ!yS°MemberExpressionÍ!LÍ!WMªIdentifierÍ!LÍ!S§consoleMªIdentifierÍ!TÍ!W£logÂÂ‘[§LiteralÍ!XÍ!x¾==============================Ù '=============================='ÂO°MethodDefinitionÍ!ÑÍ"şÂÂMªIdentifierÍ!×Í!ê³cleanupExpiredToken¦methodP²FunctionExpressionÍ!êÍ"şÀÂÂÃN®BlockStatementÍ!íÍ"ş“]³VariableDeclarationÍ!øÍ"1‘^²VariableDeclaratorÍ!şÍ"0MªIdentifierÍ!şÍ"©isExpiredY¯AwaitExpressionÍ"
-Í"0U®CallExpressionÍ"Í"0S°MemberExpressionÍ"Í".S°MemberExpressionÍ"Í"T®ThisExpressionÍ"Í"MªIdentifierÍ"Í"ªjwtManagerÂÂMªIdentifierÍ" Í".®isTokenExpiredÂÂÂ¥constV«IfStatementÍ";Í"à_°BinaryExpressionÍ"?Í"QMªIdentifierÍ"?Í"H©isExpired£===[§LiteralÍ"MÍ"QÃ¤trueN®BlockStatementÍ"SÍ"à“Q³ExpressionStatementÍ"bÍ"†Y¯AwaitExpressionÍ"bÍ"…U®CallExpressionÍ"hÍ"…S°MemberExpressionÍ"hÍ"ƒS°MemberExpressionÍ"hÍ"wT®ThisExpressionÍ"hÍ"lMªIdentifierÍ"mÍ"wªjwtManagerÂÂMªIdentifierÍ"xÍ"ƒ«removeTokenÂÂÂQ³ExpressionStatementÍ"”Í"»U®CallExpressionÍ"”Í"ºS°MemberExpressionÍ"”Í"ŸMªIdentifierÍ"”Í"›§consoleMªIdentifierÍ"œÍ"Ÿ£logÂÂ‘[§LiteralÍ" Í"¹Ù!AuthHelper: å·²æ¸…ç†è¿‡æœŸ TokenÙ#'AuthHelper: å·²æ¸…ç†è¿‡æœŸ Token'ÂY¯ReturnStatementÍ"ÉÍ"Õ[§LiteralÍ"ĞÍ"ÔÃ¤trueÀY¯ReturnStatementÍ"êÍ"÷[§LiteralÍ"ñÍ"öÂ¥falseÀ“Ôrg•¤type¥start£endªspecifiers¦source±ImportDeclarationÍnÍ˜‘Ôrh•¤type¥start£end¨imported¥local¯ImportSpecifierÍwÍMªIdentifierÍwÍªJwtManagerMªIdentifierÍwÍªJwtManager[§LiteralÍ‰Í—¬./JwtManager®'./JwtManager'g±ImportDeclarationÍšÍÆ‘h¯ImportSpecifierÍ£Í®MªIdentifierÍ£Í®«UserManagerMªIdentifierÍ£Í®«UserManager[§LiteralÍ¶ÍÅ­./UserManager¯'./UserManager'g±ImportDeclarationÍÈÍö‘Ôri”¤type¥start£end¥local¶ImportDefaultSpecifierÍÏÍÛMªIdentifierÍÏÍÛ¬promptAction[§LiteralÍáÍõ²@ohos.promptAction´"@ohos.promptAction"
