@@ -1,7 +1,6 @@
 {
   "ohos-module-default": {
     "SELECT_TARGET": "default",
-<<<<<<< HEAD
     "MODULE_BUILD_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\build",
     "TARGETS": {
       "default": {
@@ -22,35 +21,12 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\build\\default\\intermediates\\manifest\\default",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\build\\default\\intermediates\\source_map\\default"
-=======
-    "MODULE_BUILD_DIR": "F:\\newg\\news_app\\news_app\\products\\default\\build",
-    "TARGETS": {
-      "default": {
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\products\\default\\src\\main",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\products\\default\\src\\main\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\outputs\\default",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\loader_out\\default",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\loader_out_lite\\default",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\res\\default",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\cache\\default\\default@CompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\cache\\default\\default@CompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\loader\\default\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\manifest\\default",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\source_map\\default"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
         }
       },
       "ohosTest": {
-<<<<<<< HEAD
         "SOURCE_ROOT": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\ohosTest",
         "RESOURCES_PATH": [
           "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\src\\ohosTest\\resources"
@@ -68,25 +44,6 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\build\\default\\intermediates\\manifest\\ohosTest",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default\\build\\default\\intermediates\\source_map\\ohosTest"
-=======
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\products\\default\\src\\ohosTest",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\products\\default\\src\\ohosTest\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\outputs\\ohosTest",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\loader_out\\ohosTest",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\res\\ohosTest",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\manifest\\ohosTest",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\products\\default\\build\\default\\intermediates\\source_map\\ohosTest"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
@@ -137,7 +94,6 @@
   },
   "ohos-module-news": {
     "SELECT_TARGET": "default",
-<<<<<<< HEAD
     "MODULE_BUILD_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\build",
     "TARGETS": {
       "default": {
@@ -158,35 +114,12 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\build\\default\\intermediates\\manifest\\default",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\build\\default\\intermediates\\source_map\\default"
-=======
-    "MODULE_BUILD_DIR": "F:\\newg\\news_app\\news_app\\features\\news\\build",
-    "TARGETS": {
-      "default": {
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\features\\news\\src\\main",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\features\\news\\src\\main\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\outputs\\default",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\loader_out\\default",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\loader_out_lite\\default",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\res\\default",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\loader\\default\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\manifest\\default",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\source_map\\default"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
         }
       },
       "ohosTest": {
-<<<<<<< HEAD
         "SOURCE_ROOT": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\src\\ohosTest",
         "RESOURCES_PATH": [
           "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\src\\ohosTest\\resources"
@@ -204,25 +137,6 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\build\\default\\intermediates\\manifest\\ohosTest",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\news\\build\\default\\intermediates\\source_map\\ohosTest"
-=======
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\features\\news\\src\\ohosTest",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\features\\news\\src\\ohosTest\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\outputs\\ohosTest",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\loader_out\\ohosTest",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\res\\ohosTest",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\manifest\\ohosTest",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\features\\news\\build\\default\\intermediates\\source_map\\ohosTest"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
@@ -276,7 +190,6 @@
   },
   "ohos-module-video": {
     "SELECT_TARGET": "default",
-<<<<<<< HEAD
     "MODULE_BUILD_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\build",
     "TARGETS": {
       "default": {
@@ -297,35 +210,12 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\build\\default\\intermediates\\manifest\\default",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\build\\default\\intermediates\\source_map\\default"
-=======
-    "MODULE_BUILD_DIR": "F:\\newg\\news_app\\news_app\\features\\video\\build",
-    "TARGETS": {
-      "default": {
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\features\\video\\src\\main",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\features\\video\\src\\main\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\outputs\\default",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\loader_out\\default",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\loader_out_lite\\default",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\res\\default",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\loader\\default\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\manifest\\default",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\source_map\\default"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
         }
       },
       "ohosTest": {
-<<<<<<< HEAD
         "SOURCE_ROOT": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\src\\ohosTest",
         "RESOURCES_PATH": [
           "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\src\\ohosTest\\resources"
@@ -343,25 +233,6 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\build\\default\\intermediates\\manifest\\ohosTest",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\video\\build\\default\\intermediates\\source_map\\ohosTest"
-=======
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\features\\video\\src\\ohosTest",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\features\\video\\src\\ohosTest\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\outputs\\ohosTest",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\loader_out\\ohosTest",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\res\\ohosTest",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\manifest\\ohosTest",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\features\\video\\build\\default\\intermediates\\source_map\\ohosTest"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
@@ -415,7 +286,6 @@
   },
   "ohos-module-quickstart": {
     "SELECT_TARGET": "default",
-<<<<<<< HEAD
     "MODULE_BUILD_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\quickstart\\build",
     "TARGETS": {
       "default": {
@@ -436,35 +306,12 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\quickstart\\build\\default\\intermediates\\manifest\\default",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\quickstart\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\quickstart\\build\\default\\intermediates\\source_map\\default"
-=======
-    "MODULE_BUILD_DIR": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build",
-    "TARGETS": {
-      "default": {
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\features\\quickstart\\src\\main",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\features\\quickstart\\src\\main\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\outputs\\default",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\loader_out\\default",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\loader_out_lite\\default",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\res\\default",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\loader\\default\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\manifest\\default",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\source_map\\default"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
         }
       },
       "ohosTest": {
-<<<<<<< HEAD
         "SOURCE_ROOT": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\quickstart\\src\\ohosTest",
         "RESOURCES_PATH": [
           "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\quickstart\\src\\ohosTest\\resources"
@@ -482,25 +329,6 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\quickstart\\build\\default\\intermediates\\manifest\\ohosTest",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\quickstart\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\quickstart\\build\\default\\intermediates\\source_map\\ohosTest"
-=======
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\features\\quickstart\\src\\ohosTest",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\features\\quickstart\\src\\ohosTest\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\outputs\\ohosTest",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\loader_out\\ohosTest",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\res\\ohosTest",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\manifest\\ohosTest",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\features\\quickstart\\build\\default\\intermediates\\source_map\\ohosTest"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
@@ -554,7 +382,6 @@
   },
   "ohos-module-utils": {
     "SELECT_TARGET": "default",
-<<<<<<< HEAD
     "MODULE_BUILD_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\build",
     "TARGETS": {
       "default": {
@@ -575,35 +402,12 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\build\\default\\intermediates\\manifest\\default",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\build\\default\\intermediates\\source_map\\default"
-=======
-    "MODULE_BUILD_DIR": "F:\\newg\\news_app\\news_app\\commons\\utils\\build",
-    "TARGETS": {
-      "default": {
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\main",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\main\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\outputs\\default",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\loader_out\\default",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\loader_out_lite\\default",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\res\\default",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\loader\\default\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\manifest\\default",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\source_map\\default"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
         }
       },
       "ohosTest": {
-<<<<<<< HEAD
         "SOURCE_ROOT": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\ohosTest",
         "RESOURCES_PATH": [
           "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\src\\ohosTest\\resources"
@@ -621,25 +425,6 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\build\\default\\intermediates\\manifest\\ohosTest",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\utils\\build\\default\\intermediates\\source_map\\ohosTest"
-=======
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\ohosTest",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\commons\\utils\\src\\ohosTest\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\outputs\\ohosTest",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\loader_out\\ohosTest",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\res\\ohosTest",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\manifest\\ohosTest",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\commons\\utils\\build\\default\\intermediates\\source_map\\ohosTest"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
@@ -693,7 +478,6 @@
   },
   "ohos-module-uicomponents": {
     "SELECT_TARGET": "default",
-<<<<<<< HEAD
     "MODULE_BUILD_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\build",
     "TARGETS": {
       "default": {
@@ -714,35 +498,12 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\manifest\\default",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\source_map\\default"
-=======
-    "MODULE_BUILD_DIR": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build",
-    "TARGETS": {
-      "default": {
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\src\\main",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\src\\main\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\outputs\\default",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\loader_out\\default",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\loader_out_lite\\default",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\res\\default",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\loader\\default\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\manifest\\default",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\source_map\\default"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
         }
       },
       "ohosTest": {
-<<<<<<< HEAD
         "SOURCE_ROOT": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\src\\ohosTest",
         "RESOURCES_PATH": [
           "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\src\\ohosTest\\resources"
@@ -760,25 +521,6 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\manifest\\ohosTest",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\source_map\\ohosTest"
-=======
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\src\\ohosTest",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\src\\ohosTest\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\outputs\\ohosTest",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\loader_out\\ohosTest",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\res\\ohosTest",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\manifest\\ohosTest",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\commons\\uicomponents\\build\\default\\intermediates\\source_map\\ohosTest"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
@@ -832,7 +574,6 @@
   },
   "ohos-module-mine": {
     "SELECT_TARGET": "default",
-<<<<<<< HEAD
     "MODULE_BUILD_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\build",
     "TARGETS": {
       "default": {
@@ -853,35 +594,12 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\build\\default\\intermediates\\manifest\\default",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\build\\default\\intermediates\\source_map\\default"
-=======
-    "MODULE_BUILD_DIR": "F:\\newg\\news_app\\news_app\\features\\mine\\build",
-    "TARGETS": {
-      "default": {
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\features\\mine\\src\\main",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\features\\mine\\src\\main\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\outputs\\default",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\loader_out\\default",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\loader_out_lite\\default",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\res\\default",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\loader\\default\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\manifest\\default",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\source_map\\default"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
         }
       },
       "ohosTest": {
-<<<<<<< HEAD
         "SOURCE_ROOT": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\src\\ohosTest",
         "RESOURCES_PATH": [
           "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\src\\ohosTest\\resources"
@@ -899,25 +617,6 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\build\\default\\intermediates\\manifest\\ohosTest",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\mine\\build\\default\\intermediates\\source_map\\ohosTest"
-=======
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\features\\mine\\src\\ohosTest",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\features\\mine\\src\\ohosTest\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\outputs\\ohosTest",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\loader_out\\ohosTest",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\res\\ohosTest",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\manifest\\ohosTest",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\features\\mine\\build\\default\\intermediates\\source_map\\ohosTest"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
@@ -971,7 +670,6 @@
   },
   "ohos-module-login": {
     "SELECT_TARGET": "default",
-<<<<<<< HEAD
     "MODULE_BUILD_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\build",
     "TARGETS": {
       "default": {
@@ -992,35 +690,12 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\build\\default\\intermediates\\manifest\\default",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\build\\default\\intermediates\\source_map\\default"
-=======
-    "MODULE_BUILD_DIR": "F:\\newg\\news_app\\news_app\\features\\login\\build",
-    "TARGETS": {
-      "default": {
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\features\\login\\src\\main",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\features\\login\\src\\main\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\outputs\\default",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\loader_out\\default",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\loader_out_lite\\default",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\res\\default",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\loader\\default\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\manifest\\default",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\source_map\\default"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
         }
       },
       "ohosTest": {
-<<<<<<< HEAD
         "SOURCE_ROOT": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\ohosTest",
         "RESOURCES_PATH": [
           "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\src\\ohosTest\\resources"
@@ -1038,25 +713,6 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\build\\default\\intermediates\\manifest\\ohosTest",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\login\\build\\default\\intermediates\\source_map\\ohosTest"
-=======
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\features\\login\\src\\ohosTest",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\features\\login\\src\\ohosTest\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\outputs\\ohosTest",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\loader_out\\ohosTest",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\res\\ohosTest",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\manifest\\ohosTest",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\features\\login\\build\\default\\intermediates\\source_map\\ohosTest"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
@@ -1110,7 +766,6 @@
   },
   "ohos-module-follows": {
     "SELECT_TARGET": "default",
-<<<<<<< HEAD
     "MODULE_BUILD_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\build",
     "TARGETS": {
       "default": {
@@ -1131,35 +786,12 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\build\\default\\intermediates\\manifest\\default",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\build\\default\\intermediates\\source_map\\default"
-=======
-    "MODULE_BUILD_DIR": "F:\\newg\\news_app\\news_app\\features\\follows\\build",
-    "TARGETS": {
-      "default": {
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\features\\follows\\src\\main\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\outputs\\default",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\loader_out\\default",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\loader_out_lite\\default",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\res\\default",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\cache\\default\\default@HarCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\cache\\default\\default@HarCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\loader\\default\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\manifest\\default",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\source_map\\default"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
         }
       },
       "ohosTest": {
-<<<<<<< HEAD
         "SOURCE_ROOT": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\src\\ohosTest",
         "RESOURCES_PATH": [
           "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\src\\ohosTest\\resources"
@@ -1177,25 +809,6 @@
           "MANIFEST_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\build\\default\\intermediates\\manifest\\ohosTest",
           "OUTPUT_METADATA_JSON": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
           "SOURCE_MAP_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows\\build\\default\\intermediates\\source_map\\ohosTest"
-=======
-        "SOURCE_ROOT": "F:\\newg\\news_app\\news_app\\features\\follows\\src\\ohosTest",
-        "RESOURCES_PATH": [
-          "F:\\newg\\news_app\\news_app\\features\\follows\\src\\ohosTest\\resources"
-        ],
-        "BUILD_PATH": {
-          "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\outputs\\ohosTest",
-          "INTERMEDIA_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates",
-          "JS_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\loader_out\\ohosTest",
-          "JS_LITE_ASSETS_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
-          "RES_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\res\\ohosTest",
-          "RES_PROFILE_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
-          "ETS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
-          "JS_SUPER_VISUAL_PATH": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
-          "WORKER_LOADER": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
-          "MANIFEST_JSON": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\manifest\\ohosTest",
-          "OUTPUT_METADATA_JSON": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
-          "SOURCE_MAP_DIR": "F:\\newg\\news_app\\news_app\\features\\follows\\build\\default\\intermediates\\source_map\\ohosTest"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         },
         "BUILD_OPTION": {
           "debuggable": true
@@ -1249,26 +862,15 @@
   },
   "ohos-project": {
     "SELECT_PRODUCT_NAME": "default",
-<<<<<<< HEAD
     "MODULE_BUILD_DIR": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\build",
     "BUNDLE_NAME": "com.huawei.quickstart",
     "BUILD_PATH": {
       "OUTPUT_PATH": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\build\\outputs\\default"
-=======
-    "MODULE_BUILD_DIR": "F:\\newg\\news_app\\news_app\\build",
-    "BUNDLE_NAME": "com.huawei.quickstart",
-    "BUILD_PATH": {
-      "OUTPUT_PATH": "F:\\newg\\news_app\\news_app\\build\\outputs\\default"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
     },
     "MODULES": [
       {
         "name": "default",
-<<<<<<< HEAD
         "srcPath": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\products\\default",
-=======
-        "srcPath": "F:\\newg\\news_app\\news_app\\products\\default",
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         "targets": [
           {
             "name": "default",
@@ -1277,7 +879,6 @@
             ]
           }
         ],
-<<<<<<< HEAD
         "belongProjectPath": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app"
       },
       {
@@ -1319,49 +920,6 @@
         "name": "follows",
         "srcPath": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\features\\follows",
         "belongProjectPath": "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app"
-=======
-        "belongProjectPath": "F:\\newg\\news_app\\news_app"
-      },
-      {
-        "name": "news",
-        "srcPath": "F:\\newg\\news_app\\news_app\\features\\news",
-        "belongProjectPath": "F:\\newg\\news_app\\news_app"
-      },
-      {
-        "name": "video",
-        "srcPath": "F:\\newg\\news_app\\news_app\\features\\video",
-        "belongProjectPath": "F:\\newg\\news_app\\news_app"
-      },
-      {
-        "name": "quickstart",
-        "srcPath": "F:\\newg\\news_app\\news_app\\features\\quickstart",
-        "belongProjectPath": "F:\\newg\\news_app\\news_app"
-      },
-      {
-        "name": "utils",
-        "srcPath": "F:\\newg\\news_app\\news_app\\commons\\utils",
-        "belongProjectPath": "F:\\newg\\news_app\\news_app"
-      },
-      {
-        "name": "uicomponents",
-        "srcPath": "F:\\newg\\news_app\\news_app\\commons\\uicomponents",
-        "belongProjectPath": "F:\\newg\\news_app\\news_app"
-      },
-      {
-        "name": "mine",
-        "srcPath": "F:\\newg\\news_app\\news_app\\features\\mine",
-        "belongProjectPath": "F:\\newg\\news_app\\news_app"
-      },
-      {
-        "name": "login",
-        "srcPath": "F:\\newg\\news_app\\news_app\\features\\login",
-        "belongProjectPath": "F:\\newg\\news_app\\news_app"
-      },
-      {
-        "name": "follows",
-        "srcPath": "F:\\newg\\news_app\\news_app\\features\\follows",
-        "belongProjectPath": "F:\\newg\\news_app\\news_app"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
       }
     ],
     "PROFILE_OPT": {
@@ -1438,11 +996,7 @@
       "hvigor.keepDependency": true
     },
     "OVERALL_PROJECT_PATHS": [
-<<<<<<< HEAD
       "C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app"
-=======
-      "F:\\newg\\news_app\\news_app"
->>>>>>> e295e0637040758a4625c9bec20a5047501a5693
     ],
     "BUILD_CACHE_DIR": ""
   },
