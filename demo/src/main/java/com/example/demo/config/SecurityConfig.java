@@ -28,6 +28,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 公开接口（无需登录）
                         .requestMatchers("/api/users/register", "/api/users/login").permitAll()
+                        // 放行新闻关注相关接口（Controller中会进行JWT验证）
+                        .requestMatchers("/api/news/**").permitAll()
+                        // 放行用户信息接口（Controller中会进行JWT验证）
+                        .requestMatchers("/api/users/**").permitAll()
                         // 其他接口需要认证
                         .anyRequest().authenticated()
                 );

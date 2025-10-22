@@ -5,6 +5,7 @@ interface VideoPage_Params {
     searchText?: string;
     hotTitles?: string[];
     selectedUrl?: string | null;
+    selectedNewsItem?: NewsHeadlineItem | null;
     webController?: webview.WebviewController;
     categories?: string[];
     currentCategory?: string;
@@ -16,10 +17,17 @@ interface VideoPage_Params {
     page?: number;
     pageSize?: number;
     hasMore?: boolean;
+    favoriteNewsKeys?: Set<string>;
+    isLoggedIn?: boolean;
+    forceUpdate?: number;
+    userManager?: UserManager;
 }
 import { CommonSearchBar } from "@bundle:com.huawei.quickstart/default@uicomponents/Index";
 import { BaiduHotSearchParser, NewsHeadlineService, buildNewsApiUrl, maskApiKey } from "@bundle:com.huawei.quickstart/default@utils/Index";
 import type { NewsHeadlineItem, NewsApiRequestParams } from "@bundle:com.huawei.quickstart/default@utils/Index";
+import { FavoriteNewsService } from "@bundle:com.huawei.quickstart/default@video/ets/service/FavoriteNewsService";
+import type { FavoriteNewsRequest } from '../model/FavoriteNews';
+import { UserManager } from "@bundle:com.huawei.quickstart/default@login/Index";
 import webview from "@ohos:web.webview";
 export default class VideoPage extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
@@ -30,6 +38,7 @@ export default class VideoPage extends ViewPU {
         this.__searchText = new ObservedPropertySimplePU('', this, "searchText");
         this.__hotTitles = new ObservedPropertyObjectPU([], this, "hotTitles");
         this.__selectedUrl = new ObservedPropertyObjectPU(null, this, "selectedUrl");
+        this.__selectedNewsItem = new ObservedPropertyObjectPU(null, this, "selectedNewsItem");
         this.webController = new webview.WebviewController();
         this.__categories = new ObservedPropertyObjectPU(['推荐', '国内', '国际', '娱乐', '体育', '军事', '科技', '财经', '游戏', '汽车', '健康'], this, "categories");
         this.__currentCategory = new ObservedPropertySimplePU('推荐', this, "currentCategory");
@@ -41,6 +50,10 @@ export default class VideoPage extends ViewPU {
         this.__page = new ObservedPropertySimplePU(1, this, "page");
         this.__pageSize = new ObservedPropertySimplePU(20, this, "pageSize");
         this.__hasMore = new ObservedPropertySimplePU(true, this, "hasMore");
+        this.__favoriteNewsKeys = new ObservedPropertyObjectPU(new Set(), this, "favoriteNewsKeys");
+        this.__isLoggedIn = new ObservedPropertySimplePU(false, this, "isLoggedIn");
+        this.__forceUpdate = new ObservedPropertySimplePU(0, this, "forceUpdate");
+        this.userManager = UserManager.getInstance();
         this.setInitiallyProvidedValue(params);
         this.finalizeConstruction();
     }
@@ -53,6 +66,9 @@ export default class VideoPage extends ViewPU {
         }
         if (params.selectedUrl !== undefined) {
             this.selectedUrl = params.selectedUrl;
+        }
+        if (params.selectedNewsItem !== undefined) {
+            this.selectedNewsItem = params.selectedNewsItem;
         }
         if (params.webController !== undefined) {
             this.webController = params.webController;
@@ -87,6 +103,18 @@ export default class VideoPage extends ViewPU {
         if (params.hasMore !== undefined) {
             this.hasMore = params.hasMore;
         }
+        if (params.favoriteNewsKeys !== undefined) {
+            this.favoriteNewsKeys = params.favoriteNewsKeys;
+        }
+        if (params.isLoggedIn !== undefined) {
+            this.isLoggedIn = params.isLoggedIn;
+        }
+        if (params.forceUpdate !== undefined) {
+            this.forceUpdate = params.forceUpdate;
+        }
+        if (params.userManager !== undefined) {
+            this.userManager = params.userManager;
+        }
     }
     updateStateVars(params: VideoPage_Params) {
     }
@@ -94,6 +122,7 @@ export default class VideoPage extends ViewPU {
         this.__searchText.purgeDependencyOnElmtId(rmElmtId);
         this.__hotTitles.purgeDependencyOnElmtId(rmElmtId);
         this.__selectedUrl.purgeDependencyOnElmtId(rmElmtId);
+        this.__selectedNewsItem.purgeDependencyOnElmtId(rmElmtId);
         this.__categories.purgeDependencyOnElmtId(rmElmtId);
         this.__currentCategory.purgeDependencyOnElmtId(rmElmtId);
         this.__newsList.purgeDependencyOnElmtId(rmElmtId);
@@ -104,11 +133,15 @@ export default class VideoPage extends ViewPU {
         this.__page.purgeDependencyOnElmtId(rmElmtId);
         this.__pageSize.purgeDependencyOnElmtId(rmElmtId);
         this.__hasMore.purgeDependencyOnElmtId(rmElmtId);
+        this.__favoriteNewsKeys.purgeDependencyOnElmtId(rmElmtId);
+        this.__isLoggedIn.purgeDependencyOnElmtId(rmElmtId);
+        this.__forceUpdate.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__searchText.aboutToBeDeleted();
         this.__hotTitles.aboutToBeDeleted();
         this.__selectedUrl.aboutToBeDeleted();
+        this.__selectedNewsItem.aboutToBeDeleted();
         this.__categories.aboutToBeDeleted();
         this.__currentCategory.aboutToBeDeleted();
         this.__newsList.aboutToBeDeleted();
@@ -119,6 +152,9 @@ export default class VideoPage extends ViewPU {
         this.__page.aboutToBeDeleted();
         this.__pageSize.aboutToBeDeleted();
         this.__hasMore.aboutToBeDeleted();
+        this.__favoriteNewsKeys.aboutToBeDeleted();
+        this.__isLoggedIn.aboutToBeDeleted();
+        this.__forceUpdate.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
@@ -142,6 +178,13 @@ export default class VideoPage extends ViewPU {
     }
     set selectedUrl(newValue: string | null) {
         this.__selectedUrl.set(newValue);
+    }
+    private __selectedNewsItem: ObservedPropertyObjectPU<NewsHeadlineItem | null>;
+    get selectedNewsItem() {
+        return this.__selectedNewsItem.get();
+    }
+    set selectedNewsItem(newValue: NewsHeadlineItem | null) {
+        this.__selectedNewsItem.set(newValue);
     }
     private webController: webview.WebviewController;
     // Text-only news for video page
@@ -216,6 +259,29 @@ export default class VideoPage extends ViewPU {
     set hasMore(newValue: boolean) {
         this.__hasMore.set(newValue);
     }
+    // Favorite functionality
+    private __favoriteNewsKeys: ObservedPropertyObjectPU<Set<string>>;
+    get favoriteNewsKeys() {
+        return this.__favoriteNewsKeys.get();
+    }
+    set favoriteNewsKeys(newValue: Set<string>) {
+        this.__favoriteNewsKeys.set(newValue);
+    }
+    private __isLoggedIn: ObservedPropertySimplePU<boolean>;
+    get isLoggedIn() {
+        return this.__isLoggedIn.get();
+    }
+    set isLoggedIn(newValue: boolean) {
+        this.__isLoggedIn.set(newValue);
+    }
+    private __forceUpdate: ObservedPropertySimplePU<number>; // 用于强制UI更新
+    get forceUpdate() {
+        return this.__forceUpdate.get();
+    }
+    set forceUpdate(newValue: number) {
+        this.__forceUpdate.set(newValue);
+    }
+    private userManager: UserManager;
     async aboutToAppear() {
         // preload hot titles for search bar placeholder (reuse existing behavior)
         try {
@@ -225,6 +291,8 @@ export default class VideoPage extends ViewPU {
         catch (_) {
             this.hotTitles = [];
         }
+        // 检查登录状态并加载收藏列表
+        await this.checkLoginStatus();
         await this.reloadCurrentCategory();
     }
     private getTypeForCategory(category: string): string {
@@ -312,11 +380,103 @@ export default class VideoPage extends ViewPU {
         this.page += 1;
         await this.loadNewsByCategory(this.currentCategory, false);
     }
-    private openBrowser(url: string): void {
+    private openBrowser(url: string, newsItem?: NewsHeadlineItem): void {
         this.selectedUrl = url;
+        this.selectedNewsItem = newsItem || null;
     }
     private closeBrowser(): void {
         this.selectedUrl = null;
+        this.selectedNewsItem = null;
+    }
+    // 检查登录状态
+    private async checkLoginStatus() {
+        try {
+            const currentUser = await this.userManager.getCurrentUser();
+            this.isLoggedIn = currentUser !== null;
+            if (this.isLoggedIn) {
+                await this.loadFavoriteNews();
+            }
+        }
+        catch (error) {
+            console.error('❌ 检查登录状态失败:', error);
+            this.isLoggedIn = false;
+        }
+    }
+    // 加载收藏的新闻列表
+    private async loadFavoriteNews() {
+        try {
+            const token = await this.userManager.getToken();
+            if (!token) {
+                console.log('🔍 未找到登录令牌');
+                return;
+            }
+            const favoriteNews = await FavoriteNewsService.getFollowedNews(token);
+            const favoriteKeys = new Set(favoriteNews.map(news => news.newsUniquekey));
+            this.favoriteNewsKeys = favoriteKeys;
+            console.log('🔍 加载收藏新闻成功，数量:', favoriteNews.length);
+        }
+        catch (error) {
+            console.error('❌ 加载收藏新闻失败:', error);
+        }
+    }
+    // 收藏/取消收藏新闻
+    private async toggleFavorite(newsItem: NewsHeadlineItem) {
+        console.log('🔍 [toggleFavorite] 开始收藏操作');
+        console.log('🔍 [toggleFavorite] 新闻项:', JSON.stringify(newsItem));
+        if (!this.isLoggedIn) {
+            console.log('🔍 用户未登录，无法收藏');
+            return;
+        }
+        try {
+            const token = await this.userManager.getToken();
+            if (!token) {
+                console.log('🔍 未找到登录令牌');
+                return;
+            }
+            const isCurrentlyFavorited = this.favoriteNewsKeys.has(newsItem.url);
+            console.log('🔍 [toggleFavorite] 当前收藏状态:', isCurrentlyFavorited);
+            console.log('🔍 [toggleFavorite] 新闻唯一标识:', newsItem.url);
+            if (isCurrentlyFavorited) {
+                // 取消收藏
+                console.log('🔍 [toggleFavorite] 执行取消收藏操作');
+                const success = await FavoriteNewsService.unfollowNews(token, newsItem.url);
+                console.log('🔍 [toggleFavorite] 取消收藏结果:', success);
+                if (success) {
+                    this.favoriteNewsKeys.delete(newsItem.url);
+                    this.forceUpdate++; // 强制UI更新
+                    console.log('✅ 取消收藏成功，更新本地状态');
+                    console.log('🔍 [toggleFavorite] 更新后的收藏列表:', Array.from(this.favoriteNewsKeys));
+                }
+                else {
+                    console.log('❌ 取消收藏失败');
+                }
+            }
+            else {
+                // 添加收藏
+                console.log('🔍 [toggleFavorite] 执行添加收藏操作');
+                const request: FavoriteNewsRequest = {
+                    newsTitle: newsItem.title,
+                    newsUniquekey: newsItem.url,
+                    newsAuthor: newsItem.source || '',
+                    newsTime: newsItem.time || ''
+                };
+                console.log('🔍 [toggleFavorite] 收藏请求参数:', JSON.stringify(request));
+                const success = await FavoriteNewsService.followNews(token, request);
+                console.log('🔍 [toggleFavorite] 添加收藏结果:', success);
+                if (success) {
+                    this.favoriteNewsKeys.add(newsItem.url);
+                    this.forceUpdate++; // 强制UI更新
+                    console.log('✅ 收藏成功，更新本地状态');
+                    console.log('🔍 [toggleFavorite] 更新后的收藏列表:', Array.from(this.favoriteNewsKeys));
+                }
+                else {
+                    console.log('❌ 添加收藏失败');
+                }
+            }
+        }
+        catch (error) {
+            console.error('❌ 收藏操作失败:', error);
+        }
     }
     buildBrowserLayer(url: string, parent = null) {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -341,6 +501,31 @@ export default class VideoPage extends ViewPU {
             });
         }, Text);
         Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            // 收藏按钮
+            if (this.isLoggedIn && this.selectedNewsItem) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create(this.favoriteNewsKeys.has(this.selectedNewsItem.url) ? '⭐️' : '☆');
+                        Text.fontSize(20);
+                        Text.padding({ left: 8, right: 8, top: 16, bottom: 16 });
+                        Text.onClick(() => {
+                            if (this.selectedNewsItem) {
+                                console.log('🔍 [⭐️按钮点击] 开始收藏操作');
+                                this.toggleFavorite(ObservedObject.GetRawObject(this.selectedNewsItem));
+                            }
+                        });
+                    }, Text);
+                    Text.pop();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Blank.create();
         }, Blank);
@@ -407,7 +592,17 @@ export default class VideoPage extends ViewPU {
             Column.width('100%');
             Column.alignItems(HorizontalAlign.Start);
             Column.padding({ top: '8vp', bottom: '8vp' });
-            Column.onClick(() => this.openBrowser(item.url));
+            Column.onClick(() => this.openBrowser(item.url, item));
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.alignItems(VerticalAlign.Top);
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.layoutWeight(1);
+            Column.alignItems(HorizontalAlign.Start);
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(item.title);
@@ -484,6 +679,8 @@ export default class VideoPage extends ViewPU {
         If.pop();
         Row.pop();
         Column.pop();
+        Row.pop();
+        Column.pop();
     }
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -512,7 +709,7 @@ export default class VideoPage extends ViewPU {
                         placeholder: '搜新�?热词',
                         hotTitles: this.hotTitles,
                         onSearch: (url: string) => this.openBrowser(url)
-                    }, undefined, elmtId, () => { }, { page: "features/video/src/main/ets/view/Video.ets", line: 236, col: 9 });
+                    }, undefined, elmtId, () => { }, { page: "features/video/src/main/ets/view/Video.ets", line: 370, col: 9 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {

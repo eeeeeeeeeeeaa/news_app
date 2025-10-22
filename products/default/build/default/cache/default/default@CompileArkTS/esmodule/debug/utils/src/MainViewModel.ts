@@ -13,10 +13,10 @@ export class MainViewModel {
      */
     getSwiperImages(): Array<Resource> {
         let swiperImages: Resource[] = [
-            { "id": 16777236, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" },
-            { "id": 16777237, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" },
-            { "id": 16777238, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" },
-            { "id": 16777239, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
+            { "id": 16777242, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" },
+            { "id": 16777243, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" },
+            { "id": 16777244, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" },
+            { "id": 16777245, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
         ];
         return swiperImages;
     }
@@ -48,7 +48,7 @@ export class MainViewModel {
             const hotSearchItems = await BaiduHotSearchParser.getHotSearchData();
             // 转换为NewsData格式
             const hotNewsData: NewsData[] = hotSearchItems.map((item: BaiduHotSearchItem, index: number) => {
-                const news: NewsData = new NewsData(index + 1, item.card_title, `热搜指数: ${BaiduHotSearchParser.formatHeatScore(item.heat_score)}`, "百度热搜", "刚刚", { "id": 16777236, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "热搜", parseInt(item.heat_score), true, index < 3);
+                const news: NewsData = new NewsData(index + 1, item.card_title, `热搜指数: ${BaiduHotSearchParser.formatHeatScore(item.heat_score)}`, "百度热搜", "刚刚", { "id": 16777242, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "热搜", parseInt(item.heat_score), true, index < 3);
                 const detailUrl: string | undefined = item.rawUrl && item.rawUrl.length > 0 ? item.rawUrl : item.linkurl;
                 news.detailUrl = detailUrl ?? null;
                 return news;
@@ -68,8 +68,8 @@ export class MainViewModel {
      */
     getMockHotNewsData(): Array<NewsData> {
         return [
-            new NewsData(1, "科技突破：人工智能在医疗领域取得重大进展", "最新研究显示，AI技术在疾病诊断和治疗方案制定方面展现出巨大潜力...", "科技日报", "2小时前", { "id": 16777236, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "科技", 125000, true, true),
-            new NewsData(2, "经济观察：全球股市震荡，投资者需谨慎", "受多重因素影响，全球主要股市出现不同程度波动，专家建议理性投资...", "财经网", "3小时前", { "id": 16777237, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "财经", 89000, true, false)
+            new NewsData(1, "科技突破：人工智能在医疗领域取得重大进展", "最新研究显示，AI技术在疾病诊断和治疗方案制定方面展现出巨大潜力...", "科技日报", "2小时前", { "id": 16777242, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "科技", 125000, true, true),
+            new NewsData(2, "经济观察：全球股市震荡，投资者需谨慎", "受多重因素影响，全球主要股市出现不同程度波动，专家建议理性投资...", "财经网", "3小时前", { "id": 16777243, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "财经", 89000, true, false)
         ];
     }
     /**
@@ -79,8 +79,8 @@ export class MainViewModel {
      */
     getNewsListData(): Array<NewsData> {
         let newsListData: NewsData[] = [
-            new NewsData(3, "教育改革：新课程标准正式发布", "教育部发布最新课程标准，强调素质教育与创新能力培养...", "教育时报", "5小时前", { "id": 16777238, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "教育", 67000, false, false),
-            new NewsData(4, "环保行动：多地启动绿色出行计划", "为减少碳排放，多个城市推出绿色出行激励政策...", "环保日报", "6小时前", { "id": 16777239, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "环保", 43000, false, false)
+            new NewsData(3, "教育改革：新课程标准正式发布", "教育部发布最新课程标准，强调素质教育与创新能力培养...", "教育时报", "5小时前", { "id": 16777244, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "教育", 67000, false, false),
+            new NewsData(4, "环保行动：多地启动绿色出行计划", "为减少碳排放，多个城市推出绿色出行激励政策...", "环保日报", "6小时前", { "id": 16777245, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "环保", 43000, false, false)
         ];
         return newsListData;
     }

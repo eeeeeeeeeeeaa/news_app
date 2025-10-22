@@ -1,0 +1,705 @@
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ,Y/*
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     é“¾æ¥
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+// UserManager lllll
+import preferences from "@ohos.data.preferences";
+import promptAction from "@ohos.promptAction";
+import { HttpUtils, withBase } from 'utils';
+import { JwtUtil } from 'utils';
+export class UserManager {
+    constructor() {
+        this.dataPreferences = null;
+        this.PREFERENCES_NAME = 'user_data';
+        this.USER_KEY = 'user_info';
+        this.CURRENT_USER_KEY = 'current_user';
+        this.TOKEN_KEY = 'auth_token';
+    }
+    static getInstance() {
+        if (!UserManager.instance) {
+            UserManager.instance = new UserManager();
+        }
+        return UserManager.instance;
+    }
+    // åˆå§‹åŒ–æ•°æ®å­˜å‚¨
+    async initPreferences() {
+        try {
+            this.dataPreferences = await preferences.getPreferences(getContext(), this.PREFERENCES_NAME);
+        }
+        catch (err) {
+            console.error('Failed to get preferences:', err);
+        }
+    }
+    // ç”¨æˆ·ç™»å½•ï¼ˆè°ƒç”¨åç«¯æ¥å£ï¼‰
+    async loginUser(account, password) {
+        if (!this.dataPreferences) {
+            await this.initPreferences();
+        }
+        try {
+            const url = withBase('/api/users/login');
+            const form = {
+                userPhone: account,
+                userPassword: password
+            };
+            const respText = await HttpUtils.postForm(url, form);
+            const resp = JSON.parse(respText);
+            if (resp.code === 200 && resp.data) {
+                const token = resp.data;
+                const currentUser = { account: account, password: '', username: `ç”¨æˆ·${account.slice(-4)}` };
+                await this.dataPreferences?.put(this.TOKEN_KEY, token);
+                await this.dataPreferences?.put(this.CURRENT_USER_KEY, JSON.stringify(currentUser));
+                await this.dataPreferences?.flush();
+                promptAction.showToast({ message: { "id": 16777297, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" } });
+                return true;
+            }
+            // æ–°å¢ï¼šæ ¹æ®ä¸åŒçš„é”™è¯¯ç æä¾›å…·ä½“çš„é”™è¯¯æç¤º
+            let errorMessage = resp.message ?? 'ç™»å½•å¤±è´¥';
+            if (resp.code === 400) {
+                errorMessage = 'è¯·æ±‚å‚æ•°é”™è¯¯ï¼Œè¯·æ£€æŸ¥è¾“å…¥';
+            }
+            else if (resp.code === 401) {
+                errorMessage = 'ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯';
+            }
+            else if (resp.code === 404) {
+                errorMessage = 'ç”¨æˆ·ä¸å­˜åœ¨ï¼Œè¯·å…ˆæ³¨å†Œ';
+            }
+            else if (resp.code === 500) {
+                errorMessage = 'æœåŠ¡å™¨å†…éƒ¨é”™è¯¯ï¼Œè¯·ç¨åå†è¯•';
+            }
+            promptAction.showToast({ message: errorMessage });
+            return false;
+        }
+        catch (err) {
+            console.error('Failed to login user:', err);
+            // æ–°å¢ï¼šæ›´è¯¦ç»†çš„é”™è¯¯ä¿¡æ¯
+            let errorMessage = 'ç™»å½•å¤±è´¥ï¼Œè¯·ç¨åå†è¯•';
+            if (err instanceof Error && err.message.includes('Network')) {
+                errorMessage = 'ç½‘ç»œè¿æ¥å¤±è´¥ï¼Œè¯·æ£€æŸ¥ç½‘ç»œè®¾ç½®';
+            }
+            else if (err instanceof Error && err.message.includes('Timeout')) {
+                errorMessage = 'è¯·æ±‚è¶…æ—¶ï¼Œè¯·æ£€æŸ¥ç½‘ç»œè¿æ¥';
+            }
+            else if (err instanceof Error && err.message.includes('JSON')) {
+                errorMessage = 'æœåŠ¡å™¨å“åº”æ ¼å¼é”™è¯¯';
+            }
+            promptAction.showToast({ message: errorMessage });
+            return false;
+        }
+    }
+    // è·å–å½“å‰ç™»å½•ç”¨æˆ·ï¼ˆä»JWTä¸­è§£æï¼‰
+    async getCurrentUser() {
+        if (!this.dataPreferences) {
+            await this.initPreferences();
+        }
+        try {
+            console.log('ğŸ” UserManager.getCurrentUser - å¼€å§‹ä»JWTè·å–ç”¨æˆ·ä¿¡æ¯');
+            // 1. è·å–JWTä»¤ç‰Œ
+            const token = await this.getToken();
+            if (!token) {
+                console.log('ğŸ” æœªæ‰¾åˆ°JWTä»¤ç‰Œ');
+                return null;
+            }
+            console.log('ğŸ” æ‰¾åˆ°JWTä»¤ç‰Œï¼Œå¼€å§‹éªŒè¯');
+            // 2. æ£€æŸ¥JWTæ ¼å¼
+            if (!JwtUtil.isValidFormat(token)) {
+                console.log('ğŸ” JWTæ ¼å¼æ— æ•ˆ');
+                await this.logout();
+                return null;
+            }
+            // 3. æ£€æŸ¥JWTæ˜¯å¦è¿‡æœŸ
+            if (JwtUtil.isTokenExpired(token)) {
+                console.log('ğŸ” JWTå·²è¿‡æœŸï¼Œæ¸…é™¤æœ¬åœ°å­˜å‚¨');
+                await this.logout();
+                return null;
+            }
+            // 4. ä»JWTä¸­è§£æç”¨æˆ·ID
+            const userId = JwtUtil.getUserIdFromToken(token);
+            if (!userId) {
+                console.log('ğŸ” æ— æ³•ä»JWTä¸­è§£æç”¨æˆ·ID');
+                await this.logout();
+                return null;
+            }
+            console.log('ğŸ” ä»JWTä¸­è§£æåˆ°ç”¨æˆ·ID:', userId);
+            // 5. å°è¯•ä»æœ¬åœ°å­˜å‚¨è·å–ç”¨æˆ·è´¦å·ï¼ˆç”¨äºæ˜¾ç¤ºï¼‰
+            let account = '';
+            try {
+                const userStr = await this.dataPreferences?.get(this.CURRENT_USER_KEY, '');
+                if (userStr && typeof userStr === 'string' && userStr !== '') {
+                    const cachedUserInfo = JSON.parse(userStr);
+                    account = cachedUserInfo.account;
+                }
+            }
+            catch (err) {
+                console.log('ğŸ” æ— æ³•ä»ç¼“å­˜è·å–è´¦å·ä¿¡æ¯ï¼Œä½¿ç”¨é»˜è®¤å€¼');
+            }
+            // 6. æ„å»ºç”¨æˆ·ä¿¡æ¯
+            const userInfo = {
+                account: account || `user_${userId}`,
+                password: '',
+                username: `ç”¨æˆ·${userId}` // åŸºäºç”¨æˆ·IDç”Ÿæˆç”¨æˆ·å
+            };
+            // 7. å°è¯•ä»JWTä¸­è·å–ç”¨æˆ·æ˜µç§°
+            try {
+                console.log('ğŸ” å°è¯•ä»JWTä¸­è·å–ç”¨æˆ·æ˜µç§°');
+                const userName = JwtUtil.getUserNameFromToken(token);
+                if (userName) {
+                    userInfo.username = userName; // ä½¿ç”¨JWTä¸­çš„æ˜µç§°
+                    console.log('âœ… ä»JWTä¸­è·å–åˆ°ç”¨æˆ·æ˜µç§°:', userName);
+                    // æ›´æ–°æœ¬åœ°ç¼“å­˜çš„ç”¨æˆ·ä¿¡æ¯
+                    await this.dataPreferences?.put(this.CURRENT_USER_KEY, JSON.stringify(userInfo));
+                    await this.dataPreferences?.flush();
+                }
+                else {
+                    console.log('ğŸ” JWTä¸­æ²¡æœ‰ç”¨æˆ·æ˜µç§°ä¿¡æ¯');
+                }
+            }
+            catch (err) {
+                console.log('ğŸ” ä»JWTè·å–ç”¨æˆ·æ˜µç§°å¤±è´¥ï¼Œä½¿ç”¨é»˜è®¤æ˜µç§°:', err);
+            }
+            console.log('âœ… ä»JWTä¸­è·å–ç”¨æˆ·ä¿¡æ¯æˆåŠŸ:', userInfo);
+            return userInfo;
+        }
+        catch (err) {
+            console.error('âŒ UserManager.getCurrentUser - ä»JWTè·å–ç”¨æˆ·ä¿¡æ¯å¤±è´¥:', err);
+            // å‘ç”Ÿé”™è¯¯æ—¶æ¸…é™¤å¯èƒ½æŸåçš„å­˜å‚¨
+            await this.logout();
+            return null;
+        }
+    }
+    // é€€å‡ºç™»å½•
+    async logout() {
+        if (!this.dataPreferences) {
+            await this.initPreferences();
+        }
+        try {
+            await this.dataPreferences?.delete(this.CURRENT_USER_KEY);
+            await this.dataPreferences?.delete(this.TOKEN_KEY);
+            await this.dataPreferences?.flush();
+        }
+        catch (err) {
+            console.error('Failed to logout:', err);
+        }
+    }
+    // æ›´æ–°ç”¨æˆ·ä¿¡æ¯
+    async updateUserInfo(updatedUser) {
+        if (!this.dataPreferences) {
+            await this.initPreferences();
+        }
+        try {
+            const allUsers = await this.getAllUsers();
+            const userIndex = allUsers.findIndex((u) => u.account === updatedUser.account);
+            if (userIndex !== -1) {
+                allUsers[userIndex] = updatedUser;
+                await this.dataPreferences?.put(this.USER_KEY, JSON.stringify(allUsers));
+                await this.dataPreferences?.put(this.CURRENT_USER_KEY, JSON.stringify(updatedUser));
+                await this.dataPreferences?.flush();
+                return true;
+            }
+            return false;
+        }
+        catch (err) {
+            console.error('Failed to update user info:', err);
+            return false;
+        }
+    }
+    // è·å–æ‰€æœ‰ç”¨æˆ·ï¼ˆç§æœ‰æ–¹æ³•ï¼‰
+    async getAllUsers() {
+        try {
+            const usersStr = await this.dataPreferences?.get(this.USER_KEY, '[]');
+            return JSON.parse(usersStr);
+        }
+        catch (err) {
+            console.error('Failed to get all users:', err);
+            return [];
+        }
+    }
+    // è·å–JWTä»¤ç‰Œ
+    async getToken() {
+        if (!this.dataPreferences) {
+            await this.initPreferences();
+        }
+        try {
+            const token = await this.dataPreferences?.get(this.TOKEN_KEY, '');
+            console.log('ğŸ§ª è°ƒè¯•: UserManager.getToken è¯»å–åˆ° token æ˜¯å¦ä¸ºç©º:', !(token && token !== ''));
+            if (token && token !== '') {
+                // æ‰“å°tokené•¿åº¦ï¼Œé¿å…æ³„éœ²
+                const t = token;
+                console.log('ğŸ§ª è°ƒè¯•: UserManager.getToken token é•¿åº¦:', t.length);
+                return t;
+            }
+            return null;
+        }
+        catch (err) {
+            console.error('Failed to get token:', err);
+            return null;
+        }
+    }
+    // ä¾¿æ·æ–¹æ³•ï¼šè·å–è®¤è¯è¯·æ±‚å¤´
+    async getAuthHeaders() {
+        const token = await this.getToken();
+        const headers = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        return headers;
+    }
+    // éªŒè¯JWTæœ‰æ•ˆæ€§
+    async validateToken() {
+        try {
+            const token = await this.getToken();
+            if (!token) {
+                return false;
+            }
+            // æ£€æŸ¥æ ¼å¼å’Œè¿‡æœŸæ—¶é—´
+            return JwtUtil.isValidFormat(token) && !JwtUtil.isTokenExpired(token);
+        }
+        catch (error) {
+            console.error('JWTéªŒè¯å¤±è´¥:', error);
+            return false;
+        }
+    }
+    // è·å–JWTå‰©ä½™æœ‰æ•ˆæ—¶é—´ï¼ˆç§’ï¼‰
+    async getTokenRemainingTime() {
+        try {
+            const token = await this.getToken();
+            if (!token) {
+                return -1;
+            }
+            return JwtUtil.getRemainingTime(token);
+        }
+        catch (error) {
+            console.error('è·å–JWTå‰©ä½™æ—¶é—´å¤±è´¥:', error);
+            return -1;
+        }
+    }
+}
+//# sourceMappingURL=UserManager.js.mapÂ“Ù[ hvigor_ignore_G:_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.data.preferences.d.tsÙW hvigor_ignore_G:_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.promptAction.d.tsÙOG:\HarmonyOsProjects\news_app_final\news_app-develop_dd\commons\utils\Index.etsÙiG:\HarmonyOsProjects\news_app_final\news_app-develop_dd\features\login\src\main\ets\model\UserManager.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥loginÃÂÙFG:\HarmonyOsProjects\news_app_final\news_app-develop_dd\features\loginÙ7G:\HarmonyOsProjects\news_app_final\news_app-develop_dd¥login¥1.0.0ÔrC’§pkgNameªpkgVersion¥login¥1.0.0’ÔrD’²hostDependencyName®hostModuleNameÙ ./src/main/ets/model/UserManager¥loginD´../model/UserManager¥loginÙFG:\HarmonyOsProjects\news_app_final\news_app-develop_dd\features\loginÃÃÚ(/*
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     é“¾æ¥
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+// UserManager lllll
+import { preferences } from '@kit.ArkData';
+import { promptAction } from '@kit.ArkUI';
+import { HttpUtils, withBase, type ResultShape } from 'utils';
+import { JwtUtil } from 'utils';
+
+export interface UserInfo {
+  account: string;
+  password: string;
+  username: string;
+}
+
+// æ–°å¢ï¼šå®šä¹‰ç™»å½•/æ³¨å†Œè¯·æ±‚çš„æ¥å£
+export interface LoginRequest {
+  userPhone: string;
+  userPassword: string;
+  userName?: string;
+}
+
+export class UserManager {
+  private static instance: UserManager;
+  private dataPreferences: preferences.Preferences | null = null;
+  private readonly PREFERENCES_NAME = 'user_data';
+  private readonly USER_KEY = 'user_info';
+  private readonly CURRENT_USER_KEY = 'current_user';
+  private readonly TOKEN_KEY = 'auth_token';
+
+  private constructor() {}
+
+  public static getInstance(): UserManager {
+    if (!UserManager.instance) {
+      UserManager.instance = new UserManager();
+    }
+    return UserManager.instance;
+  }
+
+  // åˆå§‹åŒ–æ•°æ®å­˜å‚¨
+  public async initPreferences(): Promise<void> {
+    try {
+      this.dataPreferences = await preferences.getPreferences(getContext(), this.PREFERENCES_NAME);
+    } catch (err) {
+      console.error('Failed to get preferences:', err);
+    }
+  }
+
+  // ç”¨æˆ·ç™»å½•ï¼ˆè°ƒç”¨åç«¯æ¥å£ï¼‰
+  public async loginUser(account: string, password: string): Promise<boolean> {
+    if (!this.dataPreferences) {
+      await this.initPreferences();
+    }
+
+    try {
+      const url = withBase('/api/users/login');
+
+      const form: LoginRequest = {
+        userPhone: account,
+        userPassword: password
+      };
+      const respText = await HttpUtils.postForm(url, form);
+      const resp: ResultShape<string> = JSON.parse(respText) as ResultShape<string>;
+      if (resp.code === 200 && resp.data) {
+        const token = resp.data;
+        const currentUser: UserInfo = { account: account, password: '', username: `ç”¨æˆ·${account.slice(-4)}` };
+        await this.dataPreferences?.put(this.TOKEN_KEY, token);
+        await this.dataPreferences?.put(this.CURRENT_USER_KEY, JSON.stringify(currentUser));
+        await this.dataPreferences?.flush();
+        promptAction.showToast({ message: $r('app.string.login_success') });
+        return true;
+      }
+      // æ–°å¢ï¼šæ ¹æ®ä¸åŒçš„é”™è¯¯ç æä¾›å…·ä½“çš„é”™è¯¯æç¤º
+      let errorMessage = resp.message ?? 'ç™»å½•å¤±è´¥';
+      if (resp.code === 400) {
+        errorMessage = 'è¯·æ±‚å‚æ•°é”™è¯¯ï¼Œè¯·æ£€æŸ¥è¾“å…¥';
+      } else if (resp.code === 401) {
+        errorMessage = 'ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯';
+      } else if (resp.code === 404) {
+        errorMessage = 'ç”¨æˆ·ä¸å­˜åœ¨ï¼Œè¯·å…ˆæ³¨å†Œ';
+      } else if (resp.code === 500) {
+        errorMessage = 'æœåŠ¡å™¨å†…éƒ¨é”™è¯¯ï¼Œè¯·ç¨åå†è¯•';
+      }
+      promptAction.showToast({ message: errorMessage });
+      return false;
+    } catch (err) {
+      console.error('Failed to login user:', err);
+      // æ–°å¢ï¼šæ›´è¯¦ç»†çš„é”™è¯¯ä¿¡æ¯
+      let errorMessage = 'ç™»å½•å¤±è´¥ï¼Œè¯·ç¨åå†è¯•';
+      if (err instanceof Error && err.message.includes('Network')) {
+        errorMessage = 'ç½‘ç»œè¿æ¥å¤±è´¥ï¼Œè¯·æ£€æŸ¥ç½‘ç»œè®¾ç½®';
+      } else if (err instanceof Error && err.message.includes('Timeout')) {
+        errorMessage = 'è¯·æ±‚è¶…æ—¶ï¼Œè¯·æ£€æŸ¥ç½‘ç»œè¿æ¥';
+      } else if (err instanceof Error && err.message.includes('JSON')) {
+        errorMessage = 'æœåŠ¡å™¨å“åº”æ ¼å¼é”™è¯¯';
+      }
+      promptAction.showToast({ message: errorMessage });
+      return false;
+    }
+  }
+
+  // è·å–å½“å‰ç™»å½•ç”¨æˆ·ï¼ˆä»JWTä¸­è§£æï¼‰
+  public async getCurrentUser(): Promise<UserInfo | null> {
+    if (!this.dataPreferences) {
+      await this.initPreferences();
+    }
+
+    try {
+      console.log('ğŸ” UserManager.getCurrentUser - å¼€å§‹ä»JWTè·å–ç”¨æˆ·ä¿¡æ¯');
+      
+      // 1. è·å–JWTä»¤ç‰Œ
+      const token = await this.getToken();
+      if (!token) {
+        console.log('ğŸ” æœªæ‰¾åˆ°JWTä»¤ç‰Œ');
+        return null;
+      }
+
+      console.log('ğŸ” æ‰¾åˆ°JWTä»¤ç‰Œï¼Œå¼€å§‹éªŒè¯');
+
+      // 2. æ£€æŸ¥JWTæ ¼å¼
+      if (!JwtUtil.isValidFormat(token)) {
+        console.log('ğŸ” JWTæ ¼å¼æ— æ•ˆ');
+        await this.logout();
+        return null;
+      }
+
+      // 3. æ£€æŸ¥JWTæ˜¯å¦è¿‡æœŸ
+      if (JwtUtil.isTokenExpired(token)) {
+        console.log('ğŸ” JWTå·²è¿‡æœŸï¼Œæ¸…é™¤æœ¬åœ°å­˜å‚¨');
+        await this.logout();
+        return null;
+      }
+
+      // 4. ä»JWTä¸­è§£æç”¨æˆ·ID
+      const userId = JwtUtil.getUserIdFromToken(token);
+      if (!userId) {
+        console.log('ğŸ” æ— æ³•ä»JWTä¸­è§£æç”¨æˆ·ID');
+        await this.logout();
+        return null;
+      }
+
+      console.log('ğŸ” ä»JWTä¸­è§£æåˆ°ç”¨æˆ·ID:', userId);
+
+      // 5. å°è¯•ä»æœ¬åœ°å­˜å‚¨è·å–ç”¨æˆ·è´¦å·ï¼ˆç”¨äºæ˜¾ç¤ºï¼‰
+      let account = '';
+      try {
+        const userStr = await this.dataPreferences?.get(this.CURRENT_USER_KEY, '');
+        if (userStr && typeof userStr === 'string' && userStr !== '') {
+          const cachedUserInfo: UserInfo = JSON.parse(userStr as string) as UserInfo;
+          account = cachedUserInfo.account;
+        }
+      } catch (err) {
+        console.log('ğŸ” æ— æ³•ä»ç¼“å­˜è·å–è´¦å·ä¿¡æ¯ï¼Œä½¿ç”¨é»˜è®¤å€¼');
+      }
+
+      // 6. æ„å»ºç”¨æˆ·ä¿¡æ¯
+      const userInfo: UserInfo = {
+        account: account || `user_${userId}`, // ä½¿ç”¨ç¼“å­˜çš„è´¦å·æˆ–é»˜è®¤å€¼
+        password: '', // ä¸å­˜å‚¨å¯†ç 
+        username: `ç”¨æˆ·${userId}` // åŸºäºç”¨æˆ·IDç”Ÿæˆç”¨æˆ·å
+      };
+
+      // 7. å°è¯•ä»JWTä¸­è·å–ç”¨æˆ·æ˜µç§°
+      try {
+        console.log('ğŸ” å°è¯•ä»JWTä¸­è·å–ç”¨æˆ·æ˜µç§°');
+        const userName = JwtUtil.getUserNameFromToken(token);
+        if (userName) {
+          userInfo.username = userName; // ä½¿ç”¨JWTä¸­çš„æ˜µç§°
+          console.log('âœ… ä»JWTä¸­è·å–åˆ°ç”¨æˆ·æ˜µç§°:', userName);
+          
+          // æ›´æ–°æœ¬åœ°ç¼“å­˜çš„ç”¨æˆ·ä¿¡æ¯
+          await this.dataPreferences?.put(this.CURRENT_USER_KEY, JSON.stringify(userInfo));
+          await this.dataPreferences?.flush();
+        } else {
+          console.log('ğŸ” JWTä¸­æ²¡æœ‰ç”¨æˆ·æ˜µç§°ä¿¡æ¯');
+        }
+      } catch (err) {
+        console.log('ğŸ” ä»JWTè·å–ç”¨æˆ·æ˜µç§°å¤±è´¥ï¼Œä½¿ç”¨é»˜è®¤æ˜µç§°:', err);
+      }
+
+      console.log('âœ… ä»JWTä¸­è·å–ç”¨æˆ·ä¿¡æ¯æˆåŠŸ:', userInfo);
+      return userInfo;
+
+    } catch (err) {
+      console.error('âŒ UserManager.getCurrentUser - ä»JWTè·å–ç”¨æˆ·ä¿¡æ¯å¤±è´¥:', err);
+      // å‘ç”Ÿé”™è¯¯æ—¶æ¸…é™¤å¯èƒ½æŸåçš„å­˜å‚¨
+      await this.logout();
+      return null;
+    }
+  }
+
+  // é€€å‡ºç™»å½•
+  public async logout(): Promise<void> {
+    if (!this.dataPreferences) {
+      await this.initPreferences();
+    }
+
+    try {
+      await this.dataPreferences?.delete(this.CURRENT_USER_KEY);
+      await this.dataPreferences?.delete(this.TOKEN_KEY);
+      await this.dataPreferences?.flush();
+    } catch (err) {
+      console.error('Failed to logout:', err);
+    }
+  }
+
+  // æ›´æ–°ç”¨æˆ·ä¿¡æ¯
+  public async updateUserInfo(updatedUser: UserInfo): Promise<boolean> {
+    if (!this.dataPreferences) {
+      await this.initPreferences();
+    }
+
+    try {
+      const allUsers = await this.getAllUsers();
+      const userIndex = allUsers.findIndex((u: UserInfo) => u.account === updatedUser.account);
+
+      if (userIndex !== -1) {
+        allUsers[userIndex] = updatedUser;
+        await this.dataPreferences?.put(this.USER_KEY, JSON.stringify(allUsers));
+        await this.dataPreferences?.put(this.CURRENT_USER_KEY, JSON.stringify(updatedUser));
+        await this.dataPreferences?.flush();
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.error('Failed to update user info:', err);
+      return false;
+    }
+  }
+
+  // è·å–æ‰€æœ‰ç”¨æˆ·ï¼ˆç§æœ‰æ–¹æ³•ï¼‰
+  private async getAllUsers(): Promise<UserInfo[]> {
+    try {
+      const usersStr = await this.dataPreferences?.get(this.USER_KEY, '[]');
+      return JSON.parse(usersStr as string) as UserInfo[];
+    } catch (err) {
+      console.error('Failed to get all users:', err);
+      return [];
+    }
+  }
+
+  // è·å–JWTä»¤ç‰Œ
+  public async getToken(): Promise<string | null> {
+    if (!this.dataPreferences) {
+      await this.initPreferences();
+    }
+    try {
+      const token = await this.dataPreferences?.get(this.TOKEN_KEY, '');
+      console.log('ğŸ§ª è°ƒè¯•: UserManager.getToken è¯»å–åˆ° token æ˜¯å¦ä¸ºç©º:', !(token && token !== ''));
+      if (token && token !== '') {
+        // æ‰“å°tokené•¿åº¦ï¼Œé¿å…æ³„éœ²
+        const t = token as string;
+        console.log('ğŸ§ª è°ƒè¯•: UserManager.getToken token é•¿åº¦:', t.length);
+        return t;
+      }
+      return null;
+    } catch (err) {
+      console.error('Failed to get token:', err);
+      return null;
+    }
+  }
+
+  // ä¾¿æ·æ–¹æ³•ï¼šè·å–è®¤è¯è¯·æ±‚å¤´
+  public async getAuthHeaders(): Promise<Record<string, string>> {
+    const token = await this.getToken();
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    return headers;
+  }
+
+  // éªŒè¯JWTæœ‰æ•ˆæ€§
+  public async validateToken(): Promise<boolean> {
+    try {
+      const token = await this.getToken();
+      if (!token) {
+        return false;
+      }
+
+      // æ£€æŸ¥æ ¼å¼å’Œè¿‡æœŸæ—¶é—´
+      return JwtUtil.isValidFormat(token) && !JwtUtil.isTokenExpired(token);
+    } catch (error) {
+      console.error('JWTéªŒè¯å¤±è´¥:', error);
+      return false;
+    }
+  }
+
+  // è·å–JWTå‰©ä½™æœ‰æ•ˆæ—¶é—´ï¼ˆç§’ï¼‰
+  public async getTokenRemainingTime(): Promise<number> {
+    try {
+      const token = await this.getToken();
+      if (!token) {
+        return -1;
+      }
+
+      return JwtUtil.getRemainingTime(token);
+    } catch (error) {
+      console.error('è·å–JWTå‰©ä½™æ—¶é—´å¤±è´¥:', error);
+      return -1;
+    }
+  }
+}
+ÀÔrE“¶@ohos.data.preferences²@ohos.promptAction¥utilsÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙ[ hvigor_ignore_G:_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.data.preferences.d.tsÔrG‘¯hostModulesInfo“D¶@ohos.data.preferences¥loginD¶@ohos.data.preferences¥loginD¶@ohos.data.preferences¥utilsÃªoh-resolveÂFAÃÙW hvigor_ignore_G:_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.promptAction.d.tsAÃªoh-resolveÂFAÂÙOG:\HarmonyOsProjects\news_app_final\news_app-develop_dd\commons\utils\Index.etsAÃªoh-resolveÂ“ÔrH–§version¤fileªsourceRoot§sources¥names¨mappings®UserManager.js ‘¯UserManager.etsÜ‘”    ‘” ’”   ” –”   ” 	” ” ”0 *”1 +–”   ” 	” ” ”- )”. *š”   ” ”	 	” ” ” ” 0”$ 6”+ =”, >˜”   ” ”	 	” ” ” ” ”   ””  ! ” !” !” !‘” )•” #
+” #” #<”# #Ì@”$ #ÌA•” $” $#”  $&”+ $1”, $2•” %” %” %”# %)”$ %*•” &” &#”  &&”. &4”/ &5•” '” '” '”% '+”& ',’” )” )”” +	”
+ +” +” +—” ,” ,” ,	” ,” ,”! ,”# ,™” -” -” -”  -”# -”' -!”2 -,”4 -.”5 -/‘”	 .–” /” /” /” /”# /”$ / ’” 0” 0’” 2” 2”” 3	”	 3”
+ 3” 3’” 4” 4Ü ” 5” 5
+” 5”  5”# 5”) 5#”4 5.”5 5/”ÌC 5=”ÌD 5>”ÌN 5ÌH”ÌP 5ÌJ”ÌR 5ÌL”ÌV 5ÌP”ÌW 5ÌQ”Ìg 5Ìa”Ìh 5Ìb”Ìi 5Ìc‘”	 6”” 6” 6” 6” 6š” 7” 7” 7” 7” 7”6 70”8 72”; 75”< 76”= 77‘”	 8’” 9” 9’” ;” ;˜” <	”	 <”
+ <” <” <” <(” <*”% <:—” =” =” =	” =” =”! =”# =—” >” >” >” >”& > ”( >"”) >#‘”	 ?’” ÌA” ÌA™” ÌB” ÌB” ÌB” ÌB”  ÌB”! ÌB”3 ÌB-”4 ÌB.”5 ÌB/”” ÌD” ÌD” ÌD” ÌD!”” ÌE” ÌE” ÌE”" ÌE”” ÌF” ÌF” ÌF”& ÌF’” ÌG” ÌG” ÌH” ÌH” ÌH” ÌH”# ÌH”, ÌH&”- ÌH'”5 ÌH/”6 ÌH0”9 ÌH3”; ÌH5”? ÌH9”Ì@ ÌH:”ÌA ÌH;›” ÌI” ÌI” ÌI” ÌI(” ÌI,” ÌI-”# ÌI2”$ ÌI3”, ÌI;”- ÌIÌS”. ÌIÌTœ” ÌJ” ÌJ
+” ÌJ” ÌJ” ÌJ” ÌJ”! ÌJ”% ÌJ”) ÌJ#”* ÌJ$”. ÌJ(”0 ÌJ*˜” ÌK” ÌK” ÌK” ÌK”" ÌK”# ÌK”' ÌK”( ÌK Ü ” ÌL” ÌL”! ÌL”$ ÌL&”& ÌL(”- ÌL/”/ ÌL1”6 ÌL8”8 ÌL:”Ì@ ÌLÌB”ÌB ÌLÌD”ÌD ÌLÌF”ÌF ÌLÌH”ÌN ÌLÌP”ÌP ÌLÌR”ÌU ÌLÌW”Ì\ ÌLÌ^”Ì] ÌLÌ_”Ìb ÌLÌd”Ìc ÌLÌe”Ìd ÌLÌf”Ìe ÌLÌg”Ìf ÌLÌh”Ìh ÌLÌj”Ìj ÌLÌl”Ìk ÌLÌmŸ” ÌM” ÌM” ÌM” ÌM”* ÌM"”, ÌM$”/ ÌM'”0 ÌM(”4 ÌM,”5 ÌM-”> ÌM6”Ì@ ÌM8”ÌE ÌM=”ÌF ÌM>”ÌG ÌM?Ü ” ÌN” ÌN” ÌN” ÌN”* ÌN"”, ÌN$”/ ÌN'”0 ÌN(”4 ÌN,”5 ÌN-”ÌE ÌN=”ÌG ÌN?”ÌK ÌNÌC”ÌL ÌNÌD”ÌU ÌNÌM”ÌV ÌNÌN”Ìa ÌNÌY”Ìb ÌNÌZ”Ìc ÌNÌ[”Ìd ÌNÌ\™” ÌO” ÌO” ÌO” ÌO”* ÌO"”, ÌO$”1 ÌO)”3 ÌO+”4 ÌO,›” ÌP” ÌP” ÌP”& ÌP”' ÌP”) ÌP!”0 ÌP(”ÌŸ ÌPÌH”Ì¡ ÌPÌJ”Ì¢ ÌPÌK”Ì£ ÌPÌL”” ÌQ” ÌQ” ÌQ” ÌQ‘” ÌR’” ÌS”# ÌSš” ÌT” ÌT
+” ÌT” ÌT”# ÌT”$ ÌT”+ ÌT%”/ ÌT)”5 ÌT/”6 ÌT0˜” ÌU” ÌU
+” ÌU” ÌU” ÌU” ÌU”! ÌU”# ÌU•” ÌV” ÌV” ÌV”- ÌV%”. ÌV&‘” ÌW˜” ÌW” ÌW” ÌW” ÌW” ÌW”# ÌW”& ÌW"”( ÌW$•” ÌX” ÌX” ÌX”) ÌX!”* ÌX"‘” ÌY˜” ÌY” ÌY” ÌY” ÌY” ÌY”# ÌY”& ÌY"”( ÌY$•” ÌZ” ÌZ” ÌZ”+ ÌZ#”, ÌZ$‘” Ì[˜” Ì[” Ì[” Ì[” Ì[” Ì[”# Ì[”& Ì["”( Ì[$•” Ì\” Ì\” Ì\”. Ì\&”/ Ì\'‘” Ì]œ” Ì^” Ì^” Ì^”" Ì^”# Ì^”% Ì^”, Ì^&”. Ì^(”: Ì^4”< Ì^6”= Ì^7”> Ì^8”” Ì_” Ì_” Ì_” Ì_‘”	 Ì`”” Ì`” Ì`” Ì`” Ì`š” Ìa” Ìa” Ìa” Ìa” Ìa”1 Ìa+”3 Ìa-”6 Ìa0”7 Ìa1”8 Ìa2’” Ìb” Ìb–” Ìc” Ìc
+” Ìc” Ìc”+ Ìc%”, Ìc&Ÿ” Ìd” Ìd
+” Ìd” Ìd”$ Ìd”( Ìd"”+ Ìd%”, Ìd&”3 Ìd-”4 Ìd.”< Ìd6”= Ìd7”ÌF ÌdÌ@”ÌG ÌdÌA”ÌI ÌdÌC•” Ìe” Ìe” Ìe”/ Ìe'”0 Ìe(‘” ÌfŸ” Ìf” Ìf” Ìf”$ Ìf ”) Ìf%”- Ìf)”0 Ìf,”1 Ìf-”8 Ìf4”9 Ìf5”ÌA Ìf=”ÌB Ìf>”ÌK ÌfÌG”ÌL ÌfÌH”ÌN ÌfÌJ•” Ìg” Ìg” Ìg”- Ìg%”. Ìg&‘” ÌhŸ” Ìh” Ìh” Ìh”$ Ìh ”) Ìh%”- Ìh)”0 Ìh,”1 Ìh-”8 Ìh4”9 Ìh5”ÌA Ìh=”ÌB Ìh>”ÌH ÌhÌD”ÌI ÌhÌE”ÌK ÌhÌG•” Ìi” Ìi” Ìi”* Ìi"”+ Ìi#‘” Ìjœ” Ìk” Ìk” Ìk”" Ìk”# Ìk”% Ìk”, Ìk&”. Ìk(”: Ìk4”< Ìk6”= Ìk7”> Ìk8”” Ìl” Ìl” Ìl” Ìl‘”	 Ìm’” Ìn” Ìn’” Ìp” Ìp”” Ìq	”	 Ìq”
+ Ìq” Ìq—” Ìr” Ìr” Ìr	” Ìr” Ìr”! Ìr”# Ìr—” Ìs” Ìs” Ìs” Ìs”& Ìs ”( Ìs"”) Ìs#‘”	 Ìt’” Ìv” Ìv˜” Ìw” Ìw” Ìw” Ìw” Ìw”ÌF ÌwÌ@”ÌG ÌwÌA”ÌH ÌwÌB’” Ìy” Ìyš” Ìz” Ìz” Ìz” Ìz”  Ìz”$ Ìz”% Ìz”- Ìz'”/ Ìz)”0 Ìz*•” Ì{” Ì{
+” Ì{” Ì{” Ì{˜” Ì|” Ì|” Ì|” Ì|” Ì|”) Ì|!”* Ì|"”+ Ì|#”” Ì}” Ì}” Ì}” Ì}‘” Ì~˜” Ì€” Ì€” Ì€” Ì€” Ì€”) Ì€#”* Ì€$”+ Ì€%’” Ì‚” Ì‚š” Ìƒ” Ìƒ
+” Ìƒ” Ìƒ” Ìƒ”& Ìƒ ”' Ìƒ!”, Ìƒ&”- Ìƒ'”/ Ìƒ)˜” Ì„” Ì„” Ì„” Ì„” Ì„”( Ì„ ”) Ì„!”* Ì„"—” Ì…” Ì…” Ì…” Ì…”! Ì…”# Ì…”$ Ì…”” Ì†” Ì†” Ì†” Ì†‘” Ì‡’” Ì‰” Ì‰™” ÌŠ” ÌŠ
+” ÌŠ” ÌŠ”& ÌŠ ”' ÌŠ!”, ÌŠ&”- ÌŠ'”/ ÌŠ)˜” Ì‹” Ì‹” Ì‹” Ì‹” Ì‹”. Ì‹&”/ Ì‹'”0 Ì‹(—” ÌŒ” ÌŒ” ÌŒ” ÌŒ”! ÌŒ”# ÌŒ”$ ÌŒ”” Ì” Ì” Ì” Ì‘” Ì’” Ì” Ì›” Ì‘” Ì‘” Ì‘” Ì‘”" Ì‘”# Ì‘”5 Ì‘/”6 Ì‘0”; Ì‘5”< Ì‘6”= Ì‘7•” Ì’” Ì’
+” Ì’” Ì’” Ì’˜” Ì“” Ì“” Ì“” Ì“” Ì“”. Ì“&”/ Ì“'”0 Ì“(—” Ì”” Ì”” Ì”” Ì””! Ì””# Ì””$ Ì””” Ì•” Ì•” Ì•” Ì•‘” Ì–š” Ì˜” Ì˜” Ì˜” Ì˜” Ì˜”* Ì˜$”, Ì˜&”2 Ì˜,”3 Ì˜-”4 Ì˜.’” Ìš”% Ìš–” Ì›” Ì›
+” Ì›” Ì›” Ì›” Ì›’” Ìœ” Ìœ
+Ü ” Ì” Ì” Ì”  Ì”& Ì”* Ì"”+ Ì#”: Ì2”< Ì4”? Ì7”Ì@ Ì8”ÌD Ì<”ÌE Ì=”ÌU ÌÌM”ÌW ÌÌO”ÌY ÌÌQ”ÌZ ÌÌR”Ì[ ÌÌS” Ì” Ì” Ì” Ì”& Ì”- Ì%”2 Ì*”: Ì2”> Ì6”ÌE Ì=”ÌJ ÌÌB”ÌL ÌÌD”ÌN ÌÌF›” ÌŸ
+” ÌŸ”( ÌŸ”+ ÌŸ+”/ ÌŸ/”0 ÌŸ0”5 ÌŸ5”6 ÌŸ6”= ÌŸÌG”> ÌŸÌT”? ÌŸÌU—” Ì 
+” Ì ” Ì ”, Ì "”- Ì #”4 Ì *”5 Ì +‘” Ì¡	‘” Ì¢”” Ì¢” Ì¢” Ì¢” Ì¢˜” Ì£” Ì£” Ì£” Ì£” Ì£”2 Ì£*”3 Ì£+”4 Ì£,‘” Ì¤’” Ì¦” Ì¦”” Ì§” Ì§” Ì§” Ì§!˜” Ì¨” Ì¨” Ì¨”  Ì¨”$ Ì¨”, Ì¨$”2 Ì¨*”4 Ì¨,”” Ì©” Ì©” Ì©” Ì©˜” Ìª” Ìª” Ìª” Ìª”% Ìª”' Ìª”( Ìª ”6 Ìª.’” Ì«” Ì«’” Ì­” Ì­’” Ì®” Ì®
+˜” Ì¯” Ì¯” Ì¯” Ì¯” Ì¯”. Ì¯&”/ Ì¯'”0 Ì¯(›” Ì°” Ì°” Ì°”! Ì°”( Ì° ”) Ì°!”= Ì°5”> Ì°6”ÌC Ì°;”ÌD Ì°<”ÌE Ì°=”” Ì±” Ì±” Ì±” Ì±™” Ì²
+” Ì²” Ì²”% Ì²”( Ì²”0 Ì²&”1 Ì²'”2 Ì²(”> Ì²4š” Ì³
+” Ì³” Ì³” Ì³”  Ì³”1 Ì³'”3 Ì³)”; Ì³1”< Ì³2”= Ì³3’” Ìµ
+”" ÌµÜ ” Ì¶
+” Ì¶” Ì¶” Ì¶”. Ì¶$”0 Ì¶&”3 Ì¶)”4 Ì¶*”8 Ì¶.”9 Ì¶/”ÌI Ì¶?”ÌK Ì¶ÌA”ÌO Ì¶ÌE”ÌP Ì¶ÌF”ÌY Ì¶ÌO”ÌZ Ì¶ÌP”Ìb Ì¶ÌX”Ìc Ì¶ÌY”Ìd Ì¶ÌZ”Ìe Ì¶Ì[™” Ì·
+” Ì·” Ì·” Ì·”. Ì·$”0 Ì·&”5 Ì·+”7 Ì·-”8 Ì·.‘” Ì¸	‘” Ì¸˜” Ì¹
+” Ì¹” Ì¹” Ì¹”  Ì¹”1 Ì¹'”2 Ì¹(”3 Ì¹)‘” Ìº	‘” Ì»”” Ì»” Ì»” Ì»” Ì»š” Ì¼” Ì¼” Ì¼” Ì¼” Ì¼”5 Ì¼-”7 Ì¼/”: Ì¼2”; Ì¼3”< Ì¼4‘” Ì½š” Ì¿” Ì¿” Ì¿” Ì¿” Ì¿”* Ì¿$”, Ì¿&”4 Ì¿.”5 Ì¿/”6 Ì¿0”” ÌÀ” ÌÀ” ÌÀ” ÌÀ‘”	 ÌÂ”” ÌÂ” ÌÂ” ÌÂ” ÌÂš” ÌÃ” ÌÃ” ÌÃ” ÌÃ” ÌÃ”ÌH ÌÃÌB”ÌJ ÌÃÌD”ÌM ÌÃÌG”ÌN ÌÃÌH”ÌO ÌÃÌI’” ÌÄ” ÌÄ—” ÌÅ” ÌÅ” ÌÅ” ÌÅ” ÌÅ” ÌÅ”  ÌÅ”” ÌÆ” ÌÆ” ÌÆ” ÌÆ‘”	 ÌÇ’” ÌÈ” ÌÈ’” ÌÊ” ÌÊ	”” ÌË	”	 ÌË”
+ ÌË” ÌË—” ÌÌ” ÌÌ” ÌÌ	” ÌÌ” ÌÌ”! ÌÌ”# ÌÌ—” ÌÍ” ÌÍ” ÌÍ” ÌÍ”& ÌÍ ”( ÌÍ"”) ÌÍ#‘”	 ÌÎ’” ÌĞ” ÌĞ” ÌÑ” ÌÑ” ÌÑ” ÌÑ”& ÌÑ ”( ÌÑ"”. ÌÑ(”/ ÌÑ)”3 ÌÑ-”4 ÌÑ.”ÌD ÌÑ>”ÌE ÌÑ?”ÌF ÌÑÌ@” ÌÒ” ÌÒ” ÌÒ” ÌÒ”& ÌÒ ”( ÌÒ"”. ÌÒ(”/ ÌÒ)”3 ÌÒ-”4 ÌÒ.”= ÌÒ7”> ÌÒ8”? ÌÒ9™” ÌÓ” ÌÓ” ÌÓ” ÌÓ”& ÌÓ ”( ÌÓ"”- ÌÓ'”/ ÌÓ)”0 ÌÓ*‘”	 ÌÔ”” ÌÔ” ÌÔ” ÌÔ” ÌÔš” ÌÕ” ÌÕ” ÌÕ” ÌÕ” ÌÕ”- ÌÕ'”/ ÌÕ)”2 ÌÕ,”3 ÌÕ-”4 ÌÕ.‘”	 ÌÖ’” Ì×” Ì×’” ÌÙ” ÌÙ–” ÌÚ	”	 ÌÚ”
+ ÌÚ” ÌÚ” ÌÚ”$ ÌÚ3—” ÌÛ” ÌÛ” ÌÛ	” ÌÛ” ÌÛ”! ÌÛ”# ÌÛ—” ÌÜ” ÌÜ” ÌÜ” ÌÜ”& ÌÜ ”( ÌÜ"”) ÌÜ#‘”	 Ìİ’” Ìß” Ìßš” Ìà” Ìà” Ìà” Ìà”# Ìà”' Ìà!”( Ìà"”3 Ìà-”5 Ìà/”6 Ìà0Ü ” Ìá” Ìá” Ìá” Ìá”& Ìá ”' Ìá!”0 Ìá*”1 Ìá+”2 Ìá,”3 Ìá7”5 Ìá9”7 Ìá;”8 Ìá<”9 Ìá=”: Ìá>”ÌA ÌáÌE”ÌF ÌáÌJ”ÌQ ÌáÌU”ÌR ÌáÌV”ÌY ÌáÌ]”ÌZ ÌáÌ^”Ì[ ÌáÌ_—” Ìã” Ìã
+” Ìã” Ìã” Ìã”  Ìã”" Ìã˜” Ìä” Ìä” Ìä”" Ìä”# Ìä”& Ìä”1 Ìä)”2 Ìä*Ü ” Ìå” Ìå” Ìå” Ìå”* Ìå"”, Ìå$”/ Ìå'”0 Ìå(”4 Ìå,”5 Ìå-”= Ìå5”? Ìå7”ÌC Ìå;”ÌD Ìå<”ÌM ÌåÌE”ÌN ÌåÌF”ÌV ÌåÌN”ÌW ÌåÌO”ÌX ÌåÌP”ÌY ÌåÌQÜ ” Ìæ” Ìæ” Ìæ” Ìæ”* Ìæ"”, Ìæ$”/ Ìæ'”0 Ìæ(”4 Ìæ,”5 Ìæ-”ÌE Ìæ=”ÌG Ìæ?”ÌK ÌæÌC”ÌL ÌæÌD”ÌU ÌæÌM”ÌV ÌæÌN”Ìa ÌæÌY”Ìb ÌæÌZ”Ìc ÌæÌ[”Ìd ÌæÌ\™” Ìç” Ìç” Ìç” Ìç”* Ìç"”, Ìç$”1 Ìç)”3 Ìç+”4 Ìç,”” Ìè” Ìè” Ìè” Ìè‘” Ìé”” Ìê” Ìê” Ìê” Ìê‘”	 Ìë”” Ìë” Ìë” Ìë” Ìëš” Ìì” Ìì” Ìì” Ìì” Ìì”7 Ìì1”9 Ìì3”< Ìì6”= Ìì7”> Ìì8”” Ìí” Ìí” Ìí” Ìí‘”	 Ìî’” Ìï” Ìï’” Ìñ” Ìñ”” Ìò
+”	 Ìò”
+ Ìò” Ìò’” Ìó” ÌóÜ ” Ìô” Ìô” Ìô” Ìô”# Ìô”' Ìô!”( Ìô"”7 Ìô1”9 Ìô3”< Ìô6”= Ìô7”ÌA Ìô;”ÌB Ìô<”ÌJ ÌôÌD”ÌL ÌôÌF”ÌP ÌôÌJ”ÌQ ÌôÌK”ÌR ÌôÌL™” Ìõ” Ìõ” Ìõ” Ìõ” Ìõ” Ìõ”& Ìõ*”' Ìõ9”( Ìõ:‘”	 Ìö”” Ìö” Ìö” Ìö” Ìöš” Ì÷” Ì÷” Ì÷” Ì÷” Ì÷”4 Ì÷.”6 Ì÷0”9 Ì÷3”: Ì÷4”; Ì÷5”” Ìø” Ìø” Ìø” Ìø‘”	 Ìù’” Ìú” Ìú’” Ìü” Ìü”” Ìı	”	 Ìı”
+ Ìı” Ìı—” Ìş” Ìş” Ìş	” Ìş” Ìş”! Ìş”# Ìş—” Ìÿ” Ìÿ” Ìÿ” Ìÿ”& Ìÿ ”( Ìÿ"”) Ìÿ#‘”	 Í ’” Í” ÍÜ ” Í” Í” Í” Í”  Í”$ Í”% Í”4 Í.”6 Í0”9 Í3”: Í4”> Í8”? Í9”ÌH ÍÌB”ÌJ ÍÌD”ÌL ÍÌF”ÌM ÍÌG”ÌN ÍÌHÜ ” Í” Í” Í” Í” Í”ÌE Í?”ÌG ÍÌA”ÌH ÍÌB”ÌI ÍÌC”ÌN ÍÌH”ÌR ÍÌL”ÌW ÍÌQ”Ì\ ÍÌV”Ì^ ÍÌX”Ì_ ÍÌY”Ì` ÍÌZ”Ìa ÍÌ[˜” Í” Í
+” Í” Í” Í”# Í”% Í”' Í!’” Í”! Í–” Í” Í” Í” Í” Í!”  Í"œ” Í” Í” Í” Í” Í”ÌC Í;”ÌE Í=”ÌF Í>”ÌG Í?”ÌM ÍÌE”ÌN ÍÌF”ÌO ÍÌG”” Í” Í” Í” Í‘” Í	”” Í
+” Í
+” Í
+” Í
+‘”	 Í”” Í” Í” Í” Íš” Í” Í” Í” Í” Í”0 Í*”2 Í,”5 Í/”6 Í0”7 Í1”” Í” Í” Í” Í‘”	 Í’” Í” Í’” Í” Í”” Í	”	 Í”
+ Í” Íš” Í” Í
+” Í” Í” Í”  Í”! Í”) Í%”+ Í'”, Í(–” Í” Í
+” Í” Í,” Í.” Í/”” Í” Í” Í” Íš” Í” Í” Í”# Í”$ Í”' Í!”1 Í+”6 Í0”8 Í2”9 Í3‘”	 Í”” Í” Í” Í” Í’” Í” Í’” Í” Í”” Í	”	 Í”
+ Í” Í’” Í” Íš” Í” Í” Í” Í”  Í”$ Í”% Í”- Í'”/ Í)”0 Í*•” Í” Í
+” Í” Í” Í”” Í ” Í ” Í ” Í ‘” Í!’” Í#” Í#Ü ” Í$” Í$” Í$” Í$”( Í$"”) Í$#”. Í$(”/ Í$)”3 Í$-”4 Í$.”; Í$5”< Í$6”ÌJ Í$ÌD”ÌK Í$ÌE”ÌP Í$ÌJ”ÌQ Í$ÌK”ÌR Í$ÌL‘”	 Í%”” Í%” Í%” Í%” Í%š” Í&” Í&” Í&” Í&” Í&”$ Í&”& Í& ”+ Í&%”, Í&&”- Í&'”” Í'” Í'” Í'” Í'‘”	 Í(’” Í)” Í)’” Í+” Í+”” Í,	”	 Í,”
+ Í,” Í,$’” Í-” Í-š” Í.” Í.” Í.” Í.”  Í.”$ Í.”% Í.”- Í.'”/ Í.)”0 Í.*•” Í/” Í/
+” Í/” Í/” Í/•” Í0” Í0” Í0” Í0” Í0‘” Í1™” Í3” Í3” Í3” Í3”+ Í3%”, Í3&”1 Í3+”2 Í3,”3 Í3-‘”	 Í4”” Í4” Í4” Í4” Í4š” Í5” Í5” Í5” Í5” Í5”( Í5"”* Í5$”/ Í5)”0 Í5*”1 Í5+•” Í6” Í6” Í6” Í6” Í6‘”	 Í7’” Í8” Í8‘” Í9ÔrI–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜ‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌĞ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  Ìİ ‘”  ÌŞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìğ ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìı ‘”  Ìş ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ÔrJ’§missing¦pluginÃ¦genAbcÂÔ  ÔrK”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache‘ÔrL–¤type¥start£end«declarationªspecifiers¦source¶ExportNamedDeclarationÍÍ(DÔrM–¤type¥start£end¢idªsuperClass¤body°ClassDeclarationÍÍ(DÔrN”¤type¥start£end¤nameªIdentifierÍÍ'«UserManagerÀÔrO”¤type¥start£end¤body©ClassBodyÍ(Í(DœÔrP˜¤type¥start£end¦static¨computed£key¤kind¥value°MethodDefinitionÍ/ÍÂÂNªIdentifierÍ/Í:«constructor«constructorÔrQ™¤type¥start£end¢idªexpression©generator¥async¦params¤body²FunctionExpressionÍ:ÍÀÂÂÂO®BlockStatementÍ=Í•ÔrR”¤type¥start£endªexpression³ExpressionStatementÍHÍdÔrS–¤type¥start£end¨operator¤left¥right´AssignmentExpressionÍHÍc¡=ÔrT—¤type¥start£end¦object¨property¨computed¨optional°MemberExpressionÍHÍ\ÔrU“¤type¥start£end®ThisExpressionÍHÍLNªIdentifierÍMÍ\¯dataPreferencesÂÂÔrV•¤type¥start£end¥value£raw§LiteralÍ_ÍcÀ¤nullR³ExpressionStatementÍnÍ’S´AssignmentExpressionÍnÍ‘¡=T°MemberExpressionÍnÍƒU®ThisExpressionÍnÍrNªIdentifierÍsÍƒ°PREFERENCES_NAMEÂÂV§LiteralÍ†Í‘©user_data«'user_data'R³ExpressionStatementÍœÍ¸S´AssignmentExpressionÍœÍ·¡=T°MemberExpressionÍœÍ©U®ThisExpressionÍœÍ NªIdentifierÍ¡Í©¨USER_KEYÂÂV§LiteralÍ¬Í·©user_info«'user_info'R³ExpressionStatementÍÂÍéS´AssignmentExpressionÍÂÍè¡=T°MemberExpressionÍÂÍ×U®ThisExpressionÍÂÍÆNªIdentifierÍÇÍ×°CURRENT_USER_KEYÂÂV§LiteralÍÚÍè¬current_user®'current_user'R³ExpressionStatementÍóÍS´AssignmentExpressionÍóÍ¡=T°MemberExpressionÍóÍU®ThisExpressionÍóÍ÷NªIdentifierÍøÍ©TOKEN_KEYÂÂV§LiteralÍÍªauth_token¬'auth_token'P°MethodDefinitionÍÍÉÃÂNªIdentifierÍ%Í0«getInstance¦methodQ²FunctionExpressionÍ0ÍÉÀÂÂÂO®BlockStatementÍ3ÍÉ’ÔrW–¤type¥start£end¤testªconsequent©alternate«IfStatementÍ>ÍœÔrX–¤type¥start£end¨operator¦prefix¨argument¯UnaryExpressionÍBÍW¡!ÃT°MemberExpressionÍCÍWNªIdentifierÍCÍN«UserManagerNªIdentifierÍOÍW¨instanceÂÂO®BlockStatementÍYÍœ‘R³ExpressionStatementÍhÍ‘S´AssignmentExpressionÍhÍ¡=T°MemberExpressionÍhÍ|NªIdentifierÍhÍs«UserManagerNªIdentifierÍtÍ|¨instanceÂÂÔrY•¤type¥start£end¦callee©arguments­NewExpressionÍÍNªIdentifierÍƒÍ«UserManagerÀÔrZ”¤type¥start£end¨argument¯ReturnStatementÍ¦ÍÂT°MemberExpressionÍ­ÍÁNªIdentifierÍ­Í¸«UserManagerNªIdentifierÍ¹ÍÁ¨instanceÂÂP°MethodDefinitionÍßÍåÂÂNªIdentifierÍåÍô¯initPreferences¦methodQ²FunctionExpressionÍôÍåÀÂÂÃO®BlockStatementÍ÷Íå‘Ôr[–¤type¥start£end¥block§handler©finalizer¬TryStatementÍÍŞO®BlockStatementÍÍ}‘R³ExpressionStatementÍÍrS´AssignmentExpressionÍÍq¡=T°MemberExpressionÍÍ)U®ThisExpressionÍÍNªIdentifierÍÍ)¯dataPreferencesÂÂZ¯AwaitExpressionÍ,ÍqÔr\–¤type¥start£end¦callee©arguments¨optional®CallExpressionÍ2ÍqT°MemberExpressionÍ2ÍLNªIdentifierÍ2Í=«preferencesNªIdentifierÍ>ÍL®getPreferencesÂÂ’\®CallExpressionÍMÍYNªIdentifierÍMÍWªgetContextÂT°MemberExpressionÍ[ÍpU®ThisExpressionÍ[Í_NªIdentifierÍ`Íp°PREFERENCES_NAMEÂÂÂÔr]•¤type¥start£end¥param¤body«CatchClauseÍ‡ÍŞNªIdentifierÍÍ‘£errO®BlockStatementÍ“ÍŞ‘R³ExpressionStatementÍ¢ÍÓ\®CallExpressionÍ¢ÍÒT°MemberExpressionÍ¢Í¯NªIdentifierÍ¢Í©§consoleNªIdentifierÍªÍ¯¥errorÂÂ’V§LiteralÍ°ÍÌºFailed to get preferences:¼'Failed to get preferences:'NªIdentifierÍÎÍÑ£errÂÀP°MethodDefinitionÍ ÍCÂÂNªIdentifierÍÍ©loginUser¦methodQ²FunctionExpressionÍÍCÀÂÂÃ’NªIdentifierÍÍ§accountNªIdentifierÍÍ!¨passwordO®BlockStatementÍ#ÍC’W«IfStatementÍ.Í€X¯UnaryExpressionÍ2ÍG¡!ÃT°MemberExpressionÍ3ÍGU®ThisExpressionÍ3Í7NªIdentifierÍ8ÍG¯dataPreferencesÂÂO®BlockStatementÍIÍ€‘R³ExpressionStatementÍXÍuZ¯AwaitExpressionÍXÍt\®CallExpressionÍ^ÍtT°MemberExpressionÍ^ÍrU®ThisExpressionÍ^ÍbNªIdentifierÍcÍr¯initPreferencesÂÂÂÀ[¬TryStatementÍŠÍ<O®BlockStatementÍÍ”™Ôr^•¤type¥start£end¬declarations¤kind³VariableDeclarationÍÍÆ‘Ôr_•¤type¥start£end¢id¤init²VariableDeclaratorÍ£ÍÅNªIdentifierÍ£Í¦£url\®CallExpressionÍ©ÍÅNªIdentifierÍ©Í±¨withBase‘V§LiteralÍ²ÍÄ°/api/users/login²'/api/users/login'Â¥const^³VariableDeclarationÍÔÍ?‘_²VariableDeclaratorÍÚÍ>NªIdentifierÍÚÍŞ¤formÔr`”¤type¥start£endªproperties°ObjectExpressionÍáÍ>’Ôra™¤type¥start£end¦method©shorthand¨computed£key¥value¤kind¨PropertyÍôÍÂÂÂNªIdentifierÍôÍı©userPhoneNªIdentifierÍÿÍ§account¤inita¨PropertyÍÍ/ÂÂÂNªIdentifierÍÍ%¬userPasswordNªIdentifierÍ'Í/¨password¤init¥const^³VariableDeclarationÍMÍ‚‘_²VariableDeclaratorÍSÍNªIdentifierÍSÍ[¨respTextZ¯AwaitExpressionÍ^Í\®CallExpressionÍdÍT°MemberExpressionÍdÍvNªIdentifierÍdÍm©HttpUtilsNªIdentifierÍnÍv¨postFormÂÂ’NªIdentifierÍwÍz£urlNªIdentifierÍ|Í€¤formÂ¥const^³VariableDeclarationÍÍ²‘_²VariableDeclaratorÍ–Í±NªIdentifierÍ–Íš¤resp\®CallExpressionÍÍ±T°MemberExpressionÍÍ§NªIdentifierÍÍ¡¤JSONNªIdentifierÍ¢Í§¥parseÂÂ‘NªIdentifierÍ¨Í°¨respTextÂ¥constW«IfStatementÍÀÍ
+3Ôrb–¤type¥start£end¤left¨operator¥right±LogicalExpressionÍÄÍâb°BinaryExpressionÍÄÍÕT°MemberExpressionÍÄÍÍNªIdentifierÍÄÍÈ¤respNªIdentifierÍÉÍÍ¤codeÂÂ£===V§LiteralÍÒÍÕÌÈ£200¢&&T°MemberExpressionÍÙÍâNªIdentifierÍÙÍİ¤respNªIdentifierÍŞÍâ¤dataÂÂO®BlockStatementÍäÍ
+3—^³VariableDeclarationÍ÷Í‘_²VariableDeclaratorÍıÍNªIdentifierÍıÍ¥tokenT°MemberExpressionÍÍNªIdentifierÍÍ	¤respNªIdentifierÍ
+Í¤dataÂÂ¥const^³VariableDeclarationÍ!Í|‘_²VariableDeclaratorÍ'Í{NªIdentifierÍ'Í2«currentUser`°ObjectExpressionÍ5Í{“a¨PropertyÍ7ÍGÂÂÂNªIdentifierÍ7Í>§accountNªIdentifierÍ@ÍG§account¤inita¨PropertyÍIÍUÂÂÂNªIdentifierÍIÍQ¨passwordV§LiteralÍSÍU ¢''¤inita¨PropertyÍWÍyÂÂÂNªIdentifierÍWÍ_¨usernameÔrc•¤type¥start£end«expressions¦quasis¯TemplateLiteralÍaÍy‘\®CallExpressionÍfÍwT°MemberExpressionÍfÍsNªIdentifierÍfÍm§accountNªIdentifierÍnÍs¥sliceÂÂ‘X¯UnaryExpressionÍtÍv¡-ÃV§LiteralÍuÍv¡4Â’Ôrd•¤type¥start£end¥value¤tail¯TemplateElementÍbÍdÔre’£raw¦cooked¦ç”¨æˆ·¦ç”¨æˆ·Âd¯TemplateElementÍxÍxe  Ã¤init¥constR³ExpressionStatementÍÍÅZ¯AwaitExpressionÍÍÄR¯ChainExpressionÍ”ÍÄ\®CallExpressionÍ”ÍÄT°MemberExpressionÍ”Í­T°MemberExpressionÍ”Í¨U®ThisExpressionÍ”Í˜NªIdentifierÍ™Í¨¯dataPreferencesÂÂNªIdentifierÍªÍ­£putÂÃ’T°MemberExpressionÍ®Í¼U®ThisExpressionÍ®Í²NªIdentifierÍ³Í¼©TOKEN_KEYÂÂNªIdentifierÍ¾ÍÃ¥tokenÂR³ExpressionStatementÍ×Í	+Z¯AwaitExpressionÍ×Í	*R¯ChainExpressionÍİÍ	*\®CallExpressionÍİÍ	*T°MemberExpressionÍİÍöT°MemberExpressionÍİÍñU®ThisExpressionÍİÍáNªIdentifierÍâÍñ¯dataPreferencesÂÂNªIdentifierÍóÍö£putÂÃ’T°MemberExpressionÍ÷Í	U®ThisExpressionÍ÷ÍûNªIdentifierÍüÍ	°CURRENT_USER_KEYÂÂ\®CallExpressionÍ	Í	)T°MemberExpressionÍ	Í	NªIdentifierÍ	Í	¤JSONNªIdentifierÍ	Í	©stringifyÂÂ‘NªIdentifierÍ	Í	(«currentUserÂÂR³ExpressionStatementÍ	=Í	aZ¯AwaitExpressionÍ	=Í	`R¯ChainExpressionÍ	CÍ	`\®CallExpressionÍ	CÍ	`T°MemberExpressionÍ	CÍ	^T°MemberExpressionÍ	CÍ	WU®ThisExpressionÍ	CÍ	GNªIdentifierÍ	HÍ	W¯dataPreferencesÂÂNªIdentifierÍ	YÍ	^¥flushÂÃÂR³ExpressionStatementÍ	sÍ
+\®CallExpressionÍ	sÍ
+T°MemberExpressionÍ	sÍ	‰NªIdentifierÍ	sÍ	¬promptActionNªIdentifierÍ	€Í	‰©showToastÂÂ‘`°ObjectExpressionÍ	ŠÍ
+‘a¨PropertyÍ	ŒÍ
+ÂÂÂNªIdentifierÍ	ŒÍ	“§message`°ObjectExpressionÍ	•Í
+•a¨PropertyÍ	—Í	¥ÂÂÂV§LiteralÍ	—Í	›¢id¤"id"V§LiteralÍ	Í	¥Î  Q¨16777297¤inita¨PropertyÍ	§Í	´ÂÂÂV§LiteralÍ	§Í	­¤type¦"type"V§LiteralÍ	¯Í	´Í'¥10003¤inita¨PropertyÍ	¶Í	ÀÂÂÂNªIdentifierÍ	¶Í	¼¦paramsÔrf”¤type¥start£end¨elements¯ArrayExpressionÍ	¾Í	À¤inita¨PropertyÍ	ÂÍ	çÂÂÂV§LiteralÍ	ÂÍ	ÎªbundleName¬"bundleName"V§LiteralÍ	ĞÍ	çµcom.huawei.quickstart·"com.huawei.quickstart"¤inita¨PropertyÍ	éÍ
+ ÂÂÂV§LiteralÍ	éÍ	õªmoduleName¬"moduleName"V§LiteralÍ	÷Í
+ §default©"default"¤init¤initÂZ¯ReturnStatementÍ
+Í
+$V§LiteralÍ
+Í
+#Ã¤trueÀ^³VariableDeclarationÍ
+fÍ
+‘_²VariableDeclaratorÍ
+jÍ
+NªIdentifierÍ
+jÍ
+v¬errorMessageb±LogicalExpressionÍ
+yÍ
+T°MemberExpressionÍ
+yÍ
+…NªIdentifierÍ
+yÍ
+}¤respNªIdentifierÍ
+~Í
+…§messageÂÂ¢??V§LiteralÍ
+‰Í
+¬ç™»å½•å¤±è´¥®'ç™»å½•å¤±è´¥'£letW«IfStatementÍ
+Í.b°BinaryExpressionÍ
+¢Í
+³T°MemberExpressionÍ
+¢Í
+«NªIdentifierÍ
+¢Í
+¦¤respNªIdentifierÍ
+§Í
+«¤codeÂÂ£===V§LiteralÍ
+°Í
+³Í£400O®BlockStatementÍ
+µÍ
+õ‘R³ExpressionStatementÍ
+ÈÍ
+æS´AssignmentExpressionÍ
+ÈÍ
+å¡=NªIdentifierÍ
+ÈÍ
+Ô¬errorMessageV§LiteralÍ
+×Í
+åÙ$è¯·æ±‚å‚æ•°é”™è¯¯ï¼Œè¯·æ£€æŸ¥è¾“å…¥Ù&'è¯·æ±‚å‚æ•°é”™è¯¯ï¼Œè¯·æ£€æŸ¥è¾“å…¥'W«IfStatementÍÍ.b°BinaryExpressionÍÍT°MemberExpressionÍÍNªIdentifierÍÍ¤respNªIdentifierÍÍ¤codeÂÂ£===V§LiteralÍÍÍ‘£401O®BlockStatementÍÍ[‘R³ExpressionStatementÍ2ÍLS´AssignmentExpressionÍ2ÍK¡=NªIdentifierÍ2Í>¬errorMessageV§LiteralÍAÍK¸ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯º'ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯'W«IfStatementÍnÍ.b°BinaryExpressionÍrÍƒT°MemberExpressionÍrÍ{NªIdentifierÍrÍv¤respNªIdentifierÍwÍ{¤codeÂÂ£===V§LiteralÍ€ÍƒÍ”£404O®BlockStatementÍ…ÍÃ‘R³ExpressionStatementÍ˜Í´S´AssignmentExpressionÍ˜Í³¡=NªIdentifierÍ˜Í¤¬errorMessageV§LiteralÍ§Í³¾ç”¨æˆ·ä¸å­˜åœ¨ï¼Œè¯·å…ˆæ³¨å†ŒÙ 'ç”¨æˆ·ä¸å­˜åœ¨ï¼Œè¯·å…ˆæ³¨å†Œ'W«IfStatementÍÖÍ.b°BinaryExpressionÍÚÍëT°MemberExpressionÍÚÍãNªIdentifierÍÚÍŞ¤respNªIdentifierÍßÍã¤codeÂÂ£===V§LiteralÍèÍëÍô£500O®BlockStatementÍíÍ.‘R³ExpressionStatementÍ ÍS´AssignmentExpressionÍ Í¡=NªIdentifierÍ Í¬errorMessageV§LiteralÍÍÙ'æœåŠ¡å™¨å†…éƒ¨é”™è¯¯ï¼Œè¯·ç¨åå†è¯•Ù)'æœåŠ¡å™¨å†…éƒ¨é”™è¯¯ï¼Œè¯·ç¨åå†è¯•'ÀR³ExpressionStatementÍ<Ín\®CallExpressionÍ<ÍmT°MemberExpressionÍ<ÍRNªIdentifierÍ<ÍH¬promptActionNªIdentifierÍIÍR©showToastÂÂ‘`°ObjectExpressionÍSÍl‘a¨PropertyÍUÍjÂÂÂNªIdentifierÍUÍ\§messageNªIdentifierÍ^Íj¬errorMessage¤initÂZ¯ReturnStatementÍ|Í‰V§LiteralÍƒÍˆÂ¥false]«CatchClauseÍÍ<NªIdentifierÍ¥Í¨£errO®BlockStatementÍªÍ<•R³ExpressionStatementÍ¹Íå\®CallExpressionÍ¹ÍäT°MemberExpressionÍ¹ÍÆNªIdentifierÍ¹ÍÀ§consoleNªIdentifierÍÁÍÆ¥errorÂÂ’V§LiteralÍÇÍŞµFailed to login user:·'Failed to login user:'NªIdentifierÍàÍã£errÂ^³VariableDeclarationÍÍ/‘_²VariableDeclaratorÍÍ.NªIdentifierÍÍ¬errorMessageV§LiteralÍ"Í.¾ç™»å½•å¤±è´¥ï¼Œè¯·ç¨åå†è¯•Ù 'ç™»å½•å¤±è´¥ï¼Œè¯·ç¨åå†è¯•'£letW«IfStatementÍ=ÍÖb±LogicalExpressionÍAÍxb°BinaryExpressionÍAÍUNªIdentifierÍAÍD£errªinstanceofNªIdentifierÍPÍU¥Error¢&&\®CallExpressionÍYÍxT°MemberExpressionÍYÍmT°MemberExpressionÍYÍdNªIdentifierÍYÍ\£errNªIdentifierÍ]Íd§messageÂÂNªIdentifierÍeÍm¨includesÂÂ‘V§LiteralÍnÍw§Network©'Network'ÂO®BlockStatementÍzÍ¼‘R³ExpressionStatementÍÍ­S´AssignmentExpressionÍÍ¬¡=NªIdentifierÍÍ™¬errorMessageV§LiteralÍœÍ¬Ù*ç½‘ç»œè¿æ¥å¤±è´¥ï¼Œè¯·æ£€æŸ¥ç½‘ç»œè®¾ç½®Ù,'ç½‘ç»œè¿æ¥å¤±è´¥ï¼Œè¯·æ£€æŸ¥ç½‘ç»œè®¾ç½®'W«IfStatementÍÏÍÖb±LogicalExpressionÍÓÍ
+b°BinaryExpressionÍÓÍçNªIdentifierÍÓÍÖ£errªinstanceofNªIdentifierÍâÍç¥Error¢&&\®CallExpressionÍëÍ
+T°MemberExpressionÍëÍÿT°MemberExpressionÍëÍöNªIdentifierÍëÍî£errNªIdentifierÍïÍö§messageÂÂNªIdentifierÍ÷Íÿ¨includesÂÂ‘V§LiteralÍ Í	§Timeout©'Timeout'ÂO®BlockStatementÍÍL‘R³ExpressionStatementÍÍ=S´AssignmentExpressionÍÍ<¡=NªIdentifierÍÍ+¬errorMessageV§LiteralÍ.Í<Ù$è¯·æ±‚è¶…æ—¶ï¼Œè¯·æ£€æŸ¥ç½‘ç»œè¿æ¥Ù&'è¯·æ±‚è¶…æ—¶ï¼Œè¯·æ£€æŸ¥ç½‘ç»œè¿æ¥'W«IfStatementÍ_ÍÖb±LogicalExpressionÍcÍ—b°BinaryExpressionÍcÍwNªIdentifierÍcÍf£errªinstanceofNªIdentifierÍrÍw¥Error¢&&\®CallExpressionÍ{Í—T°MemberExpressionÍ{ÍT°MemberExpressionÍ{Í†NªIdentifierÍ{Í~£errNªIdentifierÍÍ†§messageÂÂNªIdentifierÍ‡Í¨includesÂÂ‘V§LiteralÍÍ–¤JSON¦'JSON'ÂO®BlockStatementÍ™ÍÖ‘R³ExpressionStatementÍ¬ÍÇS´AssignmentExpressionÍ¬ÍÆ¡=NªIdentifierÍ¬Í¸¬errorMessageV§LiteralÍ»ÍÆ»æœåŠ¡å™¨å“åº”æ ¼å¼é”™è¯¯½'æœåŠ¡å™¨å“åº”æ ¼å¼é”™è¯¯'ÀR³ExpressionStatementÍäÍ\®CallExpressionÍäÍT°MemberExpressionÍäÍúNªIdentifierÍäÍğ¬promptActionNªIdentifierÍñÍú©showToastÂÂ‘`°ObjectExpressionÍûÍ‘a¨PropertyÍıÍÂÂÂNªIdentifierÍıÍ§messageNªIdentifierÍÍ¬errorMessage¤initÂZ¯ReturnStatementÍ$Í1V§LiteralÍ+Í0Â¥falseÀP°MethodDefinitionÍcÍÿÂÂNªIdentifierÍiÍw®getCurrentUser¦methodQ²FunctionExpressionÍwÍÿÀÂÂÃO®BlockStatementÍzÍÿ’W«IfStatementÍ…Í×X¯UnaryExpressionÍ‰Í¡!ÃT°MemberExpressionÍŠÍU®ThisExpressionÍŠÍNªIdentifierÍÍ¯dataPreferencesÂÂO®BlockStatementÍ Í×‘R³ExpressionStatementÍ¯ÍÌZ¯AwaitExpressionÍ¯ÍË\®CallExpressionÍµÍËT°MemberExpressionÍµÍÉU®ThisExpressionÍµÍ¹NªIdentifierÍºÍÉ¯initPreferencesÂÂÂÀ[¬TryStatementÍáÍøO®BlockStatementÍåÍ*ŸR³ExpressionStatementÍôÍ0\®CallExpressionÍôÍ/T°MemberExpressionÍôÍÿNªIdentifierÍôÍû§consoleNªIdentifierÍüÍÿ£logÂÂ‘V§LiteralÍ Í.Ù@ğŸ” UserManager.getCurrentUser - å¼€å§‹ä»JWTè·å–ç”¨æˆ·ä¿¡æ¯ÙB'ğŸ” UserManager.getCurrentUser - å¼€å§‹ä»JWTè·å–ç”¨æˆ·ä¿¡æ¯'Â^³VariableDeclarationÍYÍ}‘_²VariableDeclaratorÍ_Í|NªIdentifierÍ_Íd¥tokenZ¯AwaitExpressionÍgÍ|\®CallExpressionÍmÍ|T°MemberExpressionÍmÍzU®ThisExpressionÍmÍqNªIdentifierÍrÍz¨getTokenÂÂÂ¥constW«IfStatementÍ‹ÍòX¯UnaryExpressionÍÍ•¡!ÃNªIdentifierÍÍ•¥tokenO®BlockStatementÍ—Íò’R³ExpressionStatementÍªÍÅ\®CallExpressionÍªÍÄT°MemberExpressionÍªÍµNªIdentifierÍªÍ±§consoleNªIdentifierÍ²Íµ£logÂÂ‘V§LiteralÍ¶ÍÃ·ğŸ” æœªæ‰¾åˆ°JWTä»¤ç‰Œ¹'ğŸ” æœªæ‰¾åˆ°JWTä»¤ç‰Œ'ÂZ¯ReturnStatementÍ×ÍãV§LiteralÍŞÍâÀ¤nullÀR³ExpressionStatementÍ Í\®CallExpressionÍ ÍT°MemberExpressionÍ ÍNªIdentifierÍ Í§consoleNªIdentifierÍÍ£logÂÂ‘V§LiteralÍÍÙ#ğŸ” æ‰¾åˆ°JWTä»¤ç‰Œï¼Œå¼€å§‹éªŒè¯Ù%'ğŸ” æ‰¾åˆ°JWTä»¤ç‰Œï¼Œå¼€å§‹éªŒè¯'ÂW«IfStatementÍHÍëX¯UnaryExpressionÍLÍi¡!Ã\®CallExpressionÍMÍiT°MemberExpressionÍMÍbNªIdentifierÍMÍT§JwtUtilNªIdentifierÍUÍb­isValidFormatÂÂ‘NªIdentifierÍcÍh¥tokenÂO®BlockStatementÍkÍë“R³ExpressionStatementÍ~Í˜\®CallExpressionÍ~Í—T°MemberExpressionÍ~Í‰NªIdentifierÍ~Í…§consoleNªIdentifierÍ†Í‰£logÂÂ‘V§LiteralÍŠÍ–´ğŸ” JWTæ ¼å¼æ— æ•ˆ¶'ğŸ” JWTæ ¼å¼æ— æ•ˆ'ÂR³ExpressionStatementÍªÍ¾Z¯AwaitExpressionÍªÍ½\®CallExpressionÍ°Í½T°MemberExpressionÍ°Í»U®ThisExpressionÍ°Í´NªIdentifierÍµÍ»¦logoutÂÂÂZ¯ReturnStatementÍĞÍÜV§LiteralÍ×ÍÛÀ¤nullÀW«IfStatementÍÍ¿\®CallExpressionÍÍ7T°MemberExpressionÍÍ0NªIdentifierÍÍ!§JwtUtilNªIdentifierÍ"Í0®isTokenExpiredÂÂ‘NªIdentifierÍ1Í6¥tokenÂO®BlockStatementÍ9Í¿“R³ExpressionStatementÍLÍl\®CallExpressionÍLÍkT°MemberExpressionÍLÍWNªIdentifierÍLÍS§consoleNªIdentifierÍTÍW£logÂÂ‘V§LiteralÍXÍjÙ&ğŸ” JWTå·²è¿‡æœŸï¼Œæ¸…é™¤æœ¬åœ°å­˜å‚¨Ù('ğŸ” JWTå·²è¿‡æœŸï¼Œæ¸…é™¤æœ¬åœ°å­˜å‚¨'ÂR³ExpressionStatementÍ~Í’Z¯AwaitExpressionÍ~Í‘\®CallExpressionÍ„Í‘T°MemberExpressionÍ„ÍU®ThisExpressionÍ„ÍˆNªIdentifierÍ‰Í¦logoutÂÂÂZ¯ReturnStatementÍ¤Í°V§LiteralÍ«Í¯À¤nullÀ^³VariableDeclarationÍìÍ‘_²VariableDeclaratorÍòÍNªIdentifierÍòÍø¦userId\®CallExpressionÍûÍT°MemberExpressionÍûÍNªIdentifierÍûÍ§JwtUtilNªIdentifierÍÍ²getUserIdFromTokenÂÂ‘NªIdentifierÍÍ¥tokenÂ¥constW«IfStatementÍ+Í¾X¯UnaryExpressionÍ/Í6¡!ÃNªIdentifierÍ0Í6¦userIdO®BlockStatementÍ8Í¾“R³ExpressionStatementÍKÍk\®CallExpressionÍKÍjT°MemberExpressionÍKÍVNªIdentifierÍKÍR§consoleNªIdentifierÍSÍV£logÂÂ‘V§LiteralÍWÍiÙ"ğŸ” æ— æ³•ä»JWTä¸­è§£æç”¨æˆ·IDÙ$'ğŸ” æ— æ³•ä»JWTä¸­è§£æç”¨æˆ·ID'ÂR³ExpressionStatementÍ}Í‘Z¯AwaitExpressionÍ}Í\®CallExpressionÍƒÍT°MemberExpressionÍƒÍU®ThisExpressionÍƒÍ‡NªIdentifierÍˆÍ¦logoutÂÂÂZ¯ReturnStatementÍ£Í¯V§LiteralÍªÍ®À¤nullÀR³ExpressionStatementÍÌÍô\®CallExpressionÍÌÍóT°MemberExpressionÍÌÍ×NªIdentifierÍÌÍÓ§consoleNªIdentifierÍÔÍ×£logÂÂ’V§LiteralÍØÍêÙ ğŸ” ä»JWTä¸­è§£æåˆ°ç”¨æˆ·ID:Ù"'ğŸ” ä»JWTä¸­è§£æåˆ°ç”¨æˆ·ID:'NªIdentifierÍìÍò¦userIdÂ^³VariableDeclarationÍ)Í:‘_²VariableDeclaratorÍ-Í9NªIdentifierÍ-Í4§accountV§LiteralÍ7Í9 ¢''£let[¬TryStatementÍHÍõO®BlockStatementÍLÍ•’^³VariableDeclarationÍ_Íª‘_²VariableDeclaratorÍeÍ©NªIdentifierÍeÍl§userStrZ¯AwaitExpressionÍoÍ©R¯ChainExpressionÍuÍ©\®CallExpressionÍuÍ©T°MemberExpressionÍuÍT°MemberExpressionÍuÍ‰U®ThisExpressionÍuÍyNªIdentifierÍzÍ‰¯dataPreferencesÂÂNªIdentifierÍ‹Í£getÂÃ’T°MemberExpressionÍÍ¤U®ThisExpressionÍÍ“NªIdentifierÍ”Í¤°CURRENT_USER_KEYÂÂV§LiteralÍ¦Í¨ ¢''Â¥constW«IfStatementÍ¼Í†b±LogicalExpressionÍÀÍøb±LogicalExpressionÍÀÍæNªIdentifierÍÀÍÇ§userStr¢&&b°BinaryExpressionÍËÍæX¯UnaryExpressionÍËÍÙ¦typeofÃNªIdentifierÍÒÍÙ§userStr£===V§LiteralÍŞÍæ¦string¨'string'¢&&b°BinaryExpressionÍêÍøNªIdentifierÍêÍñ§userStr£!==V§LiteralÍöÍø ¢''O®BlockStatementÍúÍ†’^³VariableDeclarationÍÍ<‘_²VariableDeclaratorÍÍ;NªIdentifierÍÍ%®cachedUserInfo\®CallExpressionÍ(Í;T°MemberExpressionÍ(Í2NªIdentifierÍ(Í,¤JSONNªIdentifierÍ-Í2¥parseÂÂ‘NªIdentifierÍ3Í:§userStrÂ¥constR³ExpressionStatementÍRÍsS´AssignmentExpressionÍRÍr¡=NªIdentifierÍRÍY§accountT°MemberExpressionÍ\ÍrNªIdentifierÍ\Íj®cachedUserInfoNªIdentifierÍkÍr§accountÂÂÀ]«CatchClauseÍ£ÍõNªIdentifierÍªÍ­£errO®BlockStatementÍ¯Íõ‘R³ExpressionStatementÍÂÍæ\®CallExpressionÍÂÍåT°MemberExpressionÍÂÍÍNªIdentifierÍÂÍÉ§consoleNªIdentifierÍÊÍÍ£logÂÂ‘V§LiteralÍÎÍäÙ8ğŸ” æ— æ³•ä»ç¼“å­˜è·å–è´¦å·ä¿¡æ¯ï¼Œä½¿ç”¨é»˜è®¤å€¼Ù:'ğŸ” æ— æ³•ä»ç¼“å­˜è·å–è´¦å·ä¿¡æ¯ï¼Œä½¿ç”¨é»˜è®¤å€¼'ÂÀ^³VariableDeclarationÍÍÍ‘_²VariableDeclaratorÍ#ÍÌNªIdentifierÍ#Í+¨userInfo`°ObjectExpressionÍ.ÍÌ“a¨PropertyÍAÍeÂÂÂNªIdentifierÍAÍH§accountb±LogicalExpressionÍJÍeNªIdentifierÍJÍQ§account¢||c¯TemplateLiteralÍUÍe‘NªIdentifierÍ]Íc¦userId’d¯TemplateElementÍVÍ[e¥user_¥user_Âd¯TemplateElementÍdÍde  Ã¤inita¨PropertyÍxÍ„ÂÂÂNªIdentifierÍxÍ€¨passwordV§LiteralÍ‚Í„ ¢''¤inita¨PropertyÍ—Í®ÂÂÂNªIdentifierÍ—ÍŸ¨usernamec¯TemplateLiteralÍ¡Í®‘NªIdentifierÍ¦Í¬¦userId’d¯TemplateElementÍ¢Í¤e¦ç”¨æˆ·¦ç”¨æˆ·Âd¯TemplateElementÍ­Í­e  Ã¤init¥const[¬TryStatementÍüÍÉO®BlockStatementÍ Ía“R³ExpressionStatementÍÍ3\®CallExpressionÍÍ2T°MemberExpressionÍÍNªIdentifierÍÍ§consoleNªIdentifierÍÍ£logÂÂ‘V§LiteralÍÍ1Ù&ğŸ” å°è¯•ä»JWTä¸­è·å–ç”¨æˆ·æ˜µç§°Ù('ğŸ” å°è¯•ä»JWTä¸­è·å–ç”¨æˆ·æ˜µç§°'Â^³VariableDeclarationÍEÍz‘_²VariableDeclaratorÍKÍyNªIdentifierÍKÍS¨userName\®CallExpressionÍVÍyT°MemberExpressionÍVÍrNªIdentifierÍVÍ]§JwtUtilNªIdentifierÍ^Ír´getUserNameFromTokenÂÂ‘NªIdentifierÍsÍx¥tokenÂ¥constW«IfStatementÍŒÍRNªIdentifierÍÍ˜¨userNameO®BlockStatementÍšÍò”R³ExpressionStatementÍ±ÍÎS´AssignmentExpressionÍ±ÍÍ¡=T°MemberExpressionÍ±ÍÂNªIdentifierÍ±Í¹¨userInfoNªIdentifierÍºÍÂ¨usernameÂÂNªIdentifierÍÅÍÍ¨userNameR³ExpressionStatementÍñÍ\®CallExpressionÍñÍT°MemberExpressionÍñÍüNªIdentifierÍñÍø§consoleNªIdentifierÍùÍü£logÂÂ’V§LiteralÍıÍÙ#âœ… ä»JWTä¸­è·å–åˆ°ç”¨æˆ·æ˜µç§°:Ù%'âœ… ä»JWTä¸­è·å–åˆ°ç”¨æˆ·æ˜µç§°:'NªIdentifierÍÍ¨userNameÂR³ExpressionStatementÍTÍ¥Z¯AwaitExpressionÍTÍ¤R¯ChainExpressionÍZÍ¤\®CallExpressionÍZÍ¤T°MemberExpressionÍZÍsT°MemberExpressionÍZÍnU®ThisExpressionÍZÍ^NªIdentifierÍ_Ín¯dataPreferencesÂÂNªIdentifierÍpÍs£putÂÃ’T°MemberExpressionÍtÍ‰U®ThisExpressionÍtÍxNªIdentifierÍyÍ‰°CURRENT_USER_KEYÂÂ\®CallExpressionÍ‹Í£T°MemberExpressionÍ‹Í™NªIdentifierÍ‹Í¤JSONNªIdentifierÍÍ™©stringifyÂÂ‘NªIdentifierÍšÍ¢¨userInfoÂÂR³ExpressionStatementÍ»ÍßZ¯AwaitExpressionÍ»ÍŞR¯ChainExpressionÍÁÍŞ\®CallExpressionÍÁÍŞT°MemberExpressionÍÁÍÜT°MemberExpressionÍÁÍÕU®ThisExpressionÍÁÍÅNªIdentifierÍÆÍÕ¯dataPreferencesÂÂNªIdentifierÍ×ÍÜ¥flushÂÃÂO®BlockStatementÍ	ÍR‘R³ExpressionStatementÍ Í?\®CallExpressionÍ Í>T°MemberExpressionÍ Í+NªIdentifierÍ Í'§consoleNªIdentifierÍ(Í+£logÂÂ‘V§LiteralÍ,Í=Ù#ğŸ” JWTä¸­æ²¡æœ‰ç”¨æˆ·æ˜µç§°ä¿¡æ¯Ù%'ğŸ” JWTä¸­æ²¡æœ‰ç”¨æˆ·æ˜µç§°ä¿¡æ¯'Â]«CatchClauseÍoÍÉNªIdentifierÍvÍy£errO®BlockStatementÍ{ÍÉ‘R³ExpressionStatementÍÍº\®CallExpressionÍÍ¹T°MemberExpressionÍÍ™NªIdentifierÍÍ•§consoleNªIdentifierÍ–Í™£logÂÂ’V§LiteralÍšÍ³Ù9ğŸ” ä»JWTè·å–ç”¨æˆ·æ˜µç§°å¤±è´¥ï¼Œä½¿ç”¨é»˜è®¤æ˜µç§°:Ù;'ğŸ” ä»JWTè·å–ç”¨æˆ·æ˜µç§°å¤±è´¥ï¼Œä½¿ç”¨é»˜è®¤æ˜µç§°:'NªIdentifierÍµÍ¸£errÂÀR³ExpressionStatementÍ×Í\®CallExpressionÍ×Í T°MemberExpressionÍ×ÍâNªIdentifierÍ×ÍŞ§consoleNªIdentifierÍßÍâ£logÂÂ’V§LiteralÍãÍõÙ&âœ… ä»JWTä¸­è·å–ç”¨æˆ·ä¿¡æ¯æˆåŠŸ:Ù('âœ… ä»JWTä¸­è·å–ç”¨æˆ·ä¿¡æ¯æˆåŠŸ:'NªIdentifierÍ÷Íÿ¨userInfoÂZ¯ReturnStatementÍÍNªIdentifierÍÍ¨userInfo]«CatchClauseÍ4ÍøNªIdentifierÍ;Í>£errO®BlockStatementÍ@Íø“R³ExpressionStatementÍOÍ’\®CallExpressionÍOÍ‘T°MemberExpressionÍOÍ\NªIdentifierÍOÍV§consoleNªIdentifierÍWÍ\¥errorÂÂ’V§LiteralÍ]Í‹Ù@âŒ UserManager.getCurrentUser - ä»JWTè·å–ç”¨æˆ·ä¿¡æ¯å¤±è´¥:ÙB'âŒ UserManager.getCurrentUser - ä»JWTè·å–ç”¨æˆ·ä¿¡æ¯å¤±è´¥:'NªIdentifierÍÍ£errÂR³ExpressionStatementÍ¿ÍÓZ¯AwaitExpressionÍ¿ÍÒ\®CallExpressionÍÅÍÒT°MemberExpressionÍÅÍĞU®ThisExpressionÍÅÍÉNªIdentifierÍÊÍĞ¦logoutÂÂÂZ¯ReturnStatementÍáÍíV§LiteralÍèÍìÀ¤nullÀP°MethodDefinitionÍÍ²ÂÂNªIdentifierÍÍ¦logout¦methodQ²FunctionExpressionÍÍ²ÀÂÂÃO®BlockStatementÍ!Í²’W«IfStatementÍ,Í~X¯UnaryExpressionÍ0ÍE¡!ÃT°MemberExpressionÍ1ÍEU®ThisExpressionÍ1Í5NªIdentifierÍ6ÍE¯dataPreferencesÂÂO®BlockStatementÍGÍ~‘R³ExpressionStatementÍVÍsZ¯AwaitExpressionÍVÍr\®CallExpressionÍ\ÍrT°MemberExpressionÍ\ÍpU®ThisExpressionÍ\Í`NªIdentifierÍaÍp¯initPreferencesÂÂÂÀ[¬TryStatementÍˆÍ«O®BlockStatementÍŒÍS“R³ExpressionStatementÍ›ÍÕZ¯AwaitExpressionÍ›ÍÔR¯ChainExpressionÍ¡ÍÔ\®CallExpressionÍ¡ÍÔT°MemberExpressionÍ¡Í½T°MemberExpressionÍ¡ÍµU®ThisExpressionÍ¡Í¥NªIdentifierÍ¦Íµ¯dataPreferencesÂÂNªIdentifierÍ·Í½¦deleteÂÃ‘T°MemberExpressionÍ¾ÍÓU®ThisExpressionÍ¾ÍÂNªIdentifierÍÃÍÓ°CURRENT_USER_KEYÂÂÂR³ExpressionStatementÍãÍZ¯AwaitExpressionÍãÍR¯ChainExpressionÍéÍ\®CallExpressionÍéÍT°MemberExpressionÍéÍT°MemberExpressionÍéÍıU®ThisExpressionÍéÍíNªIdentifierÍîÍı¯dataPreferencesÂÂNªIdentifierÍÿÍ¦deleteÂÃ‘T°MemberExpressionÍÍU®ThisExpressionÍÍ
+NªIdentifierÍÍ©TOKEN_KEYÂÂÂR³ExpressionStatementÍ$ÍHZ¯AwaitExpressionÍ$ÍGR¯ChainExpressionÍ*ÍG\®CallExpressionÍ*ÍGT°MemberExpressionÍ*ÍET°MemberExpressionÍ*Í>U®ThisExpressionÍ*Í.NªIdentifierÍ/Í>¯dataPreferencesÂÂNªIdentifierÍ@ÍE¥flushÂÃÂ]«CatchClauseÍ]Í«NªIdentifierÍdÍg£errO®BlockStatementÍiÍ«‘R³ExpressionStatementÍxÍ \®CallExpressionÍxÍŸT°MemberExpressionÍxÍ…NªIdentifierÍxÍ§consoleNªIdentifierÍ€Í…¥errorÂÂ’V§LiteralÍ†Í™±Failed to logout:³'Failed to logout:'NªIdentifierÍ›Í£errÂÀP°MethodDefinitionÍÇÍ ÂÂNªIdentifierÍÍÍÛ®updateUserInfo¦methodQ²FunctionExpressionÍÛÍ ÀÂÂÃ‘NªIdentifierÍÜÍç«updatedUserO®BlockStatementÍéÍ ’W«IfStatementÍôÍFX¯UnaryExpressionÍøÍ¡!ÃT°MemberExpressionÍùÍU®ThisExpressionÍùÍıNªIdentifierÍşÍ¯dataPreferencesÂÂO®BlockStatementÍÍF‘R³ExpressionStatementÍÍ;Z¯AwaitExpressionÍÍ:\®CallExpressionÍ$Í:T°MemberExpressionÍ$Í8U®ThisExpressionÍ$Í(NªIdentifierÍ)Í8¯initPreferencesÂÂÂÀ[¬TryStatementÍPÍ 
+O®BlockStatementÍTÍ”^³VariableDeclarationÍcÍ‘_²VariableDeclaratorÍiÍŒNªIdentifierÍiÍq¨allUsersZ¯AwaitExpressionÍtÍŒ\®CallExpressionÍzÍŒT°MemberExpressionÍzÍŠU®ThisExpressionÍzÍ~NªIdentifierÍÍŠ«getAllUsersÂÂÂ¥const^³VariableDeclarationÍ›Íê‘_²VariableDeclaratorÍ¡ÍéNªIdentifierÍ¡Íª©userIndex\®CallExpressionÍ­ÍéT°MemberExpressionÍ­Í¿NªIdentifierÍ­Íµ¨allUsersNªIdentifierÍ¶Í¿©findIndexÂÂ‘Q·ArrowFunctionExpressionÍÀÍèÀÃÂÂ‘NªIdentifierÍÁÍÂ¡ub°BinaryExpressionÍÇÍèT°MemberExpressionÍÇÍĞNªIdentifierÍÇÍÈ¡uNªIdentifierÍÉÍĞ§accountÂÂ£===T°MemberExpressionÍÕÍèNªIdentifierÍÕÍà«updatedUserNªIdentifierÍáÍè§accountÂÂÂ¥constW«IfStatementÍøÍgb°BinaryExpressionÍüÍNªIdentifierÍüÍ©userIndex£!==X¯UnaryExpressionÍ
+Í¡-ÃV§LiteralÍÍ¡1O®BlockStatementÍÍg•R³ExpressionStatementÍ!ÍCS´AssignmentExpressionÍ!ÍB¡=T°MemberExpressionÍ!Í4NªIdentifierÍ!Í)¨allUsersNªIdentifierÍ*Í3©userIndexÃÂNªIdentifierÍ7ÍB«updatedUserR³ExpressionStatementÍUÍZ¯AwaitExpressionÍUÍR¯ChainExpressionÍ[Í\®CallExpressionÍ[ÍT°MemberExpressionÍ[ÍtT°MemberExpressionÍ[ÍoU®ThisExpressionÍ[Í_NªIdentifierÍ`Ío¯dataPreferencesÂÂNªIdentifierÍqÍt£putÂÃ’T°MemberExpressionÍuÍ‚U®ThisExpressionÍuÍyNªIdentifierÍzÍ‚¨USER_KEYÂÂ\®CallExpressionÍ„ÍœT°MemberExpressionÍ„Í’NªIdentifierÍ„Íˆ¤JSONNªIdentifierÍ‰Í’©stringifyÂÂ‘NªIdentifierÍ“Í›¨allUsersÂÂR³ExpressionStatementÍ°ÍZ¯AwaitExpressionÍ°ÍR¯ChainExpressionÍ¶Í\®CallExpressionÍ¶ÍT°MemberExpressionÍ¶ÍÏT°MemberExpressionÍ¶ÍÊU®ThisExpressionÍ¶ÍºNªIdentifierÍ»ÍÊ¯dataPreferencesÂÂNªIdentifierÍÌÍÏ£putÂÃ’T°MemberExpressionÍĞÍåU®ThisExpressionÍĞÍÔNªIdentifierÍÕÍå°CURRENT_USER_KEYÂÂ\®CallExpressionÍçÍT°MemberExpressionÍçÍõNªIdentifierÍçÍë¤JSONNªIdentifierÍìÍõ©stringifyÂÂ‘NªIdentifierÍöÍ«updatedUserÂÂR³ExpressionStatementÍÍ:Z¯AwaitExpressionÍÍ9R¯ChainExpressionÍÍ9\®CallExpressionÍÍ9T°MemberExpressionÍÍ7T°MemberExpressionÍÍ0U®ThisExpressionÍÍ NªIdentifierÍ!Í0¯dataPreferencesÂÂNªIdentifierÍ2Í7¥flushÂÃÂZ¯ReturnStatementÍLÍXV§LiteralÍSÍWÃ¤trueÀZ¯ReturnStatementÍuÍ‚V§LiteralÍ|ÍÂ¥false]«CatchClauseÍ—Í 
+NªIdentifierÍÍ¡£errO®BlockStatementÍ£Í 
+’R³ExpressionStatementÍ²Íä\®CallExpressionÍ²ÍãT°MemberExpressionÍ²Í¿NªIdentifierÍ²Í¹§consoleNªIdentifierÍºÍ¿¥errorÂÂ’V§LiteralÍÀÍİ»Failed to update user info:½'Failed to update user info:'NªIdentifierÍßÍâ£errÂZ¯ReturnStatementÍòÍÿV§LiteralÍùÍşÂ¥falseÀP°MethodDefinitionÍ ,Í!WÂÂNªIdentifierÍ 2Í =«getAllUsers¦methodQ²FunctionExpressionÍ =Í!WÀÂÂÃO®BlockStatementÍ @Í!W‘[¬TryStatementÍ KÍ!PO®BlockStatementÍ OÍ Ù’^³VariableDeclarationÍ ^Í ¤‘_²VariableDeclaratorÍ dÍ £NªIdentifierÍ dÍ l¨usersStrZ¯AwaitExpressionÍ oÍ £R¯ChainExpressionÍ uÍ £\®CallExpressionÍ uÍ £T°MemberExpressionÍ uÍ T°MemberExpressionÍ uÍ ‰U®ThisExpressionÍ uÍ yNªIdentifierÍ zÍ ‰¯dataPreferencesÂÂNªIdentifierÍ ‹Í £getÂÃ’T°MemberExpressionÍ Í œU®ThisExpressionÍ Í “NªIdentifierÍ ”Í œ¨USER_KEYÂÂV§LiteralÍ Í ¢¢[]¤'[]'Â¥constZ¯ReturnStatementÍ ²Í Î\®CallExpressionÍ ¹Í ÍT°MemberExpressionÍ ¹Í ÃNªIdentifierÍ ¹Í ½¤JSONNªIdentifierÍ ¾Í Ã¥parseÂÂ‘NªIdentifierÍ ÄÍ Ì¨usersStrÂ]«CatchClauseÍ ãÍ!PNªIdentifierÍ êÍ í£errO®BlockStatementÍ ïÍ!P’R³ExpressionStatementÍ şÍ!-\®CallExpressionÍ şÍ!,T°MemberExpressionÍ şÍ!NªIdentifierÍ şÍ!§consoleNªIdentifierÍ!Í!¥errorÂÂ’V§LiteralÍ!Í!&¸Failed to get all users:º'Failed to get all users:'NªIdentifierÍ!(Í!+£errÂZ¯ReturnStatementÍ!;Í!Ef¯ArrayExpressionÍ!BÍ!DÀP°MethodDefinitionÍ!mÍ$(ÂÂNªIdentifierÍ!sÍ!{¨getToken¦methodQ²FunctionExpressionÍ!{Í$(ÀÂÂÃO®BlockStatementÍ!~Í$(’W«IfStatementÍ!‰Í!ÛX¯UnaryExpressionÍ!Í!¢¡!ÃT°MemberExpressionÍ!Í!¢U®ThisExpressionÍ!Í!’NªIdentifierÍ!“Í!¢¯dataPreferencesÂÂO®BlockStatementÍ!¤Í!Û‘R³ExpressionStatementÍ!³Í!ĞZ¯AwaitExpressionÍ!³Í!Ï\®CallExpressionÍ!¹Í!ÏT°MemberExpressionÍ!¹Í!ÍU®ThisExpressionÍ!¹Í!½NªIdentifierÍ!¾Í!Í¯initPreferencesÂÂÂÀ[¬TryStatementÍ!åÍ$!O®BlockStatementÍ!éÍ#¬”^³VariableDeclarationÍ!øÍ":‘_²VariableDeclaratorÍ!şÍ"9NªIdentifierÍ!şÍ"¥tokenZ¯AwaitExpressionÍ"Í"9R¯ChainExpressionÍ"Í"9\®CallExpressionÍ"Í"9T°MemberExpressionÍ"Í"%T°MemberExpressionÍ"Í" U®ThisExpressionÍ"Í"NªIdentifierÍ"Í" ¯dataPreferencesÂÂNªIdentifierÍ""Í"%£getÂÃ’T°MemberExpressionÍ"&Í"4U®ThisExpressionÍ"&Í"*NªIdentifierÍ"+Í"4©TOKEN_KEYÂÂV§LiteralÍ"6Í"8 ¢''Â¥constR³ExpressionStatementÍ"HÍ"\®CallExpressionÍ"HÍ"œT°MemberExpressionÍ"HÍ"SNªIdentifierÍ"HÍ"O§consoleNªIdentifierÍ"PÍ"S£logÂÂ’V§LiteralÍ"TÍ"Ù?ğŸ§ª è°ƒè¯•: UserManager.getToken è¯»å–åˆ° token æ˜¯å¦ä¸ºç©º:ÙA'ğŸ§ª è°ƒè¯•: UserManager.getToken è¯»å–åˆ° token æ˜¯å¦ä¸ºç©º:'X¯UnaryExpressionÍ"ƒÍ"›¡!Ãb±LogicalExpressionÍ"…Í"šNªIdentifierÍ"…Í"Š¥token¢&&b°BinaryExpressionÍ"Í"šNªIdentifierÍ"Í"“¥token£!==V§LiteralÍ"˜Í"š ¢''ÂW«IfStatementÍ"«Í#‡b±LogicalExpressionÍ"¯Í"ÄNªIdentifierÍ"¯Í"´¥token¢&&b°BinaryExpressionÍ"¸Í"ÄNªIdentifierÍ"¸Í"½¥token£!==V§LiteralÍ"ÂÍ"Ä ¢''O®BlockStatementÍ"ÆÍ#‡“^³VariableDeclarationÍ"üÍ#‘_²VariableDeclaratorÍ#Í#NªIdentifierÍ#Í#¡tNªIdentifierÍ#Í#¥token¥constR³ExpressionStatementÍ#Í#]\®CallExpressionÍ#Í#\T°MemberExpressionÍ#Í#)NªIdentifierÍ#Í#%§consoleNªIdentifierÍ#&Í#)£logÂÂ’V§LiteralÍ#*Í#QÙ/ğŸ§ª è°ƒè¯•: UserManager.getToken token é•¿åº¦:Ù1'ğŸ§ª è°ƒè¯•: UserManager.getToken token é•¿åº¦:'T°MemberExpressionÍ#SÍ#[NªIdentifierÍ#SÍ#T¡tNªIdentifierÍ#UÍ#[¦lengthÂÂÂZ¯ReturnStatementÍ#oÍ#xNªIdentifierÍ#vÍ#w¡tÀZ¯ReturnStatementÍ#•Í#¡V§LiteralÍ#œÍ# À¤null]«CatchClauseÍ#¶Í$!NªIdentifierÍ#½Í#À£errO®BlockStatementÍ#ÂÍ$!’R³ExpressionStatementÍ#ÑÍ#ü\®CallExpressionÍ#ÑÍ#ûT°MemberExpressionÍ#ÑÍ#ŞNªIdentifierÍ#ÑÍ#Ø§consoleNªIdentifierÍ#ÙÍ#Ş¥errorÂÂ’V§LiteralÍ#ßÍ#õ´Failed to get token:¶'Failed to get token:'NªIdentifierÍ#÷Í#ú£errÂZ¯ReturnStatementÍ$
+Í$V§LiteralÍ$Í$À¤nullÀP°MethodDefinitionÍ$CÍ%"ÂÂNªIdentifierÍ$IÍ$W®getAuthHeaders¦methodQ²FunctionExpressionÍ$WÍ%"ÀÂÂÃO®BlockStatementÍ$ZÍ%"”^³VariableDeclarationÍ$eÍ$‰‘_²VariableDeclaratorÍ$kÍ$ˆNªIdentifierÍ$kÍ$p¥tokenZ¯AwaitExpressionÍ$sÍ$ˆ\®CallExpressionÍ$yÍ$ˆT°MemberExpressionÍ$yÍ$†U®ThisExpressionÍ$yÍ$}NªIdentifierÍ$~Í$†¨getTokenÂÂÂ¥const^³VariableDeclarationÍ$“Í$¦‘_²VariableDeclaratorÍ$™Í$¥NªIdentifierÍ$™Í$ §headers`°ObjectExpressionÍ$£Í$¥¥constW«IfStatementÍ$°Í%NªIdentifierÍ$´Í$¹¥tokenO®BlockStatementÍ$»Í%‘R³ExpressionStatementÍ$ÊÍ$÷S´AssignmentExpressionÍ$ÊÍ$ö¡=T°MemberExpressionÍ$ÊÍ$âNªIdentifierÍ$ÊÍ$Ñ§headersV§LiteralÍ$ÒÍ$á­Authorization¯'Authorization'ÃÂc¯TemplateLiteralÍ$åÍ$ö‘NªIdentifierÍ$ïÍ$ô¥token’d¯TemplateElementÍ$æÍ$íe§Bearer §Bearer Âd¯TemplateElementÍ$õÍ$õe  ÃÀZ¯ReturnStatementÍ%Í%NªIdentifierÍ%Í%§headersP°MethodDefinitionÍ%9Í&ÈÂÂNªIdentifierÍ%?Í%L­validateToken¦methodQ²FunctionExpressionÍ%LÍ&ÈÀÂÂÃO®BlockStatementÍ%OÍ&È‘[¬TryStatementÍ%ZÍ&ÁO®BlockStatementÍ%^Í&S“^³VariableDeclarationÍ%mÍ%‘‘_²VariableDeclaratorÍ%sÍ%NªIdentifierÍ%sÍ%x¥tokenZ¯AwaitExpressionÍ%{Í%\®CallExpressionÍ%Í%T°MemberExpressionÍ%Í%U®ThisExpressionÍ%Í%…NªIdentifierÍ%†Í%¨getTokenÂÂÂ¥constW«IfStatementÍ%ŸÍ%ÚX¯UnaryExpressionÍ%£Í%©¡!ÃNªIdentifierÍ%¤Í%©¥tokenO®BlockStatementÍ%«Í%Ú‘Z¯ReturnStatementÍ%¾Í%ËV§LiteralÍ%ÅÍ%ÊÂ¥falseÀZ¯ReturnStatementÍ&Í&Hb±LogicalExpressionÍ&	Í&G\®CallExpressionÍ&	Í&%T°MemberExpressionÍ&	Í&NªIdentifierÍ&	Í&§JwtUtilNªIdentifierÍ&Í&­isValidFormatÂÂ‘NªIdentifierÍ&Í&$¥tokenÂ¢&&X¯UnaryExpressionÍ&)Í&G¡!Ã\®CallExpressionÍ&*Í&GT°MemberExpressionÍ&*Í&@NªIdentifierÍ&*Í&1§JwtUtilNªIdentifierÍ&2Í&@®isTokenExpiredÂÂ‘NªIdentifierÍ&AÍ&F¥tokenÂ]«CatchClauseÍ&]Í&ÁNªIdentifierÍ&dÍ&i¥errorO®BlockStatementÍ&kÍ&Á’R³ExpressionStatementÍ&zÍ&›\®CallExpressionÍ&zÍ&šT°MemberExpressionÍ&zÍ&‡NªIdentifierÍ&zÍ&§consoleNªIdentifierÍ&‚Í&‡¥errorÂÂ’V§LiteralÍ&ˆÍ&’°JWTéªŒè¯å¤±è´¥:²'JWTéªŒè¯å¤±è´¥:'NªIdentifierÍ&”Í&™¥errorÂZ¯ReturnStatementÍ&©Í&¶V§LiteralÍ&°Í&µÂ¥falseÀP°MethodDefinitionÍ&åÍ(AÂÂNªIdentifierÍ&ëÍ' µgetTokenRemainingTime¦methodQ²FunctionExpressionÍ' Í(AÀÂÂÃO®BlockStatementÍ'Í(A‘[¬TryStatementÍ'Í(:O®BlockStatementÍ'Í'Ë“^³VariableDeclarationÍ'!Í'E‘_²VariableDeclaratorÍ''Í'DNªIdentifierÍ''Í',¥tokenZ¯AwaitExpressionÍ'/Í'D\®CallExpressionÍ'5Í'DT°MemberExpressionÍ'5Í'BU®ThisExpressionÍ'5Í'9NªIdentifierÍ':Í'B¨getTokenÂÂÂ¥constW«IfStatementÍ'SÍ'‹X¯UnaryExpressionÍ'WÍ']¡!ÃNªIdentifierÍ'XÍ']¥tokenO®BlockStatementÍ'_Í'‹‘Z¯ReturnStatementÍ'rÍ'|X¯UnaryExpressionÍ'yÍ'{¡-ÃV§LiteralÍ'zÍ'{¡1ÀZ¯ReturnStatementÍ'™Í'À\®CallExpressionÍ' Í'¿T°MemberExpressionÍ' Í'¸NªIdentifierÍ' Í'§§JwtUtilNªIdentifierÍ'¨Í'¸°getRemainingTimeÂÂ‘NªIdentifierÍ'¹Í'¾¥tokenÂ]«CatchClauseÍ'ÕÍ(:NªIdentifierÍ'ÜÍ'á¥errorO®BlockStatementÍ'ãÍ(:’R³ExpressionStatementÍ'òÍ(\®CallExpressionÍ'òÍ(T°MemberExpressionÍ'òÍ'ÿNªIdentifierÍ'òÍ'ù§consoleNªIdentifierÍ'úÍ'ÿ¥errorÂÂ’V§LiteralÍ( Í(¼è·å–JWTå‰©ä½™æ—¶é—´å¤±è´¥:¾'è·å–JWTå‰©ä½™æ—¶é—´å¤±è´¥:'NªIdentifierÍ(Í(¥errorÂZ¯ReturnStatementÍ(%Í(/X¯UnaryExpressionÍ(,Í(.¡-ÃV§LiteralÍ(-Í(.¡1ÀÀ”Ôrg•¤type¥start£endªspecifiers¦source±ImportDeclarationÍ\Í‘Ôrh”¤type¥start£end¥local¶ImportDefaultSpecifierÍcÍnNªIdentifierÍcÍn«preferencesV§LiteralÍtÍŒ¶@ohos.data.preferences¸"@ohos.data.preferences"g±ImportDeclarationÍÍ½‘h¶ImportDefaultSpecifierÍ–Í¢NªIdentifierÍ–Í¢¬promptActionV§LiteralÍ¨Í¼²@ohos.promptAction´"@ohos.promptAction"g±ImportDeclarationÍ¿Íë’Ôri•¤type¥start£end¨imported¥local¯ImportSpecifierÍÈÍÑNªIdentifierÍÈÍÑ©HttpUtilsNªIdentifierÍÈÍÑ©HttpUtilsi¯ImportSpecifierÍÓÍÛNªIdentifierÍÓÍÛ¨withBaseNªIdentifierÍÓÍÛ¨withBaseV§LiteralÍãÍê¥utils§'utils'g±ImportDeclarationÍíÍ‘i¯ImportSpecifierÍöÍıNªIdentifierÍöÍı§JwtUtilNªIdentifierÍöÍı§JwtUtilV§LiteralÍÍ¥utils§'utils'

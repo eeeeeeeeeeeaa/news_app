@@ -32,7 +32,7 @@ export struct YourComponent {
         .onClick(async () => {
           const success: boolean = await this.followService.followNewsSimple(
             '新闻标题',
-            'news_uniquekey_123'
+            '新闻正文内容...'
           );
           
           if (success) {
@@ -53,24 +53,24 @@ export struct YourComponent {
 
 ## 3. 常用方法
 
-### 关注新闻（4种方式）
+### 关注新闻（3种方式）
 
 ```typescript
-// 方式1：最简单 - 只需标题和唯一标识
-await followService.followNewsSimple('标题', 'news_uniquekey_123');
+// 方式1：最简单 - 只需标题和正文
+await followService.followNewsSimple('标题', '正文');
 
-// 方式2：带作者信息
-await followService.followNewsWithAuthor('标题', 'news_uniquekey_123', '新华社');
+// 方式2：带图片
+await followService.followNewsWithImage('标题', '正文', 'https://image.url');
 
-// 方式3：完整参数（包含作者和时间）
-await followService.followNewsFull('标题', 'news_uniquekey_123', '人民日报', '2025-10-20T15:30:00');
+// 方式3：完整参数（包含新闻ID）
+await followService.followNewsFull('news_123', '标题', '正文', 'https://image.url');
 
 // 方式4：使用对象参数
 const request: FollowNewsRequest = {
   newsTitle: '标题',
-  newsUniquekey: 'news_uniquekey_123',
-  newsAuthor: '新华社',          // 可选
-  newsTime: '2025-10-20T15:30:00' // 可选
+  newsContent: '正文',
+  newsId: 'news_123',      // 可选
+  imageUrl: 'https://...'  // 可选
 };
 await followService.followNews(request);
 ```
@@ -80,25 +80,13 @@ await followService.followNews(request);
 ```typescript
 const newsList: FollowedNewsItem[] = await followService.getFollowedNewsList();
 
-// 遍历新闻列表（按关注时间倒序，越晚关注越靠前）
+// 遍历新闻列表
 newsList.forEach((news: FollowedNewsItem) => {
   console.log(news.newsTitle);      // 标题
-  console.log(news.newsUniquekey);  // 唯一标识
-  console.log(news.newsAuthor);     // 作者
-  console.log(news.newsTime);       // 新闻发布时间
+  console.log(news.newsContent);    // 正文
+  console.log(news.imageUrl);       // 图片URL
   console.log(news.followTime);     // 关注时间
 });
-```
-
-### 取消关注新闻
-
-```typescript
-// 根据新闻唯一标识取消关注
-const success: boolean = await followService.unfollowNews('news_uniquekey_123');
-
-if (success) {
-  console.log('已取消关注');
-}
 ```
 
 ## 4. 类型定义
@@ -108,9 +96,9 @@ if (success) {
 ```typescript
 interface FollowNewsRequest {
   newsTitle: string;      // 必填：新闻标题
-  newsUniquekey: string;  // 必填：新闻唯一标识
-  newsAuthor?: string;    // 可选：新闻发布者
-  newsTime?: string;      // 可选：新闻发布时间（ISO 8601格式）
+  newsContent: string;    // 必填：新闻正文
+  newsId?: string;        // 可选：新闻ID（不填则自动生成）
+  imageUrl?: string;      // 可选：图片URL
 }
 ```
 
@@ -120,10 +108,10 @@ interface FollowNewsRequest {
 interface FollowedNewsItem {
   followId: number;       // 关注记录ID
   userId: number;         // 用户ID
-  newsUniquekey: string;  // 新闻唯一标识
+  newsId: string;         // 新闻ID
   newsTitle: string;      // 新闻标题
-  newsTime?: string;      // 新闻发布时间
-  newsAuthor?: string;    // 新闻发布者
+  imageUrl?: string;      // 图片URL
+  newsContent?: string;   // 新闻正文
   followTime: string;     // 关注时间
 }
 ```
@@ -134,8 +122,6 @@ interface FollowedNewsItem {
 ✅ **自动错误提示** - 所有错误都会自动显示 Toast 提示  
 ✅ **返回值判断** - 关注方法返回 `boolean`，成功为 `true`  
 ✅ **类型安全** - 所有类型都已明确定义  
-✅ **必填参数** - `newsTitle` 和 `newsUniquekey` 是必填的  
-✅ **列表顺序** - 获取的关注列表按关注时间倒序，越晚关注越靠前  
 
 ## 6. 完整示例
 
@@ -146,54 +132,50 @@ import { NewsFollowService } from 'follows';
 
 @Component
 export struct NewsDetailPage {
-  @State newsUniquekey: string = '';
+  @State newsId: string = '';
   @State newsTitle: string = '';
-  @State newsAuthor: string = '';
-  @State newsTime: string = '';
+  @State newsContent: string = '';
+  @State newsImage: string = '';
   @State isFollowed: boolean = false;
   
   private followService: NewsFollowService = NewsFollowService.getInstance();
 
   build() {
     Column() {
+      // 新闻图片
+      if (this.newsImage) {
+        Image(this.newsImage)
+          .width('100%')
+          .height(200)
+      }
+
       // 新闻标题
       Text(this.newsTitle)
         .fontSize(20)
         .fontWeight(FontWeight.Bold)
         .margin(10)
 
-      // 新闻作者和时间
-      Text(`${this.newsAuthor} · ${this.newsTime}`)
-        .fontSize(12)
-        .fontColor('#999')
+      // 新闻正文
+      Text(this.newsContent)
+        .fontSize(14)
         .margin(10)
 
-      // 关注/取消关注按钮
-      Button(this.isFollowed ? '取消关注' : '关注')
+      // 关注按钮
+      Button(this.isFollowed ? '已关注' : '关注')
         .width('80%')
         .margin(20)
         .backgroundColor(this.isFollowed ? '#CCCCCC' : '#FF6B00')
         .onClick(async () => {
           if (!this.isFollowed) {
-            // 关注新闻
             const success: boolean = await this.followService.followNewsFull(
+              this.newsId,
               this.newsTitle,
-              this.newsUniquekey,
-              this.newsAuthor,
-              this.newsTime
+              this.newsContent,
+              this.newsImage
             );
             
             if (success) {
               this.isFollowed = true;
-            }
-          } else {
-            // 取消关注
-            const success: boolean = await this.followService.unfollowNews(
-              this.newsUniquekey
-            );
-            
-            if (success) {
-              this.isFollowed = false;
             }
           }
         })

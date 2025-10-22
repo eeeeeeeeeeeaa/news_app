@@ -173,7 +173,7 @@ export default class Mine extends ViewPU {
             this.currentUser = null;
             this.isLoggedIn = false;
             promptAction.showToast({
-                message: { "id": 16777272, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
+                message: { "id": 16777278, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
             });
             // 退出登录后调用回调函数
             setTimeout(() => {
@@ -254,11 +254,6 @@ export default class Mine extends ViewPU {
                     Text.pop();
                     // 右侧功能按钮
                     Row.pop();
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create('📱');
-                        Text.fontSize('16fp');
-                    }, Text);
-                    Text.pop();
                     // 用户信息头部区域
                     Row.pop();
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -308,24 +303,6 @@ export default class Mine extends ViewPU {
                         Text.margin({ right: '8vp' });
                     }, Text);
                     Text.pop();
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Row.create();
-                        Row.padding({ left: '6vp', right: '6vp', top: '2vp', bottom: '2vp' });
-                        Row.backgroundColor('#F5F5F5');
-                        Row.borderRadius('10vp');
-                    }, Row);
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create('⭐');
-                        Text.fontSize('12fp');
-                    }, Text);
-                    Text.pop();
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create('0枚');
-                        Text.fontSize('12fp');
-                        Text.fontColor('#666666');
-                    }, Text);
-                    Text.pop();
-                    Row.pop();
                     // 用户名和徽章
                     Row.pop();
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -360,9 +337,12 @@ export default class Mine extends ViewPU {
                     }, Blank);
                     Blank.pop();
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create('▶');
+                        Text.create('Logout');
                         Text.fontSize('14fp');
                         Text.fontColor('#999999');
+                        Text.onClick(() => {
+                            this.logout();
+                        });
                     }, Text);
                     Text.pop();
                     // 用户头像和基本信息

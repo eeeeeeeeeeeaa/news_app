@@ -2,2287 +2,11 @@
   "runtimeOS": "HarmonyOS",
   "sdkInfo": "false:18:5.1.0.110:Release",
   "fileList": {
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityConstant.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Ability.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.EnvironmentCallback.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Ability.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityConstant.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.rpc.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityLifecycleCallback.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\abilityResult.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.unifiedDataChannel.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.ability.featureAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\startAbilityParameter.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.dialogRequest.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\embedded_component.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.hilog.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\BaseContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.ConfigurationConstant.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityLifecycleCallback.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.ability.featureAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\folder_stack.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\navigation.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.rpc.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.resourceManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.mediaquery.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.observer.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.componentSnapshot.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.dragController.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.unifiedDataChannel.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityHelper.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.ability.featureAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.rdb.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimodalInput.pointer.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.appManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\HttpUtils.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.http.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.connection.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.socket.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.security.cert.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.security.cryptoFramework.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.print.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneResources.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\embedded_component.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\nav_destination.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\navigation.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\pattern_lock.d.ts"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets": {
-      "mtimeMs": 1760686853113.5947,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityConstant.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.hilog.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Ability.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityConstant.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Configuration.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\AbilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\abilityResult.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\connectOptions.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\HapModuleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.StartOptions.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.OpenLinkOptions.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Configuration.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.dialogRequest.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityConstant.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\AbilityStartCallback.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AtomicServiceOptions.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.ConfigurationConstant.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIServiceProxy.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIServiceExtensionConnectCallback.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.observer.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\EmbeddableUIAbilityContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.rpc.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\connectOptions.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Configuration.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.ConfigurationConstant.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Ability.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\AbilityStageContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.EnvironmentCallback.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.ConfigurationConstant.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Configuration.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIExtensionContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\AbilityInfo.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ApplicationInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\Metadata.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\Skill.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\HapModuleInfo.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\abilityResult.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.ability.featureAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\AbilityStartCallback.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\PhotoEditorExtensionContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\connectOptions.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ElementName.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.rpc.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.ability.featureAbility.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\HapModuleInfo.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\AbilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ExtensionAbilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\Metadata.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\BundleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\AbilityStageContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ApplicationInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.resourceManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\BaseContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\EventHub.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.contextConstant.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\AbilityStageContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.print.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.StartOptions.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.contextConstant.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AtomicServiceOptions.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.OpenLinkOptions.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIExtensionContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.colorSpaceManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.resourceManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.rpc.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.drawableDescriptor.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.drawing.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.componentSnapshot.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.unifiedDataChannel.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.StartOptions.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\PhotoEditorExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimodalInput.pointer.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.dialogRequest.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\AbilityStartCallback.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\abilityResult.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AtomicServiceOptions.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.StartOptions.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIExtensionContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIServiceProxy.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIExtensionContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIServiceExtensionConnectCallback.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIExtensionContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ApplicationInfo.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\Metadata.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\global\\resource.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\AbilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\BundleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ExtensionAbilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\Metadata.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\AbilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ApplicationInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\HapModuleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ExtensionAbilityInfo.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ApplicationInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\Metadata.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ElementName.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\AbilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\BundleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\HapModuleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ExtensionAbilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\Skill.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\AbilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ApplicationInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\BundleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\HapModuleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ExtensionAbilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.StartOptions.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ProcessInformation.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\Skill.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\AbilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ExtensionAbilityInfo.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\global\\resource.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ApplicationInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.resourceManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.drawing.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\units.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ElementName.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\connectOptions.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\BundleInfo.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ApplicationInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\HapModuleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ExtensionAbilityInfo.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ApplicationInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\Metadata.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\Skill.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\HapModuleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ExtensionContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.resourceManager.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\global\\rawFileDescriptor.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\global\\resource.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.drawableDescriptor.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\BaseContext.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.rdb.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\EventHub.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationContext.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityLifecycleCallback.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.EnvironmentCallback.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.ApplicationStateChangeCallback.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ProcessInformation.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.ConfigurationConstant.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.contextConstant.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.StartOptions.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\global\\rawFileDescriptor.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.resourceManager.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.drawableDescriptor.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.resourceManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\image.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.colorSpaceManager.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityLifecycleCallback.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.EnvironmentCallback.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityConstant.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Configuration.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.ApplicationStateChangeCallback.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ProcessInformation.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.appManager.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.appManager.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.font.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.mediaquery.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.inspector.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.observer.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.componentUtils.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.animator.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.animator.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.measure.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.componentSnapshot.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.dragController.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimodalInput.pointer.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\BuilderNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\FrameNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\ComponentContent.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\NodeController.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\XComponentNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\BuilderNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\BuilderNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\NodeController.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\FrameNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\FrameNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\RenderNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\XComponentNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Content.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\ComponentContent.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\NodeContent.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\content_slot.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\node_container.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.font.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.mediaquery.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.inspector.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.observer.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\action_sheet.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\alert_dialog.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\useregister.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\AuthHelper.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.componentUtils.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.animator.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.measure.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.componentSnapshot.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.dragController.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.unifiedDataChannel.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\AbilityStageContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\BaseContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\FormExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\EventHub.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityHelper.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\abilityResult.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\AbilityStartCallback.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\connectOptions.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\VpnExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\EmbeddableUIAbilityContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\PhotoEditorExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIServiceProxy.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIServiceExtensionConnectCallback.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimodalInput.pointer.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\BuilderNode.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\FrameNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\ComponentContent.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\XComponentNode.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\NodeController.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\FrameNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\FrameNode.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\RenderNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\ComponentContent.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\BuilderNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\NodeController.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\XComponentNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\NodeContent.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\canvas.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.drawing.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.common2D.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\global\\resource.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\BuilderNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\FrameNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\RenderNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\NodeController.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\particle.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\units.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\RenderNode.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\FrameNode.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\XComponentNode.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\BuilderNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\FrameNode.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Content.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\ComponentContent.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\NodeContent.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\ComponentContent.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\BuilderNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Content.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\FrameNode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\NodeContent.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Content.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\FrameNode.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.drawing.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.common2D.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\global\\resource.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\canvas.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\image.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.text.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.common2D.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.drawing.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.text.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.unifiedDataChannel.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.dragController.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIExtensionContext.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\abilityResult.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\connectOptions.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.StartOptions.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AtomicServiceOptions.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.OpenLinkOptions.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.ConfigurationConstant.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIServiceProxy.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIServiceExtensionConnectCallback.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\AbilityStageContext.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\HapModuleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Configuration.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ExtensionContext.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\HapModuleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Configuration.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundleManager\\ExtensionAbilityInfo.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\FormExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\VpnExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\PhotoEditorExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.file.BackupExtensionContext.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\FormExtensionContext.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ExtensionContext.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityHelper.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\data\\rdb\\resultSet.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityOperation.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityResult.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.dataAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.rdb.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.ability.featureAbility.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\VpnExtensionContext.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ExtensionContext.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\EmbeddableUIAbilityContext.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\PhotoEditorExtensionContext.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ExtensionContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\abilityResult.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\data\\rdb\\resultSet.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityHelper.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.rdb.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityOperation.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.ability.featureAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.dataAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.rdb.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityHelper.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityResult.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityHelper.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.dataAbility.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.rdb.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityHelper.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityOperation.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.rdb.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\data\\rdb\\resultSet.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\BaseContext.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityHelper.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityOperation.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.dataAbility.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.ability.featureAbility.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\startAbilityParameter.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\abilityResult.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\appVersionInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityHelper.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\connectOptions.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\processInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\dataAbilityOperation.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\ability\\startAbilityParameter.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.ability.featureAbility.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\appVersionInfo.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.ability.featureAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\context.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\context.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\applicationInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\processInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\elementName.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\BaseContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\hapModuleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\appVersionInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\abilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.ability.featureAbility.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\processInfo.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.ability.featureAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\context.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\applicationInfo.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\moduleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\customizeData.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\abilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\bundleInfo.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\elementName.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\context.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\hapModuleInfo.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\abilityInfo.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\bundleInfo.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\abilityInfo.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\applicationInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\customizeData.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\hapModuleInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\bundleInfo.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\applicationInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\abilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\bundleInfo.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\app\\context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\abilityInfo.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\moduleInfo.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\applicationInfo.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\customizeData.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\applicationInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\abilityInfo.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\bundleInfo.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\abilityInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\applicationInfo.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\bundle\\hapModuleInfo.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.appManager.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationStateObserver.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ProcessInformation.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ProcessInformation.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationStateObserver.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\AppStateData.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\AbilityStateData.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ProcessData.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.appManager.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\AppStateData.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationStateObserver.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\AbilityStateData.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationStateObserver.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ProcessData.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ApplicationStateObserver.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.application.BackupExtensionAbility.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.file.BackupExtensionContext.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets": {
-      "mtimeMs": 1760686853114.623,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.hilog.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.application.BackupExtensionAbility.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.application.BackupExtensionAbility.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.file.BackupExtensionContext.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\ExtensionContext.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.application.BackupExtensionAbility.d.ts"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\Index.ets": {
-      "mtimeMs": 1760787659507.9253,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonButton.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonInput.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonLoading.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonSearchBar.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video\\Index.ets": {
-      "mtimeMs": 1760686852833.2493,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\news\\Index.ets": {
-      "mtimeMs": 1760686852763.3938,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets": {
-      "mtimeMs": 1760881683475.3794,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\JwtManager.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\JwtManager.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\AuthHelper.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\AuthHelper.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\Index.ets": {
-      "mtimeMs": 1760686852754.9358,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets": {
-      "mtimeMs": 1760869195737.576,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.security.cert.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.print.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.netErrorList.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\web.d.ts",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets": {
-      "mtimeMs": 1760787659514.0232,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\main\\ets\\components\\CommonUtils.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\MainViewModel.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\HttpUtils.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\BaiduHotSearchParser.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\NewsHeadlineService.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\NewsApiConfig.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\BackendConfig.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\useregister.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets": {
-      "mtimeMs": 1760869195737.576,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\news\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\Index.ets"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonButton.ets": {
-      "mtimeMs": 1760787659509.239,
-      "children": [],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonInput.ets": {
-      "mtimeMs": 1760787659509.239,
-      "children": [],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonLoading.ets": {
-      "mtimeMs": 1760787659510.6829,
-      "children": [],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\src\\main\\ets\\components\\CommonSearchBar.ets": {
-      "mtimeMs": 1760795364449.9868,
-      "children": [],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets": {
-      "mtimeMs": 1760686852848.2458,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video\\src\\main\\ets\\view\\Video.ets": {
-      "mtimeMs": 1760686852848.2458,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\main\\ets\\components\\CommonUtils.ets": {
-      "mtimeMs": 1760787659515.451,
-      "children": [],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets": {
-      "mtimeMs": 1760787659516.7468,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\MainViewModel.ets": {
-      "mtimeMs": 1760787659447.819,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\ItemData.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\NewsData.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\BaiduHotSearchParser.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\HttpUtils.ets": {
-      "mtimeMs": 1760951840900.7463,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.http.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\BaiduHotSearchParser.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\NewsHeadlineService.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\BaiduHotSearchParser.ets": {
-      "mtimeMs": 1760787659444.8086,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\HttpUtils.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\MainViewModel.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\NewsHeadlineService.ets": {
-      "mtimeMs": 1760787659450.1619,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\HttpUtils.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\NewsApiConfig.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\NewsApiConfig.ets": {
-      "mtimeMs": 1760787659448.825,
-      "children": [],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\NewsHeadlineService.ets"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\BaseContext.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\JwtManager.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\ItemData.ets": {
-      "mtimeMs": 1760787659446.8108,
-      "children": [],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\MainViewModel.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\NewsData.ets": {
-      "mtimeMs": 1760787659448.825,
-      "children": [],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\MainViewModel.ets"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.http.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.connection.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\HttpUtils.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.connection.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.connection.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.http.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.socket.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.http.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.socket.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.socket.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.connection.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.security.cert.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.connection.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.security.cert.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.security.cryptoFramework.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.socket.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.security.cryptoFramework.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.security.cert.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.print.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.netErrorList.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets": {
-      "mtimeMs": 1760686852778.0244,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\Index.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\news\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets": {
-      "mtimeMs": 1760869195736.0645,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets": {
-      "mtimeMs": 1760787659409.18,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\useregister.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets": {
-      "mtimeMs": 1760956012171.4985,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\JwtManager.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\AuthHelper.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets": {
-      "mtimeMs": 1760869195736.5698,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine\\Index.ets"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\action_sheet.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\alert_dialog.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\canvas.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.drawing.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\FrameNode.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.uniformTypeDescriptor.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimodalInput.intentionCode.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\ImageModifier.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\SymbolGlyphModifier.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.shape.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.uiEffect.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.theme.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\with_theme.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\application\\Context.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimodalInput.pointer.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.unifiedDataChannel.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.unifiedDataChannel.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.uniformTypeDescriptor.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.unifiedDataChannel.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimodalInput.intentionCode.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\ImageModifier.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\SymbolGlyphModifier.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.shape.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.shape.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.shape.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.shape.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.observer.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.observer.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.observer.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.uiEffect.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.uiEffect.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\ComponentContent.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.theme.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.scene.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\ScenePostProcessSettings.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneTypes.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneResources.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneNodes.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\Scene.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\component3d.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\component3d.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.scene.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\ScenePostProcessSettings.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.scene.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneNodes.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneTypes.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.scene.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneResources.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneNodes.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\Scene.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneResources.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneTypes.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.scene.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneNodes.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\Scene.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneNodes.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneResources.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneTypes.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\ScenePostProcessSettings.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.scene.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\Scene.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\Scene.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneResources.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneNodes.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\graphics3d\\SceneTypes.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.scene.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\content_slot.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\embedded_component.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Want.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\folder_stack.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.matrix4.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\image.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\image.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.drawableDescriptor.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.drawing.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.drawing.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.matrix4.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\nav_destination.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\navigation.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\node_container.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\particle.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\pattern_lock.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\CommonModifier.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\tabs.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\tabs.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\CommonModifier.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.text.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.drawing.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.common2D.d.ts"
-      ],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\text_common.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\text_common.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.text.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.text.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.text.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.text.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.text.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.intl.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\time_picker.d.ts"
-      ],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\time_picker.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.intl.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\with_theme.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.theme.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\units.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\global\\resource.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\arkui\\Graphics.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\web.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\src\\BackendConfig.ets": {
-      "mtimeMs": 1760762503501.951,
-      "children": [],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\useregister.ets": {
-      "mtimeMs": 1760869195732.9998,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserService.ets": {
-      "mtimeMs": 1760869195732.9998,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        137,
-        28007
-      ]
-    },
     "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityConstant.d.ts": {
       "mtimeMs": 1750667349000,
       "children": [],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.Ability.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
@@ -2301,7 +25,7 @@
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityLifecycleCallback.d.ts"
       ],
@@ -2311,7 +35,7 @@
       "mtimeMs": 1750667349000,
       "children": [],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
@@ -2331,8 +55,8 @@
       "mtimeMs": 1750667349000,
       "children": [],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets"
       ],
       "error": false
     },
@@ -2348,7 +72,7 @@
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.node.d.ts"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityLifecycleCallback.d.ts",
@@ -2362,7 +86,7 @@
       "mtimeMs": 1750667349000,
       "children": [],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\application\\UIAbilityContext.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.bundle.bundleManager.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.rpc.d.ts",
@@ -2388,7 +112,7 @@
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimodalInput.pointer.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.appManager.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\HttpUtils.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\HttpUtils.ets",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.http.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.connection.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.socket.d.ts",
@@ -2404,8 +128,8 @@
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets": {
-      "mtimeMs": 1760788657732.7166,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\entryability\\EntryAbility.ets": {
+      "mtimeMs": 1761028886000,
       "children": [
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityConstant.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
@@ -3026,12 +750,13 @@
       ],
       "parent": [
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\useregister.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\UserService.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\useregister.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\UserService.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\action_sheet.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\alert_dialog.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts"
@@ -3045,7 +770,7 @@
       ],
       "parent": [
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
       ],
       "error": false
     },
@@ -3668,12 +1393,12 @@
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.file.BackupExtensionContext.d.ts"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets": {
-      "mtimeMs": 1760788657747.2324,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\entrybackupability\\EntryBackupAbility.ets": {
+      "mtimeMs": 1761028886000,
       "children": [
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.hilog.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.application.BackupExtensionAbility.d.ts",
@@ -3692,81 +1417,168 @@
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\Index.ets": {
-      "mtimeMs": 1760790170337.1997,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\Index.ets": {
+      "mtimeMs": 1761028882000,
       "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\src\\main\\ets\\components\\CommonButton.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\src\\main\\ets\\components\\CommonInput.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\src\\main\\ets\\components\\CommonLoading.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\src\\main\\ets\\components\\CommonSearchBar.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\pages\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\src\\main\\ets\\view\\Video.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\pages\\Index.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\Index.ets": {
-      "mtimeMs": 1760788873449.2485,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\news\\Index.ets": {
+      "mtimeMs": 1761028880000,
       "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\pages\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\pages\\Index.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\Index.ets": {
-      "mtimeMs": 1760788873398.5242,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\Index.ets": {
+      "mtimeMs": 1761028880000,
       "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\UserManager.ets"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\pages\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\pages\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\view\\Video.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\Index.ets": {
-      "mtimeMs": 1760788873355.5383,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\mine\\Index.ets": {
+      "mtimeMs": 1761028880000,
       "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\UserManager.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\pages\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\pages\\Index.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\Index.ets": {
-      "mtimeMs": 1760788873382.5237,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\Index.ets": {
+      "mtimeMs": 1761030450000,
       "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\pages\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\pages\\Index.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\main\\ets\\view\\Mine.ets": {
-      "mtimeMs": 1760868778279.3315,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\pages\\Index.ets": {
+      "mtimeMs": 1761106365752.1357,
       "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\Index.ets",
-        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\news\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\mine\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
+      ],
+      "parent": [],
+      "error": false
+    },
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets": {
+      "mtimeMs": 1761028882000,
+      "children": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\view\\Video.ets"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\pages\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\Index.ets"
+      ],
+      "error": false
+    },
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\view\\Video.ets": {
+      "mtimeMs": 1761105997107.0637,
+      "children": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\service\\FavoriteNewsService.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\model\\FavoriteNews.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\Index.ets",
+        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
+      ],
+      "parent": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets"
+      ],
+      "error": false
+    },
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\Index.ets": {
+      "mtimeMs": 1761028880000,
+      "children": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\src\\main\\ets\\components\\CommonButton.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\src\\main\\ets\\components\\CommonInput.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\src\\main\\ets\\components\\CommonLoading.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\src\\main\\ets\\components\\CommonSearchBar.ets"
+      ],
+      "parent": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\view\\Video.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
+      ],
+      "error": false
+    },
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets": {
+      "mtimeMs": 1761104089147.199,
+      "children": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\main\\ets\\components\\CommonUtils.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\MainViewModel.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\HttpUtils.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\BaiduHotSearchParser.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\NewsHeadlineService.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\NewsApiConfig.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\BackendConfig.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\JwtUtil.ets"
+      ],
+      "parent": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\view\\Video.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\service\\FavoriteNewsService.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\useregister.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\UserService.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\Follow.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets"
+      ],
+      "error": false
+    },
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\service\\FavoriteNewsService.ets": {
+      "mtimeMs": 1761104739228.3142,
+      "children": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\model\\FavoriteNews.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets"
+      ],
+      "parent": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\view\\Video.ets"
       ],
       "error": true,
       "errorCodes": [
-        28007
+        149
       ]
+    },
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\model\\FavoriteNews.ets": {
+      "mtimeMs": 1761095302855.6897,
+      "children": [],
+      "parent": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\view\\Video.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\service\\FavoriteNewsService.ets"
+      ],
+      "error": false
     },
     "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts": {
       "mtimeMs": 1750667349000,
@@ -3779,187 +1591,135 @@
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.netErrorList.d.ts"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\pages\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\src\\main\\ets\\view\\Video.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
-        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\web.d.ts",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\view\\Video.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\Follow.ets",
+        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\web.d.ts"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets": {
-      "mtimeMs": 1760847440437.866,
-      "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\main\\ets\\components\\CommonUtils.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\MainViewModel.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\HttpUtils.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\BaiduHotSearchParser.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\NewsHeadlineService.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\NewsApiConfig.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\BackendConfig.ets"
-      ],
-      "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\pages\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\src\\main\\ets\\view\\Video.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\useregister.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\UserService.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
-      ],
-      "error": false
-    },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\pages\\Index.ets": {
-      "mtimeMs": 1760868578241.5393,
-      "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\Index.ets"
-      ],
-      "parent": [],
-      "error": false
-    },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\src\\main\\ets\\components\\CommonButton.ets": {
-      "mtimeMs": 1760788655649.077,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\src\\main\\ets\\components\\CommonButton.ets": {
+      "mtimeMs": 1761028880000,
       "children": [],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\Index.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\src\\main\\ets\\components\\CommonInput.ets": {
-      "mtimeMs": 1760788655649.077,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\src\\main\\ets\\components\\CommonInput.ets": {
+      "mtimeMs": 1761028880000,
       "children": [],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\Index.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\src\\main\\ets\\components\\CommonLoading.ets": {
-      "mtimeMs": 1760788655650.1006,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\src\\main\\ets\\components\\CommonLoading.ets": {
+      "mtimeMs": 1761028880000,
       "children": [],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\Index.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\src\\main\\ets\\components\\CommonSearchBar.ets": {
-      "mtimeMs": 1760790170341.1985,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\src\\main\\ets\\components\\CommonSearchBar.ets": {
+      "mtimeMs": 1761028880000,
       "children": [],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\Index.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets": {
-      "mtimeMs": 1760788873473.7078,
-      "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\src\\main\\ets\\view\\Video.ets"
-      ],
-      "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\Index.ets"
-      ],
-      "error": false
-    },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\src\\main\\ets\\view\\Video.ets": {
-      "mtimeMs": 1760788873473.7078,
-      "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets",
-        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
-      ],
-      "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\video\\src\\main\\ets\\pages\\VideoPage.ets"
-      ],
-      "error": false
-    },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\main\\ets\\components\\CommonUtils.ets": {
-      "mtimeMs": 1760788873467.7083,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\main\\ets\\components\\CommonUtils.ets": {
+      "mtimeMs": 1761028880000,
       "children": [],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets": {
-      "mtimeMs": 1760788873468.709,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets": {
+      "mtimeMs": 1761028880000,
       "children": [
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets"
       ],
       "error": true,
       "errorCodes": [
         28007
       ]
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\MainViewModel.ets": {
-      "mtimeMs": 1760788873464.708,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\MainViewModel.ets": {
+      "mtimeMs": 1761028880000,
       "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\ItemData.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\NewsData.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\BaiduHotSearchParser.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\ItemData.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\NewsData.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\BaiduHotSearchParser.ets"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\HttpUtils.ets": {
-      "mtimeMs": 1760847440438.8625,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\HttpUtils.ets": {
+      "mtimeMs": 1761103251837.193,
       "children": [
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.http.d.ts",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\BaiduHotSearchParser.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\NewsHeadlineService.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\BaiduHotSearchParser.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\NewsHeadlineService.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\BaiduHotSearchParser.ets": {
-      "mtimeMs": 1760788873462.7092,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\BaiduHotSearchParser.ets": {
+      "mtimeMs": 1761028880000,
       "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\HttpUtils.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\HttpUtils.ets"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\MainViewModel.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\MainViewModel.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\NewsHeadlineService.ets": {
-      "mtimeMs": 1760788873466.7073,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\NewsHeadlineService.ets": {
+      "mtimeMs": 1761095402041.1584,
       "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\HttpUtils.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\NewsApiConfig.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\HttpUtils.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\NewsApiConfig.ets"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\NewsApiConfig.ets": {
-      "mtimeMs": 1760788873465.7075,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\NewsApiConfig.ets": {
+      "mtimeMs": 1761100639347.0989,
       "children": [],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\NewsHeadlineService.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\NewsHeadlineService.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\BackendConfig.ets": {
-      "mtimeMs": 1760847440438.8625,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\BackendConfig.ets": {
+      "mtimeMs": 1761028880000,
       "children": [],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets"
+      ],
+      "error": false
+    },
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\JwtUtil.ets": {
+      "mtimeMs": 1761104087872.4612,
+      "children": [],
+      "parent": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets"
       ],
       "error": false
     },
@@ -3970,25 +1730,25 @@
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\application\\BaseContext.d.ts"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\UserService.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\main\\ets\\components\\StorageUtils.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\UserService.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\ItemData.ets": {
-      "mtimeMs": 1760788873463.7073,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\ItemData.ets": {
+      "mtimeMs": 1761028880000,
       "children": [],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\MainViewModel.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\MainViewModel.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\NewsData.ets": {
-      "mtimeMs": 1760788873465.7075,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\NewsData.ets": {
+      "mtimeMs": 1761028880000,
       "children": [],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\MainViewModel.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\MainViewModel.ets"
       ],
       "error": false
     },
@@ -3999,7 +1759,7 @@
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.connection.d.ts"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\src\\HttpUtils.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\src\\HttpUtils.ets",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.net.connection.d.ts"
       ],
       "error": false
@@ -4051,6 +1811,85 @@
       ],
       "error": false
     },
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets": {
+      "mtimeMs": 1761028880000,
+      "children": [
+        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\UserService.ets"
+      ],
+      "parent": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\Index.ets"
+      ],
+      "error": true,
+      "errorCodes": [
+        28007
+      ]
+    },
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets": {
+      "mtimeMs": 1761028880000,
+      "children": [
+        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
+        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\useregister.ets"
+      ],
+      "parent": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets"
+      ],
+      "error": true,
+      "errorCodes": [
+        28007
+      ]
+    },
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\UserManager.ets": {
+      "mtimeMs": 1761062574000,
+      "children": [
+        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
+        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets"
+      ],
+      "parent": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
+      ],
+      "error": true,
+      "errorCodes": [
+        28007
+      ]
+    },
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\UserService.ets": {
+      "mtimeMs": 1761028880000,
+      "children": [
+        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets",
+        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts"
+      ],
+      "parent": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets"
+      ],
+      "error": true,
+      "errorCodes": [
+        137,
+        28007
+      ]
+    },
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\model\\useregister.ets": {
+      "mtimeMs": 1761028880000,
+      "children": [
+        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets"
+      ],
+      "parent": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
+      ],
+      "error": true,
+      "errorCodes": [
+        28007
+      ]
+    },
     "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.print.d.ts": {
       "mtimeMs": 1750667349000,
       "children": [
@@ -4070,104 +1909,80 @@
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets": {
-      "mtimeMs": 1760788873425.0486,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\news\\src\\main\\ets\\pages\\NewsPage.ets": {
+      "mtimeMs": 1761028880000,
       "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\Index.ets",
         "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\news\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\news\\Index.ets"
       ],
       "error": false
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets": {
-      "mtimeMs": 1760867384670.644,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets": {
+      "mtimeMs": 1761028880000,
       "children": [
-        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\UserService.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\Index.ets"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\mine\\Index.ets"
+      ],
+      "error": false
+    },
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\mine\\src\\main\\ets\\view\\Mine.ets": {
+      "mtimeMs": 1761093959120.437,
+      "children": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\Index.ets",
+        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts"
+      ],
+      "parent": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets"
       ],
       "error": true,
       "errorCodes": [
         28007
       ]
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets": {
-      "mtimeMs": 1760847440430.8657,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets": {
+      "mtimeMs": 1761053174000,
       "children": [
-        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\useregister.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\Index.ets"
+      ],
+      "error": false
+    },
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets": {
+      "mtimeMs": 1761061616000,
+      "children": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\Index.ets",
+        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts"
+      ],
+      "parent": [
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
       ],
       "error": true,
       "errorCodes": [
         28007
       ]
     },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\UserManager.ets": {
-      "mtimeMs": 1760866946793.0305,
+    "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\Follow.ets": {
+      "mtimeMs": 1761106426595.3574,
       "children": [
-        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
-        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets",
+        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\UserService.ets": {
-      "mtimeMs": 1760866094196.7317,
-      "children": [
-        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets",
-        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts"
-      ],
-      "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\LoginPage.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        137,
-        28007
-      ]
-    },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\model\\useregister.ets": {
-      "mtimeMs": 1760866094197.7314,
-      "children": [
-        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets"
-      ],
-      "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\src\\main\\ets\\pages\\RegisterPage.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\main\\ets\\pages\\MinePage.ets": {
-      "mtimeMs": 1760868871081.1565,
-      "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\src\\main\\ets\\view\\Mine.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\login\\Index.ets"
-      ],
-      "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\mine\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\pages\\Index.ets"
       ],
       "error": false
     },
@@ -4537,130 +2352,6 @@
       ],
       "parent": [],
       "error": false
-    },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\Index.ets": {
-      "mtimeMs": 1760788656393.112,
-      "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets"
-      ],
-      "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\products\\default\\src\\main\\ets\\pages\\Index.ets"
-      ],
-      "error": false
-    },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets": {
-      "mtimeMs": 1760788656415.327,
-      "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
-      ],
-      "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\Index.ets"
-      ],
-      "error": false
-    },
-    "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\src\\main\\ets\\view\\Follow.ets": {
-      "mtimeMs": 1760788656416.3284,
-      "children": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\uicomponents\\Index.ets",
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\commons\\utils\\Index.ets",
-        "G:\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
-      ],
-      "parent": [
-        "G:\\HarmonyOsProjects\\06_LayerArchitectureDesign\\QS06_Complete\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\Index.ets": {
-      "mtimeMs": 1760869192877.177,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\src\\main\\ets\\pages\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets": {
-      "mtimeMs": 1760686852745.817,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\Index.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets": {
-      "mtimeMs": 1760954324243.248,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\JwtManager.ets": {
-      "mtimeMs": 1760955720463.5217,
-      "children": [
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.util.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\AuthHelper.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\AuthHelper.ets": {
-      "mtimeMs": 1760882258697.9717,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\JwtManager.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\UserManager.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.util.d.ts": {
-      "mtimeMs": 1750667349000,
-      "children": [],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\src\\main\\ets\\model\\JwtManager.ets"
-      ],
-      "error": false
-    },
-    "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets": {
-      "mtimeMs": 1760954452345.2952,
-      "children": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils\\Index.ets",
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login\\Index.ets",
-        "D:\\Deveco\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts"
-      ],
-      "parent": [
-        "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
     }
   }
 }

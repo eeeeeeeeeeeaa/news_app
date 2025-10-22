@@ -232,7 +232,7 @@ export class LoginPage extends ViewPU {
                         Column.backgroundColor('#F1F3F5');
                     }, Column);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Image.create({ "id": 16777309, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+                        Image.create({ "id": 16777311, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
                         Image.width('78vp');
                         Image.height('78vp');
                         Image.margin({
@@ -284,7 +284,7 @@ export class LoginPage extends ViewPU {
                         __Line__lineStyle();
                     }, Line);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Button.createWithLabel({ "id": 16777292, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, { type: ButtonType.Capsule });
+                        Button.createWithLabel({ "id": 16777294, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, { type: ButtonType.Capsule });
                         Button.width('328vp');
                         Button.height('40vp');
                         Button.fontSize('16fp');
@@ -300,7 +300,7 @@ export class LoginPage extends ViewPU {
                     }, Button);
                     Button.pop();
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create({ "id": 16777301, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+                        Text.create({ "id": 16777303, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
                         Text.fontColor('#007DFF');
                         Text.fontSize('16fp');
                         Text.fontWeight(FontWeight.Medium);

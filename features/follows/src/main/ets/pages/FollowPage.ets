@@ -15,6 +15,19 @@
 
 import Follow from '../view/Follow';
 
+/**
+ * 关注的新闻数据模型
+ */
+export interface FollowedNewsData {
+  id: string; // 新闻ID
+  title: string; // 新闻标题
+  publishTime: string; // 发布时间
+  publisher: string; // 发布者
+  imageUrl?: string; // 新闻图片URL（可选）
+  content?: string; // 新闻内容（可选）
+}
+
+
 @Builder
 export function FollowPageBuilder() {
   FollowPage()

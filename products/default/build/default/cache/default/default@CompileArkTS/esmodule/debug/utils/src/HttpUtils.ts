@@ -74,6 +74,8 @@ export class HttpUtils {
         return new Promise((resolve, reject) => {
             const httpRequest: http.HttpRequest = http.createHttp();
             const mergedHeaders: Record<string, string> = HttpUtils.mergeHeaders(HttpUtils.getDefaultHeaders(), headers);
+            console.log('🔍 [HttpUtils.get] URL:', url);
+            console.log('🔍 [HttpUtils.get] 请求头:', JSON.stringify(mergedHeaders));
             const options: http.HttpRequestOptions = {
                 method: http.RequestMethod.GET,
                 header: mergedHeaders,
@@ -81,13 +83,18 @@ export class HttpUtils {
                 readTimeout: 15000
             };
             httpRequest.request(url, options).then((response: http.HttpResponse) => {
+                console.log('🔍 [HttpUtils.get] 响应状态码:', response.responseCode);
+                console.log('🔍 [HttpUtils.get] 响应数据:', HttpUtils.toText(response.result as string));
                 if (response.responseCode === 200) {
                     resolve(HttpUtils.toText(response.result as string));
                 }
                 else {
-                    reject(new Error('HTTP request failed: ' + response.responseCode));
+                    // 读取响应体以获取详细错误信息
+                    const responseBody = HttpUtils.toText(response.result as string);
+                    reject(new Error(`HTTP ${response.responseCode}: ${responseBody}`));
                 }
             }).catch((error: BusinessError) => {
+                console.error('🔍 [HttpUtils.get] 请求异常:', error.message);
                 reject(new Error('HTTP exception: ' + error.message));
             }).finally(() => {
                 httpRequest.destroy();
@@ -106,13 +113,18 @@ export class HttpUtils {
                 readTimeout: 15000
             };
             httpRequest.request(url, options).then((response: http.HttpResponse) => {
+                console.log('🔍 [HttpUtils.post] 响应状态码:', response.responseCode);
+                console.log('🔍 [HttpUtils.post] 响应数据:', HttpUtils.toText(response.result as string));
                 if (response.responseCode === 200) {
                     resolve(HttpUtils.toText(response.result as string));
                 }
                 else {
-                    reject(new Error('HTTP request failed: ' + response.responseCode));
+                    // 读取响应体以获取详细错误信息
+                    const responseBody = HttpUtils.toText(response.result as string);
+                    reject(new Error(`HTTP ${response.responseCode}: ${responseBody}`));
                 }
             }).catch((error: BusinessError) => {
+                console.error('🔍 [HttpUtils.post] 请求异常:', error.message);
                 reject(new Error('HTTP exception: ' + error.message));
             }).finally(() => {
                 httpRequest.destroy();
@@ -135,15 +147,38 @@ export class HttpUtils {
                 readTimeout: 15000
             };
             httpRequest.request(url, options).then((response: http.HttpResponse) => {
+                console.log('🔍 [HttpUtils.postForm] ========== 响应详情 ==========');
+                console.log('🔍 [HttpUtils.postForm] 响应状态码:', response.responseCode);
+                console.log('🔍 [HttpUtils.postForm] 响应头数量:', Object.keys(response.header).length);
+                console.log('🔍 [HttpUtils.postForm] 响应头详情:', JSON.stringify(response.header, null, 2));
+                const responseBody = HttpUtils.toText(response.result as string);
+                console.log('🔍 [HttpUtils.postForm] 响应数据类型:', typeof response.result);
+                console.log('🔍 [HttpUtils.postForm] 响应原始数据:', response.result);
+                console.log('🔍 [HttpUtils.postForm] 响应数据长度:', responseBody.length);
+                console.log('🔍 [HttpUtils.postForm] 响应数据内容:', responseBody);
+                console.log('🔍 [HttpUtils.postForm] 响应数据是否为空:', responseBody === '');
+                console.log('🔍 [HttpUtils.postForm] 响应数据是否只包含空白字符:', responseBody.trim() === '');
+                console.log('🔍 [HttpUtils.postForm] ================================');
                 if (response.responseCode === 200) {
-                    resolve(HttpUtils.toText(response.result as string));
+                    resolve(responseBody);
                 }
                 else {
-                    reject(new Error('HTTP request failed: ' + response.responseCode));
+                    // 读取响应体以获取详细错误信息
+                    const errorMsg = responseBody ? `HTTP ${response.responseCode}: ${responseBody}` : `HTTP ${response.responseCode}: (空响应体)`;
+                    console.error('❌ [HttpUtils.postForm] 请求失败:', errorMsg);
+                    reject(new Error(errorMsg));
                 }
             }).catch((error: BusinessError) => {
+                console.error('❌ [HttpUtils.postForm] ========== 请求异常 ==========');
+                console.error('❌ [HttpUtils.postForm] 异常类型:', typeof error);
+                console.error('❌ [HttpUtils.postForm] 异常消息:', error.message);
+                console.error('❌ [HttpUtils.postForm] 异常代码:', error.code);
+                console.error('❌ [HttpUtils.postForm] 异常堆栈:', error.stack);
+                console.error('❌ [HttpUtils.postForm] 完整异常对象:', JSON.stringify(error, null, 2));
+                console.error('❌ [HttpUtils.postForm] ================================');
                 reject(new Error('HTTP exception: ' + error.message));
             }).finally(() => {
+                console.log('🔍 [HttpUtils.postForm] 请求完成，销毁连接');
                 httpRequest.destroy();
             });
         });
@@ -159,13 +194,18 @@ export class HttpUtils {
                 readTimeout: 15000
             };
             httpRequest.request(url, options).then((response: http.HttpResponse) => {
+                console.log('🔍 [HttpUtils.delete] 响应状态码:', response.responseCode);
+                console.log('🔍 [HttpUtils.delete] 响应数据:', HttpUtils.toText(response.result as string));
                 if (response.responseCode === 200) {
                     resolve(HttpUtils.toText(response.result as string));
                 }
                 else {
-                    reject(new Error('HTTP request failed: ' + response.responseCode));
+                    // 读取响应体以获取详细错误信息
+                    const responseBody = HttpUtils.toText(response.result as string);
+                    reject(new Error(`HTTP ${response.responseCode}: ${responseBody}`));
                 }
             }).catch((error: BusinessError) => {
+                console.error('🔍 [HttpUtils.delete] 请求异常:', error.message);
                 reject(new Error('HTTP exception: ' + error.message));
             }).finally(() => {
                 httpRequest.destroy();

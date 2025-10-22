@@ -10,7 +10,23 @@
     },
     {
       "name": "EntryAbility_label",
-     "value": "HMOS Basic"
+      "value": "HMOS Basic"
+    },
+    {
+      "name": "tab_news",
+      "value": "News"
+    },
+    {
+      "name": "tab_video",
+      "value": "Preview"
+    },
+    {
+      "name": "tab_follow",
+      "value": "Follow"
+    },
+    {
+      "name": "tab_mine",
+      "value": "Mine"
     }
   ]
 }

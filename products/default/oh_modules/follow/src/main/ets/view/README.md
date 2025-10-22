@@ -50,10 +50,10 @@ private followService: NewsFollowService = NewsFollowService.getInstance();
 ### 3. 关注新闻
 
 ```typescript
-// 最简单的方式：只需要标题和唯一标识
+// 最简单的方式：只需要标题和正文
 const success = await this.followService.followNewsSimple(
   '新闻标题',
-  'news_uniquekey_123'
+  '新闻正文内容...'
 );
 ```
 
@@ -75,9 +75,9 @@ const newsList: FollowedNewsItem[] = await this.followService.getFollowedNewsLis
 ```typescript
 interface FollowNewsRequest {
   newsTitle: string;      // 新闻标题（必填）
-  newsUniquekey: string;  // 新闻唯一标识（必填）
-  newsAuthor?: string;    // 新闻发布者（可选）
-  newsTime?: string;      // 新闻发布时间（可选，ISO 8601格式）
+  newsContent: string;    // 新闻正文（必填）
+  newsId?: string;        // 新闻ID（可选，不填则后端自动生成UUID）
+  imageUrl?: string;      // 图片URL（可选）
 }
 ```
 
@@ -89,10 +89,10 @@ interface FollowNewsRequest {
 interface FollowedNewsItem {
   followId: number;       // 关注记录ID
   userId: number;         // 用户ID
-  newsUniquekey: string;  // 新闻唯一标识
+  newsId: string;         // 新闻ID
   newsTitle: string;      // 新闻标题
-  newsTime?: string;      // 新闻发布时间
-  newsAuthor?: string;    // 新闻发布者
+  imageUrl?: string;      // 图片URL
+  newsContent?: string;   // 新闻正文
   followTime: string;     // 关注时间
 }
 ```
@@ -117,9 +117,9 @@ public async followNews(request: FollowNewsRequest): Promise<boolean>
 ```typescript
 const request: FollowNewsRequest = {
   newsTitle: '新闻标题',
-  newsUniquekey: 'news_001',
-  newsAuthor: '新华社',
-  newsTime: '2025-10-20T15:30:00'
+  newsContent: '新闻正文...',
+  newsId: 'news_001',
+  imageUrl: 'https://example.com/image.jpg'
 };
 
 const success = await this.followService.followNews(request);
@@ -134,7 +134,7 @@ public async getFollowedNewsList(): Promise<FollowedNewsItem[]>
 ```
 
 **返回：**
-- `Promise<FollowedNewsItem[]>` - 关注的新闻列表（按关注时间倒序，越晚关注越靠前）
+- `Promise<FollowedNewsItem[]>` - 关注的新闻列表（按关注时间倒序）
 
 **示例：**
 ```typescript
@@ -142,60 +142,38 @@ const newsList = await this.followService.getFollowedNewsList();
 console.log(`共关注了 ${newsList.length} 条新闻`);
 ```
 
-#### unfollowNews()
-
-取消关注新闻
-
-```typescript
-public async unfollowNews(newsUniquekey: string): Promise<boolean>
-```
-
-**参数：**
-- `newsUniquekey`: `string` - 新闻唯一标识
-
-**返回：**
-- `Promise<boolean>` - 是否取消关注成功
-
-**示例：**
-```typescript
-const success = await this.followService.unfollowNews('news_001');
-if (success) {
-  console.log('已取消关注');
-}
-```
-
 ### 便捷方法
 
 #### followNewsSimple()
 
-最简单的关注方式，只需要标题和唯一标识
+最简单的关注方式，只需要标题和正文
 
 ```typescript
-public async followNewsSimple(title: string, newsUniquekey: string): Promise<boolean>
+public async followNewsSimple(title: string, content: string): Promise<boolean>
 ```
 
 **示例：**
 ```typescript
 await this.followService.followNewsSimple(
   '鸿蒙系统更新',
-  'news_001'
+  '华为发布鸿蒙系统新版本...'
 );
 ```
 
-#### followNewsWithAuthor()
+#### followNewsWithImage()
 
-带作者信息的关注方式
+带图片的关注方式
 
 ```typescript
-public async followNewsWithAuthor(title: string, newsUniquekey: string, newsAuthor: string): Promise<boolean>
+public async followNewsWithImage(title: string, content: string, imageUrl: string): Promise<boolean>
 ```
 
 **示例：**
 ```typescript
-await this.followService.followNewsWithAuthor(
+await this.followService.followNewsWithImage(
   '科技新闻',
-  'news_002',
-  '新华社'
+  '新闻内容...',
+  'https://example.com/image.jpg'
 );
 ```
 
@@ -204,16 +182,16 @@ await this.followService.followNewsWithAuthor(
 完整参数的关注方式
 
 ```typescript
-public async followNewsFull(title: string, newsUniquekey: string, newsAuthor?: string, newsTime?: string): Promise<boolean>
+public async followNewsFull(newsId: string, title: string, content: string, imageUrl?: string): Promise<boolean>
 ```
 
 **示例：**
 ```typescript
 await this.followService.followNewsFull(
-  '新闻标题',
   'news_12345',
-  '人民日报',
-  '2025-10-20T15:30:00'
+  '新闻标题',
+  '新闻内容...',
+  'https://example.com/image.jpg'
 );
 ```
 
@@ -225,7 +203,6 @@ await this.followService.followNewsFull(
 @Component
 export struct NewsDetailPage {
   @State newsData: NewsItem | null = null;
-  @State isFollowed: boolean = false;
   private followService: NewsFollowService = NewsFollowService.getInstance();
 
   build() {
@@ -235,36 +212,22 @@ export struct NewsDetailPage {
         .fontSize(20)
         .fontWeight(FontWeight.Bold)
       
-      // 新闻作者和时间
-      Text(`${this.newsData?.author} · ${this.newsData?.time}`)
-        .fontSize(12)
-        .fontColor('#999')
+      // 新闻内容
+      Text(this.newsData?.content)
+        .fontSize(14)
       
-      // 关注/取消关注按钮
-      Button(this.isFollowed ? '取消关注' : '关注此新闻')
+      // 关注按钮
+      Button('关注此新闻')
         .onClick(async () => {
           if (this.newsData) {
-            if (!this.isFollowed) {
-              // 关注新闻
-              const success = await this.followService.followNewsFull(
-                this.newsData.title,
-                this.newsData.uniquekey,
-                this.newsData.author,
-                this.newsData.time
-              );
-              
-              if (success) {
-                this.isFollowed = true;
-              }
-            } else {
-              // 取消关注
-              const success = await this.followService.unfollowNews(
-                this.newsData.uniquekey
-              );
-              
-              if (success) {
-                this.isFollowed = false;
-              }
+            const success = await this.followService.followNewsWithImage(
+              this.newsData.title,
+              this.newsData.content,
+              this.newsData.imageUrl
+            );
+            
+            if (success) {
+              // 更新UI状态
             }
           }
         })
@@ -307,16 +270,12 @@ export struct MyFollowedNewsPage {
 ### 场景3：批量关注新闻
 
 ```typescript
-async batchFollowNews(newsList: Array<{ title: string, uniquekey: string, author?: string }>): Promise<void> {
+async batchFollowNews(newsList: Array<{ title: string, content: string }>): Promise<void> {
   const followService = NewsFollowService.getInstance();
   let successCount = 0;
 
   for (const news of newsList) {
-    const success = await followService.followNewsWithAuthor(
-      news.title, 
-      news.uniquekey,
-      news.author || '未知作者'
-    );
+    const success = await followService.followNewsSimple(news.title, news.content);
     if (success) {
       successCount++;
     }
@@ -343,7 +302,7 @@ async handleFollowNews(): Promise<void> {
   try {
     const success = await this.followService.followNewsSimple(
       this.newsTitle,
-      this.newsUniquekey
+      this.newsContent
     );
 
     if (success) {
@@ -420,8 +379,7 @@ async handleFollowNews(): Promise<void> {
 1. **用户必须先登录** - 调用任何方法前，用户必须已经登录并获取JWT token
 2. **网络连接** - 确保设备有可用的网络连接
 3. **后端服务** - 确保后端服务正常运行在配置的地址
-4. **标题和唯一标识是必填的** - 调用关注方法时，`newsTitle` 和 `newsUniquekey` 不能为空
-5. **关注列表顺序** - 获取的关注列表按关注时间倒序排列，越晚关注的新闻越靠前
+4. **标题和正文是必填的** - 调用关注方法时，标题和正文不能为空
 
 ## 后端API对接
 
@@ -430,17 +388,12 @@ async handleFollowNews(): Promise<void> {
 ### 关注新闻
 - **接口**: `POST /api/news/follow`
 - **认证**: 需要 JWT token
-- **参数**: `newsTitle`(必填), `newsUniquekey`(必填), `newsAuthor`(可选), `newsTime`(可选)
+- **参数**: `newsTitle`, `newsContent`, `newsId`(可选), `imageUrl`(可选)
 
 ### 获取关注列表
 - **接口**: `GET /api/news/followed`
 - **认证**: 需要 JWT token
-- **返回**: 关注的新闻列表（按关注时间倒序，越晚关注越靠前）
-
-### 取消关注新闻
-- **接口**: `DELETE /api/news/unfollow`
-- **认证**: 需要 JWT token
-- **参数**: `newsUniquekey`(必填)
+- **返回**: 关注的新闻列表（按时间倒序）
 
 ## 常见问题
 

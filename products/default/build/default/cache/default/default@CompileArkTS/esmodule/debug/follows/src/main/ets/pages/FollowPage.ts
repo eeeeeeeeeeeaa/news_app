@@ -4,11 +4,22 @@ if (!("finalizeConstruction" in ViewPU.prototype)) {
 interface FollowPage_Params {
 }
 import Follow from "@bundle:com.huawei.quickstart/default@follows/ets/view/Follow";
+/**
+ * 关注的新闻数据模型
+ */
+export interface FollowedNewsData {
+    id: string; // 新闻ID
+    title: string; // 新闻标题
+    publishTime: string; // 发布时间
+    publisher: string; // 发布者
+    imageUrl?: string; // 新闻图片URL（可选）
+    content?: string; // 新闻内容（可选）
+}
 export function FollowPageBuilder(parent = null) {
     {
         (parent ? parent : this).observeComponentCreation2((elmtId, isInitialRender) => {
             if (isInitialRender) {
-                let componentCall = new FollowPage(parent ? parent : this, {}, undefined, elmtId, () => { }, { page: "features/follows/src/main/ets/pages/FollowPage.ets", line: 20, col: 3 });
+                let componentCall = new FollowPage(parent ? parent : this, {}, undefined, elmtId, () => { }, { page: "features/follows/src/main/ets/pages/FollowPage.ets", line: 33, col: 3 });
                 ViewPU.create(componentCall);
                 let paramsLambda = () => {
                     return {};
@@ -49,7 +60,7 @@ export class FollowPage extends ViewPU {
         {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
-                    let componentCall = new Follow(this, {}, undefined, elmtId, () => { }, { page: "features/follows/src/main/ets/pages/FollowPage.ets", line: 27, col: 7 });
+                    let componentCall = new Follow(this, {}, undefined, elmtId, () => { }, { page: "features/follows/src/main/ets/pages/FollowPage.ets", line: 40, col: 7 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {};

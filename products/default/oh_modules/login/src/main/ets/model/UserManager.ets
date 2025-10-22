@@ -16,10 +16,7 @@
 import { preferences } from '@kit.ArkData';
 import { promptAction } from '@kit.ArkUI';
 import { HttpUtils, withBase, type ResultShape } from 'utils';
-import { JwtManager } from './JwtManager';
-
-// 全局 Token 缓存键
-const GLOBAL_TOKEN_KEY = 'app_jwt_token';
+import { JwtUtil } from 'utils';
 
 export interface UserInfo {
   account: string;
@@ -37,14 +34,12 @@ export interface LoginRequest {
 export class UserManager {
   private static instance: UserManager;
   private dataPreferences: preferences.Preferences | null = null;
-  private readonly PREFERENCES_NAME: string = 'user_data';
-  private readonly USER_KEY: string = 'user_info';
-  private readonly CURRENT_USER_KEY: string = 'current_user';
-  private jwtManager: JwtManager;
+  private readonly PREFERENCES_NAME = 'user_data';
+  private readonly USER_KEY = 'user_info';
+  private readonly CURRENT_USER_KEY = 'current_user';
+  private readonly TOKEN_KEY = 'auth_token';
 
-  private constructor() {
-    this.jwtManager = JwtManager.getInstance();
-  }
+  private constructor() {}
 
   public static getInstance(): UserManager {
     if (!UserManager.instance) {
@@ -57,8 +52,6 @@ export class UserManager {
   public async initPreferences(): Promise<void> {
     try {
       this.dataPreferences = await preferences.getPreferences(getContext(), this.PREFERENCES_NAME);
-      // 同时初始化 JWT 管理器
-      await this.jwtManager.initPreferences();
     } catch (err) {
       console.error('Failed to get preferences:', err);
     }
@@ -81,45 +74,10 @@ export class UserManager {
       const resp: ResultShape<string> = JSON.parse(respText) as ResultShape<string>;
       if (resp.code === 200 && resp.data) {
         const token = resp.data;
-        console.log('✅ [UserManager.loginUser] 登录成功，开始保存 Token');
-        console.log('🔍 [UserManager.loginUser] Token 长度:', token.length);
-        console.log('🔍 [UserManager.loginUser] Token 前30字符:', token.substring(0, 30) + '...');
-        
-        // 使用 JwtManager 存储 token
-        console.log('🔍 [UserManager.loginUser] 调用 jwtManager.saveToken...');
-        const saveResult = await this.jwtManager.saveToken(token);
-        console.log('🔍 [UserManager.loginUser] Token 保存结果:', saveResult);
-        
-        // 同时保存到 AppStorage（全局共享存储，解决跨模块访问问题）
-        try {
-          AppStorage.setOrCreate(GLOBAL_TOKEN_KEY, token);
-          console.log('✅ [UserManager.loginUser] Token 已保存到 AppStorage');
-          
-          // 验证 AppStorage
-          const appToken = AppStorage.get<string>(GLOBAL_TOKEN_KEY);
-          console.log('🔍 [UserManager.loginUser] 从 AppStorage 读取 Token:', appToken ? '成功' : '失败');
-        } catch (err) {
-          console.error('❌ [UserManager.loginUser] 保存到 AppStorage 失败:', err);
-        }
-        
-        // 验证保存是否成功
-        const savedToken = await this.jwtManager.getToken();
-        console.log('🔍 [UserManager.loginUser] 验证读取 Token:', savedToken ? '成功' : '失败');
-        if (savedToken) {
-          console.log('🔍 [UserManager.loginUser] 读取的 Token 长度:', savedToken.length);
-        }
-        
         const currentUser: UserInfo = { account: account, password: '', username: `用户${account.slice(-4)}` };
-        console.log('🔍 [UserManager.loginUser] 准备保存用户信息:', currentUser);
-        
+        await this.dataPreferences?.put(this.TOKEN_KEY, token);
         await this.dataPreferences?.put(this.CURRENT_USER_KEY, JSON.stringify(currentUser));
         await this.dataPreferences?.flush();
-        console.log('✅ [UserManager.loginUser] 用户信息已保存并flush');
-        
-        // 验证用户信息保存
-        const savedUser = await this.dataPreferences?.get(this.CURRENT_USER_KEY, '');
-        console.log('🔍 [UserManager.loginUser] 验证读取用户信息:', savedUser);
-        
         promptAction.showToast({ message: $r('app.string.login_success') });
         return true;
       }
@@ -152,34 +110,92 @@ export class UserManager {
     }
   }
 
-  // 获取当前登录用户
+  // 获取当前登录用户（从JWT中解析）
   public async getCurrentUser(): Promise<UserInfo | null> {
     if (!this.dataPreferences) {
       await this.initPreferences();
     }
 
     try {
-      console.log('🔍 UserManager.getCurrentUser - 开始获取用户信息');
-      console.log('🔍 UserManager.getCurrentUser - 存储键:', this.CURRENT_USER_KEY);
+      console.log('🔍 UserManager.getCurrentUser - 开始从JWT获取用户信息');
       
-      const userStr = await this.dataPreferences?.get(this.CURRENT_USER_KEY, '');
-      console.log('🔍 UserManager.getCurrentUser - 从存储获取的字符串:', userStr);
-      console.log('🔍 UserManager.getCurrentUser - 字符串类型:', typeof userStr);
-      
-      // 安全地检查字符串长度
-      const userStrLength = typeof userStr === 'string' ? userStr.length : 0;
-      console.log('🔍 UserManager.getCurrentUser - 字符串长度:', userStrLength);
-      
-      if (userStr && typeof userStr === 'string' && userStr !== '') {
-        const userInfo: UserInfo = JSON.parse(userStr as string) as UserInfo;
-        console.log('🔍 UserManager.getCurrentUser - 解析后的用户信息:', userInfo);
-        console.log('🔍 UserManager.getCurrentUser - 用户信息类型:', typeof userInfo);
-        return userInfo;
+      // 1. 获取JWT令牌
+      const token = await this.getToken();
+      if (!token) {
+        console.log('🔍 未找到JWT令牌');
+        return null;
       }
-      console.log('🔍 UserManager.getCurrentUser - 没有找到用户信息');
-      return null;
+
+      console.log('🔍 找到JWT令牌，开始验证');
+
+      // 2. 检查JWT格式
+      if (!JwtUtil.isValidFormat(token)) {
+        console.log('🔍 JWT格式无效');
+        await this.logout();
+        return null;
+      }
+
+      // 3. 检查JWT是否过期
+      if (JwtUtil.isTokenExpired(token)) {
+        console.log('🔍 JWT已过期，清除本地存储');
+        await this.logout();
+        return null;
+      }
+
+      // 4. 从JWT中解析用户ID
+      const userId = JwtUtil.getUserIdFromToken(token);
+      if (!userId) {
+        console.log('🔍 无法从JWT中解析用户ID');
+        await this.logout();
+        return null;
+      }
+
+      console.log('🔍 从JWT中解析到用户ID:', userId);
+
+      // 5. 尝试从本地存储获取用户账号（用于显示）
+      let account = '';
+      try {
+        const userStr = await this.dataPreferences?.get(this.CURRENT_USER_KEY, '');
+        if (userStr && typeof userStr === 'string' && userStr !== '') {
+          const cachedUserInfo: UserInfo = JSON.parse(userStr as string) as UserInfo;
+          account = cachedUserInfo.account;
+        }
+      } catch (err) {
+        console.log('🔍 无法从缓存获取账号信息，使用默认值');
+      }
+
+      // 6. 构建用户信息
+      const userInfo: UserInfo = {
+        account: account || `user_${userId}`, // 使用缓存的账号或默认值
+        password: '', // 不存储密码
+        username: `用户${userId}` // 基于用户ID生成用户名
+      };
+
+      // 7. 尝试从JWT中获取用户昵称
+      try {
+        console.log('🔍 尝试从JWT中获取用户昵称');
+        const userName = JwtUtil.getUserNameFromToken(token);
+        if (userName) {
+          userInfo.username = userName; // 使用JWT中的昵称
+          console.log('✅ 从JWT中获取到用户昵称:', userName);
+          
+          // 更新本地缓存的用户信息
+          await this.dataPreferences?.put(this.CURRENT_USER_KEY, JSON.stringify(userInfo));
+          await this.dataPreferences?.flush();
+        } else {
+          console.log('🔍 JWT中没有用户昵称信息');
+        }
+      } catch (err) {
+        console.log('🔍 从JWT获取用户昵称失败，使用默认昵称:', err);
+      }
+
+      console.log('✅ 从JWT中获取用户信息成功:', userInfo);
+      return userInfo;
+
     } catch (err) {
-      console.error('❌ UserManager.getCurrentUser - 获取用户信息失败:', err);
+      console.error('❌ UserManager.getCurrentUser - 从JWT获取用户信息失败:', err);
+      // 发生错误时清除可能损坏的存储
+      await this.logout();
       return null;
     }
   }
@@ -192,12 +208,8 @@ export class UserManager {
 
     try {
       await this.dataPreferences?.delete(this.CURRENT_USER_KEY);
+      await this.dataPreferences?.delete(this.TOKEN_KEY);
       await this.dataPreferences?.flush();
-      // 使用 JwtManager 删除 token
-      await this.jwtManager.removeToken();
-      // 同时清除 AppStorage 中的 Token
-      AppStorage.delete(GLOBAL_TOKEN_KEY);
-      console.log('✅ [UserManager.logout] AppStorage Token 已清除');
     } catch (err) {
       console.error('Failed to logout:', err);
     }
@@ -240,43 +252,63 @@ export class UserManager {
 
   // 获取JWT令牌
   public async getToken(): Promise<string | null> {
-    console.log('🔍 [UserManager.getToken] 开始获取 Token...');
-    
-    // 先尝试从 AppStorage 获取（最快且可靠）
-    try {
-      const appToken = AppStorage.get<string>(GLOBAL_TOKEN_KEY);
-      if (appToken && typeof appToken === 'string' && appToken !== '') {
-        console.log('✅ [UserManager.getToken] 从 AppStorage 获取 Token 成功');
-        return appToken;
-      }
-      console.log('⚠️ [UserManager.getToken] AppStorage 中没有 Token');
-    } catch (err) {
-      console.error('❌ [UserManager.getToken] 从 AppStorage 获取失败:', err);
+    if (!this.dataPreferences) {
+      await this.initPreferences();
     }
-    
-    // 使用 JwtManager 获取 token
-    console.log('🔍 [UserManager.getToken] 尝试从 JwtManager 获取...');
-    return await this.jwtManager.getToken();
+    try {
+      const token = await this.dataPreferences?.get(this.TOKEN_KEY, '');
+      console.log('🧪 调试: UserManager.getToken 读取到 token 是否为空:', !(token && token !== ''));
+      if (token && token !== '') {
+        // 打印token长度，避免泄露
+        const t = token as string;
+        console.log('🧪 调试: UserManager.getToken token 长度:', t.length);
+        return t;
+      }
+      return null;
+    } catch (err) {
+      console.error('Failed to get token:', err);
+      return null;
+    }
   }
 
   // 便捷方法：获取认证请求头
   public async getAuthHeaders(): Promise<Record<string, string>> {
-    // 使用 JwtManager 获取认证请求头
-    return await this.jwtManager.getAuthHeaders();
+    const token = await this.getToken();
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    return headers;
   }
 
-  // 检查 Token 是否有效
-  public async isTokenValid(): Promise<boolean> {
-    return await this.jwtManager.isTokenValid();
+  // 验证JWT有效性
+  public async validateToken(): Promise<boolean> {
+    try {
+      const token = await this.getToken();
+      if (!token) {
+        return false;
+      }
+
+      // 检查格式和过期时间
+      return JwtUtil.isValidFormat(token) && !JwtUtil.isTokenExpired(token);
+    } catch (error) {
+      console.error('JWT验证失败:', error);
+      return false;
+    }
   }
 
-  // 获取 Token 信息
-  public async getTokenInfo() {
-    return await this.jwtManager.getTokenInfo();
-  }
+  // 获取JWT剩余有效时间（秒）
+  public async getTokenRemainingTime(): Promise<number> {
+    try {
+      const token = await this.getToken();
+      if (!token) {
+        return -1;
+      }
 
-  // 获取 JWT 管理器实例
-  public getJwtManager(): JwtManager {
-    return this.jwtManager;
+      return JwtUtil.getRemainingTime(token);
+    } catch (error) {
+      console.error('获取JWT剩余时间失败:', error);
+      return -1;
+    }
   }
 }

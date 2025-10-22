@@ -2,23 +2,23 @@ import { HttpUtils, withBase, type ResultShape } from "@bundle:com.huawei.quicks
 import { UserManager } from "@bundle:com.huawei.quickstart/default@login/Index";
 import promptAction from "@ohos:promptAction";
 /**
- * 关注新闻数据结构
+ * 关注新闻数据结构（根据新API更新）
  */
 export interface FollowedNewsItem {
     followId: number; // 关注记录ID
     userId: number; // 用户ID
-    newsUniquekey: string; // 新闻唯一标识
+    newsUniquekey: string; // 新闻唯一标识（实际存储的是新闻URL）
     newsTitle: string; // 新闻标题
     newsTime?: string; // 新闻发布时间
     newsAuthor?: string; // 新闻发布者
     followTime: string; // 关注时间
 }
 /**
- * 关注新闻请求参数
+ * 关注新闻请求参数（根据新API更新）
  */
 export interface FollowNewsRequest {
     newsTitle: string; // 新闻标题（必填）
-    newsUniquekey: string; // 新闻唯一标识（必填）
+    newsUniquekey: string; // 新闻唯一标识（必填，实际为新闻URL）
     newsAuthor?: string; // 新闻发布者（可选）
     newsTime?: string; // 新闻发布时间（可选，ISO 8601格式）
 }
@@ -38,44 +38,17 @@ interface FormDataParams {
 export class NewsFollowService {
     private static instance: NewsFollowService;
     private userManager: UserManager;
-    private isInitialized: boolean = false;
     private constructor() {
-        console.log('🔍 [NewsFollowService] 构造函数被调用');
         this.userManager = UserManager.getInstance();
-        console.log('🔍 [NewsFollowService] UserManager 实例已获取');
     }
     /**
      * 获取单例实例
      */
     public static getInstance(): NewsFollowService {
         if (!NewsFollowService.instance) {
-            console.log('🔍 [NewsFollowService] 创建新的单例实例');
             NewsFollowService.instance = new NewsFollowService();
         }
         return NewsFollowService.instance;
-    }
-    /**
-     * 初始化服务（确保 UserManager 的 Preferences 已初始化）
-     */
-    private async ensureInitialized(): Promise<void> {
-        if (this.isInitialized) {
-            return;
-        }
-        try {
-            console.log('🔍 [NewsFollowService] 开始初始化...');
-            await this.userManager.initPreferences();
-            this.isInitialized = true;
-            console.log('✅ [NewsFollowService] 初始化成功');
-        }
-        catch (error) {
-            console.error('❌ [NewsFollowService] 初始化失败:', error);
-            if (error instanceof Error) {
-                throw error;
-            }
-            else {
-                throw new Error('初始化失败: ' + JSON.stringify(error));
-            }
-        }
     }
     /**
      * 关注新闻
@@ -85,8 +58,6 @@ export class NewsFollowService {
     public async followNews(request: FollowNewsRequest): Promise<boolean> {
         console.log('========== 开始关注新闻 ==========');
         console.log('请求参数:', JSON.stringify(request));
-        // 确保已初始化
-        await this.ensureInitialized();
         // 1. 验证必填参数
         if (!request.newsTitle || request.newsTitle.trim() === '') {
             promptAction.showToast({ message: '新闻标题不能为空' });
@@ -157,41 +128,60 @@ export class NewsFollowService {
         }
     }
     /**
+     * 测试token有效性（通过调用用户信息接口）
+     * @returns Promise<boolean> token是否有效
+     */
+    private async testTokenValidity(): Promise<boolean> {
+        try {
+            const token: string | null = await this.userManager.getToken();
+            if (!token) {
+                return false;
+            }
+            const authToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+            const headers: Record<string, string> = {
+                'Authorization': authToken
+            };
+            const url: string = withBase('/api/users/info');
+            console.log('🧪 测试token有效性，请求URL:', url);
+            const respText: string = await HttpUtils.get(url, headers);
+            const resp: ResultShape<object> = JSON.parse(respText) as ResultShape<object>;
+            console.log('🧪 token验证结果:', resp);
+            return resp.code === 200;
+        }
+        catch (err) {
+            console.error('🧪 token验证失败:', err);
+            return false;
+        }
+    }
+    /**
      * 获取用户关注的新闻列表
      * @returns Promise<FollowedNewsItem[]> 关注的新闻列表
      */
     public async getFollowedNewsList(): Promise<FollowedNewsItem[]> {
         console.log('========== 获取关注新闻列表 ==========');
         try {
-            // 确保已初始化
-            await this.ensureInitialized();
             // 1. 获取认证 token
-            console.log('🔍 [getFollowedNewsList] 开始获取 token...');
-            console.log('🔍 [getFollowedNewsList] UserManager 实例:', this.userManager);
             const token: string | null = await this.userManager.getToken();
-            console.log('🔍 [getFollowedNewsList] Token 获取结果:', token ? '存在' : 'null');
-            console.log('🔍 [getFollowedNewsList] Token 类型:', typeof token);
-            if (token) {
-                console.log('🔍 [getFollowedNewsList] Token 长度:', token.length);
-                console.log('🔍 [getFollowedNewsList] Token 前20字符:', token.substring(0, 20) + '...');
-            }
             if (!token) {
-                console.error('❌ [getFollowedNewsList] 未找到认证令牌，请先登录');
-                // 额外调试：检查 UserManager 的状态
-                try {
-                    const tokenInfo = await this.userManager.getTokenInfo();
-                    console.log('🔍 [getFollowedNewsList] Token Info:', tokenInfo);
-                }
-                catch (err) {
-                    console.error('❌ [getFollowedNewsList] 获取 Token Info 失败:', err);
-                }
-                promptAction.showToast({ message: '请先登录' });
-                return [];
+                console.error('未找到认证令牌，请先登录');
+                throw new Error('请先登录');
             }
+            console.log('🔍 Token前10个字符:', token.substring(0, 10));
+            console.log('🔍 Token后10个字符:', token.substring(token.length - 10));
+            console.log('🔍 Token是否包含Bearer:', token.startsWith('Bearer'));
+            // 先测试token有效性
+            const isValidToken = await this.testTokenValidity();
+            console.log('🧪 Token有效性测试结果:', isValidToken);
+            if (!isValidToken) {
+                throw new Error('Token无效或已过期，请重新登录');
+            }
+            // 如果token已经包含Bearer，不要重复添加
+            const authToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
             // 2. 构建请求头
             const headers: Record<string, string> = {
-                'Authorization': `Bearer ${token}`
+                'Authorization': authToken
             };
+            console.log('🔍 最终请求头 Authorization:', headers['Authorization'].substring(0, 30) + '...');
             // 3. 发送请求
             const url: string = withBase('/api/news/followed');
             console.log('请求URL:', url);
@@ -199,36 +189,40 @@ export class NewsFollowService {
             console.log('响应数据:', respText);
             // 4. 解析响应
             const resp: ResultShape<FollowedNewsItem[]> = JSON.parse(respText) as ResultShape<FollowedNewsItem[]>;
-            if (resp.code === 200 && resp.data) {
-                console.log(`获取关注列表成功，共 ${resp.data.length} 条`);
-                return resp.data;
+            if (resp.code === 200) {
+                const data = resp.data || [];
+                console.log(`获取关注列表成功，共 ${data.length} 条`);
+                return data;
             }
             else {
                 const errorMessage: string = resp.message ?? '获取关注列表失败';
                 console.error('获取关注列表失败:', errorMessage);
-                return [];
+                throw new Error(errorMessage);
             }
         }
         catch (err) {
             console.error('获取关注列表异常:', JSON.stringify(err));
-            let errorMessage: string = '获取失败，请稍后再试';
+            // 重新抛出异常，让调用方决定如何处理
             if (err instanceof Error) {
                 const errMsg: string = err.message;
-                if (errMsg.includes('Network')) {
-                    errorMessage = '网络连接失败，请检查网络设置';
+                if (errMsg.includes('Network') || errMsg.includes('network')) {
+                    throw new Error('网络连接失败，请检查网络设置');
                 }
-                else if (errMsg.includes('Timeout')) {
-                    errorMessage = '请求超时，请检查网络连接';
+                else if (errMsg.includes('Timeout') || errMsg.includes('timeout')) {
+                    throw new Error('请求超时，请检查网络连接');
                 }
                 else if (errMsg.includes('403')) {
-                    errorMessage = '没有权限，请重新登录';
+                    throw new Error('没有权限，请重新登录');
                 }
                 else if (errMsg.includes('401')) {
-                    errorMessage = '登录已过期，请重新登录';
+                    throw new Error('登录已过期，请重新登录');
+                }
+                else {
+                    throw new Error(errMsg); // 重新抛出原始异常信息
                 }
             }
-            promptAction.showToast({ message: errorMessage });
-            return [];
+            // 如果不是Error类型，转换为Error
+            throw new Error('获取关注列表失败');
         }
     }
     /**
@@ -239,8 +233,6 @@ export class NewsFollowService {
     public async unfollowNews(newsUniquekey: string): Promise<boolean> {
         console.log('========== 开始取消关注新闻 ==========');
         console.log('新闻唯一标识:', newsUniquekey);
-        // 确保已初始化
-        await this.ensureInitialized();
         // 1. 验证必填参数
         if (!newsUniquekey || newsUniquekey.trim() === '') {
             promptAction.showToast({ message: '新闻唯一标识不能为空' });
@@ -312,7 +304,7 @@ export class NewsFollowService {
         });
     }
     /**
-     * 快捷方法：关注新闻（包含作者信息）
+     * 快捷方法：关注新闻（包含发布者信息）
      * @param title 新闻标题
      * @param newsUniquekey 新闻唯一标识
      * @param newsAuthor 新闻发布者

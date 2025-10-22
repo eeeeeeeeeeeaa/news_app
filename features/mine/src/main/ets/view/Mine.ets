@@ -141,9 +141,6 @@ export default struct Mine {
                   .fontColor('#666666')
               }
               .margin({ right: '16vp' })
-
-              Text('📱')
-                .fontSize('16fp')
             }
             .width('100%')
             .height('50vp')
@@ -172,16 +169,7 @@ export default struct Mine {
                     .fontColor('#000000')
                     .margin({ right: '8vp' })
 
-                  Row() {
-                    Text('⭐')
-                      .fontSize('12fp')
-                    Text('0枚')
-                      .fontSize('12fp')
-                      .fontColor('#666666')
-                  }
-                  .padding({ left: '6vp', right: '6vp', top: '2vp', bottom: '2vp' })
-                  .backgroundColor('#F5F5F5')
-                  .borderRadius('10vp')
+
                 }
                 .margin({ bottom: '8vp' })
 
@@ -205,9 +193,12 @@ export default struct Mine {
 
               Blank()
 
-              Text('▶')
+              Text('Logout')
                 .fontSize('14fp')
                 .fontColor('#999999')
+                .onClick(() => {
+                  this.logout();
+                })
             }
             .width('100%')
             .padding({ left: '16vp', right: '16vp' })

@@ -1,18 +1,18 @@
 {
   "modulePathMap": {
-    "default": "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default",
-    "news": "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\news",
-    "video": "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\video",
-    "quickstart": "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\quickstart",
-    "utils": "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\utils",
-    "uicomponents": "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\commons\\uicomponents",
-    "mine": "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\mine",
-    "login": "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\login",
-    "follows": "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\features\\follows"
+    "default": "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default",
+    "news": "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\news",
+    "video": "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video",
+    "quickstart": "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\quickstart",
+    "utils": "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils",
+    "uicomponents": "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents",
+    "mine": "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\mine",
+    "login": "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login",
+    "follows": "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows"
   },
   "compileMode": "esmodule",
-  "projectRootPath": "C:\\Users\\12461\\Desktop\\hmosbig\\news_app",
-  "nodeModulesPath": "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\build\\default\\intermediates\\loader_out\\default\\node_modules",
+  "projectRootPath": "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd",
+  "nodeModulesPath": "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\build\\default\\intermediates\\loader_out\\default\\node_modules",
   "byteCodeHarInfo": {},
   "declarationEntry": [],
   "moduleName": "default",
@@ -25,9 +25,9 @@
   "routerMap": [],
   "hspResourcesMap": {},
   "updateVersionInfo": {},
-  "anBuildOutPut": "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\build\\default\\intermediates\\loader_out\\default\\an\\arm64-v8a",
+  "anBuildOutPut": "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\build\\default\\intermediates\\loader_out\\default\\an\\arm64-v8a",
   "anBuildMode": "type",
   "patchConfig": {
-    "changedFileList": "C:\\Users\\12461\\Desktop\\hmosbig\\news_app\\products\\default\\build\\default\\intermediates\\patch\\default\\changedFileList.json"
+    "changedFileList": "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\build\\default\\intermediates\\patch\\default\\changedFileList.json"
   }
 }

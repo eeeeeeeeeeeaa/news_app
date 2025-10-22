@@ -22,3 +22,4 @@ export { BaiduHotSearchParser, BaiduHotSearchItem } from './src/BaiduHotSearchPa
 export { NewsHeadlineService, NewsHeadlineItem } from './src/NewsHeadlineService';
 export { NewsApiConfig, buildNewsApiUrl, NewsApiRequestParams, maskApiKey } from './src/NewsApiConfig';
 export { BackendConfig, withBase, type BackendConfigShape, type ResultShape, type LoginParams, type RegisterParams } from './src/BackendConfig';
+export { JwtUtil, JwtPayload } from './src/JwtUtil';

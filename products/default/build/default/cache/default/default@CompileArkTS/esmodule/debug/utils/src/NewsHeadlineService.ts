@@ -6,6 +6,7 @@ export interface NewsHeadlineItem {
     url: string;
     source?: string;
     time?: string;
+    uniquekey: string;
 }
 // Juhe API typed structures
 interface JuheNewsItem {
@@ -79,7 +80,8 @@ export class NewsHeadlineService {
             const source: string | undefined = sourceRaw ? sanitizeText(sourceRaw) : undefined;
             const timeRaw: string | undefined = it.date ? String(it.date) : undefined;
             const time: string | undefined = timeRaw ? sanitizeText(timeRaw) : undefined;
-            result.push({ title, url, source, time });
+            const uniquekey: string = it.uniquekey ? String(it.uniquekey) : url; // 使用URL作为备用唯一标识
+            result.push({ title, url, source, time, uniquekey });
         }
         return result;
     }

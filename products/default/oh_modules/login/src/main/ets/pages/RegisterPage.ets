@@ -111,7 +111,8 @@ export struct RegisterPage {
     Column() {
       Row() {
         Button() {
-          Image($r('app.media.ic_back'))
+          Text('←')
+            .fontSize('24fp')
             .width('24vp')
             .height('24vp')
         }

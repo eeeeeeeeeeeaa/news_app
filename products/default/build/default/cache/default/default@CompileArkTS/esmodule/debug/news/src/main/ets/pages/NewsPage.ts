@@ -103,9 +103,9 @@ class MainViewModel {
      */
     getHotNewsData(): Array<NewsData> {
         let hotNewsData: NewsData[] = [
-            new NewsData(1, "科技突破：人工智能在医疗领域取得重大进展", "最新研究显示，AI技术在疾病诊断和治疗方案制定方面展现出巨大潜力...", "科技日报", "2小时前", { "id": 16777236, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "科技", 125000, true, true),
-            new NewsData(2, "经济观察：全球股市震荡，投资者需谨慎", "受多重因素影响，全球主要股市出现不同程度波动，专家建议理性投资...", "财经网", "3小时前", { "id": 16777237, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "财经", 89000, true, false),
-            new NewsData(3, "教育改革：新课程标准正式发布", "教育部发布最新课程标准，强调素质教育与创新能力培养...", "教育时报", "5小时前", { "id": 16777238, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "教育", 67000, true, false)
+            new NewsData(1, "科技突破：人工智能在医疗领域取得重大进展", "最新研究显示，AI技术在疾病诊断和治疗方案制定方面展现出巨大潜力...", "科技日报", "2小时前", { "id": 16777242, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "科技", 125000, true, true),
+            new NewsData(2, "经济观察：全球股市震荡，投资者需谨慎", "受多重因素影响，全球主要股市出现不同程度波动，专家建议理性投资...", "财经网", "3小时前", { "id": 16777243, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "财经", 89000, true, false),
+            new NewsData(3, "教育改革：新课程标准正式发布", "教育部发布最新课程标准，强调素质教育与创新能力培养...", "教育时报", "5小时前", { "id": 16777244, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "教育", 67000, true, false)
         ];
         return hotNewsData;
     }
@@ -116,10 +116,10 @@ class MainViewModel {
      */
     getNewsListData(): Array<NewsData> {
         let newsListData: NewsData[] = [
-            new NewsData(4, "环保行动：多地启动绿色出行计划", "为减少碳排放，多个城市推出绿色出行激励政策...", "环保日报", "6小时前", { "id": 16777239, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "环保", 43000, false, false),
-            new NewsData(5, "体育赛事：世界杯预选赛精彩回顾", "多支强队在预选赛中展现出色表现，为即将到来的正赛做准备...", "体育周报", "8小时前", { "id": 16777236, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "体育", 56000, false, false),
-            new NewsData(6, "文化传承：非物质文化遗产保护工作取得新进展", "各地加大非遗保护力度，让传统文化在新时代焕发新活力...", "文化周刊", "10小时前", { "id": 16777237, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "文化", 32000, false, false),
-            new NewsData(7, "健康生活：专家建议的冬季养生指南", "冬季是养生的关键时期，专家提醒注意饮食调理和适度运动...", "健康时报", "12小时前", { "id": 16777238, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "健康", 28000, false, false)
+            new NewsData(4, "环保行动：多地启动绿色出行计划", "为减少碳排放，多个城市推出绿色出行激励政策...", "环保日报", "6小时前", { "id": 16777245, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "环保", 43000, false, false),
+            new NewsData(5, "体育赛事：世界杯预选赛精彩回顾", "多支强队在预选赛中展现出色表现，为即将到来的正赛做准备...", "体育周报", "8小时前", { "id": 16777242, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "体育", 56000, false, false),
+            new NewsData(6, "文化传承：非物质文化遗产保护工作取得新进展", "各地加大非遗保护力度，让传统文化在新时代焕发新活力...", "文化周刊", "10小时前", { "id": 16777243, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "文化", 32000, false, false),
+            new NewsData(7, "健康生活：专家建议的冬季养生指南", "冬季是养生的关键时期，专家提醒注意饮食调理和适度运动...", "健康时报", "12小时前", { "id": 16777244, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "健康", 28000, false, false)
         ];
         return newsListData;
     }
@@ -155,8 +155,8 @@ class MainViewModel {
      */
     getMockHotNewsData(): Array<NewsData> {
         return [
-            new NewsData(1, "科技突破：人工智能在医疗领域取得重大进展", "最新研究显示，AI技术在疾病诊断和治疗方案制定方面展现出巨大潜力...", "科技日报", "2小时前", { "id": 16777236, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "科技", 125000, true, true),
-            new NewsData(2, "经济观察：全球股市震荡，投资者需谨慎", "受多重因素影响，全球主要股市出现不同程度波动，专家建议理性投资...", "财经网", "3小时前", { "id": 16777237, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "财经", 89000, true, false)
+            new NewsData(1, "科技突破：人工智能在医疗领域取得重大进展", "最新研究显示，AI技术在疾病诊断和治疗方案制定方面展现出巨大潜力...", "科技日报", "2小时前", { "id": 16777242, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "科技", 125000, true, true),
+            new NewsData(2, "经济观察：全球股市震荡，投资者需谨慎", "受多重因素影响，全球主要股市出现不同程度波动，专家建议理性投资...", "财经网", "3小时前", { "id": 16777243, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }, "财经", 89000, true, false)
         ];
     }
 }
@@ -442,7 +442,7 @@ export class NewsPage extends ViewPU {
             Row.alignItems(VerticalAlign.Center);
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777241, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+            Image.create({ "id": 16777247, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
             Image.width('20vp');
             Image.height('20vp');
             Image.margin({ left: '12vp', right: '12vp' });
@@ -452,7 +452,7 @@ export class NewsPage extends ViewPU {
             });
         }, Image);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777240, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+            Image.create({ "id": 16777246, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
             Image.width('20vp');
             Image.height('20vp');
             Image.margin({ right: '4vp' });
@@ -871,7 +871,7 @@ export class NewsPage extends ViewPU {
             Row.alignItems(VerticalAlign.Center);
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777241, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+            Image.create({ "id": 16777247, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
             Image.width(12);
             Image.height(12);
             Image.margin({ right: 4 });

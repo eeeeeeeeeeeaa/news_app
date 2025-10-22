@@ -2,36 +2,244 @@ if (!("finalizeConstruction" in ViewPU.prototype)) {
     Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
 }
 interface FollowPage_Params {
+    refreshTrigger?: number;
     searchText?: string;
     selectedUrl?: string | null;
     webController?: webview.WebviewController;
     hotTitles?: string[];
-    newsList?: FollowedNewsItem[];
+    followedNewsList?: FollowedNewsItem[];
     isLoading?: boolean;
-    followService?: NewsFollowService;
+    errorMessage?: string;
+    newsFollowService?: NewsFollowService;
+}
+interface NewsCard_Params {
+    newsData?: FollowedNewsData;
+    onCardClick?: (newsData: FollowedNewsData) => void;
+    onUnfollow?: () => void;
 }
 import { CommonSearchBar } from "@bundle:com.huawei.quickstart/default@uicomponents/Index";
 import { BaiduHotSearchParser } from "@bundle:com.huawei.quickstart/default@utils/Index";
 import webview from "@ohos:web.webview";
 import { NewsFollowService, type FollowedNewsItem } from "@bundle:com.huawei.quickstart/default@follows/ets/view/NewsFollowService";
-import promptAction from "@ohos:promptAction";
+/**
+ * 关注新闻数据接口
+ */
+export interface FollowedNewsData {
+    id: string;
+    title: string;
+    publishTime: string;
+    publisher: string;
+    imageUrl?: string;
+    content?: string;
+}
+export class NewsCard extends ViewPU {
+    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
+        super(parent, __localStorage, elmtId, extraInfo);
+        if (typeof paramsLambda === "function") {
+            this.paramsGenerator_ = paramsLambda;
+        }
+        this.__newsData = new SynchedPropertyObjectOneWayPU(params.newsData, this, "newsData");
+        this.onCardClick = undefined;
+        this.onUnfollow = undefined;
+        this.setInitiallyProvidedValue(params);
+        this.finalizeConstruction();
+    }
+    setInitiallyProvidedValue(params: NewsCard_Params) {
+        if (params.onCardClick !== undefined) {
+            this.onCardClick = params.onCardClick;
+        }
+        if (params.onUnfollow !== undefined) {
+            this.onUnfollow = params.onUnfollow;
+        }
+    }
+    updateStateVars(params: NewsCard_Params) {
+        this.__newsData.reset(params.newsData);
+    }
+    purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__newsData.purgeDependencyOnElmtId(rmElmtId);
+    }
+    aboutToBeDeleted() {
+        this.__newsData.aboutToBeDeleted();
+        SubscriberManager.Get().delete(this.id__());
+        this.aboutToBeDeletedInternal();
+    }
+    private __newsData: SynchedPropertySimpleOneWayPU<FollowedNewsData>;
+    get newsData() {
+        return this.__newsData.get();
+    }
+    set newsData(newValue: FollowedNewsData) {
+        this.__newsData.set(newValue);
+    }
+    private onCardClick?: (newsData: FollowedNewsData) => void;
+    private onUnfollow?: () => void;
+    initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.padding(16);
+            Column.backgroundColor('#FFFFFF');
+            Column.borderRadius(8);
+            Column.shadow({
+                radius: 4,
+                color: '#1A000000',
+                offsetX: 0,
+                offsetY: 2
+            });
+            Column.onClick(() => {
+                if (this.onCardClick) {
+                    this.onCardClick(ObservedObject.GetRawObject(this.newsData));
+                }
+            });
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 新闻标题
+            Text.create(this.newsData.title);
+            // 新闻标题
+            Text.fontSize(16);
+            // 新闻标题
+            Text.fontWeight(FontWeight.Medium);
+            // 新闻标题
+            Text.fontColor('#182431');
+            // 新闻标题
+            Text.maxLines(2);
+            // 新闻标题
+            Text.textOverflow({ overflow: TextOverflow.Ellipsis });
+            // 新闻标题
+            Text.width('100%');
+            // 新闻标题
+            Text.margin({ bottom: 8 });
+        }, Text);
+        // 新闻标题
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 底部信息行
+            Row.create();
+            // 底部信息行
+            Row.width('100%');
+            // 底部信息行
+            Row.alignItems(VerticalAlign.Center);
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 发布者
+            Text.create(this.newsData.publisher);
+            // 发布者
+            Text.fontSize(12);
+            // 发布者
+            Text.fontColor('#666666');
+            // 发布者
+            Text.backgroundColor('#F5F5F5');
+            // 发布者
+            Text.padding({ left: 8, right: 8, top: 4, bottom: 4 });
+            // 发布者
+            Text.borderRadius(4);
+        }, Text);
+        // 发布者
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Blank.create();
+        }, Blank);
+        Blank.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            // 取消关注按钮
+            if (this.onUnfollow) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('取消关注');
+                        Text.fontSize(12);
+                        Text.fontColor('#E60012');
+                        Text.backgroundColor('#FFF5F5');
+                        Text.padding({ left: 8, right: 8, top: 4, bottom: 4 });
+                        Text.borderRadius(4);
+                        Text.margin({ right: 8 });
+                        Text.onClick(() => {
+                            if (this.onUnfollow) {
+                                this.onUnfollow();
+                            }
+                        });
+                    }, Text);
+                    Text.pop();
+                });
+            }
+            // 发布时间
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 发布时间
+            Text.create(this.formatTime(this.newsData.publishTime));
+            // 发布时间
+            Text.fontSize(12);
+            // 发布时间
+            Text.fontColor('#999999');
+        }, Text);
+        // 发布时间
+        Text.pop();
+        // 底部信息行
+        Row.pop();
+        Column.pop();
+    }
+    /**
+     * 格式化时间显示
+     * @param timeStr 时间字符串
+     * @returns 格式化后的时间
+     */
+    private formatTime(timeStr: string): string {
+        try {
+            const date = new Date(timeStr);
+            const now = new Date();
+            const diff = now.getTime() - date.getTime();
+            // 计算时间差
+            const minutes = Math.floor(diff / (1000 * 60));
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            if (minutes < 60) {
+                return `${minutes}分钟前`;
+            }
+            else if (hours < 24) {
+                return `${hours}小时前`;
+            }
+            else if (days < 7) {
+                return `${days}天前`;
+            }
+            else {
+                // 超过7天显示具体日期
+                return `${date.getMonth() + 1}月${date.getDate()}日`;
+            }
+        }
+        catch (error) {
+            return timeStr;
+        }
+    }
+    rerender() {
+        this.updateDirtyElements();
+    }
+}
 export default class FollowPage extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
         super(parent, __localStorage, elmtId, extraInfo);
         if (typeof paramsLambda === "function") {
             this.paramsGenerator_ = paramsLambda;
         }
+        this.__refreshTrigger = new SynchedPropertySimpleOneWayPU(params.refreshTrigger, this, "refreshTrigger");
         this.__searchText = new ObservedPropertySimplePU('', this, "searchText");
         this.__selectedUrl = new ObservedPropertyObjectPU(null, this, "selectedUrl");
         this.webController = new webview.WebviewController();
         this.__hotTitles = new ObservedPropertyObjectPU([], this, "hotTitles");
-        this.__newsList = new ObservedPropertyObjectPU([], this, "newsList");
-        this.__isLoading = new ObservedPropertySimplePU(false, this, "isLoading");
-        this.followService = NewsFollowService.getInstance();
+        this.__followedNewsList = new ObservedPropertyObjectPU([], this, "followedNewsList");
+        this.__isLoading = new ObservedPropertySimplePU(true, this, "isLoading");
+        this.__errorMessage = new ObservedPropertySimplePU('', this, "errorMessage");
+        this.newsFollowService = NewsFollowService.getInstance();
         this.setInitiallyProvidedValue(params);
         this.finalizeConstruction();
     }
     setInitiallyProvidedValue(params: FollowPage_Params) {
+        if (params.refreshTrigger === undefined) {
+            this.__refreshTrigger.set(0);
+        }
         if (params.searchText !== undefined) {
             this.searchText = params.searchText;
         }
@@ -44,33 +252,48 @@ export default class FollowPage extends ViewPU {
         if (params.hotTitles !== undefined) {
             this.hotTitles = params.hotTitles;
         }
-        if (params.newsList !== undefined) {
-            this.newsList = params.newsList;
+        if (params.followedNewsList !== undefined) {
+            this.followedNewsList = params.followedNewsList;
         }
         if (params.isLoading !== undefined) {
             this.isLoading = params.isLoading;
         }
-        if (params.followService !== undefined) {
-            this.followService = params.followService;
+        if (params.errorMessage !== undefined) {
+            this.errorMessage = params.errorMessage;
+        }
+        if (params.newsFollowService !== undefined) {
+            this.newsFollowService = params.newsFollowService;
         }
     }
     updateStateVars(params: FollowPage_Params) {
+        this.__refreshTrigger.reset(params.refreshTrigger);
     }
     purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__refreshTrigger.purgeDependencyOnElmtId(rmElmtId);
         this.__searchText.purgeDependencyOnElmtId(rmElmtId);
         this.__selectedUrl.purgeDependencyOnElmtId(rmElmtId);
         this.__hotTitles.purgeDependencyOnElmtId(rmElmtId);
-        this.__newsList.purgeDependencyOnElmtId(rmElmtId);
+        this.__followedNewsList.purgeDependencyOnElmtId(rmElmtId);
         this.__isLoading.purgeDependencyOnElmtId(rmElmtId);
+        this.__errorMessage.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
+        this.__refreshTrigger.aboutToBeDeleted();
         this.__searchText.aboutToBeDeleted();
         this.__selectedUrl.aboutToBeDeleted();
         this.__hotTitles.aboutToBeDeleted();
-        this.__newsList.aboutToBeDeleted();
+        this.__followedNewsList.aboutToBeDeleted();
         this.__isLoading.aboutToBeDeleted();
+        this.__errorMessage.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
+    }
+    private __refreshTrigger: SynchedPropertySimpleOneWayPU<number>; // 从外部传入的刷新触发器
+    get refreshTrigger() {
+        return this.__refreshTrigger.get();
+    }
+    set refreshTrigger(newValue: number) {
+        this.__refreshTrigger.set(newValue);
     }
     private __searchText: ObservedPropertySimplePU<string>;
     get searchText() {
@@ -94,23 +317,29 @@ export default class FollowPage extends ViewPU {
     set hotTitles(newValue: string[]) {
         this.__hotTitles.set(newValue);
     }
-    private __newsList: ObservedPropertyObjectPU<FollowedNewsItem[]>;
-    get newsList() {
-        return this.__newsList.get();
+    private __followedNewsList: ObservedPropertyObjectPU<FollowedNewsItem[]>;
+    get followedNewsList() {
+        return this.__followedNewsList.get();
     }
-    set newsList(newValue: FollowedNewsItem[]) {
-        this.__newsList.set(newValue);
+    set followedNewsList(newValue: FollowedNewsItem[]) {
+        this.__followedNewsList.set(newValue);
     }
-    private __isLoading: ObservedPropertySimplePU<boolean>;
+    private __isLoading: ObservedPropertySimplePU<boolean>; // 标记是否正在加载
     get isLoading() {
         return this.__isLoading.get();
     }
     set isLoading(newValue: boolean) {
         this.__isLoading.set(newValue);
     }
-    private followService: NewsFollowService;
+    private __errorMessage: ObservedPropertySimplePU<string>; // 错误信息
+    get errorMessage() {
+        return this.__errorMessage.get();
+    }
+    set errorMessage(newValue: string) {
+        this.__errorMessage.set(newValue);
+    }
+    private newsFollowService: NewsFollowService;
     async aboutToAppear() {
-        console.log('========== Follow 页面初始化 ==========');
         try {
             const realtime = await BaiduHotSearchParser.getHotSearchData('realtime');
             this.hotTitles = realtime.slice(0, 10).map((it) => it.card_title);
@@ -118,79 +347,50 @@ export default class FollowPage extends ViewPU {
         catch (_) {
             this.hotTitles = [];
         }
-        // 检查登录状态
-        await this.checkLoginStatus();
         // 加载关注的新闻数据
-        this.loadFollowNewsData();
+        await this.loadFollowedNewsList();
     }
-    // 检查登录状态（用于调试）
-    private async checkLoginStatus() {
-        console.log('🔍 [Follow] 检查登录状态...');
-        try {
-            // 从 login 模块导入 UserManager
-            const loginModule = await import("@bundle:com.huawei.quickstart/default@login/Index");
-            const userManager = loginModule.UserManager.getInstance();
-            console.log('🔍 [Follow] UserManager 实例:', userManager);
-            // 初始化 preferences（如果需要）
-            await userManager.initPreferences();
-            console.log('🔍 [Follow] Preferences 初始化成功');
-            // 获取 token
-            const token = await userManager.getToken();
-            console.log('🔍 [Follow] Token 存在:', token ? '是' : '否');
-            if (token) {
-                console.log('🔍 [Follow] Token 类型:', typeof token);
-                console.log('🔍 [Follow] Token 长度:', token.length);
-                console.log('🔍 [Follow] Token 前30字符:', token.substring(0, 30) + '...');
-                // 检查 token 是否有效
-                const isValid = await userManager.isTokenValid();
-                console.log('🔍 [Follow] Token 是否有效:', isValid);
-                // 获取 token 信息
-                const tokenInfo = await userManager.getTokenInfo();
-                console.log('🔍 [Follow] Token Info:', tokenInfo);
-            }
-            else {
-                console.warn('⚠️ [Follow] 未找到 Token，用户可能未登录');
-            }
-            // 获取当前用户信息
-            const currentUser = await userManager.getCurrentUser();
-            console.log('🔍 [Follow] 当前用户:', currentUser);
+    /**
+     * 监听刷新触发器变化
+     */
+    onPageShow() {
+        console.log('🔄 FollowPage.onPageShow 被调用，refreshTrigger:', this.refreshTrigger);
+        if (this.refreshTrigger > 0) {
+            this.loadFollowedNewsList();
         }
-        catch (error) {
-            console.error('❌ [Follow] 检查登录状态失败:', error);
-            if (error instanceof Error) {
-                console.error('❌ [Follow] 错误消息:', error.message);
-                console.error('❌ [Follow] 错误堆栈:', error.stack);
-            }
-        }
-        console.log('========================================');
     }
-    private async loadFollowNewsData() {
-        console.log('========== 开始加载关注的新闻列表 ==========');
+    /**
+     * 监听refreshTrigger变化
+     */
+    onPageUpdate() {
+        console.log('🔄 FollowPage.onPageUpdate 被调用，refreshTrigger:', this.refreshTrigger);
+        if (this.refreshTrigger > 0) {
+            this.loadFollowedNewsList();
+        }
+    }
+    /**
+     * 加载关注的新闻列表
+     */
+    private async loadFollowedNewsList(): Promise<void> {
         this.isLoading = true;
+        this.errorMessage = '';
         try {
-            // 从服务获取关注的新闻列表
-            const followedNews = await this.followService.getFollowedNewsList();
-            if (followedNews && followedNews.length > 0) {
-                this.newsList = followedNews;
-                console.log(`成功加载 ${followedNews.length} 条关注的新闻`);
-            }
-            else {
-                this.newsList = [];
-                console.log('暂无关注的新闻');
-            }
+            const followedNews = await this.newsFollowService.getFollowedNewsList();
+            this.followedNewsList = followedNews;
+            this.isLoading = false;
+            console.log('✅ 成功加载关注列表，共', followedNews.length, '条数据');
         }
         catch (error) {
-            console.error('加载关注新闻列表失败:', JSON.stringify(error));
-            this.newsList = [];
-            promptAction.showToast({ message: '加载失败，请稍后重试' });
-        }
-        finally {
+            console.error('❌ 加载关注列表失败:', error);
+            this.followedNewsList = [];
             this.isLoading = false;
+            if (error instanceof Error) {
+                this.errorMessage = error.message;
+            }
+            else {
+                this.errorMessage = '加载失败，请稍后再试';
+            }
         }
-    }
-    // 刷新关注列表
-    private async refreshNewsList() {
-        await this.loadFollowNewsData();
     }
     private openBrowser(url: string): void {
         this.selectedUrl = url;
@@ -198,189 +398,36 @@ export default class FollowPage extends ViewPU {
     private closeBrowser(): void {
         this.selectedUrl = null;
     }
-    buildNewsItem(item: FollowedNewsItem, index: number, parent = null) {
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Column.create();
-            Column.width('100%');
-            Column.alignItems(HorizontalAlign.Start);
-            Column.padding({ top: '12vp', bottom: '12vp', left: '16vp', right: '16vp' });
-            Column.backgroundColor(Color.White);
-            Column.borderRadius('8vp');
-            Column.margin({ bottom: '8vp', left: '12vp', right: '12vp' });
-            Column.shadow({ radius: 4, color: '#0A000000', offsetX: 0, offsetY: 1 });
-            Column.onClick(() => {
-                // 这里可以添加点击新闻的处理逻辑
-                console.log('点击新闻:', item.newsTitle);
-            });
-        }, Column);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            // 新闻标题
-            Text.create(item.newsTitle);
-            // 新闻标题
-            Text.fontSize('16fp');
-            // 新闻标题
-            Text.fontWeight(FontWeight.Medium);
-            // 新闻标题
-            Text.fontColor('#182431');
-            // 新闻标题
-            Text.maxLines(3);
-            // 新闻标题
-            Text.textOverflow({ overflow: TextOverflow.Ellipsis });
-            // 新闻标题
-            Text.lineHeight('21fp');
-            // 新闻标题
-            Text.margin({ bottom: '6vp' });
-            // 新闻标题
-            Text.textAlign(TextAlign.Start);
-            // 新闻标题
-            Text.width('100%');
-        }, Text);
-        // 新闻标题
-        Text.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            // 发布者和时间信息
-            Row.create();
-            // 发布者和时间信息
-            Row.width('100%');
-            // 发布者和时间信息
-            Row.alignItems(VerticalAlign.Center);
-        }, Row);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            If.create();
-            // 显示新闻发布者
-            if (item.newsAuthor) {
-                this.ifElseBranchUpdateFunction(0, () => {
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create(item.newsAuthor);
-                        Text.fontSize('12fp');
-                        Text.fontColor('#999999');
-                    }, Text);
-                    Text.pop();
-                });
-            }
-            // 分隔符
-            else {
-                this.ifElseBranchUpdateFunction(1, () => {
-                });
-            }
-        }, If);
-        If.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            If.create();
-            // 分隔符
-            if (item.newsAuthor && item.newsTime) {
-                this.ifElseBranchUpdateFunction(0, () => {
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create('·');
-                        Text.fontSize('12fp');
-                        Text.fontColor('#999999');
-                        Text.margin({ left: 6, right: 6 });
-                    }, Text);
-                    Text.pop();
-                });
-            }
-            // 显示新闻发布时间
-            else {
-                this.ifElseBranchUpdateFunction(1, () => {
-                });
-            }
-        }, If);
-        If.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            If.create();
-            // 显示新闻发布时间
-            if (item.newsTime) {
-                this.ifElseBranchUpdateFunction(0, () => {
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create(this.formatDateTime(item.newsTime));
-                        Text.fontSize('12fp');
-                        Text.fontColor('#999999');
-                    }, Text);
-                    Text.pop();
-                });
-            }
-            // 如果有关注时间但没有新闻发布时间，显示关注时间
-            else {
-                this.ifElseBranchUpdateFunction(1, () => {
-                });
-            }
-        }, If);
-        If.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            If.create();
-            // 如果有关注时间但没有新闻发布时间，显示关注时间
-            if (!item.newsTime && item.followTime) {
-                this.ifElseBranchUpdateFunction(0, () => {
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        If.create();
-                        if (item.newsAuthor) {
-                            this.ifElseBranchUpdateFunction(0, () => {
-                                this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                    Text.create('·');
-                                    Text.fontSize('12fp');
-                                    Text.fontColor('#999999');
-                                    Text.margin({ left: 6, right: 6 });
-                                }, Text);
-                                Text.pop();
-                            });
-                        }
-                        else {
-                            this.ifElseBranchUpdateFunction(1, () => {
-                            });
-                        }
-                    }, If);
-                    If.pop();
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create(`关注于 ${this.formatDateTime(item.followTime)}`);
-                        Text.fontSize('12fp');
-                        Text.fontColor('#999999');
-                    }, Text);
-                    Text.pop();
-                });
-            }
-            else {
-                this.ifElseBranchUpdateFunction(1, () => {
-                });
-            }
-        }, If);
-        If.pop();
-        // 发布者和时间信息
-        Row.pop();
-        Column.pop();
+    /**
+     * 点击新闻卡片，打开新闻详情
+     * @param newsData 新闻数据
+     */
+    private onNewsCardClick(newsData: FollowedNewsItem): void {
+        console.log('点击新闻卡片:', newsData.newsTitle);
+        console.log('新闻URL:', newsData.newsUniquekey);
+        // newsUniquekey 实际存放的是新闻的 URL
+        if (newsData.newsUniquekey && newsData.newsUniquekey.trim().length > 0) {
+            this.openBrowser(newsData.newsUniquekey);
+        }
+        else {
+            console.warn('新闻URL为空，无法打开详情');
+        }
     }
-    // 格式化日期时间
-    private formatDateTime(dateTimeStr: string): string {
+    /**
+     * 取消关注新闻
+     * @param newsData 新闻数据
+     */
+    private async onUnfollowNews(newsData: FollowedNewsItem): Promise<void> {
         try {
-            // 如果是 ISO 8601 格式，转换为可读格式
-            if (dateTimeStr.includes('T')) {
-                const date = new Date(dateTimeStr);
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                const hours = String(date.getHours()).padStart(2, '0');
-                const minutes = String(date.getMinutes()).padStart(2, '0');
-                return `${year}-${month}-${day} ${hours}:${minutes}`;
+            const success = await this.newsFollowService.unfollowNews(newsData.newsUniquekey);
+            if (success) {
+                // 从列表中移除该新闻
+                this.followedNewsList = this.followedNewsList.filter(item => item.followId !== newsData.followId);
             }
-            return dateTimeStr;
         }
         catch (error) {
-            return dateTimeStr;
+            console.error('取消关注失败:', error);
         }
-    }
-    refreshBuilder(parent = null) {
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Stack.create({ alignContent: Alignment.Bottom });
-            Stack.clip(true);
-            Stack.height('64vp');
-            Stack.width('100%');
-        }, Stack);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            LoadingProgress.create();
-            LoadingProgress.width('32vp');
-            LoadingProgress.height('32vp');
-            LoadingProgress.color('#FF6B00');
-        }, LoadingProgress);
-        Stack.pop();
     }
     buildBrowserLayer(url: string, parent = null) {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -410,7 +457,7 @@ export default class FollowPage extends ViewPU {
         }, Blank);
         Blank.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('搜索结果');
+            Text.create('新闻详情');
             Text.fontSize(16);
             Text.fontWeight(FontWeight.Medium);
             Text.fontColor('#182431');
@@ -454,7 +501,7 @@ export default class FollowPage extends ViewPU {
                         onSearch: (url: string) => {
                             this.openBrowser(url);
                         }
-                    }, undefined, elmtId, () => { }, { page: "features/follows/src/main/ets/view/Follow.ets", line: 259, col: 9 });
+                    }, undefined, elmtId, () => { }, { page: "features/follows/src/main/ets/view/Follow.ets", line: 272, col: 9 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -478,126 +525,259 @@ export default class FollowPage extends ViewPU {
         }
         __Common__.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            // 页面标题
+            // 页面标题和刷新按钮
+            Row.create();
+            // 页面标题和刷新按钮
+            Row.width('100%');
+            // 页面标题和刷新按钮
+            Row.margin({ left: 16, right: 16, top: 16, bottom: 16 });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create('我的关注');
-            // 页面标题
-            Text.fontSize('20fp');
-            // 页面标题
+            Text.fontSize(20);
             Text.fontWeight(FontWeight.Bold);
-            // 页面标题
-            Text.margin({ top: '20vp', bottom: '20vp' });
-            // 页面标题
-            Text.width('100%');
-            // 页面标题
-            Text.textAlign(TextAlign.Center);
+            Text.fontColor('#182431');
         }, Text);
-        // 页面标题
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Blank.create();
+        }, Blank);
+        Blank.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 刷新按钮
+            Text.create('刷新');
+            // 刷新按钮
+            Text.fontSize(12);
+            // 刷新按钮
+            Text.fontColor('#1890FF');
+            // 刷新按钮
+            Text.backgroundColor('#F0F9FF');
+            // 刷新按钮
+            Text.padding({ left: 8, right: 8, top: 4, bottom: 4 });
+            // 刷新按钮
+            Text.borderRadius(4);
+            // 刷新按钮
+            Text.onClick(() => {
+                this.loadFollowedNewsList();
+            });
+        }, Text);
+        // 刷新按钮
+        Text.pop();
+        // 页面标题和刷新按钮
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
             If.create();
-            // 新闻列表
+            // 内容区域
             if (this.isLoading) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         // 加载状态
                         Column.create();
                         // 加载状态
-                        Column.width('100%');
-                        // 加载状态
                         Column.layoutWeight(1);
                         // 加载状态
                         Column.justifyContent(FlexAlign.Center);
+                        // 加载状态
+                        Column.alignItems(HorizontalAlign.Center);
                     }, Column);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         LoadingProgress.create();
-                        LoadingProgress.width('40vp');
-                        LoadingProgress.height('40vp');
-                        LoadingProgress.color('#FF6B00');
+                        LoadingProgress.width(40);
+                        LoadingProgress.height(40);
+                        LoadingProgress.margin({ bottom: 16 });
                     }, LoadingProgress);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create('加载中...');
-                        Text.fontSize('14fp');
+                        Text.create('正在加载...');
+                        Text.fontSize(16);
                         Text.fontColor('#999999');
-                        Text.margin({ top: '16vp' });
                     }, Text);
                     Text.pop();
                     // 加载状态
                     Column.pop();
                 });
             }
-            else if (this.newsList.length > 0) {
+            else if (this.errorMessage) {
                 this.ifElseBranchUpdateFunction(1, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        // 有数据时显示列表
-                        Refresh.create({ refreshing: { value: this.isLoading, changeEvent: newValue => { this.isLoading = newValue; } }, builder: this.refreshBuilder.bind(this) });
-                        // 有数据时显示列表
-                        Refresh.layoutWeight(1);
-                        // 有数据时显示列表
-                        Refresh.onRefreshing(() => {
-                            this.refreshNewsList();
-                        });
-                    }, Refresh);
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Scroll.create();
-                        Scroll.scrollBar(BarState.Off);
-                        Scroll.width('100%');
-                    }, Scroll);
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        // 错误状态
                         Column.create();
-                        Column.width('100%');
+                        // 错误状态
+                        Column.layoutWeight(1);
+                        // 错误状态
+                        Column.justifyContent(FlexAlign.Center);
+                        // 错误状态
+                        Column.alignItems(HorizontalAlign.Center);
                     }, Column);
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('⚠️');
+                        Text.fontSize(48);
+                        Text.margin({ bottom: 16 });
+                    }, Text);
+                    Text.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('加载失败');
+                        Text.fontSize(18);
+                        Text.fontWeight(FontWeight.Medium);
+                        Text.fontColor('#FF4D4F');
+                        Text.margin({ bottom: 8 });
+                    }, Text);
+                    Text.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create(this.errorMessage);
+                        Text.fontSize(14);
+                        Text.fontColor('#999999');
+                        Text.textAlign(TextAlign.Center);
+                        Text.margin({ bottom: 16 });
+                    }, Text);
+                    Text.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('点击刷新重试');
+                        Text.fontSize(12);
+                        Text.fontColor('#1890FF');
+                        Text.onClick(() => {
+                            this.loadFollowedNewsList();
+                        });
+                    }, Text);
+                    Text.pop();
+                    // 错误状态
+                    Column.pop();
+                });
+            }
+            else if (this.followedNewsList.length > 0) {
+                this.ifElseBranchUpdateFunction(2, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        // 有数据状态
+                        List.create();
+                        // 有数据状态
+                        List.layoutWeight(1);
+                        // 有数据状态
+                        List.width('100%');
+                        // 有数据状态
+                        List.backgroundColor('#F8F9FA');
+                    }, List);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         ForEach.create();
                         const forEachItemGenFunction = (_item, index: number) => {
-                            const item = _item;
-                            this.buildNewsItem.bind(this)(item, index);
+                            const newsItem = _item;
+                            {
+                                const itemCreation = (elmtId, isInitialRender) => {
+                                    ViewStackProcessor.StartGetAccessRecordingFor(elmtId);
+                                    itemCreation2(elmtId, isInitialRender);
+                                    if (!isInitialRender) {
+                                        ListItem.pop();
+                                    }
+                                    ViewStackProcessor.StopGetAccessRecording();
+                                };
+                                const itemCreation2 = (elmtId, isInitialRender) => {
+                                    ListItem.create(deepRenderFunction, true);
+                                };
+                                const deepRenderFunction = (elmtId, isInitialRender) => {
+                                    itemCreation(elmtId, isInitialRender);
+                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                        __Common__.create();
+                                        __Common__.margin({ left: 16, right: 16, bottom: 12 });
+                                    }, __Common__);
+                                    {
+                                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                            if (isInitialRender) {
+                                                let componentCall = new NewsCard(this, {
+                                                    newsData: {
+                                                        id: newsItem.newsUniquekey,
+                                                        title: newsItem.newsTitle,
+                                                        publishTime: newsItem.newsTime || '',
+                                                        publisher: newsItem.newsAuthor || '',
+                                                        imageUrl: undefined,
+                                                        content: undefined
+                                                    },
+                                                    onCardClick: (newsData: FollowedNewsData) => {
+                                                        this.onNewsCardClick(newsItem);
+                                                    },
+                                                    onUnfollow: () => {
+                                                        this.onUnfollowNews(newsItem);
+                                                    }
+                                                }, undefined, elmtId, () => { }, { page: "features/follows/src/main/ets/view/Follow.ets", line: 355, col: 17 });
+                                                ViewPU.create(componentCall);
+                                                let paramsLambda = () => {
+                                                    return {
+                                                        newsData: {
+                                                            id: newsItem.newsUniquekey,
+                                                            title: newsItem.newsTitle,
+                                                            publishTime: newsItem.newsTime || '',
+                                                            publisher: newsItem.newsAuthor || '',
+                                                            imageUrl: undefined,
+                                                            content: undefined
+                                                        },
+                                                        onCardClick: (newsData: FollowedNewsData) => {
+                                                            this.onNewsCardClick(newsItem);
+                                                        },
+                                                        onUnfollow: () => {
+                                                            this.onUnfollowNews(newsItem);
+                                                        }
+                                                    };
+                                                };
+                                                componentCall.paramsGenerator_ = paramsLambda;
+                                            }
+                                            else {
+                                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                                    newsData: {
+                                                        id: newsItem.newsUniquekey,
+                                                        title: newsItem.newsTitle,
+                                                        publishTime: newsItem.newsTime || '',
+                                                        publisher: newsItem.newsAuthor || '',
+                                                        imageUrl: undefined,
+                                                        content: undefined
+                                                    }
+                                                });
+                                            }
+                                        }, { name: "NewsCard" });
+                                    }
+                                    __Common__.pop();
+                                    ListItem.pop();
+                                };
+                                this.observeComponentCreation2(itemCreation2, ListItem);
+                                ListItem.pop();
+                            }
                         };
-                        this.forEachUpdateFunction(elmtId, this.newsList, forEachItemGenFunction, undefined, true, false);
+                        this.forEachUpdateFunction(elmtId, this.followedNewsList, forEachItemGenFunction, (newsItem: FollowedNewsItem, index: number) => `${newsItem.followId}-${index}`, true, true);
                     }, ForEach);
                     ForEach.pop();
-                    Column.pop();
-                    Scroll.pop();
-                    // 有数据时显示列表
-                    Refresh.pop();
+                    // 有数据状态
+                    List.pop();
                 });
             }
             else {
-                this.ifElseBranchUpdateFunction(2, () => {
+                this.ifElseBranchUpdateFunction(3, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        // 空状态
+                        // 空状态（没有关注任何新闻）
                         Column.create();
-                        // 空状态
-                        Column.width('100%');
-                        // 空状态
+                        // 空状态（没有关注任何新闻）
                         Column.layoutWeight(1);
-                        // 空状态
+                        // 空状态（没有关注任何新闻）
                         Column.justifyContent(FlexAlign.Center);
+                        // 空状态（没有关注任何新闻）
+                        Column.alignItems(HorizontalAlign.Center);
                     }, Column);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('📰');
+                        Text.fontSize(48);
+                        Text.margin({ bottom: 16 });
+                    }, Text);
+                    Text.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Text.create('暂无关注的新闻');
-                        Text.fontSize('16fp');
+                        Text.fontSize(18);
+                        Text.fontWeight(FontWeight.Medium);
                         Text.fontColor('#999999');
-                        Text.margin({ top: '20vp' });
+                        Text.margin({ bottom: 8 });
                     }, Text);
                     Text.pop();
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create('关注感兴趣的新闻，在这里查看');
-                        Text.fontSize('14fp');
+                        Text.create('去关注一些感兴趣的新闻吧');
+                        Text.fontSize(14);
                         Text.fontColor('#CCCCCC');
-                        Text.margin({ top: '12vp' });
                     }, Text);
                     Text.pop();
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Button.createWithLabel('刷新');
-                        Button.fontSize('14fp');
-                        Button.backgroundColor('#FF6B00');
-                        Button.margin({ top: '24vp' });
-                        Button.onClick(() => {
-                            this.refreshNewsList();
-                        });
-                    }, Button);
-                    Button.pop();
-                    // 空状态
+                    // 空状态（没有关注任何新闻）
                     Column.pop();
                 });
             }

@@ -2,22 +2,140 @@
 import { BaiduHotSearchParser } from 'utils';
 import webview from '@ohos.web.webview';
 import { NewsFollowService, type FollowedNewsItem } from './NewsFollowService';
-import { promptAction } from '@kit.ArkUI';
+
+/**
+ * 关注新闻数据接口
+ */
+export interface FollowedNewsData {
+  id: string;
+  title: string;
+  publishTime: string;
+  publisher: string;
+  imageUrl?: string;
+  content?: string;
+}
+
+/**
+ * 新闻卡片组件
+ * 显示新闻标题、发布时间、发布者等信息
+ */
+@Component
+export struct NewsCard {
+  @Prop newsData: FollowedNewsData;
+  onCardClick?: (newsData: FollowedNewsData) => void;
+  onUnfollow?: () => void;
+
+  build() {
+    Column() {
+      // 新闻标题
+      Text(this.newsData.title)
+        .fontSize(16)
+        .fontWeight(FontWeight.Medium)
+        .fontColor('#182431')
+        .maxLines(2)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .width('100%')
+        .margin({ bottom: 8 })
+
+      // 底部信息行
+      Row() {
+        // 发布者
+        Text(this.newsData.publisher)
+          .fontSize(12)
+          .fontColor('#666666')
+          .backgroundColor('#F5F5F5')
+          .padding({ left: 8, right: 8, top: 4, bottom: 4 })
+          .borderRadius(4)
+
+        Blank()
+
+        // 取消关注按钮
+        if (this.onUnfollow) {
+          Text('取消关注')
+            .fontSize(12)
+            .fontColor('#E60012')
+            .backgroundColor('#FFF5F5')
+            .padding({ left: 8, right: 8, top: 4, bottom: 4 })
+            .borderRadius(4)
+            .margin({ right: 8 })
+            .onClick(() => {
+              if (this.onUnfollow) {
+                this.onUnfollow();
+              }
+            })
+        }
+
+        // 发布时间
+        Text(this.formatTime(this.newsData.publishTime))
+          .fontSize(12)
+          .fontColor('#999999')
+      }
+      .width('100%')
+      .alignItems(VerticalAlign.Center)
+    }
+    .width('100%')
+    .padding(16)
+    .backgroundColor('#FFFFFF')
+    .borderRadius(8)
+    .shadow({
+      radius: 4,
+      color: '#1A000000',
+      offsetX: 0,
+      offsetY: 2
+    })
+    .onClick(() => {
+      if (this.onCardClick) {
+        this.onCardClick(this.newsData);
+      }
+    })
+  }
+
+  /**
+   * 格式化时间显示
+   * @param timeStr 时间字符串
+   * @returns 格式化后的时间
+   */
+  private formatTime(timeStr: string): string {
+    try {
+      const date = new Date(timeStr);
+      const now = new Date();
+      const diff = now.getTime() - date.getTime();
+      
+      // 计算时间差
+      const minutes = Math.floor(diff / (1000 * 60));
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      
+      if (minutes < 60) {
+        return `${minutes}分钟前`;
+      } else if (hours < 24) {
+        return `${hours}小时前`;
+      } else if (days < 7) {
+        return `${days}天前`;
+      } else {
+        // 超过7天显示具体日期
+        return `${date.getMonth() + 1}月${date.getDate()}日`;
+      }
+    } catch (error) {
+      return timeStr;
+    }
+  }
+}
 
 // ets/view/Follow.ets
 @Component
 export default struct FollowPage {
+  @Prop refreshTrigger: number = 0; // 从外部传入的刷新触发器
   @State searchText: string = '';
   @State selectedUrl: string | null = null;
   private webController: webview.WebviewController = new webview.WebviewController();
   @State hotTitles: string[] = [];
-  @State newsList: FollowedNewsItem[] = [];
-  @State isLoading: boolean = false;
-  private followService: NewsFollowService = NewsFollowService.getInstance();
+  @State followedNewsList: FollowedNewsItem[] = [];
+  @State isLoading: boolean = true; // 标记是否正在加载
+  @State errorMessage: string = ''; // 错误信息
+  private newsFollowService: NewsFollowService = NewsFollowService.getInstance();
 
   async aboutToAppear() {
-    console.log('========== Follow 页面初始化 ==========');
-    
     try {
       const realtime = await BaiduHotSearchParser.getHotSearchData('realtime');
       this.hotTitles = realtime.slice(0, 10).map((it) => it.card_title);
@@ -25,90 +143,53 @@ export default struct FollowPage {
       this.hotTitles = [];
     }
     
-    // 检查登录状态
-    await this.checkLoginStatus();
-    
     // 加载关注的新闻数据
-    this.loadFollowNewsData();
-  }
-  
-  // 检查登录状态（用于调试）
-  private async checkLoginStatus() {
-    console.log('🔍 [Follow] 检查登录状态...');
-    
-    try {
-      // 从 login 模块导入 UserManager
-      const loginModule = await import('login');
-      const userManager = loginModule.UserManager.getInstance();
-      
-      console.log('🔍 [Follow] UserManager 实例:', userManager);
-      
-      // 初始化 preferences（如果需要）
-      await userManager.initPreferences();
-      console.log('🔍 [Follow] Preferences 初始化成功');
-      
-      // 获取 token
-      const token = await userManager.getToken();
-      console.log('🔍 [Follow] Token 存在:', token ? '是' : '否');
-      
-      if (token) {
-        console.log('🔍 [Follow] Token 类型:', typeof token);
-        console.log('🔍 [Follow] Token 长度:', token.length);
-        console.log('🔍 [Follow] Token 前30字符:', token.substring(0, 30) + '...');
-        
-        // 检查 token 是否有效
-        const isValid = await userManager.isTokenValid();
-        console.log('🔍 [Follow] Token 是否有效:', isValid);
-        
-        // 获取 token 信息
-        const tokenInfo = await userManager.getTokenInfo();
-        console.log('🔍 [Follow] Token Info:', tokenInfo);
-      } else {
-        console.warn('⚠️ [Follow] 未找到 Token，用户可能未登录');
-      }
-      
-      // 获取当前用户信息
-      const currentUser = await userManager.getCurrentUser();
-      console.log('🔍 [Follow] 当前用户:', currentUser);
-      
-    } catch (error) {
-      console.error('❌ [Follow] 检查登录状态失败:', error);
-      if (error instanceof Error) {
-        console.error('❌ [Follow] 错误消息:', error.message);
-        console.error('❌ [Follow] 错误堆栈:', error.stack);
-      }
-    }
-    
-    console.log('========================================');
+    await this.loadFollowedNewsList();
   }
 
-  private async loadFollowNewsData() {
-    console.log('========== 开始加载关注的新闻列表 ==========');
-    this.isLoading = true;
-    
-    try {
-      // 从服务获取关注的新闻列表
-      const followedNews = await this.followService.getFollowedNewsList();
-      
-      if (followedNews && followedNews.length > 0) {
-        this.newsList = followedNews;
-        console.log(`成功加载 ${followedNews.length} 条关注的新闻`);
-      } else {
-        this.newsList = [];
-        console.log('暂无关注的新闻');
-      }
-    } catch (error) {
-      console.error('加载关注新闻列表失败:', JSON.stringify(error));
-      this.newsList = [];
-      promptAction.showToast({ message: '加载失败，请稍后重试' });
-    } finally {
-      this.isLoading = false;
+  /**
+   * 监听刷新触发器变化
+   */
+  onPageShow() {
+    console.log('🔄 FollowPage.onPageShow 被调用，refreshTrigger:', this.refreshTrigger);
+    if (this.refreshTrigger > 0) {
+      this.loadFollowedNewsList();
     }
   }
-  
-  // 刷新关注列表
-  private async refreshNewsList() {
-    await this.loadFollowNewsData();
+
+  /**
+   * 监听refreshTrigger变化
+   */
+  onPageUpdate() {
+    console.log('🔄 FollowPage.onPageUpdate 被调用，refreshTrigger:', this.refreshTrigger);
+    if (this.refreshTrigger > 0) {
+      this.loadFollowedNewsList();
+    }
+  }
+
+  /**
+   * 加载关注的新闻列表
+   */
+  private async loadFollowedNewsList(): Promise<void> {
+    this.isLoading = true;
+    this.errorMessage = '';
+    
+    try {
+      const followedNews = await this.newsFollowService.getFollowedNewsList();
+      this.followedNewsList = followedNews;
+      this.isLoading = false;
+      console.log('✅ 成功加载关注列表，共', followedNews.length, '条数据');
+    } catch (error) {
+      console.error('❌ 加载关注列表失败:', error);
+      this.followedNewsList = [];
+      this.isLoading = false;
+      
+      if (error instanceof Error) {
+        this.errorMessage = error.message;
+      } else {
+        this.errorMessage = '加载失败，请稍后再试';
+      }
+    }
   }
 
   private openBrowser(url: string): void {
@@ -119,104 +200,36 @@ export default struct FollowPage {
     this.selectedUrl = null;
   }
 
-  @Builder
-  buildNewsItem(item: FollowedNewsItem, index: number) {
-    Column() {
-      // 新闻标题
-      Text(item.newsTitle)
-        .fontSize('16fp')
-        .fontWeight(FontWeight.Medium)
-        .fontColor('#182431')
-        .maxLines(3)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-        .lineHeight('21fp')
-        .margin({ bottom: '6vp' })
-        .textAlign(TextAlign.Start)
-        .width('100%')
-
-      // 发布者和时间信息
-      Row() {
-        // 显示新闻发布者
-        if (item.newsAuthor) {
-          Text(item.newsAuthor)
-            .fontSize('12fp')
-            .fontColor('#999999')
-        }
-        
-        // 分隔符
-        if (item.newsAuthor && item.newsTime) {
-          Text('·')
-            .fontSize('12fp')
-            .fontColor('#999999')
-            .margin({ left: 6, right: 6 })
-        }
-        
-        // 显示新闻发布时间
-        if (item.newsTime) {
-          Text(this.formatDateTime(item.newsTime))
-            .fontSize('12fp')
-            .fontColor('#999999')
-        }
-        
-        // 如果有关注时间但没有新闻发布时间，显示关注时间
-        if (!item.newsTime && item.followTime) {
-          if (item.newsAuthor) {
-            Text('·')
-              .fontSize('12fp')
-              .fontColor('#999999')
-              .margin({ left: 6, right: 6 })
-          }
-          Text(`关注于 ${this.formatDateTime(item.followTime)}`)
-            .fontSize('12fp')
-            .fontColor('#999999')
-        }
-      }
-      .width('100%')
-      .alignItems(VerticalAlign.Center)
+  /**
+   * 点击新闻卡片，打开新闻详情
+   * @param newsData 新闻数据
+   */
+  private onNewsCardClick(newsData: FollowedNewsItem): void {
+    console.log('点击新闻卡片:', newsData.newsTitle);
+    console.log('新闻URL:', newsData.newsUniquekey);
+    
+    // newsUniquekey 实际存放的是新闻的 URL
+    if (newsData.newsUniquekey && newsData.newsUniquekey.trim().length > 0) {
+      this.openBrowser(newsData.newsUniquekey);
+    } else {
+      console.warn('新闻URL为空，无法打开详情');
     }
-    .width('100%')
-    .alignItems(HorizontalAlign.Start)
-    .padding({ top: '12vp', bottom: '12vp', left: '16vp', right: '16vp' })
-    .backgroundColor(Color.White)
-    .borderRadius('8vp')
-    .margin({ bottom: '8vp', left: '12vp', right: '12vp' })
-    .shadow({ radius: 4, color: '#0A000000', offsetX: 0, offsetY: 1 })
-    .onClick(() => {
-      // 这里可以添加点击新闻的处理逻辑
-      console.log('点击新闻:', item.newsTitle);
-    })
   }
-  
-  // 格式化日期时间
-  private formatDateTime(dateTimeStr: string): string {
+
+  /**
+   * 取消关注新闻
+   * @param newsData 新闻数据
+   */
+  private async onUnfollowNews(newsData: FollowedNewsItem): Promise<void> {
     try {
-      // 如果是 ISO 8601 格式，转换为可读格式
-      if (dateTimeStr.includes('T')) {
-        const date = new Date(dateTimeStr);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        return `${year}-${month}-${day} ${hours}:${minutes}`;
+      const success = await this.newsFollowService.unfollowNews(newsData.newsUniquekey);
+      if (success) {
+        // 从列表中移除该新闻
+        this.followedNewsList = this.followedNewsList.filter(item => item.followId !== newsData.followId);
       }
-      return dateTimeStr;
     } catch (error) {
-      return dateTimeStr;
+      console.error('取消关注失败:', error);
     }
-  }
-
-  @Builder
-  refreshBuilder() {
-    Stack({ alignContent: Alignment.Bottom }) {
-      LoadingProgress()
-        .width('32vp')
-        .height('32vp')
-        .color('#FF6B00')
-    }
-    .clip(true)
-    .height('64vp')
-    .width('100%')
   }
 
   @Builder
@@ -233,7 +246,7 @@ export default struct FollowPage {
 
         Blank()
 
-        Text('搜索结果')
+        Text('新闻详情')
           .fontSize(16)
           .fontWeight(FontWeight.Medium)
           .fontColor('#182431')
@@ -266,71 +279,122 @@ export default struct FollowPage {
         })
         .padding({ left: '12vp', right: '12vp', top: '8vp', bottom: '8vp' })
 
-        // 页面标题
-        Text('我的关注')
-          .fontSize('20fp')
-          .fontWeight(FontWeight.Bold)
-          .margin({ top: '20vp', bottom: '20vp' })
-          .width('100%')
-          .textAlign(TextAlign.Center)
+        // 页面标题和刷新按钮
+        Row() {
+          Text('我的关注')
+            .fontSize(20)
+            .fontWeight(FontWeight.Bold)
+            .fontColor('#182431')
+          
+          Blank()
+          
+          // 刷新按钮
+          Text('刷新')
+            .fontSize(12)
+            .fontColor('#1890FF')
+            .backgroundColor('#F0F9FF')
+            .padding({ left: 8, right: 8, top: 4, bottom: 4 })
+            .borderRadius(4)
+            .onClick(() => {
+              this.loadFollowedNewsList();
+            })
+        }
+        .width('100%')
+        .margin({ left: 16, right: 16, top: 16, bottom: 16 })
 
-        // 新闻列表
+        // 内容区域
         if (this.isLoading) {
           // 加载状态
           Column() {
             LoadingProgress()
-              .width('40vp')
-              .height('40vp')
-              .color('#FF6B00')
-            Text('加载中...')
-              .fontSize('14fp')
+              .width(40)
+              .height(40)
+              .margin({ bottom: 16 })
+            
+            Text('正在加载...')
+              .fontSize(16)
               .fontColor('#999999')
-              .margin({ top: '16vp' })
           }
-          .width('100%')
           .layoutWeight(1)
           .justifyContent(FlexAlign.Center)
-        } else if (this.newsList.length > 0) {
-          // 有数据时显示列表
-          Refresh({ refreshing: $$this.isLoading, builder: this.refreshBuilder() }) {
-            Scroll() {
-              Column() {
-                ForEach(this.newsList, (item: FollowedNewsItem, index: number) => {
-                  this.buildNewsItem(item, index)
-                })
-              }
-              .width('100%')
-            }
-            .scrollBar(BarState.Off)
-            .width('100%')
-          }
-          .layoutWeight(1)
-          .onRefreshing(() => {
-            this.refreshNewsList();
-          })
-        } else {
-          // 空状态
+          .alignItems(HorizontalAlign.Center)
+        } else if (this.errorMessage) {
+          // 错误状态
           Column() {
-            Text('暂无关注的新闻')
-              .fontSize('16fp')
-              .fontColor('#999999')
-              .margin({ top: '20vp' })
-            Text('关注感兴趣的新闻，在这里查看')
-              .fontSize('14fp')
-              .fontColor('#CCCCCC')
-              .margin({ top: '12vp' })
+            Text('⚠️')
+              .fontSize(48)
+              .margin({ bottom: 16 })
             
-            Button('刷新')
-              .fontSize('14fp')
-              .backgroundColor('#FF6B00')
-              .margin({ top: '24vp' })
+            Text('加载失败')
+              .fontSize(18)
+              .fontWeight(FontWeight.Medium)
+              .fontColor('#FF4D4F')
+              .margin({ bottom: 8 })
+            
+            Text(this.errorMessage)
+              .fontSize(14)
+              .fontColor('#999999')
+              .textAlign(TextAlign.Center)
+              .margin({ bottom: 16 })
+            
+            Text('点击刷新重试')
+              .fontSize(12)
+              .fontColor('#1890FF')
               .onClick(() => {
-                this.refreshNewsList();
+                this.loadFollowedNewsList();
               })
           }
-          .width('100%')
           .layoutWeight(1)
           .justifyContent(FlexAlign.Center)
+          .alignItems(HorizontalAlign.Center)
+        } else if (this.followedNewsList.length > 0) {
+          // 有数据状态
+          List() {
+            ForEach(this.followedNewsList, (newsItem: FollowedNewsItem, index: number) => {
+              ListItem() {
+                NewsCard({
+                  newsData: {
+                    id: newsItem.newsUniquekey,
+                    title: newsItem.newsTitle,
+                    publishTime: newsItem.newsTime || '',
+                    publisher: newsItem.newsAuthor || '',
+                    imageUrl: undefined,
+                    content: undefined
+                  },
+                  onCardClick: (newsData: FollowedNewsData) => {
+                    this.onNewsCardClick(newsItem);
+                  },
+                  onUnfollow: () => {
+                    this.onUnfollowNews(newsItem);
+                  }
+                })
+                .margin({ left: 16, right: 16, bottom: 12 })
+              }
+            }, (newsItem: FollowedNewsItem, index: number) => `${newsItem.followId}-${index}`)
+          }
+          .layoutWeight(1)
+          .width('100%')
+          .backgroundColor('#F8F9FA')
+        } else {
+          // 空状态（没有关注任何新闻）
+          Column() {
+            Text('📰')
+              .fontSize(48)
+              .margin({ bottom: 16 })
+            
+            Text('暂无关注的新闻')
+              .fontSize(18)
+              .fontWeight(FontWeight.Medium)
+              .fontColor('#999999')
+              .margin({ bottom: 8 })
+            
+            Text('去关注一些感兴趣的新闻吧')
+              .fontSize(14)
+              .fontColor('#CCCCCC')
+          }
+          .layoutWeight(1)
+          .justifyContent(FlexAlign.Center)
+          .alignItems(HorizontalAlign.Center)
         }
       }
       .padding({ top: '48vp' })

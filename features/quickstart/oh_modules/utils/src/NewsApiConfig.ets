@@ -48,6 +48,9 @@ export function maskApiKey(url: string): string {
 export const NewsApiConfig: NewsApiConfigShape = {
   endpoint: 'https://v.juhe.cn/toutiao/index',
   apiKey: '71833a97a51ccfad8563af5ecae4839b',
+  //71833a97a51ccfad8563af5ecae4839b  
+  //12e0eb5bd4665092a712a3a8ae9cad4d
+  //4099c9e9c05734ec979982f21a13a99c
   apiKeyParam: 'key',
   typeParam: 'type',
   pageParam: 'page',

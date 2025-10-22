@@ -46,10 +46,10 @@
 						"actions":	["action.system.home"]
 					}],
 				"descriptionId":	16777218,
-				"iconId":	16777231,
+				"iconId":	16777235,
 				"labelId":	16777219,
-				"startWindowIconId":	16777230,
-				"startWindowBackgroundId":	16777221
+				"startWindowIconId":	16777234,
+				"startWindowBackgroundId":	16777225
 			}],
 		"extensionAbilities":	[{
 				"name":	"EntryBackupAbility",
@@ -59,7 +59,7 @@
 				"metadata":	[{
 						"name":	"ohos.extension.backup",
 						"resource":	"$profile:backup_config",
-						"resourceId":	16777232
+						"resourceId":	16777236
 					}]
 			}],
 		"packageName":	"default",
