@@ -47,6 +47,12 @@ export struct NewsCard {
           .padding({ left: 8, right: 8, top: 4, bottom: 4 })
           .borderRadius(4)
 
+        // 发布时间
+        Text(this.formatTime(this.newsData.publishTime))
+          .fontSize(12)
+          .fontColor('#999999')
+          .margin({ left: 8 })
+
         Blank()
 
         // 取消关注按钮
@@ -57,18 +63,12 @@ export struct NewsCard {
             .backgroundColor('#FFF5F5')
             .padding({ left: 8, right: 8, top: 4, bottom: 4 })
             .borderRadius(4)
-            .margin({ right: 8 })
             .onClick(() => {
               if (this.onUnfollow) {
                 this.onUnfollow();
               }
             })
         }
-
-        // 发布时间
-        Text(this.formatTime(this.newsData.publishTime))
-          .fontSize(12)
-          .fontColor('#999999')
       }
       .width('100%')
       .alignItems(VerticalAlign.Center)
@@ -98,24 +98,14 @@ export struct NewsCard {
   private formatTime(timeStr: string): string {
     try {
       const date = new Date(timeStr);
-      const now = new Date();
-      const diff = now.getTime() - date.getTime();
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
       
-      // 计算时间差
-      const minutes = Math.floor(diff / (1000 * 60));
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      
-      if (minutes < 60) {
-        return `${minutes}分钟前`;
-      } else if (hours < 24) {
-        return `${hours}小时前`;
-      } else if (days < 7) {
-        return `${days}天前`;
-      } else {
-        // 超过7天显示具体日期
-        return `${date.getMonth() + 1}月${date.getDate()}日`;
-      }
+      // 返回格式：2024-10-22 14:30
+      return `${year}-${month}-${day} ${hours}:${minutes}`;
     } catch (error) {
       return timeStr;
     }
@@ -128,6 +118,7 @@ export default struct FollowPage {
   @Prop refreshTrigger: number = 0; // 从外部传入的刷新触发器
   @State searchText: string = '';
   @State selectedUrl: string | null = null;
+  @State currentViewingNews: FollowedNewsItem | null = null; // 当前正在查看的新闻数据
   private webController: webview.WebviewController = new webview.WebviewController();
   @State hotTitles: string[] = [];
   @State followedNewsList: FollowedNewsItem[] = [];
@@ -192,12 +183,14 @@ export default struct FollowPage {
     }
   }
 
-  private openBrowser(url: string): void {
+  private openBrowser(url: string, newsData?: FollowedNewsItem): void {
     this.selectedUrl = url;
+    this.currentViewingNews = newsData || null;
   }
 
   private closeBrowser(): void {
     this.selectedUrl = null;
+    this.currentViewingNews = null;
   }
 
   /**
@@ -210,7 +203,7 @@ export default struct FollowPage {
     
     // newsUniquekey 实际存放的是新闻的 URL
     if (newsData.newsUniquekey && newsData.newsUniquekey.trim().length > 0) {
-      this.openBrowser(newsData.newsUniquekey);
+      this.openBrowser(newsData.newsUniquekey, newsData);
     } else {
       console.warn('新闻URL为空，无法打开详情');
     }
@@ -232,6 +225,27 @@ export default struct FollowPage {
     }
   }
 
+  /**
+   * 在详情页取消关注新闻
+   */
+  private async onUnfollowNewsInDetail(): Promise<void> {
+    if (!this.currentViewingNews) {
+      return;
+    }
+    
+    try {
+      const success = await this.newsFollowService.unfollowNews(this.currentViewingNews.newsUniquekey);
+      if (success) {
+        // 从列表中移除该新闻
+        this.followedNewsList = this.followedNewsList.filter(item => item.followId !== this.currentViewingNews?.followId);
+        // 关闭详情页
+        this.closeBrowser();
+      }
+    } catch (error) {
+      console.error('取消关注失败:', error);
+    }
+  }
+
   @Builder
   buildBrowserLayer(url: string) {
     Column() {
@@ -246,11 +260,19 @@ export default struct FollowPage {
 
         Blank()
 
-        Text('新闻详情')
-          .fontSize(16)
-          .fontWeight(FontWeight.Medium)
-          .fontColor('#182431')
-          .margin({ right: 24 })
+        // 取消关注按钮（仅当从关注列表打开时显示）
+        if (this.currentViewingNews !== null) {
+          Text('取消关注')
+            .fontSize(14)
+            .fontColor('#E60012')
+            .backgroundColor('#FFF5F5')
+            .padding({ left: 12, right: 12, top: 8, bottom: 8 })
+            .borderRadius(4)
+            .margin({ right: 16 })
+            .onClick(() => {
+              this.onUnfollowNewsInDetail();
+            })
+        }
       }
       .width('100%')
       .backgroundColor('#FFFFFF')
