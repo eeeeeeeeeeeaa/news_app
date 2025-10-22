@@ -171,16 +171,16 @@
     }
   },
   "packages": {
-    "utils@file:commons/utils": {
-      "storePath": "commons/utils",
+    "uicomponents@file:commons/uicomponents": {
+      "storePath": "commons/uicomponents",
       "dependencies": {},
       "dynamicDependencies": {},
       "dev": false,
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "uicomponents@file:commons/uicomponents": {
-      "storePath": "commons/uicomponents",
+    "utils@file:commons/utils": {
+      "storePath": "commons/utils",
       "dependencies": {},
       "dynamicDependencies": {},
       "dev": false,
@@ -207,6 +207,31 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
+    "video@file:features/video": {
+      "storePath": "features/video",
+      "dependencies": {
+        "utils": "commons/utils",
+        "uicomponents": "commons/uicomponents",
+        "login": "features/login"
+      },
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+<<<<<<< HEAD
+=======
+    "quickstart@file:features/quickstart": {
+      "storePath": "features/quickstart",
+      "dependencies": {
+        "utils": "commons/utils",
+        "uicomponents": "commons/uicomponents"
+      },
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
     "news@file:features/news": {
       "storePath": "features/news",
       "dependencies": {
@@ -218,6 +243,7 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
     "follow@file:features/follows": {
       "storePath": "features/follows",
       "dependencies": {
@@ -230,6 +256,7 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
+<<<<<<< HEAD
     "quickstart@file:features/quickstart": {
       "storePath": "features/quickstart",
       "dependencies": {
@@ -255,6 +282,11 @@
     "mine@file:features/mine": {
       "storePath": "features/mine",
       "dependencies": {
+=======
+    "mine@file:features/mine": {
+      "storePath": "features/mine",
+      "dependencies": {
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
         "login": "features/login"
       },
       "dynamicDependencies": {},

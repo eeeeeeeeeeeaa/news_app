@@ -9,7 +9,11 @@
 		"SELECT_BUILD_PRODUCT":"default",
 		"BUNDLE_NAME":"com.huawei.quickstart",
 		"BUILD_PATH":{
+<<<<<<< HEAD
 			"OUTPUT_PATH":"C:\\Users\\Administrator\\DevEcoStudioProjects\\news_app\\build\\outputs\\default"
+=======
+			"OUTPUT_PATH":"F:\\newg\\news_app\\news_app\\build\\outputs\\default"
+>>>>>>> e295e0637040758a4625c9bec20a5047501a5693
 		},
 		"SELECT_BUILD_MODE":""
 	}
