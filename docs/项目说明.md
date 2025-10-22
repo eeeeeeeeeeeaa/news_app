@@ -1,0 +1,246 @@
+# 领先新闻 · 项目说明（功能-代码映射）
+
+本文档梳理本项目主要功能、入口与导航、每个功能模块对应的实现文件、可配置项与资源位置，便于快速理解与二次开发。
+
+## 总览
+- 应用标识与名称：
+  - 应用配置：`AppScope/app.json5:1`（`bundleName`、`icon`、`label`）
+  - 应用名称资源：`AppScope/resources/base/element/string.json:1`（`app_name`）
+  - 应用图标：`AppScope/resources/base/media/app_icon.png`
+- 主模块（入口）：
+  - 模块配置：`products/default/src/main/module.json5:1`
+  - 入口Ability：`products/default/src/main/ets/entryability/EntryAbility.ets:1`
+  - 首页页面（四大Tab容器）：`products/default/src/main/ets/pages/Index.ets:1`
+- 功能模块（feature）：
+  - 新闻：`features/news/src/main/ets/pages/NewsPage.ets`
+  - 视频：`features/video/src/main/ets/pages/VideoPage.ets`（核心UI在 `features/video/src/main/ets/view/Video.ets`）
+  - 关注：`features/follows/src/main/ets/view/Follow.ets` + `NewsFollowService.ets`
+  - 我的：`features/mine/src/main/ets/pages/MinePage.ets`（核心UI在 `features/mine/src/main/ets/view/Mine.ets`）
+  - 登录注册：`features/login/src/main/ets/pages/LoginPage.ets`、`RegisterPage.ets` + 模型与服务
+- 公共能力（commons）：
+  - UI 组件：`commons/uicomponents/src/main/ets/components/...`
+  - 工具/网络/配置/解析：`commons/utils/src/...`
+
+---
+
+## 运行入口与路由
+- `products/default/src/main/ets/entryability/EntryAbility.ets`
+  - `onWindowStageCreate` 中加载主页：`windowStage.loadContent('pages/Index', ...)`
+  - `requestFullScreen` 以全屏布局展示首页。
+- `products/default/src/main/ets/pages/Index.ets`
+  - 定义四个 Tab 容器（新闻/视频/关注/我的），负责 Tab 之间的导航与状态管理。
+  - `TabBuilder(title, index)` 组装 TabBar 项，控制选中态颜色、字体大小与点击切换逻辑。
+  - 关键状态：
+    - `currentTabIndex`：当前选中Tab索引
+    - `isLoggedIn`、`currentUser`：登录态与用户信息（从登录模块读取）
+    - `followRefreshTrigger`：触发关注页刷新（切换到关注Tab时自增）
+  - 修改记录：已将 Tab 字号与高度放大（`fontSize 14`、项高 `68`）。
+
+---
+
+## 登录 / 注册
+- 页面：
+  - 登录页：`features/login/src/main/ets/pages/LoginPage.ets`
+    - 负责输入手机号/密码并调用 `AuthService.login`。
+    - 登录成功后通过回调 `onLoginSuccess` 通知首页切换登录态。
+    - 顶部首图引用：`Image($r('app.media.logo'))`（资源见下文）。
+  - 注册页：`features/login/src/main/ets/pages/RegisterPage.ets`
+    - 负责输入昵称/手机号/密码并调用 `AuthService.register`（若实现）。
+    - 顶部首图同样引用 `app.media.logo`。
+- 核心服务与模型：
+  - `features/login/src/main/ets/model/UserService.ets`（别名 AuthService）
+    - `login(phone, password)`: 调用后端 `POST /api/users/login`（当前硬编码域名 `http://hmos.w1.luyouxia.net`）。
+    - 成功后保存 JWT 到 `preferences('user_data').auth_token`，并保存 `current_user` 的基础展示信息。
+    - 提供 `getJWT() / clearJWT()` 等方法。
+  - `features/login/src/main/ets/model/UserManager.ets`
+    - 管理登录态与用户信息，统一读取 `auth_token`、`current_user` 等。
+    - `loginUser`、`getCurrentUser`、`getToken`、`logout`、`updateUserInfo` 等。
+    - 偏好存储：`preferences('user_data')`，Key：`auth_token`、`current_user`、`user_info`。
+  - JWT 工具：
+    - `commons/utils/src/JwtUtil.ets`：解析与校验 JWT（过期、剩余时间、用户信息等）。
+    - （另有 `features/login/src/main/ets/model/JwtManager.ets`，提供更完整的 JWT 管理接口，当前主要使用 `JwtUtil` + `UserManager` 实现业务）。
+
+> 更换登录/注册页首图：替换 `features/login/src/main/resources/base/media/logo.png`，或新增文件后将页面中的 `Image($r('app.media.logo'))` 改为对应资源名（详见“资源与国际化”）。
+
+---
+
+## 新闻（Tab 1）
+- 页面：`features/news/src/main/ets/pages/NewsPage.ets`
+  - 顶部搜索：复用 `commons/uicomponents/src/main/ets/components/CommonSearchBar.ets`，热词来自百度热搜解析器。
+  - 类别 Tab、热门新闻卡片、新闻列表等 UI，支持内嵌 WebView 打开详情浮层。
+  - 数据：部分示例数据内置类 `NewsData`；也可结合 utils 中服务（见下）。
+- 依赖工具：
+  - `commons/utils/src/BaiduHotSearchParser.ets`：抓取百度热搜，生成热词/热度，供搜索栏 placeholder 与示例数据。
+  - WebView：`@ohos.web.webview` 用于详情页浏览。
+
+---
+
+## 视频（Tab 2）
+- 页面入口：`features/video/src/main/ets/pages/VideoPage.ets`
+- 核心实现：`features/video/src/main/ets/view/Video.ets`
+  - 顶部搜索：`CommonSearchBar`
+  - 文本新闻流：按“推荐/国内/国际/娱乐/…”分类，分页加载。
+  - 数据来源：`commons/utils/src/NewsHeadlineService.ets`
+    - 基于 `NewsApiConfig.ets` 构建聚合数据请求（默认使用聚合数据头条接口，需有效 `apiKey`）。
+  - 登录态与收藏：通过 `UserManager` 获取登录状态（示例包含收藏逻辑接口骨架）。
+
+---
+
+## 关注（Tab 3）
+- 页面：`features/follows/src/main/ets/view/Follow.ets`
+  - 展示已关注新闻列表，支持点击卡片打开浏览器层、取消关注等。
+  - 页面接收 `refreshTrigger` 属性（来自首页 Index.ets），在切换到关注 Tab 时触发刷新。
+- 服务：`features/follows/src/main/ets/view/NewsFollowService.ets`
+  - `followNews / unfollowNews / getFollowedNewsList` 等方法。
+  - 依赖：
+    - `commons/utils/src/HttpUtils.ets`：HTTP 请求工具（GET/POST/DELETE、Form表单编码）。
+    - `commons/utils/src/BackendConfig.ets`：`withBase(path)` 将接口路径拼接到 `baseUrl`（默认 `http://hmos.w1.luyouxia.net`）。
+    - `features/login/src/main/ets/model/UserManager.ets`：获取 JWT 并写入 `Authorization: Bearer <token>`。
+
+---
+
+## 我的（Tab 4）
+- 页面入口：`features/mine/src/main/ets/pages/MinePage.ets`
+- 核心实现：`features/mine/src/main/ets/view/Mine.ets`
+  - 已登录：展示头像区、账户信息、常用功能（宫格）、更多功能（宫格），支持退出登录（调用 `UserManager.logout`）。
+  - 未登录：展示提示 UI。
+  - 通过 `onLogout` 回调将退出事件传回首页，首页刷新全局登录态。
+
+---
+
+## 公共组件与工具
+- UI 组件（可复用）：
+  - 搜索栏：`commons/uicomponents/src/main/ets/components/CommonSearchBar.ets`
+  - 其它：`CommonLoading.ets`、`CommonInput.ets`、`CommonButton.ets` 等
+- 网络与配置：
+  - HTTP：`commons/utils/src/HttpUtils.ets`（GET/POST/DELETE；JSON/Form；默认 Header）
+  - 后端基址：`commons/utils/src/BackendConfig.ets`（统一 `baseUrl`）
+  - 头条新闻 API：`commons/utils/src/NewsApiConfig.ets`（`endpoint/apiKey` 可配置；`buildNewsApiUrl` 生成带签名的 URL）
+  - 新闻抓取：`commons/utils/src/NewsHeadlineService.ets`
+  - JWT：`commons/utils/src/JwtUtil.ets`（解析/过期/剩余时间/用户字段）
+
+---
+
+## 资源与国际化
+- 应用名称：`AppScope/resources/base/element/string.json:1` 中 `app_name`（已改为“领先新闻”）；引用于 `AppScope/app.json5:8` 的 `label`。
+- 应用图标：`AppScope/resources/base/media/app_icon.png`（`AppScope/app.json5:6` 使用 `$media:app_icon`）。
+- 登录/注册页首图：`features/login/src/main/resources/base/media/logo.png`（页面 `Image($r('app.media.logo'))`）。
+- Tab 图标（如有）：`products/default/src/main/resources/base/media/ic_01_on.svg` 等（如需自定义 Tab 图标，可在 `Index.ets` 的 TabBuilder 中加入 `Image` 并引用这些资源）。
+- 语言资源：
+  - 中文：`products/default/src/main/resources/zh_CN/element/string.json`
+  - 英文：`products/default/src/main/resources/en_US/element/string.json`
+
+---
+
+## 配置与权限
+- 主模块配置：`products/default/src/main/module.json5`
+  - `mainElement`: `EntryAbility`
+  - 网络权限：`ohos.permission.INTERNET`
+  - `pages`: `$profile:main_pages`（页面路由见 `products/default/src/main/resources/base/profile/main_pages.json`）
+- 应用配置：`AppScope/app.json5`（图标、名称、版本等）
+
+---
+
+## 登录/鉴权数据存储（偏好）
+- 存储位置：`preferences('user_data')`
+  - `auth_token`：JWT
+  - `current_user`：当前用户基础信息（账号、临时昵称等）
+- 读取入口：`UserManager.getToken / getCurrentUser`（多数业务通过它注入请求头或渲染 UI）
+
+---
+
+## 后端接口域名与切换
+- 关注/取关/列表等：依赖 `withBase(path)`（见 `commons/utils/src/BackendConfig.ets`）
+  - 修改 `baseUrl` 即可全局切换：`BackendConfig.baseUrl`
+- 登录接口：当前在 `AuthService.login` 中硬编码完整地址（`features/login/src/main/ets/model/UserService.ets`）。
+  - 建议改为：`withBase('/api/users/login')`，以与其它接口统一域名管理。
+
+---
+
+## 开发指引（常见改动）
+- 修改应用名称：`AppScope/resources/base/element/string.json` 的 `app_name`。
+- 更换应用图标：替换 `AppScope/resources/base/media/app_icon.png`，或新增图片并在 `AppScope/app.json5` 修改 `icon` 字段。
+- 更换登录/注册首图：替换 `features/login/src/main/resources/base/media/logo.png`，或新增资源并修改两页面的 `Image($r('app.media.xxx'))` 引用。
+- 调整 Tab 样式：`products/default/src/main/ets/pages/Index.ets` 中 `TabBuilder`（字号、高度、颜色、可加入图标）。
+- 切换后端域名：`commons/utils/src/BackendConfig.ets` 修改 `baseUrl`。
+- 修改聚合头条 API key/接口：`commons/utils/src/NewsApiConfig.ets`。
+
+---
+
+## 关键文件速查表
+- 入口
+  - `products/default/src/main/ets/entryability/EntryAbility.ets:1`
+  - `products/default/src/main/ets/pages/Index.ets:1`
+- 登录注册
+  - `features/login/src/main/ets/pages/LoginPage.ets`
+  - `features/login/src/main/ets/pages/RegisterPage.ets`
+  - `features/login/src/main/ets/model/UserService.ets`
+  - `features/login/src/main/ets/model/UserManager.ets`
+  - `commons/utils/src/JwtUtil.ets`
+- 新闻
+  - `features/news/src/main/ets/pages/NewsPage.ets`
+  - `commons/utils/src/BaiduHotSearchParser.ets`
+- 视频
+  - `features/video/src/main/ets/view/Video.ets`
+  - `commons/utils/src/NewsHeadlineService.ets`
+  - `commons/utils/src/NewsApiConfig.ets`
+- 关注
+  - `features/follows/src/main/ets/view/Follow.ets`
+  - `features/follows/src/main/ets/view/NewsFollowService.ets`
+- 我的
+  - `features/mine/src/main/ets/view/Mine.ets`
+- 公共组件
+  - `commons/uicomponents/src/main/ets/components/CommonSearchBar.ets`
+- 网络工具/配置
+  - `commons/utils/src/HttpUtils.ets`
+  - `commons/utils/src/BackendConfig.ets`
+- 资源与配置
+  - `AppScope/app.json5`
+  - `AppScope/resources/base/element/string.json`
+  - `AppScope/resources/base/media/app_icon.png`
+  - `products/default/src/main/resources/base/profile/main_pages.json`
+
+---
+
+## 备注
+- 代码中部分中文字符在 IDE 中可能显示为乱码，来源于拷贝或编码差异，不影响功能。
+- `NewsApiConfig.ets` 内包含示例 API Key，请在生产环境自行管理密钥并避免明文提交仓库。
+
+
+## 项目架构
+- 总体架构
+  - 多模块分层：入口模块整合页面导航；各功能以 feature 模块独立；公共能力沉淀在 `commons`（`utils`、`uicomponents`）。
+  - 分层关系：UI（pages/view 组件） → 业务服务/数据层（Service、Utils） → 网络与配置（`HttpUtils`、`BackendConfig`/`NewsApiConfig`） → 后端接口。
+- 模块划分
+  - 入口模块（Entry）
+    - Ability 与路由装载：`products/default/src/main/ets/entryability/EntryAbility.ets:1`
+    - 首页与四大 Tab 导航容器：`products/default/src/main/ets/pages/Index.ets:1`
+  - 功能模块（Features）
+    - 新闻：`features/news/src/main/ets/pages/NewsPage.ets:1`
+    - 视频：`features/video/src/main/ets/view/Video.ets:1`（入口 `features/video/src/main/ets/pages/VideoPage.ets:1`）
+    - 关注：`features/follows/src/main/ets/view/Follow.ets:1`（服务 `features/follows/src/main/ets/view/NewsFollowService.ets:1`）
+    - 我的：`features/mine/src/main/ets/view/Mine.ets:1`（入口 `features/mine/src/main/ets/pages/MinePage.ets:1`）
+    - 登录注册：`features/login/src/main/ets/pages/LoginPage.ets:1`、`features/login/src/main/ets/pages/RegisterPage.ets:1`；登录态/用户在 `features/login/src/main/ets/model/UserManager.ets:1`、`features/login/src/main/ets/model/UserService.ets:1`
+  - 公共模块（Commons）
+    - UI 组件：`commons/uicomponents/src/main/ets/components/CommonSearchBar.ets:1` 等
+    - 工具与配置：`commons/utils/src/HttpUtils.ets:1`、`commons/utils/src/BackendConfig.ets:1`、`commons/utils/src/NewsHeadlineService.ets:1`、`commons/utils/src/NewsApiConfig.ets:1`、`commons/utils/src/JwtUtil.ets:1`
+- 页面与导航
+  - App 启动：`EntryAbility` 在 `onWindowStageCreate` 加载 `pages/Index`（`products/default/src/main/ets/entryability/EntryAbility.ets:1`）。
+  - 首页容器：`Index.ets:1` 使用 `Tabs` 组织 新闻/视频/关注/我的；`TabBuilder` 控制 Tab 样式与切换逻辑。
+  - 登录态联动：`Index.ets` 通过 `UserManager` 维护 `isLoggedIn/currentUser`，切到关注 Tab 时用 `followRefreshTrigger` 触发刷新。
+- 数据与网络层
+  - HTTP 抽象：`commons/utils/src/HttpUtils.ets:1`（GET/POST/DELETE、JSON/Form、默认 Header、超时）。
+  - 后端基址：`commons/utils/src/BackendConfig.ets:1` 提供 `baseUrl` 与 `withBase(path)`；关注相关 API 统一走此基址。
+  - 新闻来源：`commons/utils/src/NewsHeadlineService.ets:1` 基于 `commons/utils/src/NewsApiConfig.ets:1` 组合请求（聚合头条接口 + API Key），视频页文本流直接消费该服务。
+  - 登录鉴权：
+    - `features/login/src/main/ets/model/UserService.ets:1`（AuthService）提交登录表单，成功后写入 `preferences('user_data').auth_token/current_user`。
+    - `features/login/src/main/ets/model/UserManager.ets:1` 统一读取/校验登录态、生成鉴权头；JWT 工具 `commons/utils/src/JwtUtil.ets:1` 解析过期与用户字段。
+- 状态与存储
+  - 偏好存储：HarmonyOS Preferences，命名空间 `user_data`；键：`auth_token`、`current_user`。
+  - JWT 校验与解析：`commons/utils/src/JwtUtil.ets:1`（过期判断、剩余时间、用户名/手机号提取）。
+- 资源与配置
+  - 应用清单与资源绑定：`AppScope/app.json5:1`（`icon`、`label`），应用名在 `AppScope/resources/base/element/string.json:1`。
+  - 登录/注册首图：页面引用 `app.media.logo`（素材位于登录模块资源目录）。
+  - 入口模块资源与多语言：`products/default/src/main/resources/...`
+- 数据流简述
+  - UI 事件（搜索/分页/关注/登录） → 调服务（`NewsHeadlineService`/`NewsFollowService`/`AuthService` 或 `UserManager`） → `HttpUtils` 发起请求 → 使用 `BackendConfig`/`NewsApiConfig` 组装 URL 与鉴权 → 返回数据渲染到页面状态。
