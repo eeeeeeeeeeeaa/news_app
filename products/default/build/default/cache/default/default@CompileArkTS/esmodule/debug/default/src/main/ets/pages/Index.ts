@@ -6,6 +6,7 @@ interface Index_Params {
     isLoggedIn?: boolean;
     currentTabIndex?: number;
     refreshKey?: number;
+    followRefreshTrigger?: number;
     tabsController?: TabsController;
     userManager?: UserManager;
 }
@@ -15,7 +16,7 @@ import { LoginPage } from "@bundle:com.huawei.quickstart/default@login/Index";
 import { MinePage } from "@bundle:com.huawei.quickstart/default@mine/Index";
 import { UserManager } from "@bundle:com.huawei.quickstart/default@login/Index";
 import type { UserInfo } from "@bundle:com.huawei.quickstart/default@login/Index";
-import { FollowPage } from "@bundle:com.huawei.quickstart/default@follows/Index";
+import Follow from "@bundle:com.huawei.quickstart/default@follows/ets/view/Follow";
 class Index extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
         super(parent, __localStorage, elmtId, extraInfo);
@@ -26,6 +27,7 @@ class Index extends ViewPU {
         this.__isLoggedIn = new ObservedPropertySimplePU(false, this, "isLoggedIn");
         this.__currentTabIndex = new ObservedPropertySimplePU(0, this, "currentTabIndex");
         this.__refreshKey = new ObservedPropertySimplePU(0, this, "refreshKey");
+        this.__followRefreshTrigger = new ObservedPropertySimplePU(0, this, "followRefreshTrigger");
         this.tabsController = new TabsController();
         this.userManager = UserManager.getInstance();
         this.setInitiallyProvidedValue(params);
@@ -44,6 +46,9 @@ class Index extends ViewPU {
         if (params.refreshKey !== undefined) {
             this.refreshKey = params.refreshKey;
         }
+        if (params.followRefreshTrigger !== undefined) {
+            this.followRefreshTrigger = params.followRefreshTrigger;
+        }
         if (params.tabsController !== undefined) {
             this.tabsController = params.tabsController;
         }
@@ -58,12 +63,14 @@ class Index extends ViewPU {
         this.__isLoggedIn.purgeDependencyOnElmtId(rmElmtId);
         this.__currentTabIndex.purgeDependencyOnElmtId(rmElmtId);
         this.__refreshKey.purgeDependencyOnElmtId(rmElmtId);
+        this.__followRefreshTrigger.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__currentUser.aboutToBeDeleted();
         this.__isLoggedIn.aboutToBeDeleted();
         this.__currentTabIndex.aboutToBeDeleted();
         this.__refreshKey.aboutToBeDeleted();
+        this.__followRefreshTrigger.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
@@ -95,6 +102,13 @@ class Index extends ViewPU {
     set refreshKey(newValue: number) {
         this.__refreshKey.set(newValue);
     }
+    private __followRefreshTrigger: ObservedPropertySimplePU<number>; // 关注页面刷新触发器
+    get followRefreshTrigger() {
+        return this.__followRefreshTrigger.get();
+    }
+    set followRefreshTrigger(newValue: number) {
+        this.__followRefreshTrigger.set(newValue);
+    }
     private tabsController: TabsController;
     private userManager: UserManager;
     async aboutToAppear() {
@@ -124,6 +138,11 @@ class Index extends ViewPU {
             Column.onClick(() => {
                 this.currentTabIndex = index;
                 this.tabsController.changeIndex(this.currentTabIndex);
+                // 如果点击的是关注tab（index=2），触发刷新
+                if (index === 2) {
+                    console.log('🔄 点击关注tab，触发刷新');
+                    this.followRefreshTrigger++;
+                }
             });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -220,7 +239,7 @@ class Index extends ViewPU {
                             {
                                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                                     if (isInitialRender) {
-                                        let componentCall = new NewsPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 113, col: 17 });
+                                        let componentCall = new NewsPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 121, col: 17 });
                                         ViewPU.create(componentCall);
                                         let paramsLambda = () => {
                                             return {};
@@ -245,7 +264,7 @@ class Index extends ViewPU {
                             {
                                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                                     if (isInitialRender) {
-                                        let componentCall = new VideoPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 121, col: 17 });
+                                        let componentCall = new VideoPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 129, col: 17 });
                                         ViewPU.create(componentCall);
                                         let paramsLambda = () => {
                                             return {};
@@ -270,17 +289,21 @@ class Index extends ViewPU {
                             {
                                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                                     if (isInitialRender) {
-                                        let componentCall = new FollowPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 129, col: 17 });
+                                        let componentCall = new Follow(this, { refreshTrigger: this.followRefreshTrigger }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 137, col: 17 });
                                         ViewPU.create(componentCall);
                                         let paramsLambda = () => {
-                                            return {};
+                                            return {
+                                                refreshTrigger: this.followRefreshTrigger
+                                            };
                                         };
                                         componentCall.paramsGenerator_ = paramsLambda;
                                     }
                                     else {
-                                        this.updateStateVarsOfChildByElmtId(elmtId, {});
+                                        this.updateStateVarsOfChildByElmtId(elmtId, {
+                                            refreshTrigger: this.followRefreshTrigger
+                                        });
                                     }
-                                }, { name: "FollowPage" });
+                                }, { name: "Follow" });
                             }
                         });
                         TabContent.padding({ left: 12, right: 12 });
@@ -302,7 +325,7 @@ class Index extends ViewPU {
                                                 console.log('🔄 MinePage.onLogout 被调用');
                                                 await this.checkLoginStatus();
                                             }
-                                        }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 137, col: 18 });
+                                        }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 145, col: 18 });
                                         ViewPU.create(componentCall);
                                         let paramsLambda = () => {
                                             return {
@@ -355,7 +378,7 @@ class Index extends ViewPU {
                                         console.log('🎉 LoginPage.onLoginSuccess 回调被调用');
                                         this.handleLoginSuccess();
                                     }
-                                }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 168, col: 11 });
+                                }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 176, col: 11 });
                                 ViewPU.create(componentCall);
                                 let paramsLambda = () => {
                                     return {

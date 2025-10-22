@@ -1476,7 +1476,7 @@
       "error": false
     },
     "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\pages\\Index.ets": {
-      "mtimeMs": 1761028886000,
+      "mtimeMs": 1761106365752.1357,
       "children": [
         "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\Index.ets",
         "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\news\\Index.ets",
@@ -1484,7 +1484,8 @@
         "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\mine\\Index.ets",
         "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\Index.ets",
         "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\login\\Index.ets",
-        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\Index.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\Index.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\Follow.ets"
       ],
       "parent": [],
       "error": false
@@ -1500,7 +1501,7 @@
       "error": false
     },
     "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\video\\src\\main\\ets\\view\\Video.ets": {
-      "mtimeMs": 1761097290507.1218,
+      "mtimeMs": 1761105997107.0637,
       "children": [
         "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\Index.ets",
         "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets",
@@ -1972,7 +1973,7 @@
       ]
     },
     "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\Follow.ets": {
-      "mtimeMs": 1761062742000,
+      "mtimeMs": 1761106426595.3574,
       "children": [
         "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\uicomponents\\Index.ets",
         "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\commons\\utils\\Index.ets",
@@ -1980,7 +1981,8 @@
         "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\view\\NewsFollowService.ets"
       ],
       "parent": [
-        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets"
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\features\\follows\\src\\main\\ets\\pages\\FollowPage.ets",
+        "G:\\HarmonyOsProjects\\news_app_final\\news_app-develop_dd\\products\\default\\src\\main\\ets\\pages\\Index.ets"
       ],
       "error": false
     },

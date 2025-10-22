@@ -2,6 +2,7 @@ if (!("finalizeConstruction" in ViewPU.prototype)) {
     Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
 }
 interface FollowPage_Params {
+    refreshTrigger?: number;
     searchText?: string;
     selectedUrl?: string | null;
     webController?: webview.WebviewController;
@@ -223,6 +224,7 @@ export default class FollowPage extends ViewPU {
         if (typeof paramsLambda === "function") {
             this.paramsGenerator_ = paramsLambda;
         }
+        this.__refreshTrigger = new SynchedPropertySimpleOneWayPU(params.refreshTrigger, this, "refreshTrigger");
         this.__searchText = new ObservedPropertySimplePU('', this, "searchText");
         this.__selectedUrl = new ObservedPropertyObjectPU(null, this, "selectedUrl");
         this.webController = new webview.WebviewController();
@@ -235,6 +237,9 @@ export default class FollowPage extends ViewPU {
         this.finalizeConstruction();
     }
     setInitiallyProvidedValue(params: FollowPage_Params) {
+        if (params.refreshTrigger === undefined) {
+            this.__refreshTrigger.set(0);
+        }
         if (params.searchText !== undefined) {
             this.searchText = params.searchText;
         }
@@ -261,8 +266,10 @@ export default class FollowPage extends ViewPU {
         }
     }
     updateStateVars(params: FollowPage_Params) {
+        this.__refreshTrigger.reset(params.refreshTrigger);
     }
     purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__refreshTrigger.purgeDependencyOnElmtId(rmElmtId);
         this.__searchText.purgeDependencyOnElmtId(rmElmtId);
         this.__selectedUrl.purgeDependencyOnElmtId(rmElmtId);
         this.__hotTitles.purgeDependencyOnElmtId(rmElmtId);
@@ -271,6 +278,7 @@ export default class FollowPage extends ViewPU {
         this.__errorMessage.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
+        this.__refreshTrigger.aboutToBeDeleted();
         this.__searchText.aboutToBeDeleted();
         this.__selectedUrl.aboutToBeDeleted();
         this.__hotTitles.aboutToBeDeleted();
@@ -279,6 +287,13 @@ export default class FollowPage extends ViewPU {
         this.__errorMessage.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
+    }
+    private __refreshTrigger: SynchedPropertySimpleOneWayPU<number>; // 从外部传入的刷新触发器
+    get refreshTrigger() {
+        return this.__refreshTrigger.get();
+    }
+    set refreshTrigger(newValue: number) {
+        this.__refreshTrigger.set(newValue);
     }
     private __searchText: ObservedPropertySimplePU<string>;
     get searchText() {
@@ -334,6 +349,24 @@ export default class FollowPage extends ViewPU {
         }
         // 加载关注的新闻数据
         await this.loadFollowedNewsList();
+    }
+    /**
+     * 监听刷新触发器变化
+     */
+    onPageShow() {
+        console.log('🔄 FollowPage.onPageShow 被调用，refreshTrigger:', this.refreshTrigger);
+        if (this.refreshTrigger > 0) {
+            this.loadFollowedNewsList();
+        }
+    }
+    /**
+     * 监听refreshTrigger变化
+     */
+    onPageUpdate() {
+        console.log('🔄 FollowPage.onPageUpdate 被调用，refreshTrigger:', this.refreshTrigger);
+        if (this.refreshTrigger > 0) {
+            this.loadFollowedNewsList();
+        }
     }
     /**
      * 加载关注的新闻列表
@@ -468,7 +501,7 @@ export default class FollowPage extends ViewPU {
                         onSearch: (url: string) => {
                             this.openBrowser(url);
                         }
-                    }, undefined, elmtId, () => { }, { page: "features/follows/src/main/ets/view/Follow.ets", line: 251, col: 9 });
+                    }, undefined, elmtId, () => { }, { page: "features/follows/src/main/ets/view/Follow.ets", line: 272, col: 9 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -662,7 +695,7 @@ export default class FollowPage extends ViewPU {
                                                     onUnfollow: () => {
                                                         this.onUnfollowNews(newsItem);
                                                     }
-                                                }, undefined, elmtId, () => { }, { page: "features/follows/src/main/ets/view/Follow.ets", line: 334, col: 17 });
+                                                }, undefined, elmtId, () => { }, { page: "features/follows/src/main/ets/view/Follow.ets", line: 355, col: 17 });
                                                 ViewPU.create(componentCall);
                                                 let paramsLambda = () => {
                                                     return {

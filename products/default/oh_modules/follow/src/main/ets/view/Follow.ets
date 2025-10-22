@@ -125,6 +125,7 @@ export struct NewsCard {
 // ets/view/Follow.ets
 @Component
 export default struct FollowPage {
+  @Prop refreshTrigger: number = 0; // 从外部传入的刷新触发器
   @State searchText: string = '';
   @State selectedUrl: string | null = null;
   private webController: webview.WebviewController = new webview.WebviewController();
@@ -144,6 +145,26 @@ export default struct FollowPage {
     
     // 加载关注的新闻数据
     await this.loadFollowedNewsList();
+  }
+
+  /**
+   * 监听刷新触发器变化
+   */
+  onPageShow() {
+    console.log('🔄 FollowPage.onPageShow 被调用，refreshTrigger:', this.refreshTrigger);
+    if (this.refreshTrigger > 0) {
+      this.loadFollowedNewsList();
+    }
+  }
+
+  /**
+   * 监听refreshTrigger变化
+   */
+  onPageUpdate() {
+    console.log('🔄 FollowPage.onPageUpdate 被调用，refreshTrigger:', this.refreshTrigger);
+    if (this.refreshTrigger > 0) {
+      this.loadFollowedNewsList();
+    }
   }
 
   /**

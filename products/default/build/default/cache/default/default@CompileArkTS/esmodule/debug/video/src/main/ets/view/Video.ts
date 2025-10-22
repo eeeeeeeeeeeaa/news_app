@@ -433,16 +433,16 @@ export default class VideoPage extends ViewPU {
                 console.log('🔍 未找到登录令牌');
                 return;
             }
-            const isCurrentlyFavorited = this.favoriteNewsKeys.has(newsItem.uniquekey);
+            const isCurrentlyFavorited = this.favoriteNewsKeys.has(newsItem.url);
             console.log('🔍 [toggleFavorite] 当前收藏状态:', isCurrentlyFavorited);
-            console.log('🔍 [toggleFavorite] 新闻唯一标识:', newsItem.uniquekey);
+            console.log('🔍 [toggleFavorite] 新闻唯一标识:', newsItem.url);
             if (isCurrentlyFavorited) {
                 // 取消收藏
                 console.log('🔍 [toggleFavorite] 执行取消收藏操作');
-                const success = await FavoriteNewsService.unfollowNews(token, newsItem.uniquekey);
+                const success = await FavoriteNewsService.unfollowNews(token, newsItem.url);
                 console.log('🔍 [toggleFavorite] 取消收藏结果:', success);
                 if (success) {
-                    this.favoriteNewsKeys.delete(newsItem.uniquekey);
+                    this.favoriteNewsKeys.delete(newsItem.url);
                     this.forceUpdate++; // 强制UI更新
                     console.log('✅ 取消收藏成功，更新本地状态');
                     console.log('🔍 [toggleFavorite] 更新后的收藏列表:', Array.from(this.favoriteNewsKeys));
@@ -456,7 +456,7 @@ export default class VideoPage extends ViewPU {
                 console.log('🔍 [toggleFavorite] 执行添加收藏操作');
                 const request: FavoriteNewsRequest = {
                     newsTitle: newsItem.title,
-                    newsUniquekey: newsItem.uniquekey,
+                    newsUniquekey: newsItem.url,
                     newsAuthor: newsItem.source || '',
                     newsTime: newsItem.time || ''
                 };
@@ -464,7 +464,7 @@ export default class VideoPage extends ViewPU {
                 const success = await FavoriteNewsService.followNews(token, request);
                 console.log('🔍 [toggleFavorite] 添加收藏结果:', success);
                 if (success) {
-                    this.favoriteNewsKeys.add(newsItem.uniquekey);
+                    this.favoriteNewsKeys.add(newsItem.url);
                     this.forceUpdate++; // 强制UI更新
                     console.log('✅ 收藏成功，更新本地状态');
                     console.log('🔍 [toggleFavorite] 更新后的收藏列表:', Array.from(this.favoriteNewsKeys));
@@ -507,7 +507,7 @@ export default class VideoPage extends ViewPU {
             if (this.isLoggedIn && this.selectedNewsItem) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create(this.favoriteNewsKeys.has(this.selectedNewsItem.uniquekey) ? '⭐️' : '☆');
+                        Text.create(this.favoriteNewsKeys.has(this.selectedNewsItem.url) ? '⭐️' : '☆');
                         Text.fontSize(20);
                         Text.padding({ left: 8, right: 8, top: 16, bottom: 16 });
                         Text.onClick(() => {

@@ -5,6 +5,7 @@ import { MinePage } from 'mine';
 import { UserManager } from 'login';
 import { UserInfo } from 'login';
 import { FollowPage } from 'follow';
+import Follow from 'follow/src/main/ets/view/Follow';
 
 @Entry
 @Component
@@ -13,6 +14,7 @@ struct Index {
   @State isLoggedIn: boolean = false;
   @State currentTabIndex: number = 0;
   @State refreshKey: number = 0;
+  @State followRefreshTrigger: number = 0; // 关注页面刷新触发器
 
   private tabsController: TabsController = new TabsController();
   private userManager: UserManager = UserManager.getInstance();
@@ -53,6 +55,12 @@ struct Index {
     .onClick(() => {
       this.currentTabIndex = index;
       this.tabsController.changeIndex(this.currentTabIndex);
+      
+      // 如果点击的是关注tab（index=2），触发刷新
+      if (index === 2) {
+        console.log('🔄 点击关注tab，触发刷新');
+        this.followRefreshTrigger++;
+      }
     })
   }
 
@@ -126,7 +134,7 @@ struct Index {
 
               // 3. 关注Tab
               TabContent() {
-                FollowPage()
+                Follow({ refreshTrigger: this.followRefreshTrigger })
               }
               .padding({ left: 12, right: 12 })
               .backgroundColor('#F5F5F5')

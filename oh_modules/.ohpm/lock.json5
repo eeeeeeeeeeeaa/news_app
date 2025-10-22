@@ -179,6 +179,14 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
+    "uicomponents@file:commons/uicomponents": {
+      "storePath": "commons/uicomponents",
+      "dependencies": {},
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
     "BackendConfig@file:commons/utils": {
       "storePath": "commons/utils",
       "dependencies": {},
@@ -198,23 +206,32 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "video@file:features/video": {
-      "storePath": "features/video",
+    "news@file:features/news": {
+      "storePath": "features/news",
       "dependencies": {
         "utils": "commons/utils",
-        "uicomponents": "commons/uicomponents",
-        "login": "features/login"
+        "uicomponents": "commons/uicomponents"
       },
       "dynamicDependencies": {},
       "dev": false,
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "news@file:features/news": {
-      "storePath": "features/news",
+    "quickstart@file:features/quickstart": {
+      "storePath": "features/quickstart",
       "dependencies": {
         "utils": "commons/utils",
         "uicomponents": "commons/uicomponents"
+      },
+      "dynamicDependencies": {},
+      "dev": false,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "mine@file:features/mine": {
+      "storePath": "features/mine",
+      "dependencies": {
+        "login": "features/login"
       },
       "dynamicDependencies": {},
       "dev": false,
@@ -233,30 +250,13 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "mine@file:features/mine": {
-      "storePath": "features/mine",
-      "dependencies": {
-        "login": "features/login"
-      },
-      "dynamicDependencies": {},
-      "dev": false,
-      "dynamic": false,
-      "maskedByOverrideDependencyMap": false
-    },
-    "quickstart@file:features/quickstart": {
-      "storePath": "features/quickstart",
+    "video@file:features/video": {
+      "storePath": "features/video",
       "dependencies": {
         "utils": "commons/utils",
-        "uicomponents": "commons/uicomponents"
+        "uicomponents": "commons/uicomponents",
+        "login": "features/login"
       },
-      "dynamicDependencies": {},
-      "dev": false,
-      "dynamic": false,
-      "maskedByOverrideDependencyMap": false
-    },
-    "uicomponents@file:commons/uicomponents": {
-      "storePath": "commons/uicomponents",
-      "dependencies": {},
       "dynamicDependencies": {},
       "dev": false,
       "dynamic": false,
