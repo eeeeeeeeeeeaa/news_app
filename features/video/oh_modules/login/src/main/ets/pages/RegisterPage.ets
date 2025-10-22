@@ -126,7 +126,7 @@ export struct RegisterPage {
       .width('100%')
       .padding({ top: '20vp', left: '12vp', right: '12vp' })
 
-      Image($r('app.media.logo'))
+      Image($r("app.media.logo"))
         .width('78vp')
         .height('78vp')
         .margin({

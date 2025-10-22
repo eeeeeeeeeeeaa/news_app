@@ -241,14 +241,14 @@ export class LoginPage extends ViewPU {
                         });
                     }, Image);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create('登录');
+                        Text.create('登录领先新闻');
                         Text.fontSize('24fp');
                         Text.fontWeight(FontWeight.Medium);
                         Text.fontColor('#182431');
                     }, Text);
                     Text.pop();
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create('更多精彩内容等你发现');
+                        Text.create('更多遥遥领先等你发现');
                         Text.fontSize('16fp');
                         Text.fontColor('#99182431');
                         Text.margin({

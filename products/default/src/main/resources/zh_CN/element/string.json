@@ -10,19 +10,19 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "HMOS世界入门版"
+      "value": "领先新闻"
     },
     {
       "name": "tab_news",
-      "value": "新闻"
+      "value": "热搜"
     },
     {
       "name": "tab_video",
-      "value": "预览"
+      "value": "探索"
     },
     {
       "name": "tab_follow",
-      "value": "关注"
+      "value": "收藏"
     },
     {
       "name": "tab_mine",

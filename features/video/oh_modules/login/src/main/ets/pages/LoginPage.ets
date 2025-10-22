@@ -126,18 +126,18 @@ export struct LoginPage {
       .backgroundColor('#F1F3F5')
     } else {
       Column() {
-        Image($r('app.media.logo'))
+        Image($r("app.media.logo"))
           .width('78vp')
           .height('78vp')
           .margin({
             top: '150vp',
             bottom: '8vp'
           })
-        Text('登录')
+        Text('登录领先新闻')
           .fontSize('24fp')
           .fontWeight(FontWeight.Medium)
           .fontColor('#182431')
-        Text('更多精彩内容等你发现')
+        Text('更多遥遥领先等你发现')
           .fontSize('16fp')
           .fontColor('#99182431')
           .margin({

@@ -133,7 +133,7 @@ class Index extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
             Column.justifyContent(FlexAlign.Center);
-            Column.height(56);
+            Column.height(68);
             Column.width('100%');
             Column.onClick(() => {
                 this.currentTabIndex = index;
@@ -147,8 +147,8 @@ class Index extends ViewPU {
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(title);
-            Text.margin({ top: 4 });
-            Text.fontSize(10);
+            Text.margin({ top: 8 });
+            Text.fontSize(14);
             Text.fontColor(this.currentTabIndex === index ? '#E60012' : '#666666');
         }, Text);
         Text.pop();

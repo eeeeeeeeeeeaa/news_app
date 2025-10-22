@@ -45,12 +45,12 @@ struct Index {
   ) {
     Column() {
       Text(title)
-        .margin({ top: 4 })
-        .fontSize(10)
+        .margin({ top: 8 })
+        .fontSize(14)
         .fontColor(this.currentTabIndex === index ? '#E60012' : '#666666')
     }
     .justifyContent(FlexAlign.Center)
-    .height(56)
+    .height(68)
     .width('100%')
     .onClick(() => {
       this.currentTabIndex = index;
