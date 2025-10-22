@@ -1,0 +1,7 @@
+{
+  "string": [
+    { "name": "logout", "value": "退出登录" },
+    { "name": "welcome", "value": "欢迎" },
+    { "name": "user_info", "value": "个人信息" }
+  ]
+}

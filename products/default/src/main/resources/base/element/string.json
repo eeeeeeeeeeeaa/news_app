@@ -1,0 +1,32 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "HMOS Basic"
+    },
+    {
+      "name": "tab_news",
+      "value": "新闻"
+    },
+    {
+      "name": "tab_video",
+      "value": "预览"
+    },
+    {
+      "name": "tab_follow",
+      "value": "关注"
+    },
+    {
+      "name": "tab_mine",
+      "value": "我的"
+    }
+  ]
+}
