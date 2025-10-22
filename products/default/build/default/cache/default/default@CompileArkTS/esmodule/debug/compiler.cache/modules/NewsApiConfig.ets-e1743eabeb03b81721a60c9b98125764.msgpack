@@ -77,11 +77,7 @@ export function buildNewsApiUrl(params = {}) {
     console.info('buildNewsApiUrl ->', masked);
     return full;
 }
-<<<<<<<< HEAD:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/NewsApiConfig.ets-e1743eabeb03b81721a60c9b98125764.msgpack
 //# sourceMappingURL=NewsApiConfig.js.mapÂÙXC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\NewsApiConfig.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥utilsÃÂÙBC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utilsÙ4C:\Users\Administrator\DevEcoStudioProjects\news_app¥utils¥1.0.0ÔrC’§pkgNameªpkgVersion¥utils¥1.0.0’ÔrD’²hostDependencyName®hostModuleName³./src/NewsApiConfig¥utilsD¯./NewsApiConfig¥utilsÙBC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utilsÃÃÚÚexport interface ExtraParamPair {
-========
-//# sourceMappingURL=NewsApiConfig.js.mapÂÙ=F:\newg\news_app\news_app\commons\utils\src\NewsApiConfig.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥utilsÃÂÙ'F:\newg\news_app\news_app\commons\utils¹F:\newg\news_app\news_app¥utils¥1.0.0ÔrC’§pkgNameªpkgVersion¥utils¥1.0.0’ÔrD’²hostDependencyName®hostModuleName³./src/NewsApiConfig¥utilsD¯./NewsApiConfig¥utilsÙ'F:\newg\news_app\news_app\commons\utilsÃÃÚÚexport interface ExtraParamPair {
->>>>>>>> e295e0637040758a4625c9bec20a5047501a5693:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/NewsApiConfig.ets-b664d59957ebf9ab0d344d3612ebb753.msgpack
   key: string;
   value: string | number;
 }

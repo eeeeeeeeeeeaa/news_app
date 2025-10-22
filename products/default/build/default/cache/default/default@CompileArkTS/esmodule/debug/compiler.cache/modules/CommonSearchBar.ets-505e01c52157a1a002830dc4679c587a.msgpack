@@ -205,11 +205,7 @@ export class CommonSearchBar extends ViewPU {
         this.updateDirtyElements();
     }
 }
-<<<<<<<< HEAD:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/CommonSearchBar.ets-505e01c52157a1a002830dc4679c587a.msgpack
 //# sourceMappingURL=CommonSearchBar.js.mapÂÙuC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\uicomponents\src\main\ets\components\CommonSearchBar.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¬uicomponentsÃÂÙIC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\uicomponentsÙ4C:\Users\Administrator\DevEcoStudioProjects\news_app¬uicomponents¥1.0.0ÔrC’§pkgNameªpkgVersion¬uicomponents¥1.0.0‘ÔrD’²hostDependencyName®hostModuleNameÙ)./src/main/ets/components/CommonSearchBar¬uicomponentsÙIC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\uicomponentsÃÃÚ„@Component
-========
-//# sourceMappingURL=CommonSearchBar.js.mapÂÙZF:\newg\news_app\news_app\commons\uicomponents\src\main\ets\components\CommonSearchBar.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¬uicomponentsÃÂÙ.F:\newg\news_app\news_app\commons\uicomponents¹F:\newg\news_app\news_app¬uicomponents¥1.0.0ÔrC’§pkgNameªpkgVersion¬uicomponents¥1.0.0‘ÔrD’²hostDependencyName®hostModuleNameÙ)./src/main/ets/components/CommonSearchBar¬uicomponentsÙ.F:\newg\news_app\news_app\commons\uicomponentsÃÃÚ„@Component
->>>>>>>> e295e0637040758a4625c9bec20a5047501a5693:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/CommonSearchBar.ets-3fb3608dbe1e2553e11117533a9bff3f.msgpack
 export struct CommonSearchBar {
   // çˆ¶ç»„ä»¶ä¼ å…¥çš„åˆå§‹å€¼ï¼ˆä¸å¼ºåˆ¶åŒå‘ç»‘å®šï¼‰
   @Prop value: string = '';

@@ -709,11 +709,7 @@ export default class Mine extends ViewPU {
         this.updateDirtyElements();
     }
 }
-<<<<<<<< HEAD:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/Mine.ets-47a6beebe62b4a0c7b05ddf12cb23feb.msgpack
 //# sourceMappingURL=Mine.js.mapÂ’ÙMC:\Users\Administrator\DevEcoStudioProjects\news_app\features\login\Index.etsÙ^ hvigor_ignore_F:_huawei_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.promptAction.d.tsÙ]C:\Users\Administrator\DevEcoStudioProjects\news_app\features\mine\src\main\ets\view\Mine.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¤mineÃÂÙBC:\Users\Administrator\DevEcoStudioProjects\news_app\features\mineÙ4C:\Users\Administrator\DevEcoStudioProjects\news_app¤mine¥1.0.0ÔrC’§pkgNameªpkgVersion¤mine¥1.0.0‘ÔrD’²hostDependencyName®hostModuleName¬../view/Mine¤mineÙBC:\Users\Administrator\DevEcoStudioProjects\news_app\features\mineÃÃÚ:l// ets/view/Mine.ets
-========
-//# sourceMappingURL=Mine.js.mapÂ’Ù2F:\newg\news_app\news_app\features\login\Index.etsÙ^ hvigor_ignore_F:_huawei_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.promptAction.d.tsÙBF:\newg\news_app\news_app\features\mine\src\main\ets\view\Mine.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¤mineÃÂÙ'F:\newg\news_app\news_app\features\mine¹F:\newg\news_app\news_app¤mine¥1.0.0ÔrC’§pkgNameªpkgVersion¤mine¥1.0.0‘ÔrD’²hostDependencyName®hostModuleName¬../view/Mine¤mineÙ'F:\newg\news_app\news_app\features\mineÃÃÚ:l// ets/view/Mine.ets
->>>>>>>> e295e0637040758a4625c9bec20a5047501a5693:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/Mine.ets-089ad0643a385d958292e05567d9767c.msgpack
 
 import { UserManager, UserInfo } from 'login';
 import { promptAction } from '@kit.ArkUI';
@@ -1147,11 +1143,7 @@ export default struct Mine {
     .height('100%')
     .backgroundColor('#F5F5F5')
   }
-<<<<<<<< HEAD:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/Mine.ets-47a6beebe62b4a0c7b05ddf12cb23feb.msgpack
 }ÀÔrE’²@ohos.promptAction¥loginÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙ^ hvigor_ignore_F:_huawei_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.promptAction.d.tsAÃªoh-resolveÂFAÂÙMC:\Users\Administrator\DevEcoStudioProjects\news_app\features\login\Index.etsAÃªoh-resolveÂ“ÔrG–§version¤fileªsourceRoot§sources¥names¨mappings§Mine.js ‘¨Mine.etsÜÃ’”    ”  ˜”   ” ”	 	” ”  ” &”# -”$ .–”   ” 	” ” ”- )”. *–”   ” ” ” ” ” ‘”  ’”: (”> ,’”9 ”> $•” %”& 0”' 1”2 <”4 >•” ” ” ”   ”! !’” !” !"’” "”  "‘”  Ì[0ž” Ì\” Ì\” Ì\
-========
-}ÀÔrE’²@ohos.promptAction¥loginÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙ^ hvigor_ignore_F:_huawei_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.promptAction.d.tsAÃªoh-resolveÂFAÂÙ2F:\newg\news_app\news_app\features\login\Index.etsAÃªoh-resolveÂ“ÔrG–§version¤fileªsourceRoot§sources¥names¨mappings§Mine.js ‘¨Mine.etsÜÃ’”    ”  ˜”   ” ”	 	” ”  ” &”# -”$ .–”   ” 	” ” ”- )”. *–”   ” ” ” ” ” ‘”  ’”: (”> ,’”9 ”> $•” %”& 0”' 1”2 <”4 >•” ” ” ”   ”! !’” !” !"’” "”  "‘”  Ì[0ž” Ì\” Ì\” Ì\
->>>>>>>> e295e0637040758a4625c9bec20a5047501a5693:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/Mine.ets-089ad0643a385d958292e05567d9767c.msgpack
 ” Ì\” Ì\” Ì\” Ì\”  Ì\”$ Ì\”& Ì\”+ Ì\#”- Ì\%”0 Ì\(”2 Ì\*ž” Ì]” Ì]” Ì]
 ” Ì]” Ì]” Ì]” Ì]” Ì]”# Ì]”% Ì]”* Ì]"”, Ì]$”. Ì]&”0 Ì](ž” Ì^” Ì^” Ì^
 ” Ì^” Ì^” Ì^” Ì^”  Ì^”$ Ì^”& Ì^”+ Ì^#”- Ì^%”/ Ì^'”1 Ì^)ž” Ì_” Ì_” Ì_

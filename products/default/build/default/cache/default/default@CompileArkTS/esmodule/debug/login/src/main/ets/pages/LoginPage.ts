@@ -165,7 +165,6 @@ export class LoginPage extends ViewPU {
             const success: boolean = await this.userService.login(this.account, this.password);
             if (success) {
                 this.isShowProgress = false;
-                // 立即调用回调，不延迟
                 this.onLoginSuccess();
             }
             else {
@@ -199,7 +198,7 @@ export class LoginPage extends ViewPU {
                                     onBack: () => {
                                         this.showRegisterPage = false;
                                     }
-                                }, undefined, elmtId, () => { }, { page: "features/login/src/main/ets/pages/LoginPage.ets", line: 118, col: 9 });
+                                }, undefined, elmtId, () => { }, { page: "features/login/src/main/ets/pages/LoginPage.ets", line: 117, col: 9 });
                                 ViewPU.create(componentCall);
                                 let paramsLambda = () => {
                                     return {

@@ -109,11 +109,7 @@ export class MainViewModel {
     }
 }
 export default new MainViewModel();
-<<<<<<<< HEAD:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/MainViewModel.ets-fcf63d9e07cb5c6dadfe6bfd18a9e486.msgpack
 //# sourceMappingURL=MainViewModel.js.mapÂ’ÙSC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\NewsData.etsÙ_C:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\BaiduHotSearchParser.etsÙXC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\MainViewModel.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥utilsÃÂÙBC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utilsÙ4C:\Users\Administrator\DevEcoStudioProjects\news_app¥utils¥1.0.0ÔrC’§pkgNameªpkgVersion¥utils¥1.0.0‘ÔrD’²hostDependencyName®hostModuleName³./src/MainViewModel¥utilsÙBC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utilsÃÃÚìï»¿  /*
-========
-//# sourceMappingURL=MainViewModel.js.mapÂ’Ù8F:\newg\news_app\news_app\commons\utils\src\NewsData.etsÙDF:\newg\news_app\news_app\commons\utils\src\BaiduHotSearchParser.etsÙ=F:\newg\news_app\news_app\commons\utils\src\MainViewModel.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥utilsÃÂÙ'F:\newg\news_app\news_app\commons\utils¹F:\newg\news_app\news_app¥utils¥1.0.0ÔrC’§pkgNameªpkgVersion¥utils¥1.0.0‘ÔrD’²hostDependencyName®hostModuleName³./src/MainViewModel¥utilsÙ'F:\newg\news_app\news_app\commons\utilsÃÃÚìï»¿  /*
->>>>>>>> e295e0637040758a4625c9bec20a5047501a5693:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/MainViewModel.ets-93dd4f75ce4302224c3f8878e792a4f8.msgpack
    * Copyright (c) 2024 Huawei Device Co., Ltd.
    * Licensed under the Apache License, Version 2.0 (the "License");
    * you may not use this file except in compliance with the License.
@@ -303,11 +299,7 @@ export default new MainViewModel();
   }
 
   export default new MainViewModel();
-<<<<<<<< HEAD:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/MainViewModel.ets-fcf63d9e07cb5c6dadfe6bfd18a9e486.msgpack
 ÀÔrE’¶./BaiduHotSearchParserª./NewsDataÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÂÙ_C:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\BaiduHotSearchParser.etsAÃªoh-resolveÂFAÂÙSC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\NewsData.etsAÃªoh-resolveÂ“ÔrG–§version¤fileªsourceRoot§sources¥names¨mappings°MainViewModel.js ‘±MainViewModel.etsÜ o–”  ” 	” ” ”! #”" $˜”  ” 	”	 ” ” 5”% ;”= ÌS”> ÌT‘”  ‘” ””  ” ” ” ‘” ‘” ’” ” ”” ” 
-========
-ÀÔrE’¶./BaiduHotSearchParserª./NewsDataÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÂÙDF:\newg\news_app\news_app\commons\utils\src\BaiduHotSearchParser.etsAÃªoh-resolveÂFAÂÙ8F:\newg\news_app\news_app\commons\utils\src\NewsData.etsAÃªoh-resolveÂ“ÔrG–§version¤fileªsourceRoot§sources¥names¨mappings°MainViewModel.js ‘±MainViewModel.etsÜ o–”  ” 	” ” ”! #”" $˜”  ” 	”	 ” ” 5”% ;”= ÌS”> ÌT‘”  ‘” ””  ” ” ” ‘” ‘” ’” ” ”” ” 
->>>>>>>> e295e0637040758a4625c9bec20a5047501a5693:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/MainViewModel.ets-93dd4f75ce4302224c3f8878e792a4f8.msgpack
 ” ” %’”	 "”
  "”” #” #” #” #’” $” $‘” &‘” *’” +” +’” ,”' ,%”” -” -” -” -’” .” .‘” 0‘” 4’” 5” 5”” 6” 6” 6” 6’” 7” 7‘” 9‘” =”” >”	 >	”
  >

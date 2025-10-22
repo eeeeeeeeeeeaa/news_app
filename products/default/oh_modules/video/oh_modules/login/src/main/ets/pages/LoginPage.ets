@@ -96,7 +96,6 @@ export struct LoginPage {
       const success:boolean = await this.userService.login(this.account, this.password);
       if (success) {
         this.isShowProgress = false;
-        // 立即调用回调，不延迟
         this.onLoginSuccess();
       } else {
         this.isShowProgress = false;

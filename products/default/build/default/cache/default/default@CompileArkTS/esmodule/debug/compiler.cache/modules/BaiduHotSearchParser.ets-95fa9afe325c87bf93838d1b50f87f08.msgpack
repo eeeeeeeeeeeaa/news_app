@@ -118,11 +118,7 @@ export class BaiduHotSearchParser {
     }
 }
 BaiduHotSearchParser.API_BASE_URL = 'https://top.baidu.com/api/board?platform=pc&tab=';
-<<<<<<<< HEAD:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/BaiduHotSearchParser.ets-95fa9afe325c87bf93838d1b50f87f08.msgpack
 //# sourceMappingURL=BaiduHotSearchParser.js.mapÂ‘ÙTC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\HttpUtils.etsÙ_C:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\BaiduHotSearchParser.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥utilsÃÂÙBC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utilsÙ4C:\Users\Administrator\DevEcoStudioProjects\news_app¥utils¥1.0.0ÔrC’§pkgNameªpkgVersion¥utils¥1.0.0’ÔrD’²hostDependencyName®hostModuleNameº./src/BaiduHotSearchParser¥utilsD¶./BaiduHotSearchParser¥utilsÙBC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utilsÃÃÚÅimport { HttpUtils } from './HttpUtils';
-========
-//# sourceMappingURL=BaiduHotSearchParser.js.mapÂ‘Ù9F:\newg\news_app\news_app\commons\utils\src\HttpUtils.etsÙDF:\newg\news_app\news_app\commons\utils\src\BaiduHotSearchParser.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥utilsÃÂÙ'F:\newg\news_app\news_app\commons\utils¹F:\newg\news_app\news_app¥utils¥1.0.0ÔrC’§pkgNameªpkgVersion¥utils¥1.0.0’ÔrD’²hostDependencyName®hostModuleNameº./src/BaiduHotSearchParser¥utilsD¶./BaiduHotSearchParser¥utilsÙ'F:\newg\news_app\news_app\commons\utilsÃÃÚÅimport { HttpUtils } from './HttpUtils';
->>>>>>>> e295e0637040758a4625c9bec20a5047501a5693:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/BaiduHotSearchParser.ets-d4ec04dce4fb636ae78692a98f2d7fa2.msgpack
 
 export interface BaiduHotSearchItem {
   card_title: string;
@@ -272,11 +268,7 @@ export class BaiduHotSearchParser {
     ];
   }
 }
-<<<<<<<< HEAD:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/BaiduHotSearchParser.ets-95fa9afe325c87bf93838d1b50f87f08.msgpack
 ÀÔrE‘«./HttpUtilsÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÂÙTC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\HttpUtils.etsAÃªoh-resolveÂ“ÔrG–§version¤fileªsourceRoot§sources¥names¨mappings·BaiduHotSearchParser.js ‘¸BaiduHotSearchParser.etsÜ x˜”    ”  ”	  	”  ”  ”  ”'  '”(  (””   ” ” ”$ $Ÿ” ” ”  ” "”# 1”% 3”/ ÌE”1 ÌG”8 ÌV”: ÌX”? Ìe”ÌA Ìg”ÌI Ìx”ÌK Ìz”ÌQ Ì‰—” ” ” 	” ” ”$  ”% !—” ” ” 	” ” ” ” —” ” ” 	” ” ”$  ”% !—” ” ” 	” ” ” ” —” ” ” 	” ” ” ” —” ” ” 	” ” ”  ”! —” ” ” 	” ” ” ” ’” ” ‘” “”  / ” /” /‘” //“”  0 ” 0” 0‘” 0-“”  1 ” 1” 1‘” 1ÌD””  3 ” 3” 3”! 3!™” 6”
-========
-ÀÔrE‘«./HttpUtilsÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÂÙ9F:\newg\news_app\news_app\commons\utils\src\HttpUtils.etsAÃªoh-resolveÂ“ÔrG–§version¤fileªsourceRoot§sources¥names¨mappings·BaiduHotSearchParser.js ‘¸BaiduHotSearchParser.etsÜ x˜”    ”  ”	  	”  ”  ”  ”'  '”(  (””   ” ” ”$ $Ÿ” ” ”  ” "”# 1”% 3”/ ÌE”1 ÌG”8 ÌV”: ÌX”? Ìe”ÌA Ìg”ÌI Ìx”ÌK Ìz”ÌQ Ì‰—” ” ” 	” ” ”$  ”% !—” ” ” 	” ” ” ” —” ” ” 	” ” ”$  ”% !—” ” ” 	” ” ” ” —” ” ” 	” ” ” ” —” ” ” 	” ” ”  ”! —” ” ” 	” ” ” ” ’” ” ‘” “”  / ” /” /‘” //“”  0 ” 0” 0‘” 0-“”  1 ” 1” 1‘” 1ÌD””  3 ” 3” 3”! 3!™” 6”
->>>>>>>> e295e0637040758a4625c9bec20a5047501a5693:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/BaiduHotSearchParser.ets-d4ec04dce4fb636ae78692a98f2d7fa2.msgpack
  6” 6	” 6” 6”! 6”" 6 ”( 6.”2 68’” 7” 7œ” 8” 8” 8” 8!”" 8$”6 88”7 89”ÌC 8ÌE”ÌF 8ÌH”ÌI 8ÌK”ÌK 8ÌM”ÌL 8ÌNœ” 9” 9” 9” 9” 9”( 9"”) 9#”, 9&”- 9'”7 91”8 92”9 93›” :” :” :” :”- :'”. :(”? :9”Ì@ ::”ÌD :>”ÌE :?”ÌF :Ì@˜” ;” ;
 ” ;” ;” ;” ;” ;”! ;”” <” <” <” <‘” =—” >” >”' >!”( >"”< >6”> >8”? >9‘”	 ?”” ?” ?” ?” ?—” Ì@” Ì@”' Ì@!”( Ì@"”< Ì@6”> Ì@8”? Ì@9‘”	 ÌA’” ÌB” ÌB–” ÌD
 ”

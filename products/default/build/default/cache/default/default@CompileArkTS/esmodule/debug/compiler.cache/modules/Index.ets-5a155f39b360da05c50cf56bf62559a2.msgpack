@@ -442,15 +442,7 @@ class Index extends ViewPU {
     }
 }
 registerNamedRoute(() => new Index(undefined, {}), "", { bundleName: "com.huawei.quickstart", moduleName: "default", pagePath: "pages/Index", pageFullPath: "products/default/src/main/ets/pages/Index", integratedHsp: "false", moduleType: "followWithHap" });
-<<<<<<< HEAD
 //# sourceMappingURL=Index.js.mapÂ•ÙMC:\Users\Administrator\DevEcoStudioProjects\news_app\features\video\Index.etsÙLC:\Users\Administrator\DevEcoStudioProjects\news_app\features\news\Index.etsÙMC:\Users\Administrator\DevEcoStudioProjects\news_app\features\login\Index.etsÙLC:\Users\Administrator\DevEcoStudioProjects\news_app\features\mine\Index.etsÙbC:\Users\Administrator\DevEcoStudioProjects\news_app\features\follows\src\main\ets\view\Follow.etsÙbC:\Users\Administrator\DevEcoStudioProjects\news_app\products\default\src\main\ets\pages\Index.etsÔrBšªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath¬shouldEmitJs§defaultÃÂÙEC:\Users\Administrator\DevEcoStudioProjects\news_app\products\defaultÙ4C:\Users\Administrator\DevEcoStudioProjects\news_app§default¥1.0.0Ô  ÙEC:\Users\Administrator\DevEcoStudioProjects\news_app\products\defaultÃÃÚáï»¿import { VideoPage } from 'video';
-=======
-<<<<<<<< HEAD:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/Index.ets-5a155f39b360da05c50cf56bf62559a2.msgpack
-//# sourceMappingURL=Index.js.mapÂ•ÙMC:\Users\Administrator\DevEcoStudioProjects\news_app\features\video\Index.etsÙLC:\Users\Administrator\DevEcoStudioProjects\news_app\features\news\Index.etsÙMC:\Users\Administrator\DevEcoStudioProjects\news_app\features\login\Index.etsÙLC:\Users\Administrator\DevEcoStudioProjects\news_app\features\mine\Index.etsÙbC:\Users\Administrator\DevEcoStudioProjects\news_app\features\follows\src\main\ets\view\Follow.etsÙbC:\Users\Administrator\DevEcoStudioProjects\news_app\products\default\src\main\ets\pages\Index.etsÔrBšªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath¬shouldEmitJs§defaultÃÂÙEC:\Users\Administrator\DevEcoStudioProjects\news_app\products\defaultÙ4C:\Users\Administrator\DevEcoStudioProjects\news_app§default¥1.0.0Ô  ÙEC:\Users\Administrator\DevEcoStudioProjects\news_app\products\defaultÃÃÚÔï»¿import { VideoPage } from 'video';
-========
-//# sourceMappingURL=Index.js.mapÂ•Ù2F:\newg\news_app\news_app\features\video\Index.etsÙ1F:\newg\news_app\news_app\features\news\Index.etsÙ2F:\newg\news_app\news_app\features\login\Index.etsÙ1F:\newg\news_app\news_app\features\mine\Index.etsÙGF:\newg\news_app\news_app\features\follows\src\main\ets\view\Follow.etsÙGF:\newg\news_app\news_app\products\default\src\main\ets\pages\Index.etsÔrBšªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath¬shouldEmitJs§defaultÃÂÙ*F:\newg\news_app\news_app\products\default¹F:\newg\news_app\news_app§default¥1.0.0Ô  Ù*F:\newg\news_app\news_app\products\defaultÃÃÚßï»¿import { VideoPage } from 'video';
->>>>>>>> e295e0637040758a4625c9bec20a5047501a5693:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/Index.ets-773f4beaa12594970f812c4fe4e34f20.msgpack
->>>>>>> d3599bdeae63cbd35ebb056dba2f4912bfb81004
 import { NewsPage } from 'news';
 import { LoginPage } from 'login';
 import { MinePage } from 'mine';
@@ -494,7 +486,6 @@ struct Index {
   TabBuilder(
     title: Resource,
     index: number
-<<<<<<< HEAD
   ) {
     Column() {
       Text(title)
@@ -507,35 +498,6 @@ struct Index {
     .width('100%')
     .onClick(() => {
       this.currentTabIndex = index;
-=======
-<<<<<<<< HEAD:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/Index.ets-5a155f39b360da05c50cf56bf62559a2.msgpack
-  ) {
-    Column() {
-      Text(title)
-        .margin({ top: 8 })
-        .fontSize(14)
-        .fontColor(this.currentTabIndex === index ? '#E60012' : '#666666')
-    }
-    .justifyContent(FlexAlign.Center)
-    .height(68)
-    .width('100%')
-    .onClick(() => {
-      this.currentTabIndex = index;
-========
-  ) {
-    Column() {
-      Text(title)
-        .margin({ top: 4 })
-        .fontSize(10)
-        .fontColor(this.currentTabIndex === index ? '#E60012' : '#666666')
-    }
-    .justifyContent(FlexAlign.Center)
-    .height(56)
-    .width('100%')
-    .onClick(() => {
-      this.currentTabIndex = index;
->>>>>>>> e295e0637040758a4625c9bec20a5047501a5693:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/Index.ets-773f4beaa12594970f812c4fe4e34f20.msgpack
->>>>>>> d3599bdeae63cbd35ebb056dba2f4912bfb81004
       this.tabsController.changeIndex(this.currentTabIndex);
       
       // å¦‚æœç‚¹å‡»çš„æ˜¯å…³æ³¨tabï¼ˆindex=2ï¼‰ï¼Œè§¦å‘åˆ·æ–°
@@ -704,17 +666,8 @@ struct Index {
     .width('100%')
     .height('100%')
   }
-<<<<<<< HEAD
 }
-ÀÔrC•¥login¤mine¤news¥video¿follow/src/main/ets/view/FollowÔrD—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÂÙMC:\Users\Administrator\DevEcoStudioProjects\news_app\features\login\Index.etsAÃªoh-resolveÂDAÂÙLC:\Users\Administrator\DevEcoStudioProjects\news_app\features\mine\Index.etsAÃªoh-resolveÂDAÂÙLC:\Users\Administrator\DevEcoStudioProjects\news_app\features\news\Index.etsAÃªoh-resolveÂDAÂÙMC:\Users\Administrator\DevEcoStudioProjects\news_app\features\video\Index.etsAÃªoh-resolveÂDAÂÙbC:\Users\Administrator\DevEcoStudioProjects\news_app\features\follows\src\main\ets\view\Follow.etsAÃªoh-resolveÂ“ÔrE–§version¤fileªsourceRoot§sources¥names¨mappings¨Index.js ‘©Index.etsÜ´˜”   ”  ”	  
-=======
-<<<<<<<< HEAD:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/Index.ets-5a155f39b360da05c50cf56bf62559a2.msgpack
-}
-ÀÔrC•¥login¤news¤mine¥video¿follow/src/main/ets/view/FollowÔrD—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÂÙMC:\Users\Administrator\DevEcoStudioProjects\news_app\features\login\Index.etsAÃªoh-resolveÂDAÂÙLC:\Users\Administrator\DevEcoStudioProjects\news_app\features\news\Index.etsAÃªoh-resolveÂDAÂÙLC:\Users\Administrator\DevEcoStudioProjects\news_app\features\mine\Index.etsAÃªoh-resolveÂDAÂÙMC:\Users\Administrator\DevEcoStudioProjects\news_app\features\video\Index.etsAÃªoh-resolveÂDAÂÙbC:\Users\Administrator\DevEcoStudioProjects\news_app\features\follows\src\main\ets\view\Follow.etsAÃªoh-resolveÂ“ÔrE–§version¤fileªsourceRoot§sources¥names¨mappings¨Index.js ‘©Index.etsÜ´˜”   ”  ”	  
-========
-}ÀÔrC•¤mine¤news¥video¥login¿follow/src/main/ets/view/FollowÔrD—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÂÙ1F:\newg\news_app\news_app\features\mine\Index.etsAÃªoh-resolveÂDAÂÙ1F:\newg\news_app\news_app\features\news\Index.etsAÃªoh-resolveÂDAÂÙ2F:\newg\news_app\news_app\features\video\Index.etsAÃªoh-resolveÂDAÂÙ2F:\newg\news_app\news_app\features\login\Index.etsAÃªoh-resolveÂDAÂÙGF:\newg\news_app\news_app\features\follows\src\main\ets\view\Follow.etsAÃªoh-resolveÂ“ÔrE–§version¤fileªsourceRoot§sources¥names¨mappings¨Index.js ‘©Index.etsÜ´˜”   ”  ”	  
->>>>>>>> e295e0637040758a4625c9bec20a5047501a5693:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/Index.ets-773f4beaa12594970f812c4fe4e34f20.msgpack
->>>>>>> d3599bdeae63cbd35ebb056dba2f4912bfb81004
+ÀÔrC•¤news¥login¥video¤mine¿follow/src/main/ets/view/FollowÔrD—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÂÙLC:\Users\Administrator\DevEcoStudioProjects\news_app\features\news\Index.etsAÃªoh-resolveÂDAÂÙMC:\Users\Administrator\DevEcoStudioProjects\news_app\features\login\Index.etsAÃªoh-resolveÂDAÂÙMC:\Users\Administrator\DevEcoStudioProjects\news_app\features\video\Index.etsAÃªoh-resolveÂDAÂÙLC:\Users\Administrator\DevEcoStudioProjects\news_app\features\mine\Index.etsAÃªoh-resolveÂDAÂÙbC:\Users\Administrator\DevEcoStudioProjects\news_app\features\follows\src\main\ets\view\Follow.etsAÃªoh-resolveÂ“ÔrE–§version¤fileªsourceRoot§sources¥names¨mappings¨Index.js ‘©Index.etsÜ´˜”   ”  ”	  
 ”  ”  ”  ”!  "”"  #˜”   ” ”	 	” ” ” ” ”   ˜”   ” ”	 	” ” ” ”! !”" "˜”   ” ”	 	” ” ” ” ”   ˜”   ” ”	 	” ” ” ”# #”$ $–”   ” ” ” ”4 4”5 5’” ” ‘” 	 ’”: (”> ,’”9 ”> $’”> #”? $’”9 ”: ’”ÌC (”ÌD )”” +”" /”0 =”2 ?•” %”& 0”' 1”2 <”4 >‘” 5’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ”” ”	 ”
  ” ˜” ” ” ” ” ”/ +”0 ,”1 -’” ” ™” ” ” ” ”" ”# ”2 ,”4 .”5 /—” ” ” ” ”' !”) #”* $œ” ” ” ” ” ”ÌA ;”ÌC =”ÌG ÌA”ÌH ÌB”ÌR ÌL”ÌS ÌM”ÌT ÌN‘”	 ”” ” ” ” š” ” ” ” ” ”5 /”7 1”< 6”= 7”> 8˜” ” 
 ” ” ” ”" ”# ”$ ‘”	 ’” ” ’” !” !”” "” "” "” "š” #” #” #” #” #”% #!”' ##”- #)”. #*”/ #+—” $” $” $	” $” $”  $”! $–” %” %” %	” %” %” %’” &” &–” )” )” *” *” +” +’” -” -

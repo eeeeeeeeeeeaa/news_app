@@ -212,11 +212,7 @@ export class HttpUtils {
         });
     }
 }
-<<<<<<<< HEAD:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/HttpUtils.ets-044e4bc72e6d7d3efb91bf0bd4bac3d8.msgpack
 //# sourceMappingURL=HttpUtils.js.mapÂ‘ÙZ hvigor_ignore_F:_huawei_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.net.http.d.tsÙTC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utils\src\HttpUtils.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥utilsÃÂÙBC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utilsÙ4C:\Users\Administrator\DevEcoStudioProjects\news_app¥utils¥1.0.0ÔrC’§pkgNameªpkgVersion¥utils¥1.0.0“ÔrD’²hostDependencyName®hostModuleName¯./src/HttpUtils¥utilsD«./HttpUtils¥utilsD«./HttpUtils¥utilsÙBC:\Users\Administrator\DevEcoStudioProjects\news_app\commons\utilsÃÃÚ)÷ï»¿import { http } from '@kit.NetworkKit';
-========
-//# sourceMappingURL=HttpUtils.js.mapÂ‘ÙZ hvigor_ignore_F:_huawei_DevEco Studio_sdk_default_openharmony_ets_api_@ohos.net.http.d.tsÙ9F:\newg\news_app\news_app\commons\utils\src\HttpUtils.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath¬shouldEmitJs¥utilsÃÂÙ'F:\newg\news_app\news_app\commons\utils¹F:\newg\news_app\news_app¥utils¥1.0.0ÔrC’§pkgNameªpkgVersion¥utils¥1.0.0“ÔrD’²hostDependencyName®hostModuleName¯./src/HttpUtils¥utilsD«./HttpUtils¥utilsD«./HttpUtils¥utilsÙ'F:\newg\news_app\news_app\commons\utilsÃÃÚ)÷ï»¿import { http } from '@kit.NetworkKit';
->>>>>>>> e295e0637040758a4625c9bec20a5047501a5693:products/default/build/default/cache/default/default@CompileArkTS/esmodule/debug/compiler.cache/modules/HttpUtils.ets-cf2d020186048ae696019f40b7eb31b7.msgpack
 import { BusinessError } from '@kit.BasicServicesKit';
 
 export class HttpUtils {
