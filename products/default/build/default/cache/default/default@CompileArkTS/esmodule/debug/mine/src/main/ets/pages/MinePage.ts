@@ -4,7 +4,6 @@ if (!("finalizeConstruction" in ViewPU.prototype)) {
 interface MinePage_Params {
     onLogout?: () => void;
     userInfo?: UserInfo | null;
-    loginStatus?: boolean;
 }
 import Mine from "@bundle:com.huawei.quickstart/default@mine/ets/view/Mine";
 import type { UserInfo } from 'login';
@@ -33,7 +32,6 @@ export class MinePage extends ViewPU {
         }
         this.onLogout = () => { };
         this.userInfo = null;
-        this.loginStatus = false;
         this.setInitiallyProvidedValue(params);
         this.finalizeConstruction();
     }
@@ -43,9 +41,6 @@ export class MinePage extends ViewPU {
         }
         if (params.userInfo !== undefined) {
             this.userInfo = params.userInfo;
-        }
-        if (params.loginStatus !== undefined) {
-            this.loginStatus = params.loginStatus;
         }
     }
     updateStateVars(params: MinePage_Params) {
@@ -58,7 +53,6 @@ export class MinePage extends ViewPU {
     }
     private onLogout: () => void;
     private userInfo: UserInfo | null;
-    private loginStatus: boolean;
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
@@ -70,16 +64,14 @@ export class MinePage extends ViewPU {
                 if (isInitialRender) {
                     let componentCall = new Mine(this, {
                         userInfo: this.userInfo,
-                        loginStatus: this.loginStatus,
                         onLogout: () => {
                             this.onLogout();
                         }
-                    }, undefined, elmtId, () => { }, { page: "features/mine/src/main/ets/pages/MinePage.ets", line: 32, col: 7 });
+                    }, undefined, elmtId, () => { }, { page: "features/mine/src/main/ets/pages/MinePage.ets", line: 31, col: 7 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
                             userInfo: this.userInfo,
-                            loginStatus: this.loginStatus,
                             onLogout: () => {
                                 this.onLogout();
                             }

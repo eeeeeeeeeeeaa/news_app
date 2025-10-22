@@ -8,7 +8,6 @@
   "dependencies": {
     "video": "file:../../features/video",
     "news": "file:../../features/news",
-    "quickstart": "file:../../features/quickstart",
     "follow": "file:../../features/follows",
     "mine": "file:../../features/mine",
     "login": "file:../../features/login",

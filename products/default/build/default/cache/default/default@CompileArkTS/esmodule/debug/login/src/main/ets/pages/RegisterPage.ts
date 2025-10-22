@@ -233,7 +233,7 @@ export class RegisterPage extends ViewPU {
         Blank.pop();
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777311, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
+            Image.create({ "id": 16777282, "type": 20000, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" });
             Image.width('78vp');
             Image.height('78vp');
             Image.margin({

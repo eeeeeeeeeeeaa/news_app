@@ -5,7 +5,6 @@ interface Index_Params {
     currentUser?: UserInfo | null;
     isLoggedIn?: boolean;
     currentTabIndex?: number;
-    refreshKey?: number;
     followRefreshTrigger?: number;
     tabsController?: TabsController;
     userManager?: UserManager;
@@ -26,7 +25,6 @@ class Index extends ViewPU {
         this.__currentUser = new ObservedPropertyObjectPU(null, this, "currentUser");
         this.__isLoggedIn = new ObservedPropertySimplePU(false, this, "isLoggedIn");
         this.__currentTabIndex = new ObservedPropertySimplePU(0, this, "currentTabIndex");
-        this.__refreshKey = new ObservedPropertySimplePU(0, this, "refreshKey");
         this.__followRefreshTrigger = new ObservedPropertySimplePU(0, this, "followRefreshTrigger");
         this.tabsController = new TabsController();
         this.userManager = UserManager.getInstance();
@@ -42,9 +40,6 @@ class Index extends ViewPU {
         }
         if (params.currentTabIndex !== undefined) {
             this.currentTabIndex = params.currentTabIndex;
-        }
-        if (params.refreshKey !== undefined) {
-            this.refreshKey = params.refreshKey;
         }
         if (params.followRefreshTrigger !== undefined) {
             this.followRefreshTrigger = params.followRefreshTrigger;
@@ -62,14 +57,12 @@ class Index extends ViewPU {
         this.__currentUser.purgeDependencyOnElmtId(rmElmtId);
         this.__isLoggedIn.purgeDependencyOnElmtId(rmElmtId);
         this.__currentTabIndex.purgeDependencyOnElmtId(rmElmtId);
-        this.__refreshKey.purgeDependencyOnElmtId(rmElmtId);
         this.__followRefreshTrigger.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__currentUser.aboutToBeDeleted();
         this.__isLoggedIn.aboutToBeDeleted();
         this.__currentTabIndex.aboutToBeDeleted();
-        this.__refreshKey.aboutToBeDeleted();
         this.__followRefreshTrigger.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
@@ -95,13 +88,6 @@ class Index extends ViewPU {
     set currentTabIndex(newValue: number) {
         this.__currentTabIndex.set(newValue);
     }
-    private __refreshKey: ObservedPropertySimplePU<number>;
-    get refreshKey() {
-        return this.__refreshKey.get();
-    }
-    set refreshKey(newValue: number) {
-        this.__refreshKey.set(newValue);
-    }
     private __followRefreshTrigger: ObservedPropertySimplePU<number>; // 关注页面刷新触发器
     get followRefreshTrigger() {
         return this.__followRefreshTrigger.get();
@@ -112,22 +98,17 @@ class Index extends ViewPU {
     private tabsController: TabsController;
     private userManager: UserManager;
     async aboutToAppear() {
-        console.log('🚀 Index.aboutToAppear 开始');
         try {
             await this.userManager.initPreferences();
             await this.checkLoginStatus();
-            console.log('🚀 Index.aboutToAppear 完成 - isLoggedIn:', this.isLoggedIn);
         }
         catch (error) {
-            console.error('❌ Index.aboutToAppear 失败:', error);
             this.setLoggedIn(false);
         }
     }
-    // 统一的登录状态设置方法
+    // 登录状态的设置方法
     setLoggedIn(status: boolean) {
-        console.log('🔄 setLoggedIn:', status);
         this.isLoggedIn = status;
-        this.refreshKey++;
     }
     TabBuilder(title: Resource, index: number, parent = null) {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -138,9 +119,7 @@ class Index extends ViewPU {
             Column.onClick(() => {
                 this.currentTabIndex = index;
                 this.tabsController.changeIndex(this.currentTabIndex);
-                // 如果点击的是关注tab（index=2），触发刷新
-                if (index === 2) {
-                    console.log('🔄 点击关注tab，触发刷新');
+                if (index === 2) { //用于触发关注页面的刷新
                     this.followRefreshTrigger++;
                 }
             });
@@ -155,15 +134,12 @@ class Index extends ViewPU {
         Column.pop();
     }
     async checkLoginStatus() {
-        console.log('🔄 checkLoginStatus 开始');
         try {
             this.currentUser = await this.userManager.getCurrentUser();
             const loggedIn = this.currentUser !== null;
-            console.log('🔄 checkLoginStatus 完成 - 应该登录:', loggedIn, 'currentUser:', this.currentUser);
             this.setLoggedIn(loggedIn);
         }
         catch (error) {
-            console.error('❌ checkLoginStatus 失败:', error);
             this.setLoggedIn(false);
         }
     }
@@ -173,19 +149,14 @@ class Index extends ViewPU {
     }
     // 登录成功处理函数
     async handleLoginSuccess() {
-        console.log('🎉 handleLoginSuccess 被调用');
         try {
-            // 登录成功后直接设置为已登录状态
-            console.log('✅ 登录成功，直接设置为已登录状态');
             this.setLoggedIn(true);
             this.currentTabIndex = 0;
             // 立即获取用户信息
             try {
                 this.currentUser = await this.userManager.getCurrentUser();
-                console.log('✅ 登录成功后获取用户信息:', this.currentUser);
             }
             catch (error) {
-                console.error('❌ 获取用户信息失败:', error);
             }
         }
         catch (error) {
@@ -195,11 +166,11 @@ class Index extends ViewPU {
     }
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            // 使用 refreshKey 强制重新构建
+            // 根据登录状态构建页面
             Column.create();
-            // 使用 refreshKey 强制重新构建
+            // 根据登录状态构建页面
             Column.width('100%');
-            // 使用 refreshKey 强制重新构建
+            // 根据登录状态构建页面
             Column.height('100%');
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -239,7 +210,7 @@ class Index extends ViewPU {
                             {
                                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                                     if (isInitialRender) {
-                                        let componentCall = new NewsPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 121, col: 17 });
+                                        let componentCall = new NewsPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 118, col: 17 });
                                         ViewPU.create(componentCall);
                                         let paramsLambda = () => {
                                             return {};
@@ -264,7 +235,7 @@ class Index extends ViewPU {
                             {
                                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                                     if (isInitialRender) {
-                                        let componentCall = new VideoPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 129, col: 17 });
+                                        let componentCall = new VideoPage(this, {}, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 126, col: 17 });
                                         ViewPU.create(componentCall);
                                         let paramsLambda = () => {
                                             return {};
@@ -289,7 +260,7 @@ class Index extends ViewPU {
                             {
                                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                                     if (isInitialRender) {
-                                        let componentCall = new Follow(this, { refreshTrigger: this.followRefreshTrigger }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 137, col: 17 });
+                                        let componentCall = new Follow(this, { refreshTrigger: this.followRefreshTrigger }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 134, col: 17 });
                                         ViewPU.create(componentCall);
                                         let paramsLambda = () => {
                                             return {
@@ -320,19 +291,15 @@ class Index extends ViewPU {
                                     if (isInitialRender) {
                                         let componentCall = new MinePage(this, {
                                             userInfo: this.currentUser,
-                                            loginStatus: this.isLoggedIn,
                                             onLogout: async () => {
-                                                console.log('🔄 MinePage.onLogout 被调用');
                                                 await this.checkLoginStatus();
                                             }
-                                        }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 145, col: 18 });
+                                        }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 142, col: 18 });
                                         ViewPU.create(componentCall);
                                         let paramsLambda = () => {
                                             return {
                                                 userInfo: this.currentUser,
-                                                loginStatus: this.isLoggedIn,
                                                 onLogout: async () => {
-                                                    console.log('🔄 MinePage.onLogout 被调用');
                                                     await this.checkLoginStatus();
                                                 }
                                             };
@@ -367,23 +334,19 @@ class Index extends ViewPU {
                         Column.width('100%');
                         // 用户未登录，显示登录页面
                         Column.height('100%');
-                        // 用户未登录，显示登录页面
-                        Column.justifyContent(FlexAlign.Center);
                     }, Column);
                     {
                         this.observeComponentCreation2((elmtId, isInitialRender) => {
                             if (isInitialRender) {
                                 let componentCall = new LoginPage(this, {
                                     onLoginSuccess: () => {
-                                        console.log('🎉 LoginPage.onLoginSuccess 回调被调用');
                                         this.handleLoginSuccess();
                                     }
-                                }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 176, col: 11 });
+                                }, undefined, elmtId, () => { }, { page: "products/default/src/main/ets/pages/Index.ets", line: 171, col: 11 });
                                 ViewPU.create(componentCall);
                                 let paramsLambda = () => {
                                     return {
                                         onLoginSuccess: () => {
-                                            console.log('🎉 LoginPage.onLoginSuccess 回调被调用');
                                             this.handleLoginSuccess();
                                         }
                                     };
@@ -395,60 +358,13 @@ class Index extends ViewPU {
                             }
                         }, { name: "LoginPage" });
                     }
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        // 调试按钮
-                        Button.createWithLabel('手动检查登录状态');
-                        // 调试按钮
-                        Button.margin({ top: 20 });
-                        // 调试按钮
-                        Button.width('80%');
-                        // 调试按钮
-                        Button.height(40);
-                        // 调试按钮
-                        Button.backgroundColor('#E60012');
-                        // 调试按钮
-                        Button.fontColor('#FFFFFF');
-                        // 调试按钮
-                        Button.onClick(async () => {
-                            console.log('🧪 手动测试检查登录状态');
-                            await this.checkLoginStatus();
-                        });
-                    }, Button);
-                    // 调试按钮
-                    Button.pop();
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Button.createWithLabel('强制设置为已登录');
-                        Button.margin({ top: 10 });
-                        Button.width('80%');
-                        Button.height(40);
-                        Button.backgroundColor('#007DFF');
-                        Button.fontColor('#FFFFFF');
-                        Button.onClick(() => {
-                            console.log('🧪 强制设置为已登录');
-                            this.setLoggedIn(true);
-                        });
-                    }, Button);
-                    Button.pop();
-                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Button.createWithLabel('强制设置为未登录');
-                        Button.margin({ top: 10 });
-                        Button.width('80%');
-                        Button.height(40);
-                        Button.backgroundColor('#FF6B35');
-                        Button.fontColor('#FFFFFF');
-                        Button.onClick(() => {
-                            console.log('🧪 强制设置为未登录');
-                            this.setLoggedIn(false);
-                        });
-                    }, Button);
-                    Button.pop();
                     // 用户未登录，显示登录页面
                     Column.pop();
                 });
             }
         }, If);
         If.pop();
-        // 使用 refreshKey 强制重新构建
+        // 根据登录状态构建页面
         Column.pop();
     }
     rerender() {

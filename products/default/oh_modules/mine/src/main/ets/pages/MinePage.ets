@@ -25,13 +25,11 @@ export function MinePageBuilder() {
 export struct MinePage {
   onLogout: () => void = () => {};
   userInfo: UserInfo | null = null;
-  loginStatus: boolean = false;
 
   build() {
     Column() {
       Mine({
         userInfo: this.userInfo,
-        loginStatus: this.loginStatus,
         onLogout: () => {
           this.onLogout();
         }

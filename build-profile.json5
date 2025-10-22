@@ -42,10 +42,6 @@
       "srcPath": "./features/video"
     },
     {
-      "name": "quickstart",
-      "srcPath": "./features/quickstart"
-    },
-    {
       "name": "utils",
       "srcPath": "./commons/utils"
     },

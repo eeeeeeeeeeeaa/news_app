@@ -93,22 +93,6 @@
       "dynamicDependencies": {},
       "maskedByOverrideDependencyMap": false
     },
-    "features/quickstart": {
-      "name": "quickstart",
-      "dependencies": {
-        "utils": {
-          "specifier": "file:commons/utils",
-          "version": "file:commons/utils"
-        },
-        "uicomponents": {
-          "specifier": "file:commons/uicomponents",
-          "version": "file:commons/uicomponents"
-        }
-      },
-      "devDependencies": {},
-      "dynamicDependencies": {},
-      "maskedByOverrideDependencyMap": false
-    },
     "features/video": {
       "name": "video",
       "dependencies": {
@@ -139,10 +123,6 @@
         "news": {
           "specifier": "file:features/news",
           "version": "file:features/news"
-        },
-        "quickstart": {
-          "specifier": "file:features/quickstart",
-          "version": "file:features/quickstart"
         },
         "follow": {
           "specifier": "file:features/follows",
@@ -195,17 +175,6 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "quickstart@file:features/quickstart": {
-      "storePath": "features/quickstart",
-      "dependencies": {
-        "utils": "commons/utils",
-        "uicomponents": "commons/uicomponents"
-      },
-      "dynamicDependencies": {},
-      "dev": false,
-      "dynamic": false,
-      "maskedByOverrideDependencyMap": false
-    },
     "video@file:features/video": {
       "storePath": "features/video",
       "dependencies": {
@@ -218,23 +187,23 @@
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "follow@file:features/follows": {
-      "storePath": "features/follows",
+    "news@file:features/news": {
+      "storePath": "features/news",
       "dependencies": {
-        "uicomponents": "commons/uicomponents",
         "utils": "commons/utils",
-        "login": "features/login"
+        "uicomponents": "commons/uicomponents"
       },
       "dynamicDependencies": {},
       "dev": false,
       "dynamic": false,
       "maskedByOverrideDependencyMap": false
     },
-    "news@file:features/news": {
-      "storePath": "features/news",
+    "follow@file:features/follows": {
+      "storePath": "features/follows",
       "dependencies": {
+        "uicomponents": "commons/uicomponents",
         "utils": "commons/utils",
-        "uicomponents": "commons/uicomponents"
+        "login": "features/login"
       },
       "dynamicDependencies": {},
       "dev": false,

@@ -3,12 +3,10 @@ if (!("finalizeConstruction" in ViewPU.prototype)) {
 }
 interface Mine_Params {
     currentUser?: UserInfo | null;
-    isLoggedIn?: boolean;
     userManager?: UserManager;
     onLogout?: () => void;
     // 接收外部传入的用户信息（组件参数）
     userInfo?: UserInfo | null;
-    loginStatus?: boolean;
     quickAccessItems?: QuickAccessItem[];
     commonFunctions?: CommonFunction[];
     moreFunctions?: MoreFunction[];
@@ -39,11 +37,9 @@ export default class Mine extends ViewPU {
             this.paramsGenerator_ = paramsLambda;
         }
         this.__currentUser = new ObservedPropertyObjectPU(null, this, "currentUser");
-        this.__isLoggedIn = new ObservedPropertySimplePU(false, this, "isLoggedIn");
         this.userManager = UserManager.getInstance();
         this.onLogout = () => { };
         this.userInfo = null;
-        this.loginStatus = false;
         this.quickAccessItems = [
             { icon: '📧', text: '消息', badge: '1' },
             { icon: '⭐', text: '收藏', badge: '' },
@@ -78,9 +74,6 @@ export default class Mine extends ViewPU {
         if (params.currentUser !== undefined) {
             this.currentUser = params.currentUser;
         }
-        if (params.isLoggedIn !== undefined) {
-            this.isLoggedIn = params.isLoggedIn;
-        }
         if (params.userManager !== undefined) {
             this.userManager = params.userManager;
         }
@@ -89,9 +82,6 @@ export default class Mine extends ViewPU {
         }
         if (params.userInfo !== undefined) {
             this.userInfo = params.userInfo;
-        }
-        if (params.loginStatus !== undefined) {
-            this.loginStatus = params.loginStatus;
         }
         if (params.quickAccessItems !== undefined) {
             this.quickAccessItems = params.quickAccessItems;
@@ -107,11 +97,9 @@ export default class Mine extends ViewPU {
     }
     purgeVariableDependenciesOnElmtId(rmElmtId) {
         this.__currentUser.purgeDependencyOnElmtId(rmElmtId);
-        this.__isLoggedIn.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__currentUser.aboutToBeDeleted();
-        this.__isLoggedIn.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
@@ -122,62 +110,39 @@ export default class Mine extends ViewPU {
     set currentUser(newValue: UserInfo | null) {
         this.__currentUser.set(newValue);
     }
-    private __isLoggedIn: ObservedPropertySimplePU<boolean>;
-    get isLoggedIn() {
-        return this.__isLoggedIn.get();
-    }
-    set isLoggedIn(newValue: boolean) {
-        this.__isLoggedIn.set(newValue);
-    }
     private userManager: UserManager;
     private onLogout: () => void;
     // 接收外部传入的用户信息（组件参数）
     private userInfo: UserInfo | null;
-    private loginStatus: boolean;
     async aboutToAppear() {
-        console.log('🔍 Mine.aboutToAppear 开始');
-        console.log('🔍 Mine.aboutToAppear - 传入的用户信息:', this.userInfo, '登录状态:', this.loginStatus);
-        this.updateUserInfo();
-    }
-    async aboutToUpdate() {
-        console.log('🔍 Mine.aboutToUpdate 开始');
-        console.log('🔍 Mine.aboutToUpdate - 传入的用户信息:', this.userInfo, '登录状态:', this.loginStatus);
         this.updateUserInfo();
     }
     // 更新用户信息（优先使用传入的参数）
     updateUserInfo() {
-        console.log('🔍 Mine.updateUserInfo 开始');
-        // 使用传入的参数更新内部状态
-        console.log('✅ 使用传入的用户信息:', this.userInfo);
         this.currentUser = this.userInfo;
-        this.isLoggedIn = this.loginStatus;
-        console.log('🔍 Mine.updateUserInfo 完成 - isLoggedIn:', this.isLoggedIn, 'currentUser:', this.currentUser);
     }
+    //加载用户信息,只有用户名
     async loadUserInfo() {
         try {
-            console.log('🔍 Mine.loadUserInfo 开始');
             await this.userManager.initPreferences();
             const user = await this.userManager.getCurrentUser();
-            console.log('🔍 Mine.loadUserInfo - 获取到的用户信息:', user);
             this.currentUser = user;
-            this.isLoggedIn = user !== null;
-            console.log('🔍 Mine.loadUserInfo 完成 - isLoggedIn:', this.isLoggedIn, 'currentUser:', this.currentUser);
         }
         catch (err) {
-            console.error('❌ Mine.loadUserInfo 失败:', err);
+            console.error('Mine.loadUserInfo 失败:', err);
         }
     }
+    //登出
     async logout() {
         try {
             await this.userManager.logout();
             this.currentUser = null;
-            this.isLoggedIn = false;
             promptAction.showToast({
-                message: { "id": 16777278, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
+                message: { "id": 16777249, "type": 10003, params: [], "bundleName": "com.huawei.quickstart", "moduleName": "default" }
             });
             // 退出登录后调用回调函数
             setTimeout(() => {
-                this.onLogout();
+                this.onLogout(); //传入的是 checkLoginStatus 用来更新登录状态,使用的是index中的环境
             }, 1000); // 延迟1秒让用户看到退出成功的提示
         }
         catch (err) {
@@ -199,7 +164,7 @@ export default class Mine extends ViewPU {
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             If.create();
-            if (this.isLoggedIn && this.currentUser) {
+            if (this.currentUser) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         // 已登录状态
@@ -296,7 +261,7 @@ export default class Mine extends ViewPU {
                         Row.margin({ bottom: '8vp' });
                     }, Row);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create(this.currentUser.username || 'euphoria');
+                        Text.create(this.currentUser.username);
                         Text.fontSize('20fp');
                         Text.fontWeight(FontWeight.Bold);
                         Text.fontColor('#000000');

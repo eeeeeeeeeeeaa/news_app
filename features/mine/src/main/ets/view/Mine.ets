@@ -26,62 +26,53 @@ interface MoreFunction {
 @Component
 export default struct Mine {
   @State currentUser: UserInfo | null = null;
-  @State isLoggedIn: boolean = false;
   private userManager: UserManager = UserManager.getInstance();
   onLogout: () => void = () => {};
   
   // 接收外部传入的用户信息（组件参数）
   userInfo: UserInfo | null = null;
-  loginStatus: boolean = false;
 
   async aboutToAppear() {
-    console.log('🔍 Mine.aboutToAppear 开始');
-    console.log('🔍 Mine.aboutToAppear - 传入的用户信息:', this.userInfo, '登录状态:', this.loginStatus);
-    this.updateUserInfo();
-  }
 
-  async aboutToUpdate() {
-    console.log('🔍 Mine.aboutToUpdate 开始');
-    console.log('🔍 Mine.aboutToUpdate - 传入的用户信息:', this.userInfo, '登录状态:', this.loginStatus);
     this.updateUserInfo();
+
   }
 
   // 更新用户信息（优先使用传入的参数）
   updateUserInfo() {
-    console.log('🔍 Mine.updateUserInfo 开始');
-    // 使用传入的参数更新内部状态
-    console.log('✅ 使用传入的用户信息:', this.userInfo);
+
     this.currentUser = this.userInfo;
-    this.isLoggedIn = this.loginStatus;
-    console.log('🔍 Mine.updateUserInfo 完成 - isLoggedIn:', this.isLoggedIn, 'currentUser:', this.currentUser);
+
   }
 
+
+  //加载用户信息,只有用户名
   async loadUserInfo() {
     try {
-      console.log('🔍 Mine.loadUserInfo 开始');
+
       await this.userManager.initPreferences();
       const user = await this.userManager.getCurrentUser();
-      console.log('🔍 Mine.loadUserInfo - 获取到的用户信息:', user);
+
       this.currentUser = user;
-      this.isLoggedIn = user !== null;
-      console.log('🔍 Mine.loadUserInfo 完成 - isLoggedIn:', this.isLoggedIn, 'currentUser:', this.currentUser);
+
     } catch (err) {
-      console.error('❌ Mine.loadUserInfo 失败:', err);
+      console.error('Mine.loadUserInfo 失败:', err);
     }
   }
 
+
+  //登出
   async logout() {
     try {
       await this.userManager.logout();
       this.currentUser = null;
-      this.isLoggedIn = false;
       promptAction.showToast({
         message: $r('app.string.logout')
       });
       
       // 退出登录后调用回调函数
       setTimeout(() => {
-        this.onLogout();
+        this.onLogout();  //传入的是 checkLoginStatus 用来更新登录状态,使用的是index中的环境
       }, 1000); // 延迟1秒让用户看到退出成功的提示
     } catch (err) {
       console.error('Failed to logout:', err);
@@ -123,14 +114,13 @@ export default struct Mine {
 
   build() {
     Column() {
-      if (this.isLoggedIn && this.currentUser) {
+      if (this.currentUser) {
         // 已登录状态
         Scroll() {
           Column() {
             // 用户信息头部区域
             Row() {
               Blank()
-
               // 右侧功能按钮
               Row() {
                 Text('📅')
@@ -163,7 +153,7 @@ export default struct Mine {
               Column() {
                 // 用户名和徽章
                 Row() {
-                  Text(this.currentUser.username || 'euphoria')
+                  Text(this.currentUser.username)
                     .fontSize('20fp')
                     .fontWeight(FontWeight.Bold)
                     .fontColor('#000000')

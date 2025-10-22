@@ -122,11 +122,7 @@ export class JwtUtil {
             return null;
         }
     }
-    /**
-     * 检查JWT是否过期
-     * @param token JWT令牌
-     * @returns 是否过期
-     */
+    //检查jwt是否过期
     public static isTokenExpired(token: string): boolean {
         try {
             const payload = JwtUtil.parseJwt(token);
@@ -137,15 +133,11 @@ export class JwtUtil {
             return payload.exp < currentTime;
         }
         catch (error) {
-            console.error('JWT过期检查失败:', error);
+            console.error('jwt过期检查失败:', error);
             return true;
         }
     }
-    /**
-     * 从JWT中获取用户ID
-     * @param token JWT令牌
-     * @returns 用户ID
-     */
+    //从jwt中获取用户ID
     public static getUserIdFromToken(token: string): number | null {
         try {
             const payload = JwtUtil.parseJwt(token);
@@ -156,11 +148,7 @@ export class JwtUtil {
             return null;
         }
     }
-    /**
-     * 获取JWT签发时间
-     * @param token JWT令牌
-     * @returns 签发时间（时间戳）
-     */
+    //获取jwt签发时间
     public static getIssuedAt(token: string): number | null {
         try {
             const payload = JwtUtil.parseJwt(token);
@@ -171,11 +159,7 @@ export class JwtUtil {
             return null;
         }
     }
-    /**
-     * 获取JWT过期时间
-     * @param token JWT令牌
-     * @returns 过期时间（时间戳）
-     */
+    //获取jwt过期时间
     public static getExpirationTime(token: string): number | null {
         try {
             const payload = JwtUtil.parseJwt(token);
@@ -186,11 +170,7 @@ export class JwtUtil {
             return null;
         }
     }
-    /**
-     * 验证JWT格式是否正确
-     * @param token JWT令牌
-     * @returns 格式是否正确
-     */
+    //验证jwt格式是否正确
     public static isValidFormat(token: string): boolean {
         try {
             const parts = token.split('.');
@@ -200,11 +180,7 @@ export class JwtUtil {
             return false;
         }
     }
-    /**
-     * 获取JWT剩余有效时间（秒）
-     * @param token JWT令牌
-     * @returns 剩余有效时间，-1表示已过期或无效
-     */
+    //获取jwt剩余有效时间（秒）
     public static getRemainingTime(token: string): number {
         try {
             const exp = JwtUtil.getExpirationTime(token);
@@ -220,11 +196,7 @@ export class JwtUtil {
             return -1;
         }
     }
-    /**
-     * 从JWT中获取用户昵称
-     * @param token JWT令牌
-     * @returns 用户昵称
-     */
+    //从jwt中获取用户昵称
     public static getUserNameFromToken(token: string): string | null {
         try {
             const payload = JwtUtil.parseJwt(token);
@@ -235,11 +207,7 @@ export class JwtUtil {
             return null;
         }
     }
-    /**
-     * 从JWT中获取用户手机号
-     * @param token JWT令牌
-     * @returns 用户手机号
-     */
+    //从jwt中获取用户手机号
     public static getUserPhoneFromToken(token: string): string | null {
         try {
             const payload = JwtUtil.parseJwt(token);
